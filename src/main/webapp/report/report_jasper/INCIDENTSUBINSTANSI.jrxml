@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="INCIDENTSUBINSTANSI" pageWidth="160" pageHeight="100" whenNoDataType="AllSectionsNoDetail" columnWidth="160" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="83f76d7c-eb66-424e-b222-5fe223f3e585">
+	<property name="ireport.zoom" value="5.054470284992947"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="INCIDENTID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT POTENCYNAME,NVL(DBMS_LOB.SUBSTR(REMARKS, 4000, 1),' ') AS JML FROM inc_potency WHERE INCIDENTID=$P{INCIDENTID}]]>
+	</queryString>
+	<field name="POTENCYNAME" class="java.lang.String"/>
+	<field name="JML" class="java.lang.String"/>
+	<detail>
+		<band height="50" splitType="Stretch">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="46a24a70-d95a-4ae8-816e-c62424233347" stretchType="RelativeToTallestObject" x="0" y="0" width="106" height="50" isPrintWhenDetailOverflows="true"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{POTENCYNAME}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="70824f70-1c19-400d-9493-dac08f9fed7f" stretchType="RelativeToTallestObject" x="106" y="0" width="54" height="50" isPrintWhenDetailOverflows="true"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{JML}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

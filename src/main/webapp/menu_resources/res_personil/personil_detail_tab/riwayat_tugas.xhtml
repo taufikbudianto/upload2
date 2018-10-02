@@ -1,0 +1,85 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="personel-riwayat-sar">
+        <p:dataTable id="data-riwayat" var="list" value="#{resPersonnelMBean.listPersonelHistory}" 
+                     reflow="true" rowKey="#{list.personnelHistoryID}"
+                     lazy="true" paginator="true" paginatorPosition="bottom" rows="10"
+                     rowsPerPageTemplate="5,10,15" emptyMessage="Data tidak ditemukan" tableStyle="table-layout:auto"
+                     rowIndexVar="index">
+
+            <f:facet name="header">
+                Daftar Riwayat tugas
+            </f:facet>
+            <p:column headerText="No" style="width: 20px">
+                <p:outputLabel value="#{index + 1}"/>
+            </p:column>
+            <p:column headerText="Bulan / Tahun" sortBy="#{list.incidentYear}">
+                <p:outputLabel value="#{list.incidentYear}"/>
+            </p:column>
+            <p:column headerText="Nama Insiden" sortBy="#{list.incidentName}">
+                <p:outputLabel value="#{list.incidentName}" />
+            </p:column>
+            <p:column headerText="Jabatan" sortBy="#{list.incidentPosition}">
+                <p:outputLabel value="#{list.incidentPosition}"/>
+            </p:column>
+            <p:column headerText="Deskripsi" sortBy="#{list.incidentDesc}">
+                <p:outputLabel value="#{list.incidentDesc}"/>
+            </p:column>
+            <p:column headerText="Aksi">
+
+                <p:commandButton title="Edit"
+                                 actionListener="#{resPersonnelMBean.editPersonelhistory}"
+                                 process="personel-content:personel-detail:personel-tabs:personel-riwayat-sar:data-riwayat"
+                                 icon="fa fa-edit">
+                    <f:attribute name="rowIndex" value="#{rowIndex}"/>
+                </p:commandButton> 
+
+                <p:spacer width="10"/>
+
+                <p:commandButton title="Hapus" 
+                                 actionListener="#{resPersonnelMBean.removePersonelhistory}"
+                                 process="personel-content:personel-detail:personel-tabs:personel-riwayat-sar:data-riwayat"
+                                 icon="fa fa-trash">
+                    <f:attribute name="rowIndex" value="#{rowIndex}"/>
+                    <p:confirm header="Konfirmasi" 
+                               message="Apakah anda ingin menghapus #{list.incidentName} ?" 
+                               icon="ui-icon-alert" />
+                </p:commandButton>
+            </p:column>
+        </p:dataTable>
+
+        <br/>
+        <p:panel class="no-border card card-w-title ui-fluid" header="Detail" style="max-width: 500px" rendered="#{resPersonnelMBean.isShowDetailOnTab}">
+            <p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-7"
+                         style="width: 100%" layout="grid"
+                         styleClass="ui-panelgrid-blank form-group">
+                <p:outputLabel value="Bulan / Tahun" />
+                <p:inputMask value="#{resPersonnelMBean.personnelHistory.incidentYear}" 
+                             disabled="#{resPersonnelMBean.isPotencyDisabled}"
+                             mask="99/9999"/>
+                <p:outputLabel value="Nama Insiden" />
+                <p:inputText value="#{resPersonnelMBean.personnelHistory.incidentName}" 
+                             disabled="#{resPersonnelMBean.isPotencyDisabled}"/>
+                <p:outputLabel value="Jabatan"/>
+                <p:inputText value="#{resPersonnelMBean.personnelHistory.incidentPosition}" 
+                             disabled="#{resPersonnelMBean.isPotencyDisabled}" />
+                <p:outputLabel value="Deskripsi"/>
+                <p:inputText value="#{resPersonnelMBean.personnelHistory.incidentDesc}" 
+                             disabled="#{resPersonnelMBean.isPotencyDisabled}"/>
+                <p:panel class="no-border no-padding control-button" style="text-align: left">
+                    <p:commandButton value="Add" style="width:130px"
+                                     process="personel-content:personel-detail:personel-tabs:personel-riwayat-sar"
+                                     actionListener="#{resPersonnelMBean.addPersonelhistory}">
+
+                    </p:commandButton>
+                </p:panel>
+            </p:panelGrid>
+        </p:panel>
+
+
+    </h:form>
+</ui:composition>

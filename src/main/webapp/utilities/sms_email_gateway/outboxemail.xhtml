@@ -1,0 +1,85 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">      
+    <h:form prependId="false">
+        <p:panelGrid columns="9" style="width: 100%">
+            <p:outputLabel value="Kolom Pencarian :" style="font-weight:bold"/>
+
+            <p:selectOneMenu value="#{emailOutMBean.kolompencarian}" style="width:120px">
+                <p:ajax listener="#{emailOutMBean.onKolomPencarianChange()}" update="@form"/>
+                <f:selectItems value="#{emailOutMBean.listKolomPencarian}" />
+            </p:selectOneMenu>
+
+            <p:outputLabel  value="Kata Kunci :" style="font-weight:bold"/>
+
+            <p:inputText  value ="#{emailOutMBean.textfield}" rendered="#{emailOutMBean.isText}"/>
+
+            <p:selectOneMenu  value="#{emailOutMBean.dropdown}" style="width:120px" 
+                              rendered="#{emailOutMBean.isDropDown}">
+                <f:selectItems value="#{emailOutMBean.listDropDown}" />
+            </p:selectOneMenu>
+
+            <p:panelGrid  columns="6">
+                <p:selectBooleanCheckbox value="#{emailOutMBean.terkirim}" >
+                    <p:ajax listener="#{emailOutMBean.checkTerkirim()}" />
+                </p:selectBooleanCheckbox>
+                <p:outputLabel value="Terkirim" />
+
+                <p:selectBooleanCheckbox value="#{emailOutMBean.pending}" >
+                    <p:ajax listener="#{emailOutMBean.checkPending()}" />
+                </p:selectBooleanCheckbox>
+                <p:outputLabel value="Pending"/>
+
+                <p:selectBooleanCheckbox value="#{emailOutMBean.tidakterkirim}" >
+                    <p:ajax listener="#{emailOutMBean.checkTidakTerkirim()}" />
+                </p:selectBooleanCheckbox>
+                <p:outputLabel value="Tidak Terkirim" />
+            </p:panelGrid>
+            
+            <p:commandButton value="Cari" icon="ui-icon-search">
+                <p:ajax event="click" update="@form" process="@form"/>
+            </p:commandButton>
+            
+            <p:button value="Reset" icon="ui-icon-replay"/>
+        </p:panelGrid>
+
+
+        <p:dataTable var="emailout" value="#{emailOutMBean.lazyDataModelJPAEmail}"
+                     reflow="true" paginator="true" lazy="true"
+                     rows="10" rowsPerPageTemplate="5,10,15" rowIndexVar="index"
+                     rowKey="#{emailout.emailoutgoingid}" paginatorPosition="bottom"  
+                     id="email" tableStyle="table-layout:auto" emptyMessage="Data tidak ditemukan"
+                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+            <p:column headerText="No" style="width: 20px">
+                <p:outputLabel value="#{index + 1}"/>
+            </p:column>
+            <p:column headerText="Kategori" sortBy="#{emailout.emailcategoryid}">
+                <h:outputText value="#{emailout.emailcategoryid eq 'CGK-1211-0001'?'Penting':'-'}" />
+            </p:column>
+            <p:column headerText="Nama Penerima" sortBy="#{emailout.recipientname}">
+                <h:outputText value="#{emailout.recipientname}" />
+            </p:column>
+            <p:column headerText="Email" sortBy="#{emailout.emailaddress}" style="text-align: center">
+                <h:outputText value="#{emailout.emailaddress}" />
+            </p:column>
+            <p:column headerText="Status" sortBy="#{emailout.isdelivered}" style="text-align: center">
+                <h:outputText value="#{emailout.isdelivered eq '1'?'Terkirim': (emailout.isdelivered eq '0'?'Tidak Terkirim' : 'Pending')}" />
+            </p:column>
+            <p:column headerText="Tipe Pesan" sortBy="#{emailout.messagetype}" style="text-align: center">
+                <h:outputText value="#{emailout.messagetype eq '0'?'Utilities':(emailout.messagetype eq '1'?'Insiden Personil' : 
+                                       (emailout.messagetype eq '2'?'Insiden SRU' : (emailout.messagetype eq '3'?'Insiden Peralatan' : 
+                                       (emailout.messagetype eq '4'?'Insiden Potensi' : 'Radiogram'))))}" />
+            </p:column>
+            <p:column headerText="Tgl. Kirim" sortBy="#{emailout.delivereddate}" style="text-align: center">
+                <h:outputText value="#{emailout.delivereddate}" >
+                    <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
+                </h:outputText>
+            </p:column>    
+            <p:column headerText="Deskripsi Pesan" style="text-align: justify">
+                <h:outputText value="#{emailout.textmessage}" />
+            </p:column>                                       
+        </p:dataTable>
+    </h:form>
+</ui:composition>

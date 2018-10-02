@@ -1,0 +1,45 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <p:outputLabel value="Status" style="font-weight: bold;font-size: 16px"/>
+    <p:panel>
+        <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank grid-pad value-readonly" columnClasses="ui-grid-col-3,ui-grid-col-9">
+            <p:outputLabel value="No. Sighting" />
+            <p:inputText value="#{incidentSightingMBean.sighting.sightingNumber}" disabled="true" style="width: 50%"/>
+            <p:outputLabel value="Dicatat Oleh" />
+            <p:inputText value="#{incidentSightingMBean.sighting.createdBy}" disabled="true" style="width: 50%"/>
+            <p:outputLabel value="TW Pencatatan" />
+            <p:calendar pattern="dd-MM-yyyy HH:mm:ss" value="#{incidentSightingMBean.sighting.dateCreated}" showOn="button" disabled="true" mask="true" navigator="true"
+                        inputStyle="width: 50%"/>
+            <p:outputLabel value="TW Respon Pertama" />
+            <p:calendar pattern="dd-MM-yyyy HH:mm:ss" value="#{incidentSightingMBean.responPertama}" showOn="button" disabled="true" mask="true" navigator="true"
+                        inputStyle="width: 50%"/>
+            <p:outputLabel value="Waktu Respon" />
+            <p:inputText value="#{incidentSightingMBean.waktuRespon}" disabled="true" style="width: 50%"/>
+            <p:outputLabel value="Status" />
+            <p:selectOneMenu value="#{incidentSightingMBean.sighting.status}" style="width: 50%">
+                <f:selectItem itemLabel="Belum Diproses" itemValue="1"/>
+                <f:selectItem itemLabel="Sedang Diproses" itemValue="2"/>
+                <f:selectItem itemLabel="Selesai Diproses" itemValue="3"/>
+            </p:selectOneMenu>
+            <p:outputLabel value="No. Insiden" />
+            <p:panelGrid id="browse-inc" columns="3" class="no-border no-padding no-padding-table"
+                         columnClasses="ui-grid-col-8, ui-grid-col-2, ui-grid-col-2">
+                <p:inputText value="#{incidentSightingMBean.sighting.incident.incidentnumber}" readonly="true" style="width: 275px"/>
+                
+                <p:commandButton icon="ui-icon-search" style="margin-left: 30px; margin-right: 25px">
+                    <p:ajax event="click" listener="#{incidentSightingMBean.chooseIncident}" update=":incident-content" global="false"/>
+                </p:commandButton>
+                
+                <p:commandButton icon="ui-icon-do-not-disturb-on" class="red-btn" disabled="#{incidentSightingMBean.sighting.incident == null}"
+                                 style="margin-left: 10px">
+                    <p:confirm header="Hilangkan Tautan Insiden" message="Hilangkan Tautan insiden #{incident.incidentnumber} pada sighting ?" icon="ui-icon-alert"/>                    
+                    <p:ajax event="click" listener="#{incidentSightingMBean.removeIncident}" update="browse-inc" global="false"/>
+                </p:commandButton>
+            </p:panelGrid>
+            <p:outputLabel value="Catatan" />
+            <p:inputTextarea value="#{incidentSightingMBean.sighting.assesmentNotes}" style="width: 50%"/>
+        </p:panelGrid>
+    </p:panel>
+</ui:composition>

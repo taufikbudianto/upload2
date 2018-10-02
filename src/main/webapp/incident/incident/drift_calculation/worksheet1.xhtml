@@ -1,0 +1,335 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <div class="ui-g ui-fluid">
+        <h:form id="form-ws1" prependId="false">
+            <div class="ui-g-12 ui-lg-12 ">
+                <p:panelGrid id="button" columns="7" layout="grid" 
+                             styleClass="ui-panelgrid-blank form-group" 
+                             columnClasses ="ui-grid-col-2,ui-grid-col-2,ui-grid-col-2,ui-grid-col-2,
+                             ui-grid-col-2,ui-grid-col-2,ui-grid-col-2"
+                             style="margin-top: 20px;margin-bottom: 20px; width: 100%"
+                             class="no-padding no-border">             
+                    <p:commandButton value="NEW" actionListener="#{driftCalcWorksheet1MBean.newWS1()}" 
+                                     process="@form" 
+                                     update=":insiden-content,incidentdetail:tabplanning-content:form-ws1-panel1,incidentdetail:tabplanning-content:ws1-calculation" 
+                                     styleClass="green-btn"
+                                     rendered="#{incidentPlanningMBean.isDriftCalculation}"/>
+                    <p:commandButton value="OPEN" styleClass="green-btn"
+                                     rendered="#{incidentPlanningMBean.isDriftCalculation}">
+                        <p:ajax event="click" listener="#{driftCalcWorksheet1MBean.openWS1()}" process="@form"/>
+                    </p:commandButton>
+                    <p:commandButton value="SAVE" 
+                                     actionListener="#{driftCalcWorksheet1MBean.openSaveDialog()}" 
+                                     process="@form" styleClass="green-btn"
+                                     rendered="#{incidentPlanningMBean.isDriftCalculation}"/>
+                    <p:commandButton value="DELETE" actionListener="#{driftCalcWorksheet1MBean.deleteWS1()}" 
+                                     process="@form" 
+                                     update=":insiden-content,incidentdetail:tabplanning-content:form-ws1-panel1,incidentdetail:tabplanning-content:ws1-calculation"  
+                                     styleClass="green-btn"
+                                     rendered="#{incidentPlanningMBean.isDriftCalculation}">
+                        <p:confirm header="Konfirmasi" message="Apakah anda yakin ingin menghapus data Worksheet ini?" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                    <p:commandButton value="CALCULATE" process="@form" 
+                                     update="incidentdetail:tabplanning-content:ws1-calculation,incidentdetail:tabplanning-content:form-ws1-panel1" 
+                                     actionListener="#{driftCalcWorksheet1MBean.calculateWS1()}" 
+                                     styleClass="green-btn"/>
+                    <p:commandButton value="MAP" actionListener="#{driftCalcWorksheet1MBean.viewMap()}" process="@form" styleClass="green-btn"/>
+                    <p:commandButton value="PRINT" styleClass="green-btn" rendered="#{incidentPlanningMBean.isDriftCalculation}">
+                        <p:ajax event="click" listener="#{driftCalcWorksheet1MBean.doPrint()}"  process="@this"/>
+                    </p:commandButton>
+                </p:panelGrid>    
+                <p:panel id="form-ws1-panel1">
+                    <table cellpadding="10">
+                        <tr>
+                            <td><p:commandButton value="Search Target" icon="ui-icon-search" style="width: 100px" onclick="PF('widgetLeeway').show()"/></td>
+                            <td><p:inputText id="searchTarget1" value="#{driftCalcWorksheet1MBean.searchTarget1}" style="width: 100px" disabled="true"/></td>
+                            <td><p:inputText id="searchTarget2" value="#{driftCalcWorksheet1MBean.searchTarget2}" style="width: 100px" disabled="true"/></td>
+                            <td><p:inputText id="searchTarget3" value="#{driftCalcWorksheet1MBean.searchTarget3}" style="width: 100px" disabled="true"/></td>
+                            <td><p:outputLabel value="Satuan"/></td>
+                            <td><p:selectOneMenu id="cboSatuan" value="#{driftCalcWorksheet1MBean.cboSatuan}" style="width:100px">
+                                    <f:selectItem itemLabel="NM" itemValue="0" />
+                                    <f:selectItem itemLabel="KM" itemValue="1" />
+                                </p:selectOneMenu>
+                            </td>
+                            <td><p:outputLabel value="Jumlah Data" rendered="#{!incidentPlanningMBean.isDriftCalculation}" /></td>
+                            <td><p:inputNumber style="width: 50px" maxlength="3" decimalPlaces="0"
+                                               minValue="0"
+                                               value="#{driftCalcWorksheet1MBean.jmlData}" 
+                                               rendered="#{!incidentPlanningMBean.isDriftCalculation}"/></td>
+
+                        </tr>
+                    </table>
+                    <table cellpadding="10">
+                        <tr>
+                            <td><p:outputLabel value="Description"/></td>
+                            <td><p:inputText style="width: 350px" value="#{driftCalcWorksheet1MBean.incDescription}"/></td>
+                            <td colspan="2"></td>
+                            <td><p:outputLabel value="Safety Factor"/></td>
+                            <td><p:selectOneMenu id="cboSafety" style="width:50px" value="#{driftCalcWorksheet1MBean.safetyFactor}">
+                                    <f:selectItem itemLabel="1.1" itemValue="1.1" />
+                                    <f:selectItem itemLabel="1.6" itemValue="1.6" />
+                                    <f:selectItem itemLabel="2.0" itemValue="2.0" />
+                                    <f:selectItem itemLabel="2.3" itemValue="2.3" />
+                                    <f:selectItem itemLabel="2.6" itemValue="2.6" />
+                                </p:selectOneMenu>
+                            </td>
+                        </tr>
+                    </table>
+                    <table cellpadding="10">
+                        <tr>
+                            <td><p:outputLabel value="LKP"/></td>
+                            <td><p:outputLabel value="Latitude"/></td>
+                            <td>
+                                <p:panelGrid id="latitude" columns="3" style="width: 100%;" 
+                                             columnClasses ="ui-grid-col-2,ui-grid-col-7,ui-grid-col-3"                                     
+                                             class="no-border no-padding-table ui-fluid">
+                                    <ui:include src="coordinate-ws1/ws1-latitude.xhtml"/>
+                                </p:panelGrid>
+                            </td>
+                            <td> </td>
+                            <td> </td>
+                            <td><p:outputLabel value="Longitude"/></td>
+                            <td>
+                                <p:panelGrid id="longitude" columns="3" style="width: 100%;"
+                                             columnClasses ="ui-grid-col-2,ui-grid-col-7,ui-grid-col-3"                                             
+                                             class="no-border no-padding-table ui-fluid">
+                                    <ui:include src="coordinate-ws1/ws1-longitude.xhtml"/>
+                                </p:panelGrid>
+                            </td>
+                            <td> </td>
+                        </tr>
+                    </table>
+
+                    <table cellpadding="10">
+                        <tr>
+                            <td><p:outputLabel value="TW Insiden"/></td>
+                            <td><p:outputLabel value="#{driftCalcWorksheet1MBean.incTime}"/></td>
+
+                            <td><p:outputLabel value="TW Operasi"/></td>
+                            <td>
+                                <p:calendar id="twOperation" pattern="MM/dd/yyyy HH:mm:ss" mask="true" navigator="true" showOn="button" value="#{driftCalcWorksheet1MBean.operationTime}">
+                                    <p:ajax event="dateSelect" listener="#{driftCalcWorksheet1MBean.generateDriftHours()}" update="ws1-drifthours" />
+                                    <p:ajax event="blur" listener="#{driftCalcWorksheet1MBean.generateDriftHours()}" update="ws1-drifthours" />
+                                </p:calendar>
+                            </td>
+                            <td>
+                                <p:selectOneMenu id="cboZonaWaktu" value="#{driftCalcWorksheet1MBean.zonaWaktu}" style="width:50px">
+                                    <f:selectItem itemLabel="G" itemValue="G" />
+                                    <f:selectItem itemLabel="H" itemValue="H" />
+                                    <f:selectItem itemLabel="I" itemValue="I" />
+                                    <f:selectItem itemLabel="Z" itemValue="Z" />
+                                </p:selectOneMenu>
+                            </td>
+                            <td><p:outputLabel value="Drift Hours"/></td>
+                            <td><p:inputText id="ws1-drifthours" disabled="true" value="#{driftCalcWorksheet1MBean.driftHours}"/></td>
+                            <td><p:outputLabel value="hours"/></td>
+                        </tr>
+
+                    </table>
+                    <table cellpadding="10">
+                        <tr>
+                            <td><p:outputLabel  value="Sea Tidal Current" /></td>
+                            <td><p:inputNumber id="idTidal1-t" decimalPlaces="6" decimalSeparator="," thousandSeparator="." value="#{driftCalcWorksheet1MBean.seaCurrentAngle}" /></td>
+                            <td><p:outputLabel  value="T" /></td>
+                            <td><p:inputNumber id="idTidal1-cm" decimalPlaces="6" decimalSeparator="," thousandSeparator="." value="#{driftCalcWorksheet1MBean.seaCurrentSpeed}" >
+                                    <p:ajax event="blur" listener="#{driftCalcWorksheet1MBean.generateSeaCurrentSpeed_knot()}" update="idTidal1-knot" />
+                                </p:inputNumber>
+                            </td>
+                            <td><p:outputLabel  value="cm/s" /></td>
+                            <td style="#{incidentPlanningMBean.isDriftCalculation}?'visibility:hidden':''">
+                                <p:outputLabel value="Varian" rendered="#{!incidentPlanningMBean.isDriftCalculation}"/></td>
+                            <td style="#{incidentPlanningMBean.isDriftCalculation}?'visibility:hidden':''">
+                                <p:inputNumber style="width: 20px" 
+                                               decimalPlaces="6" decimalSeparator="," thousandSeparator="."
+                                               minValue="0"
+                                               value="#{driftCalcWorksheet1MBean.varianceSea}" 
+                                               rendered="#{!incidentPlanningMBean.isDriftCalculation}"/></td>
+                            <td><p:inputText disabled="true" id="idTidal1-knot"  value="#{driftCalcWorksheet1MBean.seaCurrentSpeed_knot}" /></td>
+                            <td><p:outputLabel  value="knots" /></td>
+                            <td><p:outputLabel value="Distance" /></td>
+                            <td><p:inputText disabled="true" id="idTidal1-dist"  value="#{driftCalcWorksheet1MBean.seaCurrentDistance}"/></td>
+                            <td><p:outputLabel value="nm" /></td>
+                        </tr>
+                        <tr>
+                            <td><p:outputLabel value="Surface Wind" /></td>
+                            <td><p:inputNumber id="idWind-t" decimalPlaces="6" decimalSeparator="," thousandSeparator="." value="#{driftCalcWorksheet1MBean.surfaceWindAngle}" /></td>
+                            <td><p:outputLabel  value="T" /></td>
+                            <td><p:inputNumber id="idWind-cm" decimalPlaces="6" decimalSeparator="," thousandSeparator="." value="#{driftCalcWorksheet1MBean.windCurrentSpeed}" >
+                                    <p:ajax event="blur" listener="#{driftCalcWorksheet1MBean.generateWindCurrentSpeed_knot()}" update="idWind-knot"/>
+                                </p:inputNumber>
+                            </td>
+                            <td><p:outputLabel  value="cm/s" /></td>
+                            <td style="#{incidentPlanningMBean.isDriftCalculation}?'visibility:hidden':''">
+                                <p:outputLabel value="Varian" rendered="#{!incidentPlanningMBean.isDriftCalculation}"/></td>
+                            <td style="#{incidentPlanningMBean.isDriftCalculation}?'visibility:hidden':''">
+                                <p:inputNumber style="width: 20px" 
+                                               decimalPlaces="6" decimalSeparator="," thousandSeparator="."
+                                               minValue="0"
+                                               value="#{driftCalcWorksheet1MBean.varianceWind}" 
+                                               rendered="#{!incidentPlanningMBean.isDriftCalculation}"/></td>
+                            <td><p:inputText disabled="true" id="idWind-knot" value="#{driftCalcWorksheet1MBean.windCurrentSpeed_knot}"/></td>
+                            <td><p:outputLabel  value="knots" /></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><p:outputLabel value="Wind Current Factor" /></td>
+                            <td><p:inputText disabled="true" id="idFactor-t" value="#{driftCalcWorksheet1MBean.windCurrentAngle}"/></td>
+                            <td><p:outputLabel  value="T" /></td>
+                            <td><p:inputText disabled="true" id="idFactor-cm" value="#{driftCalcWorksheet1MBean.windCurrentSpeedForCalcDist}"/></td>
+                            <td><p:outputLabel  value="cm/s" /></td>
+                            <td><p:inputText disabled="true" id="idFactor-knot" value="#{driftCalcWorksheet1MBean.windCurrentSpeedForCalcDist_knot}"/></td>
+                            <td><p:outputLabel  value="knots" /></td>
+                            <td><p:outputLabel value="Distance" /></td>
+                            <td><p:inputText disabled="true" id="idFactor-dist" value="#{driftCalcWorksheet1MBean.windCurrentDistance}"/></td>
+                            <td><p:outputLabel value="nm" /></td>
+                        </tr>
+                    </table>
+
+                </p:panel>
+            </div>
+            <div class="ui-g-12">
+                <p:panel id="ws1-calculation" header="CALCULATION RESULT" styleClass="penelHeaderGreen ui-shadow-content" 
+                         collapsed="false"
+                         toggleable="true" toggleSpeed="500" closeSpeed="500">
+                    <table cellpadding="10">
+                        <tr>
+                            <td style="width: 150px"><p:outputLabel value="Divergence"  style="width: 150px" /></td>
+                            <td style="width: 150px"><p:inputText disabled="true" style="width: 150px" id="idDivergence-t"  value="#{driftCalcWorksheet1MBean.lwyDivergenceAngle}"/></td>
+                            <td style="width: 50px"><p:outputLabel value="T"  style="width: 50px" /></td>
+                            <td style="width: 150px"><p:inputText disabled="true" style="width: 150px" id="idDivergence-knot" value="#{driftCalcWorksheet1MBean.lwySpeed}"/></td>
+                            <td style="width: 100px"><p:outputLabel value="knots"  style="width: 100px" /></td>
+                            <td style="width: 150px"><p:outputLabel style="width: 150px" value="Left" /></td>
+                            <td style="width: 150px"><p:inputText disabled="true" style="width: 150px" id="idDivergence-Left" value="#{driftCalcWorksheet1MBean.lwyLeftAngle}"/></td>
+                            <td style="width: 50px"><p:outputLabel value="T"  style="width: 50px" /></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td style="width: 150px"><p:outputLabel value="Leeway Distance" style="width: 150px" /></td>
+                            <td style="width: 150px"><p:inputText disabled="true" style="width: 150px" id="idLeeway-nm" value="#{driftCalcWorksheet1MBean.lwyDistance}"/></td>
+                            <td style="width: 50px"><p:outputLabel value="nm"  style="width: 50px" /></td>
+                            <td></td>
+                            <td></td>
+                            <td style="width: 150px"><p:outputLabel style="width: 150px" value="Right" /></td>
+                            <td style="width: 150px"><p:inputText disabled="true" style="width: 150px" id="idLeeway-Right"  value="#{driftCalcWorksheet1MBean.lwyRightAngle}"/></td>
+                            <td style="width: 50px"><p:outputLabel value="T"  style="width: 50px" /></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td style="width: 150px"><p:outputLabel style="width: 150px" value="Left Distance" /></td>
+                            <td style="width: 150px"><p:inputText disabled="true" style="width: 150px" value="#{driftCalcWorksheet1MBean.driftLeftDistanceInNm}"/></td>
+                            <td style="width: 50px"><p:outputLabel value="nm" style="width: 50px" /></td>
+                            <td style="width: 150px"><p:outputLabel style="width: 150px" value="Left Right Distance" /></td>
+                            <td style="width: 150px"><p:inputText disabled="true" style="width: 150px" id="idLeftRight-nm" value="#{driftCalcWorksheet1MBean.driftLeftToRightDistance}"/></td>
+                            <td style="width: 50px"><p:outputLabel value="nm"  style="width: 50px" /></td>
+                            <td style="width: 150px"><p:outputLabel style="width: 150px" value="Distress Craft Error" /></td>
+                            <td style="width:50px">
+                                <p:selectOneMenu id="cboDCE" style="width:50px" disabled="false" value="#{driftCalcWorksheet1MBean.distressCraftError}">
+                                    <f:selectItem itemLabel="0.1" itemValue="0.1" />
+                                    <f:selectItem itemLabel="0.5" itemValue="0.5" />
+                                    <f:selectItem itemLabel="1.0" itemValue="1.0" />
+                                    <f:selectItem itemLabel="2.0" itemValue="2.0" />
+                                    <f:selectItem itemLabel="4.0" itemValue="4.0" />
+                                    <f:selectItem itemLabel="5.0" itemValue="5.0" />
+                                    <f:selectItem itemLabel="10.0" itemValue="10.0" />
+                                    <f:selectItem itemLabel="15.0" itemValue="15.0" />
+                                </p:selectOneMenu>
+                            </td>
+                            <td style="width: 150px"><p:outputLabel style="width: 150px" value="nm" /></td>
+                        </tr>
+                        <tr>
+                            <td style="width: 150px"><p:outputLabel style="width: 150px" value="Right Distance" /></td>
+                            <td style="width: 150px"><p:inputText style="width: 150px" id="idRight-nm" disabled="true" value="#{driftCalcWorksheet1MBean.driftRightDistanceInNm}"/></td>
+                            <td style="width: 50px"><p:outputLabel value="nm"  style="width: 50px" /></td>
+                            <td style="width: 150px"><p:outputLabel style="width: 150px" value="Drift Error (DE)" /></td>
+                            <td style="width: 150px"><p:inputText style="width: 150px" id="idDE-nm" disabled="true" value="#{driftCalcWorksheet1MBean.driftError}"/></td>
+                            <td style="width: 50px"><p:outputLabel value="nm"  style="width: 50px" /></td>
+                            <td style="width: 150px"><p:outputLabel style="width: 150px" value="Search Craft Error" /></td>
+                            <td style="width:50px"><p:selectOneMenu id="cboSCE" style="width:50px" disabled="false" value="#{driftCalcWorksheet1MBean.searchCraftError}">
+                                    <f:selectItem itemLabel="0.1" itemValue="0.1" />
+                                    <f:selectItem itemLabel="0.5" itemValue="0.5" />
+                                    <f:selectItem itemLabel="1.0" itemValue="1.0" />
+                                    <f:selectItem itemLabel="2.0" itemValue="2.0" />
+                                    <f:selectItem itemLabel="4.0" itemValue="4.0" />
+                                    <f:selectItem itemLabel="5.0" itemValue="5.0" />
+                                    <f:selectItem itemLabel="10.0" itemValue="10.0" />
+                                    <f:selectItem itemLabel="15.0" itemValue="15.0" />
+                                </p:selectOneMenu>
+                            </td>
+                            <td style="width: 50px"><p:outputLabel style="width: 50px" value="nm" /></td>
+                        </tr>
+                        <tr>
+                            <td style="width: 150px"><p:outputLabel style="width: 150px" value="Error" /></td>
+                            <td style="width: 150px"><p:inputNumber style="width: 150px" id="error-nm" decimalPlaces="6" decimalSeparator="," thousandSeparator="." value="#{driftCalcWorksheet1MBean.driftErrorPctg}"/></td>
+                            <td style="width: 50px"><p:outputLabel value="%"  style="width: 50px" /></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td style="width: 150px"><p:outputLabel style="width: 150px" value="Total Probable Error" /></td>
+                            <td style="width: 150px"><p:inputText style="width: 150px" id="TPE-nm" disabled="true" value="#{driftCalcWorksheet1MBean.totalProbableError}"/></td>
+                            <td style="width: 50px"><p:outputLabel value="nm"  style="width: 50px" /></td>
+                        </tr>
+                        <tr>
+                            <td style="width: 150px"><p:outputLabel style="width: 150px" value="Search Radius" /></td>
+                            <td style="width: 150px"><p:inputText style="width: 150px" id="SearchRadius-nm" disabled="true" value="#{driftCalcWorksheet1MBean.searchRadius}"/></td>
+                            <td style="width: 50px"><p:outputLabel value="nm"  style="width: 50px" /></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td style="width: 150px"><p:outputLabel style="width: 150px" value="Search Area" /></td>
+                            <td style="width: 150px"><p:inputText style="width: 150px" id="SearchAfrea-nm" disabled="true" value="#{driftCalcWorksheet1MBean.searchArea}"/></td>
+                            <td style="width: 50px"><p:outputLabel value="nm2"  style="width: 50px" /></td>
+                        </tr>
+                    </table>
+                    <p:dataTable var="list" value="#{driftCalcWorksheet1MBean.listMonteCarlo}"
+                                 reflow="true"  paginator="true" paginatorPosition="bottom" 
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} 
+                                 {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 emptyMessage="Data tidak ditemukan" 
+                                 rows="10" rowsPerPageTemplate="5,10,15"
+                                 id="idDtMonteCarlo" tableStyle="table-layout:auto" 
+                                 style="font-size: smaller" rowIndexVar="index"
+                                 rendered="#{!incidentPlanningMBean.isDriftCalculation}">         
+                        <f:facet name="header">
+                            Simulasi Monte Carlo
+                        </f:facet>
+                        <p:column headerText="No" style="width: 20px">
+                            <p:outputLabel value="#{index + 1}"/>
+                        </p:column>
+                        <p:column headerText="Sea Tidal Current(T)"> 
+                            <p:outputLabel value="#{list.seaCurrentAngle}">
+                                <f:convertNumber maxFractionDigits="6" groupingUsed="false" />
+                            </p:outputLabel>
+                        </p:column>
+                        <p:column headerText="Sea Tidal Current(cm/s)"> 
+                            <h:outputText value="#{list.seaCurrentSpeed}" >
+                                <f:convertNumber maxFractionDigits="6" groupingUsed="false" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="Surface Wind(T)"> 
+                            <h:outputText value="#{list.surfaceWindAngle}" >
+                                <f:convertNumber maxFractionDigits="6" groupingUsed="false" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="Surface Wind(cm/s)"> 
+                            <h:outputText value="#{list.windCurrentSpeed}" >
+                                <f:convertNumber maxFractionDigits="6" groupingUsed="false" />
+                            </h:outputText>
+                        </p:column>
+
+                    </p:dataTable>
+
+                </p:panel>
+            </div>
+
+        </h:form>
+
+    </div>
+
+
+</ui:composition>

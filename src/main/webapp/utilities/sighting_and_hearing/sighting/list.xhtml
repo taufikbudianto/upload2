@@ -1,0 +1,215 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+    <ui:define name="title">Sighting and Hearing</ui:define>
+    <ui:define name="content">
+        <p:panel class="no-border no-padding ui-fluid card">
+            <p:importEnum type="prosia.basarnas.enumeration.Timezone" var="timezone" allSuffix="ALL_ENUM_VALUES" />                        
+            <p:importEnum type="prosia.basarnas.enumeration.IncidentType" var="type" allSuffix="ALL_ENUM_VALUES" />
+            <p:importEnum type="prosia.basarnas.enumeration.IncidentStatus" var="status" allSuffix="ALL_ENUM_VALUES" />                
+            <p:importEnum type="prosia.basarnas.enumeration.SightingStatus" var="sStatus" allSuffix="ALL_ENUM_VALUES" />
+            <p:importEnum type="prosia.basarnas.enumeration.ObjectType" var="oType" allSuffix="ALL_ENUM_VALUES" />
+            <h:outputScript library="js" name="javascript.js" />
+            <h:form id="sighting-content">
+                <p:panel id="list-sighting" header="Daftar Sighting and Hearing" styleClass="penelHeaderGreen ui-shadow-content"
+                         rendered="#{incidentSightingMBean.isShowDetail}">
+                    <p:panelGrid id="search" columns="5" layout="grid" 
+                                 styleClass="ui-panelgrid-blank form-group" 
+                                 columnClasses ="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-2,ui-grid-col-2"
+                                 style="margin-top: 20px;margin-bottom: 20px"
+                                 class="no-padding no-border">
+                        <p:selectOneMenu id="field" value="#{incidentSightingMBean.field}">
+                            <p:ajax event="change" update="search" listener="#{incidentSightingMBean.changeValueSearch}"/>
+                            <f:selectItem itemLabel="Tanggal Waktu SH" itemValue="objectDtg" />
+                            <f:selectItem itemLabel="Lokasi SH" itemValue="observerLocation" />
+                            <!--<f:selectItem itemLabel="Tipe Objek" itemValue="objectType" />-->
+                            <f:selectItem itemLabel="Deskripsi" itemValue="remarks" />
+                            <f:selectItem itemLabel="Status" itemValue="status" />                                
+                        </p:selectOneMenu>
+                        <p:inputText value="#{incidentSightingMBean.value}" rendered="#{incidentSightingMBean.valueInput == 1}"/>
+                        <p:selectOneMenu value="#{incidentSightingMBean.value}" rendered="#{incidentSightingMBean.valueInput == 2 and incidentSightingMBean.field == 'objectType'}">
+                            <f:selectItems value="#{oType.ALL_ENUM_VALUES}" var="o" itemValue="#{o.itemValue}" itemLabel="#{o.itemLabel}"/>
+                        </p:selectOneMenu>
+                        <p:selectOneMenu value="#{incidentSightingMBean.value}" rendered="#{incidentSightingMBean.valueInput == 2 and incidentSightingMBean.field == 'status'}">
+                            <f:selectItems value="#{sStatus.ALL_ENUM_VALUES}" var="s" itemValue="#{s.itemValue}" itemLabel="#{s.itemLabel}"/>
+                        </p:selectOneMenu>
+                        <p:calendar value="#{incidentSightingMBean.valueDate}" pattern="dd/MM/yyyy" showOn="button" readonlyInput="true" mask="true" navigator="true" rendered="#{incidentSightingMBean.valueInput == 3}"/>
+                        <p:commandButton id="sighting-btn" type="button" value="Cari" icon="ui-icon-search" onclick="PF('listWidget').getPaginator().setPage(0)">
+                            <p:ajax event="click" update=":sighting-content:list-sighting" process="@form"/>
+                        </p:commandButton>
+                        <p:button value="Reset" icon="ui-icon-replay"/>
+
+                        <p:commandButton value="Tambah Data Baru"  style="width: 105%"
+                                         icon="fa fa-plus-circle" class="green-btn" update="@form"
+                                         process="@form"
+                                         actionListener="#{incidentSightingMBean.showSightingDetail}"/>
+                    </p:panelGrid>
+                    <p:dataTable widgetVar="listWidget" var="sighting" value="#{incidentSightingMBean.DMSighting}"
+                                 reflow="true" rowKey="#{sighting.sightingId}" lazy="true" paginator="true"
+                                 paginatorPosition="bottom" rows="#{viewBean.rowsPageDefault}"
+                                 rowsPerPageTemplate="#{viewBean.rowsPerPageTemplate}"
+                                 emptyMessage="Data tidak ditemukan"
+                                 tableStyle="table-layout:auto"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink}
+                                 {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"                                     
+                                 rowIndexVar="index">
+                        <p:column headerText="No" style="text-align: center; width: 20px">
+                            <p:outputLabel value="#{index + 1}"/>
+                        </p:column>
+                        <p:column headerText="Tanggal Waktu SH" sortBy="#{sighting.objectDtg}"
+                                  style="text-align: center">
+                            <h:outputText value="#{incidentSightingMBean.dateTimeStringConvert(sighting.objectDtg)}" />
+                        </p:column>
+                        <p:column headerText="Lokasi SH" sortBy="#{sighting.observerLocation}"
+                                  style="text-align: center">
+                            <h:outputText value="#{sighting.observerLocation}" />
+                        </p:column>
+<!--                        <p:column headerText="Tipe Objek" sortBy="{sighting.objectType}"
+                                  style="text-align: center">
+                            <h:outputText value="{incidentSightingMBean.getObjectTypeString(sighting.objectType)}" />
+                        </p:column>-->
+                        <p:column headerText="Deskripsi" sortBy="#{sighting.remarks}" style="text-align: center">
+                            <h:outputText value="#{sighting.remarks}" />
+                        </p:column>
+<!--                        <p:column headerText="Latitude" sortBy="{sighting.objectLatitude}"
+                                  style="text-align: center">
+                            <h:outputText value="{incidentSightingMBean.latitudeObject.getConvertDdToDms(sighting.objectLatitude, true)}" />
+                        </p:column>
+                        <p:column headerText="Longitude" sortBy="{sighting.objectLongitude}"
+                                  style="text-align: center">
+                            <h:outputText value="{incidentSightingMBean.longitudeObject.getConvertDdToDms(sighting.objectLongitude, false)}" />
+                        </p:column>                            -->
+                        <p:column headerText="No. Insiden" sortBy="#{sighting.incident.incidentnumber}"
+                                  style="text-align: center">
+                            <h:outputText value="#{sighting.incident != null ? sighting.incident.incidentnumber : '-'}" />
+                        </p:column>
+                        <p:column headerText="Dicatat Oleh" sortBy="#{sighting.createdBy}"
+                                  style="text-align: center">
+                            <h:outputText value="#{sighting.createdBy}" />
+                        </p:column>
+                        <p:column headerText="TW Pencatatan" sortBy="#{sighting.dateCreated}"
+                                  style="text-align: center">
+                            <h:outputText value="#{incidentSightingMBean.dateTimeStringConvert(sighting.dateCreated)}" />
+                        </p:column>
+                        <p:column headerText="Status" sortBy="#{sighting.status}"
+                                  style="text-align: center">
+                            <h:outputText value="#{incidentSightingMBean.getStatusString(sighting.status)}" />
+                        </p:column>
+<!--                        <p:column headerText="Entry" sortBy="{sighting.iscrm}"
+                                  style="text-align: center">
+                            <h:outputText value="{incidentSightingMBean.getEntryTypeString(sighting.iscrm)}" />
+                        </p:column>-->
+                        <p:column headerText="Aksi" style="text-align: center; width: 150px">
+                            <p:commandButton id="tambahSdanH"
+                                             label="Tambah Insiden"
+                                             onclick="PF('tTipTambah').hide();"
+                                             icon="fa fa-plus-circle" 
+                                             class="green-btn"
+                                             rendered="#{sighting.incident == null}"
+                                             actionListener="#{incidentSightingMBean.addIncidentFromSighting}"
+                                             process="@form">
+                                <f:attribute name="objList" value="#{sighting}" />
+                                <p:confirm header="Konfirmasi" 
+                                           message="Membuat Insiden Baru Berdasarkan Sighting?" 
+                                           icon="ui-icon-alert"/>                                    
+                            </p:commandButton>
+                            <p:tooltip value="Tambah Insiden" for="tambahSdanH"
+                                       trackMouse="true" widgetVar="tTipTambah"/>
+                            <p:outputLabel value="   " rendered="#{sighting.incident == null}"/>
+                            <p:commandButton id="ubahSdanH"
+                                             label="Ubah"
+                                             onclick="PF('tTipUbah').hide();"
+                                             icon="fa fa-edit" 
+                                             class="blue-grey-btn" 
+                                             update="@form"
+                                             process="@form" actionListener="#{incidentSightingMBean.showSightingDetail}">
+                                <f:attribute name="objList" value="#{sighting}" />
+                            </p:commandButton>
+                            <p:tooltip value="Ubah" for="ubahSdanH"
+                                       trackMouse="true" widgetVar="tTipUbah"/>
+                            <p:outputLabel value="    "/>
+                            <p:commandButton label="Cetak" 
+                                             id="print" 
+                                             onclick="form.target='_blank'"
+                                             styleClass="ui-priority-primary"
+                                             class="blue-grey-btn" ajax="false" action="#{incidentSightingMBean.reportPrint}" icon="fa fa-print">
+                                <f:attribute name="obj" value="#{sighting.sightingId}" />
+                            </p:commandButton>
+                            <p:tooltip value="Cetak" for="print"
+                                       trackMouse="true" widgetVar="tTipCetak"/>
+                            <p:outputLabel value="    "/>
+                            <p:commandButton id="hapusSdanH"
+                                             label="Hapus"
+                                             onclick="PF('tTipHapus').hide();"
+                                             icon="fa fa-trash" 
+                                             class="red-btn">
+                                <f:attribute name="objList" value="#{sighting}" />
+                                <p:ajax listener="#{incidentSightingMBean.deleteSighting}" update="@form"/>
+                                <p:confirm header="Konfirmasi" message="Apakah anda yakin?" 
+                                           icon="ui-icon-alert"/>
+                            </p:commandButton>
+                            <p:tooltip value="Hapus" for="hapusSdanH"
+                                       trackMouse="true" widgetVar="tTipHapus"/>
+                        </p:column>
+                    </p:dataTable>                    
+                </p:panel>
+
+                <p:panel id="idSighting" header="#{incidentSightingMBean.headerDetail}" styleClass="penelHeaderGreen ui-shadow-content"
+                         rendered="#{!incidentSightingMBean.isShowDetail}">
+                    <ui:include src="sighting_detail.xhtml"/>
+                    <p:panel class="control-button no-border no-padding">
+                        <p:commandButton value="Simpan" icon="fa fa-save" class="green-btn" style="width: 130px">
+                            <p:confirm header="Tambah Sighting" message="Simpan data ini?" icon="ui-icon-alert"/>
+                            <p:ajax event="click" listener="#{incidentSightingMBean.addSighting}" 
+                                    update="@form,sighting-content" process="@form:sighting-detail"/>
+                        </p:commandButton>
+                        <p:spacer width="10"/>
+                        <p:commandButton type="button" value="Batal" icon="ui-icon-cancel" class="red-btn" style="width: 130px">
+                            <p:ajax event="click" update="@form" process="@this" listener="#{incidentSightingMBean.hideDetailSighting(false)}"/>
+                        </p:commandButton>
+                    </p:panel>
+                </p:panel>
+            </h:form>
+            
+<!--            <p:dialog widgetVar="detailSighting" width="50%" height="90%"
+                      appendTo="@(body)" closable="false"
+                      responsive="true" modal="true"
+                      maximizable="false" style="overflow-y: auto;max-height: 90%"
+                      resizable="false">
+                <h:form id="sighting-detail">                    
+                    <p:tabView class="card" prependId="false" activeIndex="{incidentSightingMBean.activeTabIndex}">
+                        <p:tab title="Info">
+                            <ui:include src="sighting-info.xhtml"/>
+                        </p:tab>
+                        <p:tab title="Status" disabled="{incidentSightingMBean.disableTab}">
+                            <ui:include src="sighting-status.xhtml"/>
+                        </p:tab>
+                    </p:tabView>
+                    <p:panelGrid columns="3" style="float: right;" class="no-border no-padding no-padding-table">
+                        <p:commandButton value="Simpan" icon="fa fa-save" class="green-btn" style="width: 130px">
+                            <p:confirm header="Tambah Sighting" message="Simpan data ini?" icon="ui-icon-alert"/>
+                            <p:ajax event="click" listener="{incidentSightingMBean.addSighting}" 
+                                    update="@form,:sighting-content" process="@form"/>
+                        </p:commandButton>
+                        <p:spacer width="10"/>
+                        <p:commandButton type="button" value="Batal" icon="ui-icon-cancel" class="red-btn" style="width: 130px">
+                            <p:ajax event="click" update="@form,:sighting-content" process="@this" listener="{incidentSightingMBean.hideDetailSighting(false)}"/>
+                        </p:commandButton>
+                    </p:panelGrid>
+                </h:form>
+            </p:dialog>-->
+            
+            <p:dialog widgetVar="pilihInsiden" width="50%" height="90%"
+                      appendTo="@(body)"
+                      responsive="true" modal="true"
+                      maximizable="true" style="overflow-y: auto;max-height: 90%"
+                      resizable="false">
+                <ui:include src="choose-incident.xhtml"/>
+            </p:dialog>
+        </p:panel>
+
+    </ui:define>
+</ui:composition>

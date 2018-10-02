@@ -1,0 +1,73 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="respotensi-sertifikasi-sar">
+
+        <p:dataTable id="data-profil" var="listTraining" value="#{potensiMBean.listPersonelTraining}" 
+                     reflow="true"  paginator="true" paginatorPosition="bottom" rows="5" selectionMode="single" selection="#{potensiMBean.personnelTraining}"
+                     rowKey="#{listTraining.personnelTrainingID}" 
+                     rowsPerPageTemplate="5" rowIndexVar="index">
+            <f:facet name="header">
+                Daftar Sertifikasi Personil
+            </f:facet>
+            <p:column headerText="No" style="width: 20px">
+                <p:outputLabel value="#{index + 1}"/>
+            </p:column>
+            <p:column headerText="Kualifikasi">
+                <p:outputLabel value="#{listTraining.skill.skillname}" />
+            </p:column>
+            <p:column headerText="No Sertifikasi">
+                <p:outputLabel value="#{listTraining.certificateNumber}" />
+            </p:column>
+            <p:column headerText="Lokasi">
+                <p:outputLabel value="#{listTraining.trainingLocation}" />
+            </p:column>
+            <p:column headerText="Tanggal">
+                <p:outputLabel value="#{listTraining.trainingDate}" />
+            </p:column>
+            <p:column headerText="Penyelengaraan">
+                <p:outputLabel value="#{listTraining.organizedBy}" />
+            </p:column>
+
+        </p:dataTable>
+
+        <p:fieldset id="Input-cert" legend="Input" 
+                    class="ui-g-5 fieldset-search">
+            <h:form id="form-input-cert">
+                <p:panelGrid columns="2" layout="grid" class="ui-g-12 no-border " 
+                             columnClasses="ui-grid-col-4 no-padding label,ui-grid-col-9 no-padding value" style="margin-left: 7px;">
+                    <p:outputLabel value="Nama Kualifikasi" />
+                    <p:selectOneMenu value="#{potensiMBean.personnelTraining.skill}" disabled="#{potensiMBean.potencyDisabled}" converter="objectListConverter"  >
+                        <f:selectItem itemLabel="--- PILIH ---" itemValue=""/>
+                        <f:selectItems value="#{potensiMBean.listSkill}" var="skill" itemLabel="#{skill.skillname}"
+                                       itemValue="#{skill}"/>
+                    </p:selectOneMenu>
+
+                    <p:outputLabel value="No Sertiikat" />
+                    <p:inputText  value="#{potensiMBean.personnelTraining.certificateNumber}" disabled="#{potensiMBean.potencyDisabled}"/>
+                    <p:outputLabel value="Lokasi" />
+                    <p:inputText value="#{potensiMBean.personnelTraining.trainingLocation}" disabled="#{potensiMBean.potencyDisabled}"/>
+                    <p:outputLabel value="Tanggal Training"/>
+                    <p:calendar value="#{potensiMBean.personnelTraining.trainingDate}"
+                                disabled="#{potensiMBean.potencyDisabled}" navigator="true" pattern="dd-mm-yyyy"
+                                />
+                    <p:outputLabel value="Penyelengaraan"/>
+                    <p:inputText value="#{potensiMBean.personnelTraining.organizedBy}" disabled="#{potensiMBean.potencyDisabled}"  />
+
+                    <p:panel class="no-border no-padding control-button" style="text-align: left">
+                        <p:commandButton value="Add" style="width:130px">
+                            <p:ajax event="click" listener="#{potensiMBean.personilTraining()}" 
+                                    process="@form" 
+                                    update="@form :respotensi-content:potensi-detail:potensi-tabs:profil-detail:profil-tabs:respotensi-sertifikasi-sar:data-profil , :respotensi-content:potensi-detail:potensi-tabs:profil-detail:profil-tabs:respotensi-sertifikasi-sar:Input-cert" />
+                        </p:commandButton> 
+
+                    </p:panel>
+                </p:panelGrid>
+            </h:form>
+        </p:fieldset>
+
+    </h:form>
+</ui:composition>

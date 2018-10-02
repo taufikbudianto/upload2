@@ -1,0 +1,112 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+    <ui:define name="title">Daftar Kualifikasi</ui:define>
+    <ui:define name="content">
+                <h:form id="kualifikasi-content">
+                    <p:panel id="list-kualifikasi" class="ui-fluid" header="Daftar Kualifikasi" styleClass="penelHeaderGreen ui-shadow-content">
+                        <p:panelGrid id="search" columns="5" layout="grid" 
+                                     styleClass="ui-panelgrid-blank form-group" 
+                                     columnClasses ="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-2,ui-grid-col-2"
+                                     style="margin-top: 20px;margin-bottom: 20px; width: 100%"
+                                     class="no-padding no-border">                            
+                            <p:selectOneMenu id="fieldkualifikasi" value="#{mstSkillMBean.field}">
+                                <p:ajax event="change" update="search" listener="#{mstSkillMBean.chengeToCombo()}"/>
+                                <f:selectItem itemLabel="Nama" itemValue="skillname" />
+                                <f:selectItem itemLabel="Kategori" itemValue="category" />
+                            </p:selectOneMenu>
+                            <p:inputText id="value" value="#{mstSkillMBean.value}" rendered="#{!mstSkillMBean.showCombo}"/>
+                            <p:selectOneMenu id="categoryskill" value="#{mstSkillMBean.value}" rendered="#{mstSkillMBean.showCombo}">
+                                <f:selectItem itemLabel="Kualifikasi Dasar" itemValue="0"/>
+                                <f:selectItem itemLabel="Kualifikasi Lanjutan" itemValue="1"/>
+                                <f:selectItem itemLabel="Kualifikasi Spesialis" itemValue="2"/>
+                                <f:selectItem itemLabel="Kualifikasi Manajerial" itemValue="3"/>
+                            </p:selectOneMenu>
+                            <p:commandButton id="search-btn" icon="ui-icon-search" type="button" onclick="PF('listWidget').getPaginator().setPage(0);" value="Cari">
+                                <p:ajax event="click" update=":kualifikasi-content:list-kualifikasi" process="@form"/>
+                            </p:commandButton>   
+                            <p:button value="Reset" icon="ui-icon-replay"/>
+                            <p:commandButton value="Tambah Data Baru" icon="fa fa-plus-circle" styleClass="green-btn">
+                                <p:ajax event="click" listener="#{mstSkillMBean.add}"/>
+                            </p:commandButton>                      
+                        </p:panelGrid>
+                        <p:dataTable id="kualifikasi_datatable" var="kualifikasi" value="#{mstSkillMBean.lazyDataModelJPA}" 
+                                     reflow="true" rowKey="#{kualifikasi.skillid}"
+                                     lazy="true" paginator="true" paginatorPosition="bottom" 
+                                     rows="10" rowsPerPageTemplate="5,10,15" widgetVar="listWidget" 
+                                     emptyMessage="Data tidak ditemukan" tableStyle="table-layout:fixed"
+                                     rowIndexVar="index" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                            <p:ajax event="page" listener="#{viewBean.onPageChange}"/>  
+                            <p:column headerText="No" style="width: 20px">
+                                <p:outputLabel value="#{index + 1}"/>
+                            </p:column>
+                            <p:column headerText="Nama" sortBy="#{kualifikasi.skillname}">
+                                <h:outputText value="#{kualifikasi.skillname}" />
+                            </p:column>
+                            <p:column headerText="Kategori" sortBy="#{kualifikasi.category}">
+                                <h:outputText value="#{kualifikasi.category eq '0'?'Kualifikasi Dasar':(kualifikasi.category eq '1'?'Kualifikasi Lanjutan' : 
+                                                       kualifikasi.category eq '2'?'Kualifikasi Spesialis' :  'Kualifikasi Manajerial')}" />
+                            </p:column>
+                            <p:column headerText="Aksi" style="width: 105px; text-align: center">                                
+                                <p:commandButton id="lihatKualifikasi"
+                                                 label="Lihat"
+                                                 onclick="PF('tTipLihat').hide();"
+                                                 icon="fa fa-search" 
+                                                 class="blue-grey-btn">
+                                    <p:ajax event="click" listener="#{mstSkillMBean.viewKualifikasi(kualifikasi.skillid, true)}" update=":form-kualifikasi" />
+                                </p:commandButton>
+                                <p:tooltip value="Lihat" for="lihatKualifikasi"
+                                           trackMouse="true" widgetVar="tTipLihat"/>
+                                <p:outputLabel value="     "/>
+                                <p:commandButton id="ubahKualifikasi"
+                                                 label="Ubah"
+                                                 onclick="PF('tTipUbah').hide();"
+                                                 icon="fa fa-edit" 
+                                                 class="blue-grey-btn">
+                                    <p:ajax event="click" listener="#{mstSkillMBean.viewKualifikasi(kualifikasi.skillid, false)}" update=":form-kualifikasi" />
+                                </p:commandButton>
+                                <p:tooltip value="Ubah" for="ubahKualifikasi"
+                                           trackMouse="true" widgetVar="tTipUbah"/>
+                                <p:outputLabel value="     "/>
+                                <p:commandButton id="hapusKualifikasi"
+                                                 label="Hapus"
+                                                 onclick="PF('tTipHapus').hide();"
+                                                 icon="fa fa-trash" 
+                                                 class="red-btn" 
+                                                 actionListener="#{mstSkillMBean.hapus(kualifikasi)}"
+                                                 update="kualifikasi-content:kualifikasi_datatable">
+                                    <p:confirm header="Konfirmasi" message="Apakah anda yakin ingin menghapus kualifikasi ini?" icon="ui-icon-alert"/>
+                                </p:commandButton>
+                                <p:tooltip value="Hapus" for="hapusKualifikasi"
+                                           trackMouse="true" widgetVar="tTipHapus"/>
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                </h:form>
+
+        <p:dialog id="idKualifikasi" widgetVar="widgetKualifikasi"
+                  header="Data "
+                  width="50%" height="50%"
+                  appendTo="@(body)"
+                  responsive="true" modal="true"
+                  maximizable="false"
+                  position="center" 
+                  resizable="false" closable="true">
+            <ui:include src="./kualifikasi.xhtml"/>
+        </p:dialog>
+
+        <p:dialog id="idKualifikasiInput" widgetVar="widgetKualifikasiInput"
+                  header="Data "
+                  width="50%" height="50%"
+                  appendTo="@(body)"
+                  responsive="true" modal="true"
+                  maximizable="false"
+                  position="center" 
+                  resizable="false" closable="true">
+            <ui:include src="./kualifikasiInput.xhtml"/>
+        </p:dialog>
+    </ui:define>
+</ui:composition>

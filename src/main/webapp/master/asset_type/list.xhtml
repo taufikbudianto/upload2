@@ -1,0 +1,109 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+    <ui:define name="title">Daftar Tipe Aset</ui:define>
+    <ui:define name="content">
+                <h:form id="assettype-content">
+                    <p:panel id="list-assettype" header="Daftar Tipe Aset" class="ui-fluid"
+                             styleClass="penelHeaderGreen ui-shadow-content" rendered="#{!mstAssetTypeMBean.isShowFormAssetType}">
+                        <p:panelGrid id="search" columns="5" layout="grid" 
+                                     styleClass="ui-panelgrid-blank form-group" 
+                                     columnClasses ="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-2,ui-grid-col-2"
+                                     style="margin-top: 20px;margin-bottom: 20px; width: 100%"
+                                     class="no-padding no-border">
+                            <p:selectOneMenu id="fieldassettype" value="#{mstAssetTypeMBean.field}">
+                                <p:ajax event="change" update="search" 
+                                        listener="#{mstAssetTypeMBean.chengeToCombo()}"/>
+                                <f:selectItem itemLabel="Nama" itemValue="assetname" />
+                                <f:selectItem itemLabel="Kategori" itemValue="issru" />
+                            </p:selectOneMenu>
+                            <p:inputText id="value" value="#{mstAssetTypeMBean.value}" 
+                                         rendered="#{!mstAssetTypeMBean.showCombo}"/>
+                            <p:selectOneMenu id="issruasset" value="#{mstAssetTypeMBean.value}" 
+                                             rendered="#{mstAssetTypeMBean.showCombo}">
+                                <f:selectItem itemLabel="Sarana" itemValue="0"/>
+                                <f:selectItem itemLabel="Prasarana" itemValue="1"/>
+                                <f:selectItem itemLabel="Peralatan" itemValue="2"/>
+                                <f:selectItem itemLabel="Kelengkapan" itemValue="3"/>
+                            </p:selectOneMenu>
+                            <p:commandButton id="search-btn" icon="ui-icon-search" 
+                                             type="button" onclick="PF('listWidget').getPaginator().setPage(0);" 
+                                             value="Cari">
+                                <p:ajax event="click" update=":assettype-content:list-assettype" process="@form"/>
+                            </p:commandButton>
+                            <p:button value="Reset" icon="ui-icon-replay"/>
+                            <p:commandButton value="Tambah Data Baru" icon="fa fa-plus-circle" styleClass="green-btn" 
+                                             update="@form" process="@this" actionListener="#{mstAssetTypeMBean.add}">
+                            </p:commandButton>
+                            
+                        </p:panelGrid>
+                        
+                        <p:dataTable id="asset_datatable" var="assettype" 
+                                     value="#{mstAssetTypeMBean.lazyDataModelJPA}" reflow="true" 
+                                     rowKey="#{assettype.assettypeid}" lazy="true" paginator="true" 
+                                     paginatorPosition="bottom" rows="10"
+                                     rowsPerPageTemplate="5,10,15" widgetVar="listWidget" 
+                                     emptyMessage="Data tidak ditemukan" 
+                                     tableStyle="table-layout:fixed" rowIndexVar="index" 
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                            <p:ajax event="page" listener="#{viewBean.onPageChange}"/> 
+                            <p:column headerText="No" style="width: 20px">
+                                <p:outputLabel value="#{index + 1}"/>
+                            </p:column>
+                            <p:column headerText="Nama" sortBy="#{assettype.assetname}">
+                                <h:outputText value="#{assettype.assetname}" />
+                            </p:column>
+                            <p:column headerText="Kategori" sortBy="#{assettype.issru}">
+                                <h:outputText value="#{assettype.issru eq '0'?'Sarana':(assettype.issru eq '1'?'Prasarana' : 
+                                                       (assettype.issru eq '2'?'Peralatan' : 'Kelengkapan'))}" />
+                            </p:column>
+                            <p:column headerText="Aksi" style="width: 105px; text-align: center">
+                                <p:commandButton id="lihatTipeAset"
+                                                 label="Lihat"
+                                                 onclick="PF('tTipLihat').hide();"
+                                                 icon="fa fa-search" 
+                                                 class="blue-grey-btn">
+                                    <p:ajax event="click" listener="#{mstAssetTypeMBean.viewAsset(assettype.assettypeid, true)}" 
+                                            update="@form" />
+                                </p:commandButton> 
+                                <p:tooltip value="Lihat" for="lihatTipeAset"
+                                           trackMouse="true" widgetVar="tTipLihat"/>
+                                <p:outputLabel value="    "/>
+                                <p:commandButton id="ubahTipeAset"
+                                                 label="Ubah"
+                                                 onclick="PF('tTipUbah').hide();"
+                                                 icon="fa fa-edit" 
+                                                 class="blue-grey-btn" 
+                                                 actionListener="#{mstAssetTypeMBean.viewAsset(assettype.assettypeid, false)}"
+                                                 update="@form" >
+                                </p:commandButton> 
+                                <p:tooltip value="Ubah" for="ubahTipeAset"
+                                           trackMouse="true" widgetVar="tTipUbah"/>
+                                <p:outputLabel value="    "/>
+                                <p:commandButton id="hapusTipeAset"
+                                                 label="Hapus"
+                                                 onclick="PF('tTipHapus').hide();"
+                                                 icon="fa fa-trash" 
+                                                 class="red-btn"
+                                                 actionListener="#{mstAssetTypeMBean.hapus(assettype)}"
+                                                 update=":assettype-content:asset_datatable">
+                                    <p:confirm header="Konfirmasi" 
+                                               message="Apakah anda yakin ingin menghapus tipe asset ini?" 
+                                               icon="ui-icon-alert"/>
+                                </p:commandButton>
+                                <p:tooltip value="Hapus" for="hapusTipeAset"
+                                           trackMouse="true" widgetVar="tTipHapus"/>
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+
+                    <p:panel id="FormAssetType" header="Daftar Tipe Aset" styleClass="penelHeaderGreen ui-shadow-content" 
+                             rendered="#{mstAssetTypeMBean.isShowFormAssetType}">
+                        <ui:include src="asset_type.xhtml" />
+                    </p:panel>
+                </h:form>
+    </ui:define>
+</ui:composition>

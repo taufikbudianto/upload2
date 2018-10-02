@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="NewSubLogIncident" pageWidth="612" pageHeight="1008" whenNoDataType="AllSectionsNoDetail" columnWidth="592" leftMargin="0" rightMargin="20" topMargin="0" bottomMargin="0" uuid="56d8c96a-055c-45ac-b5b0-d275bb415759">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="INCIDENTID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT TO_CHAR(TO_DATE(LOGDATE,'dd-mon-yy'), 'dd/mm/yyyy')LOGDATE,INCIDENTID,DATECREATED
+,min(dbms_lob.substr(REMARKS))REMARKS
+,COUNT(*) AS HARIKE
+FROM PRO_LOG
+WHERE INCIDENTID = $P{INCIDENTID} AND ISDELETED=0
+GROUP BY LOGDATE,INCIDENTID,DATECREATED]]>
+	</queryString>
+	<field name="LOGDATE" class="java.lang.String"/>
+	<field name="INCIDENTID" class="java.lang.String"/>
+	<field name="DATECREATED" class="java.sql.Timestamp"/>
+	<field name="REMARKS" class="java.lang.String"/>
+	<field name="HARIKE" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="69" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="8deb7454-e15c-4b27-8bb8-f6338c1a8280" positionType="Float" x="106" y="20" width="8" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement/>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="72e9f493-d5fd-4c2a-aa3a-95cdb47e4cb6" x="114" y="20" width="154" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$F{LOGDATE}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="da2de1f3-c127-4a13-a641-808ae9df80c9" positionType="Float" x="1" y="20" width="107" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none"/>
+				<text><![CDATA[Tanggal]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="f853bf54-5a15-41d5-9022-6b3e9b12073a" x="1" y="43" width="107" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$F{DATECREATED}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="d991eafa-4820-4043-bdde-190e2d15da65" positionType="Float" x="1" y="0" width="107" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA["Hari ke-" +$F{HARIKE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="f99e6340-829d-4332-8318-58b0cea9df2a" x="114" y="43" width="478" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$F{REMARKS}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

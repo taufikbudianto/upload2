@@ -1,0 +1,19 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <ui:include src="dialog/detailSru.xhtml"/>
+    <ui:include src="dialog/notifKirim.xhtml"/>
+    <p:tabView prependId="false" dynamic="true" cache="true">
+        <p:tab title="Udara">
+            <ui:include src="./tab_udara.xhtml"/>
+        </p:tab>
+        <p:tab title="Laut">
+            <ui:include src="./tab_laut.xhtml"/>
+        </p:tab>
+        <p:tab title="Darat">
+            <ui:include src="./tab_darat.xhtml"/>
+        </p:tab>
+    </p:tabView>
+</ui:composition>

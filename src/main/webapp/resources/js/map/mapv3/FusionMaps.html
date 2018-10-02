@@ -1,0 +1,408 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+        <title>Basarnas</title>
+
+        <script type="text/javascript" src="../../url_properties.js"></script>
+        <script type="text/javascript" src="../../properties.js"></script>
+        
+        <script type="text/javascript" >
+            
+			String.prototype.endsWith = function(suffix) {
+                return this.indexOf(suffix, this.length - suffix.length) !== -1;
+            };
+			
+            function toString(obj){
+                if(obj == null){
+                    return "null";
+                }else if(typeof obj == "undefined"){
+                    return "undefined"
+                }else if(obj instanceof Array){
+                    var r = "";
+                    if(obj.length == 0) return "null";
+                    for(i in obj){
+                        r += obj[i].toString() + ",";
+                    }
+                    r = r.substring(0, r.length-1);
+                    return r;
+                }else{
+                    return obj.toString(); 
+                }
+            }
+
+            var _mFusionMapServer = GEE_SERVER_URL_MAP_OFFLINE;
+            var GEE_SERVER_URL = GEE_SERVER_URL_MAP_OFFLINE;
+            var GEE_BASE_URL = GEE_BASE_URL_MAP_OFFLINE;
+            var GEE_STATIC_URL = GEE_BASE_URL_MAP_OFFLINE;
+			
+			function scriptLoaderLite(path)
+            {
+				   document.write('<script src="' + path +
+                    '" type="text/javascript"><\/script>');
+			}
+            function scriptLoader(path, func_callback){
+                /*
+                document.write('<script src="' + path +
+                    '" type="text/javascript"><\/script>');
+                 */
+				 
+                var script = document.createElement('script');
+                script.type = 'text/javascript';
+                script.src = path;
+                if(func_callback){
+                    script.onload = function(){
+                        func_callback();
+                    }
+                }
+                
+                document.body.appendChild(script);
+            }
+            
+            function loadMapScript(){
+
+               loadMapScriptDependencies();
+            }
+            
+            var G_SATELLITE_MAP = 0, G_HYBRID_MAP = 1, G_PHYSICAL_MAP = 2, G_SATELLITE_3D_MAP = 3, G_NORMAL_MAP = 4;
+            
+            function loadMapScriptDependencies(){
+                
+                //scriptLoader("arcgislink.js");
+                GLatLngBounds.prototype = new google.maps.LatLngBounds();
+				
+                GLatLng.prototype = new google.maps.LatLng();
+                
+                google.maps.Map.prototype.setMapType = function(a){
+                    if(a == G_SATELLITE_MAP){
+                        map.setMapTypeId(google.maps.MapTypeId.SATELLITE);
+                    }else if(a == G_HYBRID_MAP){
+                        map.setMapTypeId(google.maps.MapTypeId.HYBRID);
+                    }else if(a == G_PHYSICAL_MAP){
+                        map.setMapTypeId(google.maps.MapTypeId.TERRAIN);
+                    }else if(a == G_SATELLITE_3D_MAP){
+                        map.setMapTypeId(google.maps.MapTypeId.SATELLITE);
+                    }else if(a == G_NORMAL_MAP){
+                        map.setMapTypeId(google.maps.MapTypeId.ROADMAP);
+                    }
+                }
+                
+                google.maps.Map.prototype.addOverlay = function(a){
+                    a.setMap(map);
+                }
+                
+                google.maps.Map.prototype.removeOverlay = function(a){
+                    a.setMap(null);
+                }
+                
+                /*
+                 * mengembalikan nilai jarak dalam satuan KM
+                 */
+                google.maps.LatLng.prototype.distanceTo = function(a){ 
+                    var e = Math, ra = e.PI/180; 
+                    var b = this.lat() * ra, c = a.lat() * ra, d = b - c; 
+                    var g = this.lng() * ra - a.lng() * ra; 
+                    var f = 2 * e.asin(e.sqrt(e.pow(e.sin(d/2), 2) + e.cos(b) * e.cos 
+                    (c) * e.pow(e.sin(g/2), 2))); 
+                    return f * 6378.137; 
+                } 
+                
+                /*
+                 * mengembalikan nilai jarak dalam satuan Meter
+                 */
+                google.maps.LatLng.prototype.distanceFrom = function(a){ 
+                    var e = Math, ra = e.PI/180; 
+                    var b = this.lat() * ra, c = a.lat() * ra, d = b - c; 
+                    var g = this.lng() * ra - a.lng() * ra; 
+                    var f = 2 * e.asin(e.sqrt(e.pow(e.sin(d/2), 2) + e.cos(b) * e.cos 
+                    (c) * e.pow(e.sin(g/2), 2))); 
+                    return f * 6378137; 
+                }
+                
+                GLatLng.prototype = new google.maps.LatLng();
+            
+				google.maps.Marker.prototype.show = function(){
+                    this.setVisible(true);
+                }
+				
+                google.maps.Marker.prototype.hide = function(){
+                    this.setVisible(false);
+                }
+				
+                google.maps.Marker.prototype.setLatLng = function(a){
+                    this.setPosition(a);
+                }
+                google.maps.Marker.prototype.getLatLng = function(){
+                    return this.getPosition();
+                }
+                google.maps.Marker.prototype.setReserveIcon = function(a){
+                    this.reserveIcon_ = a;
+                }
+                google.maps.Marker.prototype.getReserveIcon = function(){
+                    return this.reserveIcon_;
+                }
+                
+                google.maps.Marker.prototype.enableBlink = function(){
+                    var me = this;
+                    setInterval(function() { 
+                        if (me.getVisible()) {
+                            me.setVisible(false);
+                        } else {
+                            me.setVisible(true);
+                        }
+                    }, 500);
+                }
+                
+                google.maps.Marker.prototype.openInfoWindowHtml = function(a){
+                    eBubble.openOnMarker(this, a);
+                } 
+				
+                /*
+                 * mengembalikan nilai jarak dari keseluruhan poliline dalam satuan Meter
+                 */
+                google.maps.Polyline.prototype.getLength = function(n){ 
+                    var a = this.getPath(n), len = a.getLength(), dist = 0; 
+                    for(var i=0; i<len-1; i++){ 
+                        dist += a.getAt(i).distanceTo(a.getAt(i+1)); 
+                    } 
+                    return dist * 1000; 
+                } 
+                google.maps.Polygon.prototype.getBounds = function(){ 
+                    var bounds = new google.maps.LatLngBounds();
+                    var i;
+                    var polygonCoords = this.getPath().getArray();
+                    for (i = 0; i < polygonCoords.length; i++) {
+                        bounds.extend(polygonCoords[i]);
+                    }
+                    return bounds;
+                } 
+                google.maps.Polyline.prototype.getBounds = function(){ 
+                    var bounds = new google.maps.LatLngBounds();
+                    var i;
+                    var polylineCoords = this.getPath().getArray();
+                    for (i = 0; i < polylineCoords.length; i++) {
+                        bounds.extend(polylineCoords[i]);
+                    }
+                    return bounds;
+                }
+                
+                scriptLoader("library/labelmarker/markerwithlabel.js", initializeMap);
+			 //scriptLoader(ESRI_SERVER_URL);
+            }
+        </script> 
+
+		<link href="../../MapStyleSheet.css" type="text/css" rel="stylesheet" media="screen"/>
+        <link href="../../CommonStyleSheet.css" type="text/css" rel="stylesheet" media="screen"/>
+		
+         <script type='text/javascript' src='http://client.earthserver.com/js/jquery.js'></script>
+        <script type='text/javascript' src='http://client.earthserver.com/maps/api/fusion_utils.js'></script>
+      <script type='text/javascript' src='http://client.earthserver.com/basemap-001/maps/mapfiles/310/params.js'></script>
+        <script type='text/javascript' src='http://client.earthserver.com/maps/api/bootstrap_loader.js'></script>
+        <script type='text/javascript' src='http://client.earthserver.com/maps/api/fusion_map_obj_v3.js'></script>
+        <script type='text/javascript' src='http://client.earthserver.com/basemap-001/query?request=Json&var=geeServerDefs'></script>
+        
+       
+        <script type="text/javascript" src="common/CommonUtil.js"></script>
+        <script type="text/javascript" src="service/Geocoding.js"></script>
+        <script type="text/javascript" src="layer/ESRILayer.js"></script>
+        <script type="text/javascript" src="concurrent/CreateConcurrent.js"></script>
+        <script type="text/javascript" src="concurrent/RemoveConcurrent.js"></script>
+        <script type="text/javascript" src="poly/SearchPattern.js"></script>
+        <script type="text/javascript" src="poly/DriftCalculation.js"></script>
+        <script type="text/javascript" src="poly/SectorPattern.js"></script>
+        <script type="text/javascript" src="poly/GSearchArea.js"></script>
+        <script type="text/javascript" src="poly/TSRPattern.js"></script>
+        <script type="text/javascript" src="poly/TSNPattern.js"></script>
+        <script type="text/javascript" src="poly/SquarePattern.js"></script>
+        <script type="text/javascript" src="poly/PararelPattern.js"></script>
+        <script type="text/javascript" src="poly/SearchArea.js"></script>
+        <script type="text/javascript" src="poly/FreeDefinePattern.js"></script>
+        <script type="text/javascript" src="poly/MeasurePolyline.js"></script>
+        <script type="text/javascript" src="poly/TaskSearchArea.js"></script>    
+        <script type="text/javascript" src="poly/TrapeziumSearchArea.js"></script>
+        <script type="text/javascript" src="poly/TrapeziumPararelPattern.js"></script>
+        <script type="text/javascript" src="poly/SubSearchAreaCollection.js"></script>        
+        <script type="text/javascript" src="library/markerclusterer/markerclusterer.js"></script>
+        <script type="text/javascript" src="library/ebubble.js"></script>
+        <script type="text/javascript" src="control/PositionBarControl.js"></script>
+        <script type="text/javascript" src="common/CommonMap.js"></script>
+        <script type="text/javascript" src="poly/MeasurePolyline.js"></script>
+        <script type="text/javascript" src="marker/GObject.js"></script>
+        <script type="text/javascript" src="marker/ClusterManager.js"></script>
+        <script type="text/javascript" src="marker/GAsset.js"></script>
+        <script type="text/javascript" src="marker/GBeaconComposite.js"></script>
+        <script type="text/javascript" src="marker/GBeaconElemental.js"></script>
+        <script type="text/javascript" src="marker/GIncident.js"></script>
+        <script type="text/javascript" src="marker/GPossar.js"></script>
+        <script type="text/javascript" src="marker/GKansar.js"></script>
+        <script type="text/javascript" src="marker/GPotency.js"></script>
+        <script type="text/javascript" src="marker/GSighting.js"></script>
+        <script type="text/javascript" src="marker/GIncidentAsset.js"></script>
+        <script type="text/javascript" src="marker/GPOB.js"></script>
+        <script type="text/javascript" src="marker/GLog.js"></script>
+        <script type="text/javascript" src="marker/GIncidentPotency.js"></script>
+        <script type="text/javascript" src="marker/Placemark.js"></script>
+        <script type="text/javascript" src="marker/GResult.js"></script>
+
+        <link rel="stylesheet" type="text/css" media="all" href="library/scrollpane/jScrollPane.css" />
+        <script type="text/javascript" src="../../CommonConstant.js"></script>
+        <script type="text/javascript" src="Map.js"></script>
+        <script type="text/javascript" src="../../jquery.js"></script>
+        <script type="text/javascript" src="../../JavaScriptExtended.js"></script>
+        <script type="text/javascript">
+            var IS_FINISH_LOADING = false;
+            //var map; //variable of map core Google Map
+            
+		scriptLoaderLite(GEE_SERVER_DEFS_URL + 'query?request=Json&var=geeServerDefs');
+			
+			/*
+            function GLatLng(lat, lng){
+                this.nb = lat;
+                this.ob = lng;
+            }
+            */
+			
+            function GLatLng(lat, lng){
+                google.maps.LatLng.call(this, lat, lng);
+            }
+            
+            function GLatLngBounds(sw, ne){
+                google.maps.LatLngBounds.call(this, sw, ne);
+            }
+            
+            scriptLoader(ESRI_SERVER_URL);
+            //scriptLoaderLite("library/labelmarker/markerwithlabel.js");
+            
+			/*
+            GMarker.prototype.visible = true;
+			
+            GMarker.prototype.setVisible = function(visibled){
+                if(visibled){
+                    this.show();
+                    this.visible = true;
+                }else{
+                    this.hide();
+                    this.visible = false;
+                }
+            }
+            */
+			
+			
+            function testJXBROWSER(){
+                return [
+                    new GLatLng(10, 1),
+                    new GLatLng(10, 2),
+                    new GLatLng(10, 3),
+                    new GLatLng(10, 4),
+                    new GLatLng(10, 5)
+                ];
+            }
+            
+            var measure_icon, free_define_pattern;
+            //var myLatlng = new google.maps.LatLng(-6.175,106.82722222222222);
+			
+            function initializeMap() {
+                
+                measure_icon = new google.maps.MarkerImage(
+                MEASURE_FIRST_POINT_MARKER,
+                null, /* size is determined at runtime */
+                null, /* origin is 0,0 */
+                null, /* anchor is bottom center of the scaled image */
+                new google.maps.Size(24, 24)
+            );
+                
+                free_define_pattern = new google.maps.MarkerImage(
+                FREE_DEFINE_PATTERN_ICON,
+                null, /* size is determined at runtime */
+                null, /* origin is 0,0 */
+                null, /* anchor is bottom center of the scaled image */
+                new google.maps.Size(24, 24)
+            );
+                
+                var startSA = new google.maps.LatLng(5.0, 106.0);
+                
+                var latlngsSA = [
+                    new google.maps.LatLng(5.0, 106.0),
+                    new google.maps.LatLng(5.0, 108.0),
+                    new google.maps.LatLng(3.0, 108.0),
+                    new google.maps.LatLng(3.0, 106.0),
+                ];
+                
+                
+                var geeMapOpts = {
+                    center: new google.maps.LatLng(-4.214943141390638, 123.046875),
+                    zoom: 4,
+                    scrollwheel : true,
+                    mapTypeControl : false,
+                    streetViewControl : false,
+                    keyboardShortcuts : false,
+                    disableDoubleClickZoom : true,
+                    scaleControl : true,
+                    scaleControlOptions : {
+                        position : google.maps.ControlPosition.TOP_RIGHT
+                    },
+                    zoomControl : true
+                };
+                map = new GFusionMap('map_canvas', geeServerDefs, geeMapOpts).map;
+				/*
+				var marker = new google.maps.Marker({
+				position: myLatlng,
+				map: map,
+				title: 'Hello World!'
+				});
+				*/
+                clusterMarker = new MarkerClusterer(map);
+				//console.log('clusterMarker :' + clusterMarker);
+                clusterManager = new ClusterManager();
+				//console.log('clusterManager :' + clusterManager);
+                eBubble = new EBubble();
+				//console.log('eBubble :' + eBubble);
+                //                SEARCH_PATTERN_TOOLTIP = new Tooltip("Search Pattern", 1, map);
+                google.maps.event.addListener(map, "click", mapClick);
+				
+                document.title = 'MAP_FINISH_LOAD';
+                //console.log('document.title :' + document.title);
+                IS_FINISH_LOADING = true;
+                // google.maps.ControlPosition.LEFT_BOTTOM undefined for google maps portable
+                new IconBasarnas(map, google.maps.ControlPosition.BOTTOM_LEFT);
+                new PositionBarControl(map);
+            }     
+            
+        </script>
+
+        <style type="text/css"> 
+            a:link { color: blue; } 
+            a:hover { color: red; }
+
+            div.small-box {
+                width:275px;
+                height:265px;
+                overflow:scroll;
+            }
+
+            a.close_bubble{
+                font-family: "Arial";
+                position:absolute;
+                top:50px;
+                right: 60px;
+                font-size:11px;
+                color:red;
+            }
+
+            a.close_bubble:visited{
+                font-family: "Arial";
+                color: red; 
+                font-size: 20px
+            }
+
+            a.close_bubble:hover{
+                font-family: "Arial";
+                color: blue;
+            }
+
+        </style>
+    </head>
+    <body onload="loadMapScript()">
+        <div id="map_canvas" style="height: 100%; width: 100%;"></div>
+    </body>
+</html>

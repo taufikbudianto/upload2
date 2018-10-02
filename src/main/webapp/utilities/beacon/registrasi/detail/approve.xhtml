@@ -1,0 +1,200 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:form id="form-approve">
+        <div class="ui-g ui-fluid">
+            <div class="ui-g-12 ui-lg-12 ">
+                <!--Left Side--> 
+                <p:panel class="card" header="Informasi Umum">
+                    <p:panelGrid styleClass="ui-panelgrid-blank form-group">
+                        <p:panelGrid columns="2" styleClass="ui-panelgrid-blank form-group">
+                            <p:outputLabel value="ID Beacon"/>
+                            <p:outputLabel value="#{registrasiBeaconMBean.airvessel.beaconId}"/>
+                            <p:outputLabel value="Pembuat"/>
+                            <p:outputLabel value="#{registrasiBeaconMBean.airvessel.manufacturer != null ? 
+                                                    registrasiBeaconMBean.airvessel.manufacturer.manufacturerName :
+                                                    registrasiBeaconMBean.airvessel.otherManufacturer}"/>
+                            <p:outputLabel value="Model"/>
+                            <p:outputLabel value="#{registrasiBeaconMBean.airvessel.beaconModel != null ? 
+                                                    registrasiBeaconMBean.airvessel.beaconModel.beaconModelName : 
+                                                    registrasiBeaconMBean.airvessel.otherBeaconModel}"/>
+                            <p:outputLabel value="Tgl. Kadaluarsa Baterai"/>
+                            <p:outputLabel value="#{registrasiBeaconMBean.dateStringConvert(registrasiBeaconMBean.airvessel.batteryExpDate)}"/>
+                        </p:panelGrid>
+                        <p:separator/>
+                        <p:panelGrid columns="2" styleClass="ui-panelgrid-blank form-group">
+                            <p:outputLabel value="Registrasi #{registrasiBeaconMBean.airvessel.beaconType}"/>
+                            <p:outputLabel value="#{registrasiBeaconMBean.getNameRegistrationType(registrasiBeaconMBean.airvessel.registrationType)}"/>
+                            <p:outputLabel value="ID Lama"/>
+                            <p:outputLabel value="#{registrasiBeaconMBean.airvessel.registrationType == 3 ? registrasiBeaconMBean.airvessel.oldBeaconId : '-'}"/>
+                        </p:panelGrid>
+                        <p:separator/>
+                        <p:panelGrid columns="2" styleClass="ui-panelgrid-blank form-group">
+                            <p:outputLabel value="Data Pemilik" style="font-weight: bold;"/>
+                            <p:outputLabel/>
+                            <p:panelGrid columns="2" styleClass="ui-panelgrid-blank form-group">
+                                <p:outputLabel value="Nama"/>
+                                <p:outputLabel value="#{registrasiBeaconMBean.airvessel.ownerName}"/>
+                                <p:outputLabel value="Telepon"/>
+                                <p:outputLabel value="#{registrasiBeaconMBean.airvessel.ownerPhone}"/>
+                                <p:outputLabel value="Alamat"/>
+                                <p:outputLabel value="#{registrasiBeaconMBean.airvessel.ownerAddress}"/>
+                            </p:panelGrid>
+                            <p:panelGrid columns="2" styleClass="ui-panelgrid-blank form-group">
+                                <p:outputLabel value="Email"/>
+                                <p:outputLabel value="#{registrasiBeaconMBean.airvessel.ownerEmail}"/>
+                                <p:outputLabel value="Fax"/>
+                                <p:outputLabel value="#{registrasiBeaconMBean.airvessel.ownerFax}"/>
+                            </p:panelGrid>
+                        </p:panelGrid>
+                        <p:separator/>
+                        <p:panelGrid columns="2" styleClass="ui-panelgrid-blank form-group" rendered="#{registrasiBeaconMBean.detailPlb}">
+                            <p:outputLabel value="Data Perusahaan" style="font-weight: bold;"/>
+                            <p:outputLabel/>
+                            <p:panelGrid columns="2" styleClass="ui-panelgrid-blank form-group">
+                                <p:outputLabel value="Nama"/>
+                                <p:outputLabel value="#{registrasiBeaconMBean.airvessel.ownerCompanyName}"/>
+                                <p:outputLabel value="Telepon"/>
+                                <p:outputLabel value="#{registrasiBeaconMBean.airvessel.ownerCompanyPhone}"/>
+                                <p:outputLabel value="Alamat"/>                            
+                                <p:outputLabel value="#{registrasiBeaconMBean.airvessel.ownerCompanyAddress}"/>
+                            </p:panelGrid>
+                            <p:panelGrid columns="2" styleClass="ui-panelgrid-blank form-group">
+                                <p:outputLabel value="Email"/>
+                                <p:outputLabel value="#{registrasiBeaconMBean.airvessel.ownerCompanyEmail}"/>
+                                <p:outputLabel value="Fax"/>
+                                <p:outputLabel value="#{registrasiBeaconMBean.airvessel.ownerCompanyFax}"/>
+                            </p:panelGrid>
+                            <p:outputLabel value="Data Penggunaan" style="font-weight: bold;"/>
+                            <p:outputLabel/>
+                            <p:panelGrid columns="2" styleClass="ui-panelgrid-blank form-group">
+                                <p:outputLabel value="Penggunaan"/>
+                                <p:outputLabel value="#{registrasiBeaconMBean.getStringA_Usage(registrasiBeaconMBean.airvessel.AUsage)}"/>
+                                <p:outputLabel value="Penggunaan Spesifik"/>
+                                <p:outputLabel value="#{registrasiBeaconMBean.getStringDetailUsage(registrasiBeaconMBean.airvessel.detailUsage)}"/>
+                            </p:panelGrid>
+                            <p:panelGrid columns="2" styleClass="ui-panelgrid-blank form-group">
+                                <p:outputLabel value="Tipe"/>
+                                <p:outputLabel value="#{registrasiBeaconMBean.getPlbType(registrasiBeaconMBean.airvessel.usageType)}"/>
+                                <p:outputLabel value="Data Tambahan"/>
+                                <p:outputLabel value="#{registrasiBeaconMBean.airvessel.additionalDetail}"/>
+                            </p:panelGrid>                        
+                        </p:panelGrid>
+                        <p:panelGrid columns="3" styleClass="ui-panelgrid-blank form-group" rendered="#{registrasiBeaconMBean.detailElt}">
+                            <p:outputLabel value="Data Pesawat" style="font-weight: bold;"/>
+                            <p:outputLabel/>
+                            <p:outputLabel/>
+                            <p:panelGrid columns="2" styleClass="ui-panelgrid-blank form-group">
+                                <p:outputLabel value="Registrasi Pesawat"/>
+                                <p:outputLabel value="#{registrasiBeaconMBean.airvessel.registrationNo}"/>
+                                <p:outputLabel value="Call Sign"/>
+                                <p:outputLabel value="#{registrasiBeaconMBean.airvessel.callSign}"/>
+                                <p:outputLabel value="Penggunaan"/>
+                                <p:outputLabel value="#{registrasiBeaconMBean.getStringA_Usage(registrasiBeaconMBean.airvessel.AUsage)}"/>
+                                <p:outputLabel value="Tipe"/>
+                                <p:outputLabel value="#{registrasiBeaconMBean.getStringUsageType(registrasiBeaconMBean.airvessel.usageType)}"/>
+                                <p:outputLabel value="Bandar Udara"/>
+                                <p:outputLabel value="#{registrasiBeaconMBean.airvessel.homebase}"/>
+                                <p:outputLabel value="Data Tambahan"/>
+                                <p:outputLabel value="#{registrasiBeaconMBean.airvessel.additionalUsage}"/>
+                            </p:panelGrid>                        
+                            <p:panelGrid columns="2" styleClass="ui-panelgrid-blank form-group">
+                                <p:outputLabel value="Pembuat"/>
+                                <p:outputLabel value="#{registrasiBeaconMBean.airvessel.madeIn}"/>
+                                <p:outputLabel value="Model"/>
+                                <p:outputLabel value="#{registrasiBeaconMBean.airvessel.model}"/>
+                                <p:outputLabel value="Kapasitas"/>
+                                <p:outputLabel value="#{registrasiBeaconMBean.airvessel.passenger != null ? 
+                                                        registrasiBeaconMBean.airvessel.passenger : ''}"/>
+                                <p:outputLabel value="Radio"/>
+                                <p:outputLabel value="#{registrasiBeaconMBean.airvessel.comequipment}"/>
+                            </p:panelGrid>                        
+                            <p:panelGrid columns="2" styleClass="ui-panelgrid-blank form-group">
+                                <p:outputLabel value="Warna"/>
+                                <p:outputLabel value="#{registrasiBeaconMBean.airvessel.color}"/>
+                            </p:panelGrid>                        
+                        </p:panelGrid>
+                        <p:panelGrid columns="3" styleClass="ui-panelgrid-blank form-group" rendered="#{registrasiBeaconMBean.detailEpirb}">
+                            <p:outputLabel value="Data Kapal" style="font-weight: bold;"/>
+                            <p:outputLabel/>
+                            <p:outputLabel/>
+                            <p:panelGrid columns="2" styleClass="ui-panelgrid-blank form-group">
+                                <p:outputLabel value="No Registrasi"/>
+                                <p:outputLabel value="#{registrasiBeaconMBean.airvessel.registrationNo}"/>
+                                <p:outputLabel value="Nama Kapal"/>
+                                <p:outputLabel value="#{registrasiBeaconMBean.airvessel.name}"/>
+                                <p:outputLabel value="Tipe Kapal"/>
+                                <p:outputLabel value="-"/>
+                                <p:outputLabel value="Sail"/>
+                                <p:outputLabel value="#{registrasiBeaconMBean.airvessel.sailType == 4 ? 
+                                                        registrasiBeaconMBean.airvessel.otherSailType : 
+                                                        registrasiBeaconMBean.getStringSailType(registrasiBeaconMBean.airvessel.sailType)}"/>
+                                <p:outputLabel value="Bermesin"/>
+                                <p:outputLabel value="#{registrasiBeaconMBean.airvessel.machineType == 6 ? 
+                                                        registrasiBeaconMBean.airvessel.otherMachineType : 
+                                                        registrasiBeaconMBean.getStringMachineType(registrasiBeaconMBean.airvessel.machineType)}"/>
+                                <p:outputLabel value="No. MMSI"/>
+                                <p:outputLabel value="#{registrasiBeaconMBean.airvessel.mmsi}"/>
+                                <p:outputLabel value="Data Tambahan"/>
+                                <p:outputLabel value="#{registrasiBeaconMBean.airvessel.additionalDetail}"/>
+                            </p:panelGrid>
+                            <p:panelGrid columns="2" styleClass="ui-panelgrid-blank form-group">
+                                <p:outputLabel value="Call Sign"/>
+                                <p:outputLabel value="#{registrasiBeaconMBean.airvessel.callSign}"/>
+                                <p:outputLabel value="Panjang"/>
+                                <p:outputLabel value="#{registrasiBeaconMBean.airvessel.alength}"/>
+                                <p:outputLabel value="Alat Komunikasi"/>
+                                <p:outputLabel value="#{registrasiBeaconMBean.airvessel.comequipment}"/>
+                                <p:outputLabel value="Telepon INMARSAT"/>
+                                <p:outputLabel value="#{registrasiBeaconMBean.airvessel.inmarsatVoice}"/>
+                                <p:outputLabel value="Telepon Lain"/>
+                                <p:outputLabel value="#{registrasiBeaconMBean.airvessel.otherTelpNo}"/>
+                                <p:outputLabel value="Pelabuhan"/>
+                                <p:outputLabel value="#{registrasiBeaconMBean.airvessel.homebase}"/>
+                            </p:panelGrid>
+                            <p:panelGrid columns="2" styleClass="ui-panelgrid-blank form-group">
+                                <p:outputLabel value="Warna"/>                            
+                                <p:outputLabel value="#{registrasiBeaconMBean.airvessel.color}"/>                            
+                                <p:outputLabel value="POB"/>
+                                <p:outputLabel value="#{registrasiBeaconMBean.airvessel.passenger != null ? 
+                                                        registrasiBeaconMBean.airvessel.passenger : ''}"/>
+                            </p:panelGrid>
+                        </p:panelGrid>
+                        <p:separator/>
+                        <p:panelGrid columns="2" styleClass="ui-panelgrid-blank form-group">
+                            <p:outputLabel value="Data Kontak Darurat" style="font-weight: bold;"/>
+                            <p:outputLabel/>
+                            <p:panelGrid columns="2" styleClass="ui-panelgrid-blank form-group">
+                                <p:outputLabel value="Nama Kontak Utama"/>
+                                <p:outputLabel value="#{registrasiBeaconMBean.airvessel.urgentContactName1}"/>
+                                <p:outputLabel value="Telepon Rumah"/>
+                                <p:outputLabel value="#{registrasiBeaconMBean.airvessel.urgentContactHomePhone1}"/>
+                                <p:outputLabel value="Telepon kantor"/>
+                                <p:outputLabel value="#{registrasiBeaconMBean.airvessel.urgentContactOfficePhone1}"/>
+                                <p:outputLabel value="Seluler"/>
+                                <p:outputLabel value="#{registrasiBeaconMBean.airvessel.urgentContactCellPhone1}"/>
+                            </p:panelGrid>
+                            <p:panelGrid columns="2" styleClass="ui-panelgrid-blank form-group">
+                                <p:outputLabel value="Nama Kontak Alternatif"/>
+                                <p:outputLabel value="#{registrasiBeaconMBean.airvessel.urgentContactName2}"/>
+                                <p:outputLabel value="Telepon Rumah"/>
+                                <p:outputLabel value="#{registrasiBeaconMBean.airvessel.urgentContactHomePhone2}"/>
+                                <p:outputLabel value="Telepon Kantor"/>
+                                <p:outputLabel value="#{registrasiBeaconMBean.airvessel.urgentContactOfficePhone2}"/>
+                                <p:outputLabel value="Seluler"/>
+                                <p:outputLabel value="#{registrasiBeaconMBean.airvessel.urgentContactCellPhone2}"/>
+                            </p:panelGrid>
+                        </p:panelGrid>
+<!--                        <p:panelGrid styleClass="ui-panelgrid-blank form-group" class="no-border no-padding" columns="1" style="margin: 0 auto;">
+                            <p:commandButton value="Approve" icon="ui-icon-check-circle" actionListener="{registrasiBeaconMBean.approved}" update="beacon-content" class="green-btn">
+                                <p:confirm header="Setujui Registrasi" message="Apakah anda yakin ?" icon="ui-icon-alert" />
+                            </p:commandButton>
+                        </p:panelGrid>-->
+                    </p:panelGrid>
+                </p:panel>
+            </div>
+        </div>
+    </h:form>
+</ui:composition>

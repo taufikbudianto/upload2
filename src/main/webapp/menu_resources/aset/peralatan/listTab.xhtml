@@ -1,0 +1,24 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">      
+    <h:form prependId="false">
+        <div class="ui-g ui-fluid">
+            <div class="ui-g-12 ui-lg-12 ">
+
+                <p:tabView class="card" id="tabView">
+                    <p:tab title="Profil">
+                      <ui:include src="./tabProfil.xhtml"/>
+                    </p:tab>
+                    <p:tab title="Unsur SAR">
+                      <ui:include src="./tabSAR.xhtml"/>
+                    </p:tab>
+                    <p:tab title="Contact">
+                      <ui:include src="./tabContact.xhtml"/>
+                    </p:tab>
+                </p:tabView>
+            </div>
+        </div>
+    </h:form>
+</ui:composition>

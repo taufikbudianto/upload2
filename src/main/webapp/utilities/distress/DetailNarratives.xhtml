@@ -1,0 +1,41 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <p:importEnum type="prosia.basarnas.enumeration.AssetKategori" var="categori" allSuffix="ALL_ENUM_VALUES" />
+    <p:importEnum type="prosia.basarnas.enumeration.AssetMatra" var="matra" allSuffix="ALL_ENUM_VALUES" />
+    <h:form id="form-detail-narratives">
+        <p:panel class="no-border no-padding ui-fluid card">
+            <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                <p:outputLabel value="Message Number" />
+                <p:panel style="border-style: none" >
+                    <p:inputText value="#{distressNarrativesMBean.narratives.msgNumber}" maxlength="3" 
+                                 disabled="true"/>
+                </p:panel>
+
+                <p:outputLabel value="Transmit DTG"/>
+                <p:panel style=" border-style: none" >
+                    <p:inputText value="#{distressNarrativesMBean.transmitDtgFormat(distressNarrativesMBean.narratives)}" style="width: 200px" maxlength="50"
+                                 disabled="true"/>
+                </p:panel>
+
+                <p:outputLabel value="Remarks" />
+                <p:panel style="border-style: none" >
+                    <p:inputTextarea value="#{distressNarrativesMBean.narratives.remarks}"  
+                                     disabled="true"/>
+                </p:panel>                          
+            </p:panelGrid>
+
+            <p:panel class="ui-fluid no-border no-padding" styleClass="ui-panelgrid-blank form-group">
+                <p:panelGrid columns="2" class="control-button" columnClasses="ui-g-9, ui-g-3">
+                    <p:spacer/>
+                    <p:commandButton icon="ui-icon-cancel" value="#{distressNarrativesMBean.showButton ? 'Batal' : 'Kembali'}" styleClass="red-btn" actionListener="#{mstEmployeeClassMBean.batal()}" immediate="true">
+                        <p:ajax event="click" update="@form" oncomplete="if(!args.validationFailed) PF('widgetDetailNarratives').hide()"/>
+                    </p:commandButton> 
+                </p:panelGrid>                    
+            </p:panel>
+        </p:panel>
+
+    </h:form>
+</ui:composition>

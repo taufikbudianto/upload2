@@ -1,0 +1,50 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <p:commandButton icon="ui-icon-autorenew" class="green-btn" disabled="#{resSaranaMBean.disabled}">
+        <p:ajax event="click" listener="#{coordinateMBean.nextCounterLong}" update="longitude" delay="500"/>
+    </p:commandButton>
+    <p:spacer width="10"/>
+    <p:panelGrid columns="12" rendered="#{coordinateMBean.counterLong == 1}" class="no-border no-padding no-padding-table">
+        <p:inputText style="width: 40px;" value="#{coordinateMBean.degreeLong}" onkeypress="return isNumber(event)" onkeyup="this.value = maxValue(this.value,180)" maxlength="3" disabled="#{resSaranaMBean.disabled}">
+            <p:ajax event="keyup" process="@this"/>            
+        </p:inputText>
+        <p:spacer width="5"/>
+        <p:outputLabel value="°"/>
+        <p:spacer width="5"/>
+        <p:inputText style="width: 40px;" value="#{coordinateMBean.minuteLong}" onkeypress="return isNumber(event)" onkeyup="this.value = maxValue(this.value,60)" maxlength="2" disabled="#{resSaranaMBean.disabled}">
+            <p:ajax event="keyup" process="@this"/>
+        </p:inputText>
+        <p:spacer width="5"/>
+        <p:outputLabel value="'"/>
+        <p:spacer width="5"/>
+        <p:inputText style="width: 40px;" value="#{coordinateMBean.secondLong}" onkeypress="return isNumber(event)" onkeyup="this.value = maxValue(this.value,60)" maxlength="2" disabled="#{resSaranaMBean.disabled}">
+            <p:ajax event="keyup" process="@this"/>        
+        </p:inputText>
+        <p:spacer width="5"/>
+        <p:outputLabel value="&quot;"/>
+        <p:spacer width="5"/>
+    </p:panelGrid>
+    <p:panelGrid columns="4" rendered="#{coordinateMBean.counterLong == 3}" class="no-border no-padding no-padding-table"> 
+        <p:inputText style="width: 30px;" value="#{coordinateMBean.hourLong}" onkeypress="return isNumber(event)" maxlength="3" disabled="#{resSaranaMBean.disabled}">
+            <p:ajax event="keyup" process="@this"/>            
+        </p:inputText>
+        <p:spacer width="10"/>
+        <p:inputText style="width: 120px;" value="#{coordinateMBean.decimalMinuteLong}" onkeypress="return isNumber(event)" maxlength="10" disabled="#{resSaranaMBean.disabled}">
+            <p:ajax event="keyup" process="@this"/>            
+        </p:inputText>
+        <p:spacer width="10"/>
+    </p:panelGrid>
+    <p:panelGrid columns="2" rendered="#{coordinateMBean.counterLong == 2}" class="no-border no-padding no-padding-table"> 
+        <p:inputText style="width: 160px;" value="#{coordinateMBean.decimalLong}" onkeypress="return isNumber(event)" maxlength="10" disabled="#{resSaranaMBean.disabled}">
+            <p:ajax event="keyup" process="@this"/>            
+        </p:inputText>
+        <p:spacer width="10"/>
+    </p:panelGrid>
+    <p:selectOneMenu value="#{coordinateMBean.bujur}" disabled="#{resSaranaMBean.disabled}">
+        <p:ajax event="itemSelect" process="@this"/>
+        <f:selectItem itemLabel="BT" itemValue="BT" />
+        <f:selectItem itemLabel="BB" itemValue="BB" />
+    </p:selectOneMenu>
+</ui:composition>

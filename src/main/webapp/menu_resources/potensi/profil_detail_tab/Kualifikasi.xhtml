@@ -1,0 +1,41 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="respotensi-kualifikasi-sar">
+
+        <p:panel class="no-border no-padding control-button" style="text-align: right;">
+            <p:commandButton value="Tambah" styleClass="green-btn" onclick="PF('dlgKualifikasi').show()" />
+            <p:commandButton value="Hapus" styleClass="red-btn" />
+        </p:panel>
+
+        <p:dataTable id="data-kontak" var="list" value="#{potensiMBean.listResAsset}" 
+                     selectionMode="single" rowKey="#{list.assetid}">
+            <f:facet name="header">
+                Daftar Kualifikasi
+            </f:facet>
+
+            <p:column headerText="Nama">
+
+            </p:column>
+
+            <p:column headerText="Kategori">
+
+            </p:column>
+
+        </p:dataTable>
+    </h:form>
+
+    <p:dialog id="personil-potensi-kualifikasi" widgetVar="dlgKualifikasi"
+              header="Pencarian Kualifikasi"
+              width="70%" height="30%"
+              appendTo="@(body)"
+              responsive="true" modal="true"
+              maximizable="true" 
+              resizable="false">
+        <ui:include src="./pencarian/pencarian_kualifikasi.xhtml"/>
+    </p:dialog>
+
+</ui:composition>

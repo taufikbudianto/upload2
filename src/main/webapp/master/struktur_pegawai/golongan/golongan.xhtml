@@ -1,0 +1,43 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="form-golongan">
+        <p:panel class="ui-fluid no-border no-padding">
+            <p:messages closable="true"/>
+            <p:panelGrid columns="2" columnClasses="ui-grid-col-3,ui-grid-col-9" 
+                         layout="grid" styleClass="ui-panelgrid-blank form-group">
+                <p:outputLabel value="Golongan" styleClass="asterix"/>
+                <p:panel style="border-style: none" >
+                    <p:inputText value="#{mstEmployeeClassMBean.employeeClass.employmentclasscode}" maxlength="5" required="true" requiredMessage="Golongan harus diisi" disabled="#{mstEmployeeClassMBean.disabled}"/>
+                </p:panel>
+
+                <p:outputLabel value="Pangkat" styleClass="asterix"/>
+                <p:panel style="border-style: none" >
+                    <p:inputText value="#{mstEmployeeClassMBean.employeeClass.employmentclassname}" maxlength="50" required="true" requiredMessage="Pangkat harus diisi" disabled="#{mstEmployeeClassMBean.disabled}"/>
+                </p:panel>
+
+            </p:panelGrid>
+
+            <p:panel class="control-button no-border no-padding" >
+                <p:commandButton value="Simpan" icon="fa fa-save" styleClass="green-btn" 
+                                 actionListener="#{mstEmployeeClassMBean.simpan()}" 
+                                 update=":golongan-content:golongan_datatable @form" 
+                                 process=":golongan-content:golongan_datatable @form" style="width:130px" 
+                                 rendered="#{mstEmployeeClassMBean.showButton}">
+                    <p:confirm header="Konfirmasi" message="Apakah anda yakin ingin menyimpan golongan ini?" 
+                               icon="ui-icon-alert" />
+                </p:commandButton>
+                <p:commandButton value="#{mstEmployeeClassMBean.showButton ? 'Batal' : 'Kembali'}" 
+                                 icon="ui-icon-cancel" styleClass="red-btn" style="width:130px" 
+                                 actionListener="#{mstEmployeeClassMBean.batal()}" immediate="true">
+                    <p:ajax event="click" update="@form" 
+                            oncomplete="if(!args.validationFailed) PF('widgetGolongan').hide()"/>
+                </p:commandButton>
+            </p:panel>
+        </p:panel>
+
+    </h:form>
+</ui:composition>

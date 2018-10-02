@@ -1,0 +1,17 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <p:tabView prependId="false" dynamic="true" cache="true">
+        <p:tab title="Biaya Bahan Bakar">
+            <ui:include src="./budget/tab_bbm.xhtml"/>
+        </p:tab>
+        <p:tab title="Biaya Lain-Lain">
+            <ui:include src="./budget/tab_lain.xhtml"/>
+        </p:tab>
+        <p:tab title="Biaya Personil">
+            <ui:include src="./budget/tab_personil.xhtml"/>
+        </p:tab>
+    </p:tabView>
+</ui:composition>

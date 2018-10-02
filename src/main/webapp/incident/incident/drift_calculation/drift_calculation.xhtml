@@ -1,0 +1,46 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <!--<h:form prependId="false" id="form-drift">-->
+    <p:panelGrid columns="5" layout="grid" styleClass="ui-panelgrid-blank grid-pad" >
+        <p:commandButton style="width: 150px" value="BMKG" onclick="PF('widgetOpenBMKG').show()" 
+                         styleClass="purple-btn" rendered="#{incidentPlanningMBean.isDriftCalculation}"/>
+        <p:button style="width: 150px" value="APPENDIX I" target="_blank" 
+                  href="/pdf/Appendix_I_al1.pdf" styleClass="purple-btn" 
+                  rendered="#{incidentPlanningMBean.isDriftCalculation}"/>
+        <p:button style="width: 150px" value="APPENDIX J" target="_blank" 
+                  href="/pdf/Appendix_J.pdf" styleClass="purple-btn"
+                  rendered="#{incidentPlanningMBean.isDriftCalculation}"/>
+        <p:button style="width: 150px" value="APPENDIX K" target="_blank" 
+                  href="/pdf/Appendix_K_al2.pdf" styleClass="purple-btn"
+                  rendered="#{incidentPlanningMBean.isDriftCalculation}"/>
+        <p:commandButton style="width: 150px" value="CLOSE" styleClass="purple-btn">
+            <p:ajax event="click"  listener="#{incidentDriftCalculation.btnClose()}" 
+                    update="@form" process="@this"/>
+        </p:commandButton>
+        <!--
+        <p:button style="width: 150px" value="CLOSE" styleClass="purple-btn" onclick="{incidentDriftCalculation.btnClose()}"/>
+        
+        -->
+    </p:panelGrid>
+    <p:tabView class="card" prependId="false">
+        <p:tab title="#{incidentPlanningMBean.isDriftCalculation ? 'Worksheet 1' : 'Monte Carlo'}">
+            <ui:include src="./worksheet1.xhtml"/>
+        </p:tab>
+        <p:tab title="Worksheet 2" rendered="#{incidentPlanningMBean.isDriftCalculation}">
+            <ui:include src="./worksheet2.xhtml"/>
+        </p:tab>
+        <p:tab title="Worksheet 3" rendered="#{incidentPlanningMBean.isDriftCalculation}">
+            <ui:include src="./worksheet3.xhtml"/>
+        </p:tab>
+        <p:tab title="Worksheet 8" rendered="#{incidentPlanningMBean.isDriftCalculation}">
+            <ui:include src="./worksheet4.xhtml"/>
+        </p:tab>
+
+    </p:tabView>
+
+    <!--</h:form>-->
+
+</ui:composition>

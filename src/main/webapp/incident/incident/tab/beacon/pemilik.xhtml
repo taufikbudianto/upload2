@@ -1,0 +1,93 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <p:panelGrid columns="2" style="ui-panelgrid-blank">
+        <p:panel header="Pemilik">
+            <p:panelGrid columns="2">
+                <p:outputLabel value="Nama"/>
+                <h:panelGroup>
+                    <p:inputText id="nama" value="#{beaconCompositeMBean.airvessel.ownerName}" style="width: 300px;" 
+                                 styleClass="capitalized" maxlength="50" disabled="true">
+                    </p:inputText>
+                    <p:message for="nama" style="float: none; display: block;"/>
+                </h:panelGroup>
+                <p:outputLabel value="Alamat"/>
+                <h:panelGroup>
+                    <p:inputTextarea id="alamat" value="#{beaconCompositeMBean.airvessel.ownerAddress}" rows="3" style="width: 300px; resize: none;" 
+                                     disabled="true" autoResize="false" maxlength="100">
+                    </p:inputTextarea>
+                    <p:message for="alamat" style="float: none; display: block;"/>
+                </h:panelGroup>
+                <p:outputLabel value="Email"/>
+                <h:panelGroup>
+                    <p:inputText id="email" value="#{beaconCompositeMBean.airvessel.ownerEmail}" style="width: 300px;" 
+                                 disabled="true" maxlength="50">
+                    </p:inputText>
+                    <p:message for="email" style="float: none; display: block;"/>
+                </h:panelGroup>
+                <p:outputLabel value="No. Telepon"/>
+                <h:panelGroup>
+                    <p:inputText id="telepon" value="#{beaconCompositeMBean.airvessel.ownerPhone}" style="width: 300px;" disabled="true" maxlength="50">
+                    </p:inputText>
+                    <p:message for="telepon" style="float: none; display: block;"/>
+                </h:panelGroup>
+                <p:outputLabel value="No. Handphone"/>
+                <h:panelGroup>
+                    <p:inputText id="seluler" value="#{beaconCompositeMBean.airvessel.ownerCellPhone}" style="width: 300px;" 
+                                 disabled="true" maxlength="50">
+                    </p:inputText>
+                    <p:message for="seluler" style="float: none; display: block;"/>
+                </h:panelGroup>
+                <p:outputLabel value="No. Fax"/>
+                <h:panelGroup>
+                    <p:inputText id="fax" value="#{beaconCompositeMBean.airvessel.ownerFax}" style="width: 300px;" 
+                                 disabled="true" maxlength="50">
+                    </p:inputText>
+                    <p:message for="fax" style="float: none; display: block;"/>
+                </h:panelGroup>               
+            </p:panelGrid>
+        </p:panel>
+        <p:panel header="Perusahaan">
+            <p:panelGrid columns="2">
+                <p:outputLabel value="Nama"/>
+                <h:panelGroup>
+                    <p:inputText id="namaPerusahaan" value="#{beaconCompositeMBean.airvessel.ownerCompanyName}" style="width: 300px;" 
+                                 disabled="true" maxlength="50">
+                    </p:inputText>
+                    <p:message for="namaPerusahaan" style="float: none; display: block;"/>
+                </h:panelGroup>
+                <p:outputLabel value="Alamat"/>
+                <h:panelGroup>
+                    <p:inputTextarea id="alamatPerusahaan" value="#{beaconCompositeMBean.airvessel.ownerCompanyAddress}" rows="3" style="width: 300px; resize: none;" 
+                                     disabled="true" autoResize="false" maxlength="100">
+                    </p:inputTextarea>
+                    <p:message for="alamatPerusahaan" style="float: none; display: block;"/>
+                </h:panelGroup>                
+                <p:outputLabel value="Email"/>
+                <h:panelGroup>
+                    <p:inputText id="emailPerusahaan" value="#{beaconCompositeMBean.airvessel.ownerCompanyEmail}" style="width: 300px;"
+                                 disabled="true" maxlength="50">
+                    </p:inputText>
+                    <p:message for="emailPerusahaan" style="float: none; display: block;"/>
+                </h:panelGroup>                
+                <p:outputLabel value="No. Fax"/>
+                <h:panelGroup>
+                    <p:inputText id="faxPerusahaan" value="#{beaconCompositeMBean.airvessel.ownerCompanyFax}" style="width: 300px;" 
+                                 disabled="true" maxlength="50">
+                    </p:inputText>
+                    <p:message for="faxPerusahaan" style="float: none; display: block;"/>
+                </h:panelGroup>                
+                <p:outputLabel value="No. Telepon"/>
+                <h:panelGroup>
+                    <p:inputText id="teleponPerusahaan" value="#{beaconCompositeMBean.airvessel.ownerCompanyPhone}" style="width: 300px;" 
+                                 disabled="true" maxlength="50">
+                    </p:inputText>
+                    <p:message for="teleponPerusahaan" style="float: none; display: block;"/>
+                </h:panelGroup>                
+                <p:outputLabel />
+                <p:outputLabel />
+            </p:panelGrid>
+        </p:panel>
+    </p:panelGrid>
+</ui:composition>

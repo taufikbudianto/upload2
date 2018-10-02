@@ -1,0 +1,169 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <h:form id="form-detail-composite">
+        <p:panel class="card ui-fluid no-border no-padding" header="Detail Composites">
+            <p:messages/>
+            <p:panelGrid columns="2" columnClasses="ui-g-6, ui-g-6" layout="grid" class="no-border no-padding">
+                <p:panel>
+                    <!--Left Side--> 
+                    <p:panelGrid columns="3" layout="grid" styleClass="ui-panelgrid-blank form-group"  columnClasses="ui-grid-col-6,ui-grid-col-9" class="no-border no-padding no-padding-table">
+                        <p:outputLabel value="Beacon ID" styleClass="asterix"/>
+                        <p:inputText value="#{distressCompositeMBean.composite.beaconid}" 
+                                     disabled="#{distressCompositeMBean.disabled}"
+                                     required="true" requiredMessage="Beacon ID Harus diisi!"                                     
+                                     />
+                    </p:panelGrid>                     
+                    <p:panelGrid columns="3" layout="grid" styleClass="ui-panelgrid-blank form-group"  columnClasses="ui-grid-col-6,ui-grid-col-9" class="no-border no-padding no-padding-table">
+                        <p:outputLabel value="Message Number" />
+                        <p:inputText value="#{distressCompositeMBean.composite.msgnumber}" 
+                                     disabled="#{distressCompositeMBean.disabled}"/>
+                    </p:panelGrid> 
+                    <p:panelGrid columns="3" layout="grid" styleClass="ui-panelgrid-blank form-group"  columnClasses="ui-grid-col-6,ui-grid-col-9" class="no-border no-padding no-padding-table">
+                        <p:outputLabel value="Transmit DTG" />
+                        <p:inputText value="#{distressCompositeMBean.transmitDtgFormat(distressCompositeMBean.composite)}" disabled="true"/>
+                    </p:panelGrid>
+                     <p:panelGrid columns="3" layout="grid" styleClass="ui-panelgrid-blank form-group"  columnClasses="ui-grid-col-6,ui-grid-col-9" class="no-border no-padding no-padding-table">
+                         <p:outputLabel value="Nama KanSAR" styleClass="asterix"/>
+                        <p:selectOneMenu id="idKansar" style="margin-bottom:10px;" value="#{distressCompositeMBean.kantorsarname}"
+                                         required="true" disabled="#{distressCompositeMBean.disabled}" requiredMessage="Kansar harus dipilih">
+                            <f:selectItem itemLabel="--- Pilih ---" itemValue="" />
+                            <f:selectItems value="#{distressCompositeMBean.listKantorSar}"/>
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    
+<!--                    <p:panelGrid columns="3" layout="grid" styleClass="ui-panelgrid-blank form-group" class="no-border no-padding no-padding-table">
+
+                        <p:commandButton value="Assign" disabled="{distressCompositeMBean.disabled}" styleClass="green-btn" actionListener="{distressCompositeMBean.assign()}" update="beacon-content-composites:composite_datatable @form"  
+                                         process="beacon-content-composites:composite_datatable @form" rendered="{!distressCompositeMBean.showButtonAssign}" style="font-size:x-small;width:80px">
+                        </p:commandButton>
+                    </p:panelGrid>    -->
+                    
+                    <p:panelGrid columns="3" layout="grid" styleClass="ui-panelgrid-blank form-group"  columnClasses="ui-grid-col-6,ui-grid-col-9" class="no-border no-padding no-padding-table">
+                        <p:outputLabel value="Reporting MCC" />
+                        <p:inputText value="#{distressCompositeMBean.composite.reportmcc}" disabled="#{distressCompositeMBean.disabled}"/>
+                    </p:panelGrid>
+                    <p:panelGrid columns="3" layout="grid" styleClass="ui-panelgrid-blank form-group"  columnClasses="ui-grid-col-6,ui-grid-col-9" class="no-border no-padding no-padding-table">
+                        <p:outputLabel value="Destination MCC" />
+                        <p:inputText value="#{distressCompositeMBean.composite.destmcc}" disabled="#{distressCompositeMBean.disabled}"/>
+                    </p:panelGrid>
+                    <p:panelGrid columns="3" layout="grid" styleClass="ui-panelgrid-blank form-group"  columnClasses="ui-grid-col-6,ui-grid-col-9" class="no-border no-padding no-padding-table">
+                        <p:outputLabel value="Source ID" />
+                        <p:inputText value="#{distressCompositeMBean.composite.sourceid}" disabled="#{distressCompositeMBean.disabled}"/>
+                    </p:panelGrid>
+                    <p:panelGrid columns="3" layout="grid" styleClass="ui-panelgrid-blank form-group"  columnClasses="ui-grid-col-6,ui-grid-col-9" class="no-border no-padding no-padding-table">
+                        <p:outputLabel value="Second Source ID" />
+                        <p:inputText value="#{distressCompositeMBean.composite.secondarysourceid}"  disabled="#{distressCompositeMBean.disabled}"/>
+                    </p:panelGrid>
+                    <p:panelGrid columns="3" layout="grid" styleClass="ui-panelgrid-blank form-group"  columnClasses="ui-grid-col-6,ui-grid-col-9" class="no-border no-padding no-padding-table">
+                        <p:outputLabel value="Flag and Freq" />
+                        <p:inputText value="#{distressCompositeMBean.composite.flagfreq}"  disabled="#{distressCompositeMBean.disabled}"/>
+                    </p:panelGrid>
+                    <p:panelGrid columns="3" layout="grid" styleClass="ui-panelgrid-blank form-group"  columnClasses="ui-grid-col-6,ui-grid-col-9" class="no-border no-padding no-padding-table">
+                        <p:outputLabel value="Bias" />
+                        <p:inputText value="#{distressCompositeMBean.composite.bias}" disabled="#{distressCompositeMBean.disabled}"/>
+                    </p:panelGrid>
+                    <p:panelGrid columns="3" layout="grid" styleClass="ui-panelgrid-blank form-group"  columnClasses="ui-grid-col-6,ui-grid-col-9" class="no-border no-padding no-padding-table">
+                        <p:outputLabel value="Number of Points" />
+                        <p:inputText value="#{distressCompositeMBean.composite.numofpoint}" disabled="#{distressCompositeMBean.disabled}"/>
+                    </p:panelGrid>
+                                                                                           
+                    <p:panelGrid id="lat" columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group"  columnClasses="ui-grid-col-4,ui-grid-col-8" class="no-border no-padding no-padding-table">
+                        <p:outputLabel value="Latitude" />
+                        <p:panelGrid id="latitude" columns="3" style="width: 100%;"
+                                     columnClasses ="ui-grid-col-2,ui-grid-col-7,ui-grid-col-3"                                     
+                                     class="no-border no-padding-table ui-fluid">
+                            <ui:include src="coordinate/composites/latitude.xhtml"/>
+                        </p:panelGrid>
+                    </p:panelGrid>
+
+                    <p:panelGrid id="long" columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group"  columnClasses="ui-grid-col-4,ui-grid-col-8" class="no-border no-padding no-padding-table">
+                        <p:outputLabel value="Longitude" />
+                        <p:panelGrid id="longitude" columns="3" style="width: 100%;"
+                                     columnClasses ="ui-grid-col-2,ui-grid-col-7,ui-grid-col-3"                                    
+                                     class="no-border no-padding-table ui-fluid">
+                            <ui:include src="coordinate/composites/longitude.xhtml"/>
+                        </p:panelGrid>
+                    </p:panelGrid>                  
+                </p:panel>
+
+                <p:panel>
+                    <!--Right Side--> 
+                    <p:panelGrid columns="3" layout="grid" styleClass="ui-panelgrid-blank form-group"  columnClasses="ui-grid-col-6,ui-grid-col-9" class="no-border no-padding no-padding-table">
+                        <p:outputLabel value="Satellite ID" />
+                        <p:inputText maxlength="10" value="#{distressCompositeMBean.composite.spacecraftid}"  disabled="#{distressCompositeMBean.disabled}"/>
+                    </p:panelGrid>                                                            
+                    <p:panelGrid columns="3" layout="grid" styleClass="ui-panelgrid-blank form-group"  columnClasses="ui-grid-col-6,ui-grid-col-9" class="no-border no-padding no-padding-table">
+                        <p:outputLabel value="Num of Alert (Doppler)" />
+                        <p:inputText maxlength="10" value="#{distressCompositeMBean.composite.alertdoppler}"  disabled="#{distressCompositeMBean.disabled}"/>
+                    </p:panelGrid>
+
+                    <p:panelGrid columns="3" layout="grid" styleClass="ui-panelgrid-blank form-group"  columnClasses="ui-grid-col-6,ui-grid-col-9" class="no-border no-padding no-padding-table">
+                        <p:outputLabel value="TCA" />
+                        <p:inputText value="#{distressCompositeMBean.TCAFormat(distressCompositeMBean.composite)}"  disabled="true"/>
+                    </p:panelGrid>
+                    <p:panelGrid columns="3" layout="grid" styleClass="ui-panelgrid-blank form-group"  columnClasses="ui-grid-col-6,ui-grid-col-9" class="no-border no-padding no-padding-table">
+                        <p:outputLabel value="Window Factor" />
+                        <p:inputText value="#{distressCompositeMBean.composite.windowfactor}"  disabled="#{distressCompositeMBean.disabled}"/>
+                    </p:panelGrid>
+
+                    <p:panelGrid columns="3" layout="grid" styleClass="ui-panelgrid-blank form-group"  columnClasses="ui-grid-col-6,ui-grid-col-9" class="no-border no-padding no-padding-table">
+                        <p:outputLabel value="Iteration" />
+                        <p:inputText value="#{distressCompositeMBean.composite.iteration}" disabled="#{distressCompositeMBean.disabled}"/>
+                    </p:panelGrid>
+
+                    <p:panelGrid columns="3" layout="grid" styleClass="ui-panelgrid-blank form-group"  columnClasses="ui-grid-col-6,ui-grid-col-9" class="no-border no-padding no-padding-table">
+                        <p:outputLabel value="Cross Track Angle" />
+                        <p:inputText value="#{distressCompositeMBean.composite.ctangle}"  disabled="#{distressCompositeMBean.disabled}"/>
+                    </p:panelGrid>
+
+                    <p:panelGrid columns="3" layout="grid" styleClass="ui-panelgrid-blank form-group"  columnClasses="ui-grid-col-6,ui-grid-col-9" class="no-border no-padding no-padding-table">
+                        <p:outputLabel value="406 Message" />
+                        <p:inputText value="#{distressCompositeMBean.composite.longmsg}" disabled="#{distressCompositeMBean.disabled}"/>
+                    </p:panelGrid>
+
+                    <p:panelGrid columns="3" layout="grid" styleClass="ui-panelgrid-blank form-group"  columnClasses="ui-grid-col-6,ui-grid-col-9" class="no-border no-padding no-padding-table">
+                        <p:outputLabel value="Probability" />
+                        <p:inputText value="#{distressCompositeMBean.composite.probability}"  disabled="#{distressCompositeMBean.disabled}"/>
+                    </p:panelGrid>
+
+                    <p:panelGrid columns="3" layout="grid" styleClass="ui-panelgrid-blank form-group"  columnClasses="ui-grid-col-6,ui-grid-col-9" class="no-border no-padding no-padding-table">
+                        <p:outputLabel value="Confidance" />
+                        <p:inputText value="#{distressCompositeMBean.composite.confidence}" disabled="#{distressCompositeMBean.disabled}"/>
+                    </p:panelGrid>
+
+                    <p:panelGrid columns="3" layout="grid" styleClass="ui-panelgrid-blank form-group"  columnClasses="ui-grid-col-6,ui-grid-col-9" class="no-border no-padding no-padding-table">
+                        <p:outputLabel value="Error Ellipse" />
+                        <p:inputText value="#{distressCompositeMBean.composite.errorellipse}" disabled="#{distressCompositeMBean.disabled}"/>
+                    </p:panelGrid>
+
+                    <p:panelGrid columns="3" layout="grid" styleClass="ui-panelgrid-blank form-group"  columnClasses="ui-grid-col-6,ui-grid-col-9" class="no-border no-padding no-padding-table">
+                        <p:outputLabel value="Service Area" />
+                        <p:inputText maxlength="10" value="#{distressCompositeMBean.composite.servicearea}" disabled="#{distressCompositeMBean.disabled}"/>
+                    </p:panelGrid>
+
+
+
+                </p:panel>
+            </p:panelGrid>
+            
+            <p:panel class="control-button">
+                <p:commandButton id="save-btn" type="button"  value="Simpan" icon="fa fa-save" 
+                                 class="green-btn" style="margin-left: 10px;width: 100px" rendered="#{distressCompositeMBean.showButton}">
+                    <p:ajax event="click" process="@form" update="beacon-content-composites" listener="#{distressCompositeMBean.simpan()}"/>
+                </p:commandButton>
+                <p:commandButton value="#{distressCompositeMBean.showButton ? 'Batal' : 'Kembali'}"  
+                                 style="margin-left: 10px;width: 100px;" class="red-btn" icon="ui-icon-cancel">
+                    <p:ajax event="click" update="beacon-content-composites" listener="#{distressCompositeMBean.hideForm}"/>
+                </p:commandButton>
+            </p:panel>
+                    
+            
+
+
+        </p:panel>
+    </h:form>
+
+</ui:composition>

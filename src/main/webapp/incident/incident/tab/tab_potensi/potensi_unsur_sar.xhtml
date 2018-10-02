@@ -1,0 +1,55 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:dataTable id="data-unsur" 
+                 rowKey="#{list.assetid}" 
+                 var="list" value="#{potensiMBean.listResAsset}" 
+                 reflow="true"  paginator="true" 
+                 paginatorPosition="bottom" rows="10"
+                 rowsPerPageTemplate="5">
+        <f:facet name="header">
+            List Unsur SAR
+        </f:facet>
+        <p:column headerText="Kode" sortBy="#{list.code}">
+            <h:outputText value="#{list.code}" />
+        </p:column>
+
+        <p:column headerText="Nama" sortBy="#{list.name}">
+            <h:outputText value="#{list.name}" />
+        </p:column>
+
+        <p:column headerText="Tipe" sortBy="#{list.assettypeid.assetname}">
+            <h:outputText value="#{list.assettypeid.assetname}" />
+        </p:column>
+
+        <p:column headerText="Kategori" sortBy="#{list.functional}">
+            <h:outputText value="#{list.functional}" />
+        </p:column>
+
+        <p:column headerText="Kuantitas" sortBy="#{list.servicedqty}">
+            <h:outputText value="#{list.servicedqty}" />
+        </p:column>
+
+        <p:column headerText="Kondisi" sortBy="#{list.assetcondition}">
+            <h:outputText value="#{list.assetcondition}" />
+        </p:column>
+
+        <p:column headerText="Kapasitas" sortBy="#{list.goodqty}">
+            <h:outputLabel value="#{list.goodqty}"/>
+        </p:column>
+
+        <p:column headerText="Fungsi" sortBy="#{list.functional}">
+            <h:outputLabel value="#{list.functional}"/>
+        </p:column>
+
+    </p:dataTable>
+    <p:panel class="ui-g-12 control-button no-border no-padding">
+        <p:commandButton  value="Kembali" styleClass="red-btn" icon="ui-icon-cancel" style="width:130px">
+            <p:ajax event="click" update="@form" oncomplete="if(!args.validationFailed) PF('widgetViewPotensi').hide()"/>
+        </p:commandButton>
+    </p:panel> 
+
+</ui:composition>

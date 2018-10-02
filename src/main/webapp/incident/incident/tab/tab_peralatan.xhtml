@@ -1,0 +1,171 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <p:panel class="no-border no-padding ui-fluid card card-w-title">
+        <h:form id="incident-peralatan">
+            <p:messages/>
+            <p:panelGrid columns="5" layout="grid" class="no-padding no-border ui-fluid" 
+                         columnClasses="ui-g-3, ui-g-3, ui-g-3, ui-g-3, ui-g-3">
+                <p:commandButton value="Check All"  process="incidentdetail:incident-peralatan:asset-type" 
+                                 actionListener="#{incidentPeralatanMBean.checkallpilih}"
+                                 update="incidentdetail:incident-peralatan:asset-type,incidentdetail:incident-peralatan:asset-name " 
+                                 styleClass="green-btn"
+                                 disabled="#{incidentPeralatanMBean.disabled}"/>
+                <p:commandButton value="Uncheck All" actionListener="#{incidentPeralatanMBean.uncheckallpilih}"
+                                 process="incidentdetail:incident-peralatan:asset-type"  
+                                 update="incidentdetail:incident-peralatan:asset-type,incidentdetail:incident-peralatan:asset-name " 
+                                 styleClass="red-btn"
+                                 disabled="#{incidentPeralatanMBean.disabled}"/>
+                <p:commandButton value="Kirim Notifikasi"
+                                 actionListener="#{incidentPeralatanMBean.showDialogNotif()}"
+                                 process="incidentdetail:incident-peralatan" 
+                                 update="incidentdetail:incident-peralatan" 
+                                 disabled="#{incidentPeralatanMBean.disabled}"/>                
+
+                <p:commandButton value="Check All" process="@form" styleClass="green-btn" 
+                                 update="incidentdetail:incident-peralatan:asset-type,incidentdetail:incident-peralatan:asset-name "
+                                 actionListener="#{incidentPeralatanMBean.checkallKirim()}"
+                                 disabled="#{incidentPeralatanMBean.disabled}"/>
+                <p:commandButton value="Uncheck All" actionListener="#{incidentPeralatanMBean.uncheckallkirim}" 
+                                 process="@form" styleClass="red-btn"
+                                 update="incidentdetail:incident-peralatan:asset-type,incidentdetail:incident-peralatan:asset-name " 
+                                 disabled="#{incidentPeralatanMBean.disabled}"/>
+
+            </p:panelGrid>
+            <p:panelGrid columns="2" class="no-border no-padding">
+                <p:panel class="no-border no-padding">
+                    <p:dataTable var="assetGroup" 
+                                 value="#{incidentPeralatanMBean.listTipeAset}" id="asset-type"
+                                 reflow="true"  
+                                 paginator="true" paginatorPosition="bottom" rows="#{viewBean.rowsPageDefault}"
+                                 rowsPerPageTemplate="#{viewBean.rowsPerPageTemplate}" 
+                                 first="#{viewBean.first}"
+                                 emptyMessage="#{msg.datatable_empty_message}" rowKey="#{assetGroup.assettypeid}"
+                                 tableStyle="table-layout:autod" sortBy="#{assetGroup.assetname}"
+                                 lazy="true" selection="#{incidentPeralatanMBean.mstTipeAsset}"
+                                 style="font-size: smaller" selectionMode="single"
+                                 rowIndexVar="index">
+
+                        <p:ajax event="rowSelect" listener="#{incidentPeralatanMBean.onRowSelect}" update="incidentdetail:incident-peralatan:asset-name"/>
+                        <p:column style="width: 20px; text-align: center;" id="checkKirim" headerText="Pilih">
+                            <p:selectBooleanCheckbox value="#{incidentPeralatanMBean.checkedPilihTipe[assetGroup]}"
+                                                     disabled="#{incidentPeralatanMBean.disabled}">
+                                <p:ajax update="incidentdetail:incident-peralatan:asset-name"/>
+                            </p:selectBooleanCheckbox>
+                        </p:column>
+                        <p:column style="width: 20px; text-align: center;" id="checkPilih" headerText="Kirim">
+                            <p:selectBooleanCheckbox value="#{incidentPeralatanMBean.checkedKirimTipe[assetGroup]}"
+                                                     disabled="#{incidentPeralatanMBean.disabled}">
+                                <p:ajax update="incidentdetail:incident-peralatan:asset-name"/>
+                            </p:selectBooleanCheckbox >
+                        </p:column>
+                        <p:column headerText="Tipe" sortBy="#{assetGroup.assetType.assetname}">
+                            <p:outputLabel value="#{assetGroup.assetname}"/>
+                        </p:column>
+                    </p:dataTable>
+
+
+                </p:panel>
+                <p:panel class="no-padding no-border">
+                    <p:dataTable id="asset-name" reflow="true" var="aset" value="#{incidentPeralatanMBean.listAsset}"
+                                 paginator="true" paginatorPosition="bottom" rows="#{viewBean.rowsPageDefault}"
+                                 rowsPerPageTemplate="#{viewBean.rowsPerPageTemplate}" 
+                                 first="#{viewBean.first}" lazy="true" sortBy="#{aset.name}"
+                                 emptyMessage="Data tidak ditemukan" rowKey="#{aset.assetid}"
+                                 tableStyle="table-layout:autod" 
+                                 style="font-size: smaller"
+                                 rowIndexVar="index">
+                        <p:column headerText="No" style="width: 20px">
+                            <p:outputLabel value="#{index+1}"/>
+                        </p:column>
+                        <p:column style="width: 30px;" id="checkKirim" headerText="Pilih">
+                            <p:selectBooleanCheckbox value="#{incidentPeralatanMBean.checkedPilihAset[aset]}"
+                                                     disabled="#{incidentPeralatanMBean.disabled}">
+                                <p:ajax update="incidentdetail:incident-peralatan:asset-type"/>
+                            </p:selectBooleanCheckbox>
+                        </p:column>
+                        <p:column style="width: 25px;" id="checkPilih" headerText="Kirim">
+                            <p:selectBooleanCheckbox value="#{incidentPeralatanMBean.checkedKirimAset[aset]}"
+                                                     disabled="#{incidentPeralatanMBean.disabled}">
+                                <p:ajax update="incidentdetail:incident-peralatan:asset-type"/>
+                            </p:selectBooleanCheckbox>
+                        </p:column>
+                        <p:column headerText="Tipe" style="width: 100px">
+                            <h:outputText value="#{aset.name}" />
+                        </p:column>
+                        <p:column headerText="Kansar/Potensi" style="width: 100px">
+                            <h:outputText value="#{incidentPeralatanMBean.getKansarOrPotency(aset)}" />
+                        </p:column>
+                        <p:column headerText="Qty" style="width: 10px" sortBy="">
+                            <h:outputText value="#{aset.goodqty}" />
+                        </p:column>
+                        <p:column headerText="Qty Pemakaian" style="width: 20px" sortBy="">
+                            <p:inputText value="" />
+                        </p:column>
+                    </p:dataTable>
+                </p:panel>
+            </p:panelGrid>
+            <p:panel class="control-button no-border no-padding">
+                <p:spacer width="10"/>
+                <p:commandButton class="green-btn" value="Simpan" icon="fa fa-save" style="width: 100px"
+                                 process="@form" update="@form"
+                                 actionListener="#{incidentPeralatanMBean.action()}"
+                                 disabled="#{incidentPeralatanMBean.disabled}">
+                </p:commandButton>                             
+            </p:panel>               
+        </h:form>        
+    </p:panel>
+    <p:dialog id="kirim-notif-peralatan" widgetVar="kirim-notif-peralatan" modal="true"
+                  showEffect="fade" hideEffect="fade" resizable="false" responsive="true"
+                  width="40%" height="50%" dynamic="true">
+            <h:form>
+                <p:panel id="panel" class="ui-fluid no-border card-w-title card" header="Kirim Notifikasi Email/SMS"> 
+                    <p:messages closable="true"/>
+                    <p:panelGrid columns="2" columnClasses="ui-grid-col-6, ui-grid-col-6" class="ui-fluid">
+                        <p:outputLabel value="Via"/>
+                        <p:panelGrid columns="4" columnClasses="">
+                            <p:outputLabel value="SMS"/>
+                            <p:selectBooleanCheckbox value="#{incidentPeralatanMBean.kirimSms}">
+                                <p:ajax event="change" update="isiSMS"/>
+                            </p:selectBooleanCheckbox>
+                            <p:outputLabel value="Email"/>
+                            <p:selectBooleanCheckbox value="#{incidentPeralatanMBean.kirimEmail}">
+                                <p:ajax event="change" update="emailnotif"/>
+                                <p:ajax event="change" update="subyekemail"/>
+                            </p:selectBooleanCheckbox>
+                        </p:panelGrid>
+                    </p:panelGrid>
+                    <p:panelGrid columns="2" columnClasses="ui-grid-col-3, ui-grid-col-5">
+                        <p:outputLabel value="Isi Pesan SMS"/>
+                        <p:inputTextarea id="isiSMS" value="#{incidentPeralatanMBean.isisms}" 
+                                         disabled="#{!incidentPeralatanMBean.kirimSms}" required="true"
+                                         requiredMessage="Pesan SMS Wajib Di Isi" style="width: 300px"/>
+                        <p:outputLabel value="Subyek Email"/>
+                        <p:inputText id="subyekemail" value="#{incidentPeralatanMBean.subyekEmail}" 
+                                     disabled="#{!incidentPeralatanMBean.kirimEmail}" required="true" 
+                                     requiredMessage="Subyek Email Wajib Di Isi" style="width: 300px"/>
+                        <p:outputLabel value="Isi Pesan Email"/>
+                        <p:inputTextarea id="emailnotif" value="#{incidentPeralatanMBean.isiEmail}" 
+                                         disabled="#{!incidentPeralatanMBean.kirimEmail}" style="width: 300px"
+                                         required="true" requiredMessage="Pesan Email Wajib Di Isi"/>
+                    </p:panelGrid>
+                    <p:spacer/>
+                    <p:spacer/>
+                    <p:spacer/>
+                    <p:spacer/>
+                    <p:spacer/>
+                    <p:panel class="no-border no-padding ui-fluid control-button">
+                        <p:commandButton value="Kirim" icon="fa fa-send" class="green-btn"
+                                         actionListener="#{incidentPeralatanMBean.actionKirimNotif}" 
+                                         process="@form" style="width: 100px"
+                                         update="@form"/>                             
+                        <p:commandButton value="Kembali" class="red-btn" style="width: 100px"
+                                         icon="fa fa-close" onclick="PF('kirim-notif-peralatan').hide();"/>                                                
+                    </p:panel>
+                    
+                </p:panel>
+            </h:form>
+        </p:dialog>
+</ui:composition>

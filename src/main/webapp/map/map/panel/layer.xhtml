@@ -1,0 +1,33 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <p:commandButton value="Add" process="@form" global="false"
+                     actionListener="#{layerMBean.showLayerDialog}">
+        <f:attribute name="isNew" value="#{true}"/>
+    </p:commandButton>
+    <p:tree id="idTreeLayer" value="#{layerMBean.treeLayer}" var="layer"
+            animate="true" selectionMode="single"
+            selection="#{layerMBean.selectedTreeLayer}"
+            class="no-border" style="font-size: xx-small">
+        <p:ajax event="select" update="idMap" listener="#{layerMBean.onNodeSelect}" />
+       
+        <p:ajax event="contextMenu" listener="#{layerMBean.onContextMenu}"
+                global="false"/>
+        <p:treeNode>
+            <p:selectBooleanCheckbox value="#{layer.selected}"/> 
+            <h:outputText value="#{layer.name}"/>
+        </p:treeNode>
+    </p:tree>
+    <p:contextMenu id="idCmLayer" for="idTreeLayer" style="font-size: small">
+        <p:menuitem value="Delete" icon="fa fa-trash"  
+                    actionListener="#{layerMBean.deleteLayer}">
+            <p:confirm header="Konfirmasi" 
+                       message="Apakah anda yakin akan menghapus layer?" 
+                       icon="ui-icon-alert" />
+        </p:menuitem>
+        <p:menuitem value="Update" icon="fa fa-save"  
+                    actionListener="#{layerMBean.showLayerDialog}"/>
+    </p:contextMenu>
+</ui:composition>

@@ -1,0 +1,37 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+    <ui:define name="title">Laporan Daftar Potensi</ui:define>
+    <ui:define name="content">
+        <div class="ui-g ui-fluid">
+            <div class="ui-g-12 ui-lg-12">
+                <h:form id="beacon-content">
+                    <p:panel id="list-beacon" header="Laporan Daftar Potensi" styleClass="penelHeaderGreen ui-shadow-content">
+
+                        <p:panelGrid id="pilihan" columns="18" layout="grid" styleClass="ui-panelgrid-blank form-group" class="no-padding no-border">
+                            <p:outputLabel value="Kantor SAR" styleClass="asterix"/> 
+                            <p:selectOneMenu id="idKansar" style="margin-bottom:10px;"  value="#{reportPotensiMBean.KANTORSARNAME}"
+                                             disabled="#{reportPotensiMBean.disabled}"
+                                             required="true" requiredMessage="Kantor SAR harus dipilih">
+                                <f:selectItems value="#{reportPotensiMBean.listKantorSar}"/>
+                            </p:selectOneMenu>
+                        </p:panelGrid>
+                        <p:panelGrid id="perintah" columns="10" layout="grid" styleClass="ui-panelgrid-blank form-group" class="no-padding no-border">
+                            <p:commandLink id="print" styleClass="ui-priority-primary" style="background:#0097a7; text-align: center; 
+                                           padding-top: 4%; padding-bottom: 5% " ajax="false" target="_blank" 
+                                           class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only ui-priority-primary"
+                                           action="#{reportPotensiMBean.reportPrint}">
+                                <h:outputText class="ui-icon ui-icon-print"/>
+                                <h:outputText class="align-top" value=" Cetak" />
+                                <p:confirm header="Cetak Data" message="Apakah anda yakin? (Proses akan memakan waktu bergantung pada jumlah data)"  icon="ui-icon-alert" />
+                            </p:commandLink>
+                        </p:panelGrid>
+                    </p:panel>
+                </h:form>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>

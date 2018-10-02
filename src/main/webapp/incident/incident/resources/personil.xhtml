@@ -1,0 +1,30 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:panelGrid columns="3" layout="grid" styleClass="ui-panelgrid-blank grid-pad" >
+        <p:commandButton value="Tambah Data Baru" styleClass="purple-btn"/>
+        <p:commandButton value="Cari di daftar" styleClass="red-btn" />
+        <p:commandButton value="Kirim Notifikasi" styleClass="green-btn"/>
+    </p:panelGrid>
+    <p:dataTable var="personil" value="#{personilMBean.personilEntitys}" 
+                 reflow="true" paginator="true" rows="10"
+                 paginatorPosition="bottom" tableStyle="table-layout:auto">
+        <p:column headerText="Nama">
+            <h:outputText value="#{personil.nama}" />
+        </p:column>
+        <p:column headerText="Kansar">
+            <h:outputText value="#{personil.kansar}" />
+        </p:column>
+        <p:column headerText="Jabatan">
+            <h:outputText value="#{personil.jabatan}" />
+        </p:column>
+        <p:column headerText="Penugasan">
+            <h:outputText value="#{personil.penugasan}" >
+                  <f:convertDateTime pattern="dd/MM/yyyy" />
+            </h:outputText>
+        </p:column>
+    </p:dataTable>
+</ui:composition>

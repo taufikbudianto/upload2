@@ -1,0 +1,38 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+
+    <p:tabView id="profil-tabs" class="content-tabs" orientation="left" 
+               dynamic="false" activeIndex="0" 
+               >
+        <p:tab title="Profil">
+            <ui:include src="profil_detail_tab/profil.xhtml"/>
+        </p:tab>
+        <p:tab title="Profil 2">
+            <ui:include src="profil_detail_tab/profil2.xhtml"/>
+        </p:tab>
+        <p:tab title="Kualifikasi/Sertifikasi">
+            <ui:include src="profil_detail_tab/sertifikasi.xhtml"/>
+        </p:tab>
+        <p:tab title="Riwayat Tugas">
+            <ui:include src="profil_detail_tab/riwayat_tugas.xhtml"/>
+        </p:tab>
+    </p:tabView>
+
+    <p:panel class="no-border no-padding control-button" style="text-align: right;">
+        <p:commandButton value="#{potensiMBean.showButton ? 'Batal' : 'Kembali'}" 
+                         styleClass="red-btn" style="width:130px" actionListener="#{potensiMBean.backPersonel()}"
+                         update="@form"
+                         process="@this"/>
+
+<!--        <p:commandButton value="Simpan" actionListener="{potensiMBean.tambahPersonil}" 
+                         style="width:130px" styleClass="green-btn" 
+                         update="@form"
+                         process="respotensi-content:profil-tabs:idProfil,
+                         respotensi-content:profil-tabs:idProfil2"/>-->
+
+    </p:panel>
+</ui:composition>

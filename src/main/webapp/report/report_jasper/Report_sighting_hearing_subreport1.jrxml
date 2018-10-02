@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Report_sighting_hearing_subreport1" pageWidth="240" pageHeight="555" orientation="Landscape" whenNoDataType="BlankPage" columnWidth="240" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="d14a12b1-7738-436a-9c5e-af3b32fac10b">
+	<property name="ireport.zoom" value="3.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#FFFFBF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#FFFFE6">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="Table Dataset 1" uuid="e6595f7d-cca7-4497-aa89-b701b761b681"/>
+	<parameter name="SIGHTINGID" class="java.lang.String"/>
+	<parameter name="STARTDATE" class="java.lang.String"/>
+	<parameter name="ENDDATE" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT * FROM
+(SELECT * FROM UTI_SIGHTING)A
+LEFT JOIN
+(SELECT * FROM INCIDENT)B
+ON A.INCIDENTID=B.INCIDENTID
+WHERE A.DATECREATED BETWEEN TO_DATE($P{STARTDATE},'dd-MM-yyyy') AND TO_DATE($P{ENDDATE},'dd-MM-yyyy')]]>
+	</queryString>
+	<field name="SIGHTINGID" class="java.lang.String"/>
+	<field name="CREATEDBY" class="java.lang.String"/>
+	<field name="DATECREATED" class="java.sql.Timestamp"/>
+	<field name="LASTMODIFIED" class="java.sql.Timestamp"/>
+	<field name="MODIFIEDBY" class="java.lang.String"/>
+	<field name="ISDELETED" class="java.math.BigDecimal"/>
+	<field name="INCIDENTID" class="java.lang.String"/>
+	<field name="OBSERVERNAME" class="java.lang.String"/>
+	<field name="OBSERVERPHONE" class="java.lang.String"/>
+	<field name="OBSERVERLOCATION" class="java.lang.String"/>
+	<field name="OBSERVERLONGITUDE" class="java.lang.String"/>
+	<field name="OBSERVERLATITUDE" class="java.lang.String"/>
+	<field name="OBSERVERUNCERTAINTY" class="java.lang.String"/>
+	<field name="OBSERVERREMARKS" class="java.lang.String"/>
+	<field name="OBJECTPOSITION" class="java.lang.String"/>
+	<field name="OBJECTLONGITUDE" class="java.lang.String"/>
+	<field name="OBJECTLATITUDE" class="java.lang.String"/>
+	<field name="OBJECTUNCERTAINTY" class="java.lang.String"/>
+	<field name="OBJECTREMARKS" class="java.lang.String"/>
+	<field name="REPORTTYPE" class="java.math.BigDecimal"/>
+	<field name="OBJECTTYPE" class="java.math.BigDecimal"/>
+	<field name="REMARKS" class="java.lang.String"/>
+	<field name="WEATHERDESCRIPTION" class="java.lang.String"/>
+	<field name="ASSESMENTPRIORITY" class="java.math.BigDecimal"/>
+	<field name="ASSESMENTANNOTATION" class="java.lang.String"/>
+	<field name="ASSESMENTNOTES" class="java.lang.String"/>
+	<field name="USERSITEID" class="java.lang.String"/>
+	<field name="OBJECTDTG" class="java.sql.Timestamp"/>
+	<field name="OBJECTDTGUNCERTAINTY" class="java.lang.String"/>
+	<field name="ASSESMENTSTATUS" class="java.math.BigDecimal"/>
+	<field name="ASSESMENTSTATUSOTHER" class="java.lang.String"/>
+	<field name="OBJECTTYPEOTHER" class="java.lang.String"/>
+	<field name="OBJECTDTGTIMEZONE" class="java.lang.String"/>
+	<field name="OBJECTUNCERTAINTYUNIT" class="java.lang.String"/>
+	<field name="OBJECTDTGUNCERTAINTYUNIT" class="java.lang.String"/>
+	<field name="STATUS" class="java.math.BigDecimal"/>
+	<field name="ISCRM" class="java.math.BigDecimal"/>
+	<field name="SIGHTINGNUMBER" class="java.lang.String"/>
+	<field name="INCIDENTNUMBER" class="java.lang.String"/>
+	<field name="INCIDENTTYPE" class="java.math.BigDecimal"/>
+	<field name="SITUATION" class="java.lang.String"/>
+	<field name="ALERTEDAT" class="java.sql.Timestamp"/>
+	<field name="ALERTEDBY" class="java.lang.String"/>
+	<field name="METHOD" class="java.lang.String"/>
+	<field name="PHONENUMBER" class="java.lang.String"/>
+	<field name="LOCATION" class="java.lang.String"/>
+	<field name="LATITUDE" class="java.lang.String"/>
+	<field name="LONGITUDE" class="java.lang.String"/>
+	<field name="DEATHPEOPLE" class="java.math.BigDecimal"/>
+	<field name="HEAVYINJUREDPEOPLE" class="java.math.BigDecimal"/>
+	<field name="LIGHTINJUREDPEOPLE" class="java.math.BigDecimal"/>
+	<field name="LOSTPEOPLE" class="java.math.BigDecimal"/>
+	<field name="SURVIVEDPEOPLE" class="java.math.BigDecimal"/>
+	<field name="CREATEBY" class="java.lang.String"/>
+	<field name="CHECKLISTID" class="java.lang.String"/>
+	<field name="CLOSEDATE" class="java.sql.Timestamp"/>
+	<field name="ALERTEDATTIMEZONE" class="java.lang.String"/>
+	<field name="CLOSEDATETIMEZONE" class="java.lang.String"/>
+	<field name="STARTDATE" class="java.sql.Timestamp"/>
+	<field name="STARTDATETIMEZONE" class="java.lang.String"/>
+	<field name="STARTOPSDATE" class="java.sql.Timestamp"/>
+	<field name="STARTOPSDATETIMEZONE" class="java.lang.String"/>
+	<field name="SMC" class="java.lang.String"/>
+	<field name="SMCPHONE" class="java.lang.String"/>
+	<field name="INCIDENTNAME" class="java.lang.String"/>
+	<field name="OWNERNAME" class="java.lang.String"/>
+	<field name="OWNERADDRESS" class="java.lang.String"/>
+	<field name="OWNERPHONE" class="java.lang.String"/>
+	<field name="OWNERCELL" class="java.lang.String"/>
+	<field name="OWNERFAX" class="java.lang.String"/>
+	<field name="OWNEREMAIL" class="java.lang.String"/>
+	<field name="OBJECTCALLSIGN" class="java.lang.String"/>
+	<field name="OBJECTCOLOR" class="java.lang.String"/>
+	<field name="OBJECTLENGTH" class="java.lang.String"/>
+	<field name="OBJECTCAPACITY" class="java.lang.String"/>
+	<field name="OBJECTHOMEBASE" class="java.lang.String"/>
+	<field name="KATEGORI" class="java.lang.String"/>
+	<field name="JENIS" class="java.lang.String"/>
+	<field name="TIMEZONE" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="80" splitType="Stretch">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="bbd170d0-aba3-4dfc-88d5-3de9faca0514" positionType="Float" stretchType="RelativeToBandHeight" x="120" y="1" width="119" height="26"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{OBJECTPOSITION}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="3fc15155-9797-4db0-9c03-42b581fdace8" positionType="Float" stretchType="RelativeToBandHeight" x="1" y="1" width="119" height="26"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{OBSERVERLOCATION}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="bbd170d0-aba3-4dfc-88d5-3de9faca0514" positionType="Float" x="120" y="27" width="119" height="26"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{OBJECTLONGITUDE}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="3fc15155-9797-4db0-9c03-42b581fdace8" positionType="Float" x="1" y="27" width="119" height="26"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{OBSERVERLONGITUDE}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="3fc15155-9797-4db0-9c03-42b581fdace8" stretchType="RelativeToTallestObject" x="1" y="53" width="119" height="26"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{OBSERVERLATITUDE}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="bbd170d0-aba3-4dfc-88d5-3de9faca0514" stretchType="RelativeToTallestObject" x="120" y="53" width="119" height="26"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{OBJECTLATITUDE}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

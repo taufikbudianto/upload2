@@ -1,0 +1,53 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <p:dialog showEffect="fade" hideEffect="fade" dynamic="true"
+              position="center" id="idDialogAllPattern"
+              header="Save Search Pattern" appendTo="@(body)"  
+              widgetVar="showDialogAllPattern"  
+              modal="true" height="95%" width="40%"
+              responsive="true" resizable="false">
+        <h:form>
+            <p:dataTable value="#{searchPatternMBean.listIncSearchPattern}" var="list" 
+                         selection="#{searchPatternMBean.selectionlistIncSearchPattern}"
+                         rowKey="#{list.searchPatternId}"
+                         editable="true" editMode="cell">
+                <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+                <p:column headerText="Name">
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <p:outputLabel value="#{list.name}"/>
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:inputText value="#{list.name}"/>
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:column headerText="Search Area">
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <p:outputLabel value="#{list.searchArea.name}"/>
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:selectOneMenu value="#{list.searchArea}" 
+                                             autoWidth="false" 
+                                             converter="objectListConverter">
+                                <f:selectItems value="#{searchPatternMBean.listSearchArea}" 
+                                               var="i" itemLabel="#{i.name}" itemValue="#{i}"/>
+                            </p:selectOneMenu>
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+            </p:dataTable>
+            <p:panel class="control-button">
+                <p:commandButton value="Save" 
+                                 actionListener="#{searchPatternMBean.saveAllSearchPattern}"
+                                 update="@form" process="@form"/>
+                <p:commandButton value="Batal" 
+                                 onclick="PF('showDialogAllPattern').hide()"/>
+            </p:panel>
+        </h:form>
+    </p:dialog>
+</ui:composition>

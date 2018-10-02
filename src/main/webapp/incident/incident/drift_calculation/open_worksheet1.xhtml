@@ -1,0 +1,33 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    
+
+        <div class="ui-g ui-fluid">
+            <div class="ui-g-12 ui-lg-10">
+                <h:form id="open-ws1">
+                    <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                        <p:outputLabel value="Worksheet Name" style="width: 200px"/>
+                        <p:selectOneMenu id="cboWs1Name" value="#{driftCalcWorksheet1MBean.worksheetID}">
+                            <p:ajax event="change" process="@this" update="@form" listener="#{driftCalcWorksheet1MBean.changeWorksheetName}"/>            
+                            <f:selectItems value="#{driftCalcWorksheet1MBean.listWorksheetName}" />                        
+                        </p:selectOneMenu> 
+                        <p:outputLabel value="Created By" style="width: 200px" />
+                        <p:outputLabel value="#{driftCalcWorksheet1MBean.createdBy}"/>
+                        <p:outputLabel value="Last Update" style="width: 200px" />
+                        <p:outputLabel value="#{driftCalcWorksheet1MBean.lastModified}"/>
+                    </p:panelGrid>
+                    <p:panelGrid columns="3" layout="grid" styleClass="ui-panelgrid-blank form-group" style="width: 500px;">
+                        <p:commandButton value="Pilih" styleClass="green-btn"  style="width:130px">
+                            <p:ajax event="click" listener="#{driftCalcWorksheet1MBean.pilihWS1}"  process="@form" update="@form"  />
+                        </p:commandButton>
+                    <p:commandButton value="Batal"  styleClass="red-btn" style="width:130px">
+                        <p:ajax event="click" listener="#{driftCalcWorksheet1MBean.batalWS1}" process="@form" update="@form"/>
+                    </p:commandButton>
+                </p:panelGrid>
+                </h:form>  
+            </div>
+        </div>
+</ui:composition>

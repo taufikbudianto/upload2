@@ -1,0 +1,133 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">      
+    <p:dialog id="idTambahSmsOut" widgetVar="widgetTambahSmsOut"
+              header="Data "
+              width="46%" height="100%"
+              appendTo="@(body)"
+              responsive="true" modal="true"
+              maximizable="false"
+              position="center" closable="true">
+        <h:form id="formtambahsmsout">
+            <p:panel id="panelNamaGroup-outboxsms" style="overflow:auto;width:100%;max-height:80vh" 
+                     class="no-border card ui-fluid no-padding">
+                <p:messages closable="true"/>
+                <p:panelGrid columns="3">
+                    <p:outputLabel value="Nama Group :" style="font-weight:bold"/>
+
+                    <p:selectOneMenu id="nama-group-outbox-sms" style="width:150px" value="#{smsOutMBean.groupIdSelected}">
+                        <f:selectItem noSelectionOption="false" itemLabel="Pilih"/>
+                        <p:ajax listener="#{smsOutMBean.onKolomNamaGroupChange()}"/>
+                        <f:selectItems value="#{smsOutMBean.namagroup}" var="namagroup" itemLabel="#{namagroup.groupName}" itemValue="#{namagroup.groupID}"/>
+                    </p:selectOneMenu>
+
+                    <!--                    <p:commandButton value="Tambah Ke Daftar" styleClass="green-btn"  id="tambah-ke-daftar-sms-out" 
+                                                         actionListener="{smsOutMBean.tambahPersonil}"  process="@this" update="@form"/>-->
+                </p:panelGrid>
+
+                <p:panelGrid columns="4">
+                    <p:outputLabel value="Kepada : " style="font-weight:bold" styleClass="asterix"/>
+
+                    <p:selectManyMenu id="kepada-sms-out" value="#{smsOutMBean.smsEmailSelected}" 
+                                      var="dtl" filter="true" filterMatchMode="contains" showCheckbox="true" 
+                                      converter="objectListConverter" style="width:250px;"
+                                      required="true" requiredMessage="Kepada harus dipilih">
+                        <f:selectItems value="#{smsOutMBean.smsEmail}" var="smsEMail"  itemLabel="#{smsEMail.name}" itemValue="#{smsEMail}" />
+                        <p:column>
+                            <h:outputText value="#{dtl.name}" />
+                        </p:column>
+                    </p:selectManyMenu>
+
+                    <p:commandButton value="Tambah" icon="fa fa-plus-circle" styleClass="green-btn"  id="tambah-orang-sms-out" 
+                                     actionListener="#{pencarianPersonelMBean.openFormTambahKepada()}" process="@this" update="@form">
+                        <f:actionListener binding="#{pencarianPotensiMBean.openFormTambahKepada()}"/>
+                        <f:actionListener binding="#{pencarianAssetMBean.openFormTambahKepada()}" />
+                    </p:commandButton>
+                    <!--<p:commandButton value="Hapus" styleClass="red-btn"  id="hapus-orang-sms-out" actionListener="{smsOutMBean.openFormTambah}" process="@form" update="@form"/>-->
+                </p:panelGrid>
+
+                <p:panelGrid columns="5">
+                    <p:outputLabel value="Kategori : " style="font-weight:bold" styleClass="asterix"/>
+
+                    <p:selectOneMenu id="kategori-outbox-sms" style="width:150px" value="#{smsOutMBean.kategoriSelected}"
+                                     required="true" requiredMessage="Kategori harus dipilih">
+                        <!--<f:selectItem noSelectionOption="true" itemLabel="Pilih"/>-->
+                        <p:ajax listener="#{smsOutMBean.onKolomKategoriChange()}"/>
+                        <f:selectItems value="#{smsOutMBean.kategori}" var="kategorismsout" 
+                                       itemLabel="#{kategorismsout.categoryName}" itemValue="#{kategorismsout.smsCategoryID}"/>
+                    </p:selectOneMenu>
+
+                    <p:outputLabel value="Via : " style="font-weight:bold"/>
+
+                    <p:panel>
+                        <p:selectBooleanCheckbox value="#{smsOutMBean.checksms}" id="idBoolSms-out" widgetVar="boolSmsOut">
+                            <p:ajax update="@form" event="change" process="@this" listener="#{smsOutMBean.changeCheckSms()}"/>
+                        </p:selectBooleanCheckbox>
+                        <p:outputLabel value="SMS" id="lblSMS"/>
+                    </p:panel>
+
+                    <p:panel>
+                        <p:selectBooleanCheckbox value="#{smsOutMBean.checkemail}" id="idBoolEmail-out" widgetVar="boolEmailOut">
+                            <p:ajax update="@form" event="change" process="@this" listener="#{smsOutMBean.changeCheckEmail()}"/>
+                        </p:selectBooleanCheckbox>
+                        <p:outputLabel value="Email" id="lblEmail"/>
+                    </p:panel>
+                </p:panelGrid>
+
+                <p:panelGrid columns="3">
+                    <p:outputLabel value="Tipe Pesan : " style="font-weight:bold"/>
+
+                    <p:selectOneRadio id="radiotipepesan" value="#{smsOutMBean.radiotipepesan}">
+                        <f:selectItem itemLabel="Umum" itemValue="Umum" id="umum-radio-tambah-out"/>
+                        <f:selectItem itemLabel="Berita SAR" itemValue="Berita SAR" id="beritasar-radio-tambah-out"/>
+                        <p:ajax update="isipesansmstambahout, beritasarketiktambahout" event="change" process="@this" listener="#{smsOutMBean.changeRadioTipePesan()}"/>
+                    </p:selectOneRadio>
+                </p:panelGrid>
+
+                <p:panelGrid columns="2">
+                    <p:outputLabel value="Isi Pesan : " style="font-weight:bold"/>
+                    <p:inputText value="#{smsOutMBean.isipesansms}" style="width: 200px;font-weight:bold" disabled="#{smsOutMBean.disabled}" id="isipesansmstambahout"/>
+                </p:panelGrid>
+
+                <p:panelGrid  columns="3" rendered="#{smsOutMBean.disabledSms}">                    
+                    <h:inputText value="#{smsOutMBean.jumlahcharsms}" style="width: 50px; text-align: center" id="jumlahcharsms" readonly="true"/>
+                    <h:inputTextarea value="#{smsOutMBean.isisms}" style="width: 500px; height: 50px" id="isisms">
+                        <p:ajax update= "jumlahcharsms" event="keyup" process="@this"  listener="#{smsOutMBean.onChangeIsiSms()}"/>
+                    </h:inputTextarea>       
+                </p:panelGrid>
+
+                <p:panelGrid  columns="1">
+                    <h:inputText value="#{smsOutMBean.ketikindextext}" style="width: 600px" disabled="#{smsOutMBean.disabled}" id="beritasarketiktambahout"/>
+                </p:panelGrid>
+
+                <p:panelGrid  columns="2" rendered="#{smsOutMBean.disabledEmail}">
+                    <p:outputLabel value="Subyek Email : " style="font-weight:bold"/>
+                    <h:inputText value="#{smsOutMBean.subyekEmail}" style="width: 480px" id="subyekemail"/>
+                </p:panelGrid>
+
+                <p:panelGrid  columns="1" rendered="#{smsOutMBean.disabledEmail}">
+                    <h:inputTextarea value="#{smsOutMBean.isiEmail}" style="width: 600px; height: 50px" id="isiemail"/>
+                </p:panelGrid>                
+
+                <p:panelGrid  columns="2">
+                    <p:outputLabel value="Reference : " style="font-weight:bold"/>
+                    <p:inputText value="#{smsOutMBean.reference}" style="width: 500px" id="reference-out" >
+                    </p:inputText>
+                </p:panelGrid>
+
+                <p:panelGrid  columns="3" style="float: right">
+                    <p:commandButton value="Simpan dan Kirim" icon="fa fa-save" styleClass="green-btn" actionListener="#{smsOutMBean.simpan}"
+                                     update="@form" process="@form">
+                        <p:confirm header="Konfirmasi" message="Apakah anda yakin ingin kirim ini?" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                    <p:spacer />
+                    <p:commandButton type="button" value="Batal" styleClass="red-btn" icon="ui-icon-cancel" style="width: 130px">
+                        <p:ajax event="click" listener="#{smsOutMBean.batal()}" oncomplete="PF('widgetTambahSmsOut').hide()"/>
+                    </p:commandButton>
+                </p:panelGrid>
+            </p:panel>                
+        </h:form>
+    </p:dialog>
+</ui:composition>

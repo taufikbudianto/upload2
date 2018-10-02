@@ -1,0 +1,107 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+    <ui:define name="title">Daftar Negara</ui:define>
+    <ui:define name="content">
+        <h:form id="negara-content">
+            <p:panel id="list-negara" header="Daftar Negara" class="ui-fluid no-border card card-w-title" styleClass="penelHeaderGreen ui-shadow-content">
+                <p:panelGrid id="search" columns="5" layout="grid" 
+                             styleClass="ui-panelgrid-blank form-group" 
+                             columnClasses ="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-2,ui-grid-col-2"
+                             style="margin-top: 20px;margin-bottom: 20px; width: 100%"
+                             class="no-padding no-border">                                                   
+                    <p:selectOneMenu id="fieldnegara" value="#{mstNegaraMBean.field}">
+                        <p:ajax event="change" update="search"/>
+                        <f:selectItem itemLabel="Nama Negara" itemValue="countryName" />
+                        <f:selectItem itemLabel="ID Negara" itemValue="countryID" />
+                    </p:selectOneMenu>                                                               
+                    <p:inputText id="value" value="#{mstNegaraMBean.value}"/>
+                    <p:commandButton id="search-btn" type="button"  value="Cari" icon="ui-icon-search" onclick="PF('listWidget').getPaginator().setPage(0);">
+                        <p:ajax event="click" update=":negara-content:list-negara" process="@form"/>
+                    </p:commandButton>
+                    <p:button value="Reset" icon="ui-icon-replay" />
+                    <p:commandButton value="Tambah Data Baru" icon="fa fa-plus-circle" styleClass="green-btn">
+                        <p:ajax event="click" listener="#{mstNegaraMBean.add}"/>
+                    </p:commandButton>                                                                                      
+                </p:panelGrid>
+                <p:dataTable id="negaradatatable" var="negara" value="#{mstNegaraMBean.lazyDataModelJPA}" rowKey="#{negara.countryID}"
+                             lazy="true" paginator="true" paginatorPosition="bottom" rows="10"
+                             rowsPerPageTemplate="5,10,15" widgetVar="listWidget" 
+                             emptyMessage="Data tidak ditemukan" 
+                             tableStyle="table-layout:fixed" rowIndexVar="index" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                    <p:ajax event="page" listener="#{viewBean.onPageChange}"/>
+                    <p:column headerText="No" style="width: 20px">
+                        <p:outputLabel value="#{index + 1}"/>
+                    </p:column>
+                    <p:column headerText="ID Negara" sortBy="#{negara.countryID}">
+                        <h:outputText value="#{negara.countryID}" />
+                    </p:column>
+                    <p:column headerText="Nama Negara" sortBy="#{negara.countryName}">
+                        <h:outputText value="#{negara.countryName}" />
+                    </p:column>
+                    <p:column headerText="MCC" sortBy="#{negara.mccID}">
+                        <h:outputText value="#{negara.mccID}" />
+                    </p:column>
+                    <p:column headerText="RCC" sortBy="#{negara.rccID}">
+                        <h:outputText value="#{negara.rccID}" />
+                    </p:column>
+                    <p:column headerText="Aksi" style="width: 105px">
+                        <p:commandButton label="Lihat"
+                                         onclick="PF('tTipLihat').hide();"
+                                         id="lihatNegara" 
+                                         icon="fa fa-search" 
+                                         class="blue-grey-btn">
+                            <p:ajax event="click" listener="#{mstNegaraMBean.viewNegara(negara.countryID, true)}" update=":form-negara" />
+                        </p:commandButton> 
+                        <p:tooltip value="Lihat" for="lihatNegara"
+                                   trackMouse="true" widgetVar="tTipLihat"/>
+                        <p:outputLabel value="    "/>
+                        <p:commandButton id="ubahNegara"
+                                         label="Ubah"
+                                         onclick="PF('tTipUbah').hide();"
+                                         icon="fa fa-edit" 
+                                         class="blue-grey-btn">
+                            <p:ajax event="click" listener="#{mstNegaraMBean.viewNegara(negara.countryID, false)}" update=":form-negara"/>
+                        </p:commandButton>
+                        <p:tooltip value="Ubah" for="ubahNegara"
+                                   trackMouse="true" widgetVar="tTipUbah" />
+                        <p:outputLabel value="    "/>
+                        <p:commandButton id="hapusNegara" 
+                                         label="Hapus"
+                                         onclick="PF('tTipHapus').hide();"
+                                         icon="fa fa-trash" 
+                                         class="red-btn" 
+                                         actionListener="#{mstNegaraMBean.hapus(negara)}"
+                                         update="negara-content:negaradatatable">
+                            <p:confirm header="Konfirmasi" message="Apakah anda yakin ingin menghapus negara ini?" icon="ui-icon-alert"/>
+                        </p:commandButton>
+                        <p:tooltip value="Hapus" for="hapusNegara"
+                                   trackMouse="true" widgetVar="tTipHapus"/>
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
+        </h:form>
+
+        <p:dialog id="idNegara" widgetVar="widgetNegara"
+                  header="Data "
+                  width="40%" height="50%"
+                  appendTo="@(body)"
+                  responsive="true" modal="true"
+                  position="center" resizable="false" 
+                  maximizable="false" closable="true">
+            <ui:include src="./negara.xhtml"/>
+        </p:dialog>
+
+        <p:dialog id="idNegaraInput" widgetVar="widgetNegaraInput"
+                  width="40%" height="50%"
+                  appendTo="@(body)"
+                  responsive="true" modal="true"
+                  position="center" resizable="false" 
+                  maximizable="false" closable="true" visible="#{facesContext.validationFailed}">
+            <ui:include src="./negaraInput.xhtml"/>
+        </p:dialog>
+    </ui:define>
+</ui:composition>

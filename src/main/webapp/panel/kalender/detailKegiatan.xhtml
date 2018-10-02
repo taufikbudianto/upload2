@@ -1,0 +1,92 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <p:dialog id="idDtlKegiatan" widgetVar="wgDtlKegiatan"
+              header="#{kalendarMBean.headerItem}" dynamic="true" resizable="false"
+              width="40%" height="70%" appendTo="@(body)"
+              responsive="true" modal="true">
+        <h:form id="form-dtl-kegiatan">
+            <p:messages closable="true"/>
+            <p:panelGrid columns="2" layout="grid" 
+                         styleClass="ui-panelgrid-blank form-group" 
+                         columnClasses ="ui-grid-col-2,ui-grid-col-10"
+                         style="margin-top: 20px;margin-bottom: 20px; width: 100%"
+                         class="no-padding no-border">
+                <p:outputLabel value="Judul" styleClass="asterix"/>
+                <p:inputText value="#{kalendarMBean.kegiatan.calJudul}"
+                             required="true" requiredMessage="Judul harus diisi"
+                             disabled="#{kalendarMBean.isView}"/>
+                <p:outputLabel value="Lokasi" styleClass="asterix"/>
+                <p:inputText value="#{kalendarMBean.kegiatan.calLokasi}"
+                             required="true" requiredMessage="Lokasi harus diisi"
+                             disabled="#{kalendarMBean.isView}"/>
+                <p:outputLabel value="Seharian"/>
+                <p:inputSwitch value="#{kalendarMBean.kegiatan.calSeharian}"
+                               disabled="#{kalendarMBean.isView}">
+                    <p:ajax listener="#{kalendarMBean.disabledCalendar}"
+                            global="false" update="pgMulai,pgSampai"/>
+                </p:inputSwitch>
+                <p:outputLabel value="Mulai"/>
+                <h:panelGroup id="pgMulai">
+                    <p:calendar value="#{kalendarMBean.kegiatan.calMulai}" pattern="dd/MM/yyyy HH:mm" 
+                                showOn="button" readonlyInput="true" navigator="true"
+                                disabled="#{kalendarMBean.disableCalendar or kalendarMBean.isView}"/>
+                    <p:selectOneMenu value="#{kalendarMBean.kegiatan.calMulaiTimezone}" autoWidth="false"
+                                     disabled="#{kalendarMBean.disableCalendar or kalendarMBean.isView}">
+                        <f:selectItem itemLabel="GMT+07:00" itemValue="GMT+07:00"/>
+                        <f:selectItem itemLabel="GMT+08:00" itemValue="GMT+08:00"/>
+                        <f:selectItem itemLabel="GMT+09:00" itemValue="GMT+09:00"/>
+                    </p:selectOneMenu>
+                </h:panelGroup>
+                <p:outputLabel value="Sampai"/>
+                <h:panelGroup id="pgSampai">
+                    <p:calendar value="#{kalendarMBean.kegiatan.calSampai}" pattern="dd/MM/yyyy HH:mm" 
+                                showOn="button" readonlyInput="true" navigator="true"
+                                disabled="#{kalendarMBean.disableCalendar or kalendarMBean.isView}"/>
+                    <p:selectOneMenu value="#{kalendarMBean.kegiatan.calSampaiTimezone}" autoWidth="false"
+                                     disabled="#{kalendarMBean.disableCalendar or kalendarMBean.isView}">
+                        <f:selectItem itemLabel="GMT+07:00" itemValue="GMT+07:00"/>
+                        <f:selectItem itemLabel="GMT+08:00" itemValue="GMT+08:00"/>
+                        <f:selectItem itemLabel="GMT+09:00" itemValue="GMT+09:00"/>
+                    </p:selectOneMenu>
+                </h:panelGroup>
+                <p:outputLabel value="Perulangan"/>
+                <p:selectOneMenu value="#{kalendarMBean.kegiatan.calPerulangan}" 
+                                 autoWidth="false" disabled="#{kalendarMBean.isView}">
+                    <p:ajax event="itemSelect" update="@this"/>
+                    <f:selectItem itemLabel="Tidak Pernah" itemValue="0"/>
+                    <f:selectItem itemLabel="Sekali" itemValue="1"/>
+                    <f:selectItem itemLabel="Harian" itemValue="2"/>
+                    <f:selectItem itemLabel="Mingguan" itemValue="3"/>
+                    <f:selectItem itemLabel="Tahunan" itemValue="4"/>
+                </p:selectOneMenu>
+                <p:outputLabel value="Pengingat"/>
+                <p:selectOneMenu value="#{kalendarMBean.kegiatan.calPengingat}" 
+                                 autoWidth="false" disabled="#{kalendarMBean.isView}">
+                    <p:ajax event="itemSelect" update="@this"/>
+                    <f:selectItem itemLabel="10 Menit" itemValue="10"/>
+                    <f:selectItem itemLabel="15 Menit" itemValue="15"/>
+                    <f:selectItem itemLabel="20 Menit" itemValue="20"/>
+                    <f:selectItem itemLabel="30 Menit" itemValue="30"/>
+                    <f:selectItem itemLabel="45 Menit" itemValue="45"/>
+                    <f:selectItem itemLabel="1 Jam" itemValue="60"/>
+                </p:selectOneMenu>
+            </p:panelGrid>
+            <p:panel class="control-button no-border no-padding">
+                <p:commandButton value="Simpan" icon="fa fa-save" style="width:130px" styleClass="green-btn" 
+                                 actionListener="#{kalendarMBean.saveKegiatan}" 
+                                 rendered="#{!kalendarMBean.isView}"
+                                 update="@form" global="false">
+                    <p:confirm header="Konfirmasi" message="Apakah anda yakin ingin menyimpan data ini ?" icon="ui-icon-alert" />
+                </p:commandButton>
+                <p:spacer width="10"/>
+                <p:commandButton value="#{kalendarMBean.isView ? 'Kembali' : 'Batal'}" 
+                                 icon="ui-icon-cancel" class="red-btn" 
+                                 style="width: 130px;" global="false"
+                                 onclick="PF('wgDtlKegiatan').hide();"/>
+            </p:panel>
+        </h:form>
+    </p:dialog>
+</ui:composition>

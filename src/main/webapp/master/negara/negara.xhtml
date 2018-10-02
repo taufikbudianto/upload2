@@ -1,0 +1,66 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="form-negara">
+        <p:panel class="ui-fluid no-padding no-border">
+            <p:messages closable="true"/>
+            <p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-9" 
+                         layout="grid" styleClass="ui-panelgrid-blank form-group">
+                <p:outputLabel value="ID Negara" styleClass="asterix"/>
+                <p:panel style="border-style: none" >
+                    <p:inputText value="#{mstNegaraMBean.negara.countryID}" maxlength="3" 
+                                 required="true" requiredMessage="ID Negara harus diisi" 
+                                 disabled="true"/>
+                </p:panel>
+
+                <p:outputLabel value="Nama Negara" styleClass="asterix"/>
+                <p:panel style="border-style: none" >
+                    <p:inputText value="#{mstNegaraMBean.negara.countryName}" maxlength="50" 
+                                 required="true" requiredMessage="Nama Negara harus diisi" 
+                                 disabled="#{mstNegaraMBean.disabled}"/>
+                </p:panel>
+
+                <p:outputLabel value="MCC"/>
+                <p:panel style="border-style: none" >
+                    <p:inputText value="#{mstNegaraMBean.negara.mccID}" maxlength="50" 
+                                 disabled="#{mstNegaraMBean.disabled}"/>
+                </p:panel>
+
+                <p:outputLabel value="RCC"/>
+                <p:panel style="border-style: none" >
+                    <p:inputText value="#{mstNegaraMBean.negara.rccID}" maxlength="50" 
+                                 disabled="#{mstNegaraMBean.disabled}"/>
+                </p:panel>  
+
+                <p:outputLabel value="Telepon RCC" />
+                <p:panel style="border-style: none" >
+                    <p:inputText value="#{mstNegaraMBean.negara.rccPhone}" maxlength="50"
+                                 onkeypress="return validatePhone(event)"
+                                 disabled="#{mstNegaraMBean.disabled}"/>
+                </p:panel>
+
+                <p:outputLabel value="Fax RCC" />
+                <p:panel style="border-style: none" >
+                    <p:inputText value="#{mstNegaraMBean.negara.rccFax}"  maxlength="50" 
+                                 onkeypress="return validatePhone(event)"
+                                 disabled="#{mstNegaraMBean.disabled}"/>
+                </p:panel>  
+
+            </p:panelGrid>
+
+            <p:panel class="control-button no-border no-padding" >
+                <p:commandButton value="Simpan" icon="fa fa-save" styleClass="green-btn" actionListener="#{mstNegaraMBean.simpan()}" update=":negara-content:negaradatatable @form"
+                                 process=":negara-content:negaradatatable @form"  style="width:130px" rendered="#{mstNegaraMBean.showButton}">
+                    <p:confirm header="Konfirmasi" message="Apakah anda yakin ingin menyimpan negara ini?" icon="ui-icon-alert" />
+                </p:commandButton>
+                <p:commandButton value="#{mstNegaraMBean.showButton ? 'Batal' : 'Kembali'}" actionListener="#{mstNegaraMBean.batal()}" 
+                                 styleClass="red-btn" style="width:130px" immediate="true" icon="ui-icon-cancel" >
+                    <p:ajax event="click" update="@form" oncomplete="if(!args.validationFailed) PF('widgetNegara').hide()"/>
+                </p:commandButton>
+            </p:panel>
+        </p:panel>
+    </h:form>
+</ui:composition>

@@ -1,0 +1,55 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <p:commandButton icon="ui-icon-autorenew" class="green-btn">
+        <p:ajax update="longitudeSad" process="longitudeSad" global="false" 
+                listener="#{searchAreaMBean.actionLongitudeSad}"/>
+    </p:commandButton>
+    <p:panelGrid columns="6" rendered="#{searchAreaMBean.longitudeSad.counter==3}" 
+                 style="width: 100%" class="no-border ui-fluid"
+                 columnClasses ="ui-grid-col-3,ui-grid-col-1,ui-grid-col-2,
+                 ui-grid-col-1,ui-grid-col-2,ui-grid-col-1">
+        <p:inputNumber style="width: 50px;" value="#{searchAreaMBean.longitudeSad.degree}"
+                       maxValue="180" maxlength="3" decimalPlaces="0" size="3">
+            <p:ajax event="keyup" process="@this"/>            
+        </p:inputNumber>
+        <p:outputLabel value="°"/>
+        <p:inputNumber style="width: 40px;" value="#{searchAreaMBean.longitudeSad.minute}" 
+                       maxValue="60" maxlength="2" decimalPlaces="0" size="2">
+            <p:ajax event="keyup" process="@this"/>
+        </p:inputNumber>
+        <p:outputLabel value="'"/>
+        <p:inputNumber style="width: 40px;" value="#{searchAreaMBean.longitudeSad.second}"
+                       maxValue="60" maxlength="2" decimalPlaces="0" size="2">
+            <p:ajax event="keyup" process="@this"/>        
+        </p:inputNumber>
+        <p:outputLabel value="&quot;"/>
+    </p:panelGrid>
+    <p:panelGrid columns="3" rendered="#{searchAreaMBean.longitudeSad.counter == 2}" 
+                 class="no-border" style="width: 100%"
+                 columnClasses ="ui-grid-col-3,ui-grid-col-1,ui-grid-col-6">
+        <p:inputNumber value="#{searchAreaMBean.longitudeSad.degree}"
+                       maxValue="180" size="3" maxlength="3" decimalPlaces="0">
+            <p:ajax event="keyup" process="@this"/>            
+        </p:inputNumber>
+        <p:spacer width="5"/>
+        <p:inputText value="#{searchAreaMBean.longitudeSad.minutesM}" 
+                     onkeypress="return isDecimal(event)" maxlength="18">
+            <p:ajax event="keyup" process="@this"/>            
+        </p:inputText>
+    </p:panelGrid>
+    <p:panelGrid columns="1" rendered="#{searchAreaMBean.longitudeSad.counter == 1}" 
+                 class="no-border ui-fluid" style="width: 100%" columnClasses="ui-grid-col-11"> 
+        <p:inputText value="#{searchAreaMBean.longitudeSad.decimalDegrees}" 
+                     onkeypress="return isDecimal(event)" maxlength="18">
+            <p:ajax event="keyup" process="@this"/>            
+        </p:inputText>
+    </p:panelGrid>
+    <p:selectOneMenu value="#{searchAreaMBean.longitudeSad.garis}"
+                     autoWidth="false">
+        <p:ajax event="itemSelect" process="@this"/>
+        <f:selectItem itemLabel="BT" itemValue="0" />
+        <f:selectItem itemLabel="BB" itemValue="1" />
+    </p:selectOneMenu>
+</ui:composition>

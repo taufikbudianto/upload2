@@ -1,0 +1,31 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <p:tree id="idTreeSearchArea" value="#{taskSearchAreaMBean.treeTaskArea}" var="doc" animate="true"
+            selectionMode="single" selection="#{taskSearchAreaMBean.selectedTreeTaskArea}"
+            class="no-border" style="font-size: xx-small"
+            rendered="#{taskSearchAreaMBean.isRendered}" >
+        <p:treeNode type="tasksearcharea" icon="ui-icon-custom ui-icon-custom-tasksearcharea">
+            <h:outputText value="#{doc.name}"/>
+        </p:treeNode>
+    </p:tree>
+    <p:contextMenu id="idCmTaskArea" nodeType="tasksearcharea" 
+                   for="idTreeSearchArea" style="font-size: small">
+        <p:menuitem value="Save Task Search Area" icon="fa fa-save"  
+                    actionListener="#{taskSearchAreaMBean.showDialogSave}"/>
+        <p:menuitem value="Remove Task Search Area" icon="fa fa-trash"  
+                    actionListener="#{taskSearchAreaMBean.removeTaskSearchArea}">
+            <p:confirm header="Konfirmasi" 
+                       message="Apakah anda yakin akan menghapus task Search Pattern?" 
+                       icon="ui-icon-alert" />
+        </p:menuitem>
+    </p:contextMenu>
+    <p:commandButton value="Clear Task Search Area" 
+                     actionListener="#{taskSearchAreaMBean.clearTaskSearchArea}">
+        <p:confirm header="Konfirmasi" 
+                   message="Apakah anda yakin akan menghapus semua task Search Pattern?" 
+                   icon="ui-icon-alert" />
+    </p:commandButton>
+</ui:composition>

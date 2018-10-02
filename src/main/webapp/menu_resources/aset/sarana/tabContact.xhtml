@@ -1,0 +1,29 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="kontakpotensi-content">
+        <div class="ui-g ui-fluid value-readonly">
+            <div class="ui-g-12 ui-lg-12 ">
+                <p:dataTable var="kontak" value="#{resSaranaMBean.lazyDataModelPotencyContactJPA}" reflow="true" rowKey="#{kontak.potencycontactid}"
+                             lazy="true" paginator="true" paginatorPosition="bottom" rows="#{viewBean.rowsPageDefault}"
+                             rowsPerPageTemplate="#{viewBean.rowsPerPageTemplate}" emptyMessage="Data tidak ditemukan" tableStyle="table-layout:auto">
+                    <p:column headerText="Title">
+                        <h:outputText value="#{kontak.contacttitle}" />
+                    </p:column>
+                    <p:column headerText="Nama">
+                        <h:outputText value="#{kontak.contactname}" />
+                    </p:column>
+                    <p:column headerText="Suffix">
+                        <h:outputText value="#{kontak.contactsuffix}" />
+                    </p:column>
+                    <p:column headerText="Jabatan">
+                        <h:outputText value="#{kontak.contactposition}" />
+                    </p:column>
+                </p:dataTable>
+            </div>
+        </div>
+    </h:form>
+</ui:composition>

@@ -1,0 +1,260 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <h:form id="form-Radiogram-Umum" rendered="#{incidentRadiogramMBean.isDisabled}">
+        <div class="ui-g ui-fluid">
+            <div class="ui-g-12 ui-lg-6">
+                <table cellpadding="1" cellspacing="3">
+
+                    <td><p:outputLabel value="Panggilan" style="width: 100px"/></td>
+                    <td><p:inputText value="#{incidentRadiogramMBean.panggilan}" style="width: 300px"/></td>
+                    <td><p:outputLabel value="Instruksi Penerusan" style="width: 200px"/></td>
+                    <td><p:inputText value="#{incidentRadiogramMBean.instruksi}" style="width: 290px"/></td>
+
+                </table>
+
+                <table cellpadding="1" cellspacing="10">
+                    <tr>
+                        <td><p:outputLabel value="Jenis" for="idJenis" style="width: 100px"/></td>
+                        <td><p:selectOneMenu id="idJenis" style="margin-bottom:10px;" value="#{incidentRadiogramMBean.jenis}">
+                                <f:selectItem itemLabel="Musibah" itemValue="Musibah" />
+                                <f:selectItem itemLabel="Umum" itemValue="Umum" />
+                            </p:selectOneMenu></td>
+                        <td><p:outputLabel value="Nr. Stn" style="width: 100px"/></td>
+                        <td><p:inputText value="#{incidentRadiogramMBean.nomor}" style="width: 162px"/></td>
+                        <td><p:outputLabel value="TW Penunjukan" style="width: 200px"/></td>
+                        <td><p:calendar value="#{incidentRadiogramMBean.datePenunjukan}" mask="true" navigator="true" showOn="button" style="width:90px"/></td>                        
+                    </tr>
+
+                    <tr>
+                        <td><p:outputLabel value="Derajat" for="idDerajat" style="width: 100px"/></td>
+                        <td><p:selectOneMenu id="idDerajat" style="margin-bottom:10px;width:70px" value="#{incidentRadiogramMBean.derajat}">
+                                <f:selectItem itemLabel="SGR" itemValue="SGR" />
+                                <f:selectItem itemLabel="R" itemValue="A" />
+                                <f:selectItem itemLabel="ASGR" itemValue="ASGR" />
+                            </p:selectOneMenu></td> 
+
+                        <td><p:outputLabel value="Tipe" for="idTipe" style="width: 100px"/></td>
+                        <td><p:selectOneMenu id="idTipe" style="margin-bottom:10px;width:162px" value="">
+                                <f:selectItem itemLabel="Terima" itemValue="Terima" />
+                                <f:selectItem itemLabel="Kirim" itemValue="Kirim" />
+                            </p:selectOneMenu></td> 
+
+                        <td><p:outputLabel value="Jumlah Kata" style="width: 200px"/></td>
+                        <td><p:inputText value="#{incidentRadiogramMBean.jumlahKata}" style="width: 280px"/></td>
+                    </tr>                    
+                </table>
+
+                <table cellpadding="1" cellspacing="3">
+                    <tr>
+                        <td rowspan="3">
+                            <p:outputLabel value="Aksi" style="width: 100px"/>
+                        </td>
+                        <td rowspan="3">
+                            <p:commandButton icon="ui-icon-more-horiz" >
+                                <p:ajax event="click"/>
+                            </p:commandButton>
+                        </td>
+                        <td rowspan="3"><p:inputText value="#{incidentRadiogramMBean.jumlahKata}" style="width: 305px"/></td>
+                        <td><p:outputLabel value="Dari" style="width: 100px"/></td>
+                        <td><p:inputText value="#{incidentRadiogramMBean.jumlahKata}" style="width: 290px"/></td>
+                    </tr>
+                    <tr>
+                        <td><p:outputLabel value="Info" style="width: 100px"/></td>
+                        <td><p:inputText value="#{incidentRadiogramMBean.jumlahKata}" style="width: 290px"/></td>
+                    </tr>
+                    <tr>
+                        <td><p:outputLabel value="Klasifikasi" style="width: 100px"/></td>
+                        <td><p:inputText value="#{incidentRadiogramMBean.jumlahKata}" style="width: 290px"/></td>
+                    </tr>
+                </table>
+
+                <table cellpadding="1" cellspacing="3">
+                    <tr>
+                        <td rowspan="3"><p:outputLabel value="Aksi Lain" style="width: 100px"/></td>
+                        <td rowspan="3"><p:inputText value="#{incidentRadiogramMBean.jumlahKata}" style="width: 340px"/></td>
+                        <td><p:outputLabel value="Nomor" style="width: 100px"/></td>
+                        <td><p:inputText value="#{incidentRadiogramMBean.jumlahKata}" style="width: 290px"/></td>
+                    </tr>
+                    <tr>
+                        <td><p:outputLabel value="Referensi" style="width: 100px"/></td>
+                        <td><p:inputText value="#{incidentRadiogramMBean.jumlahKata}" style="width: 290px"/>
+                        </td>
+                        <td><p:commandButton icon="ui-icon-more-horiz" >
+                                <p:ajax event="click"/>
+                            </p:commandButton></td>
+                    </tr>
+                    <tr>
+                        <td><p:outputLabel value="Ref.Notes" style="width: 100px"/></td>
+                        <td><p:inputText value="#{incidentRadiogramMBean.jumlahKata}" style="width: 290px"/></td>
+                    </tr>
+                </table>
+
+                <table cellpadding="1" cellspacing="3">
+                    <tr>
+                        <td><p:outputLabel value="Pengirim" style="width: 100px"/></td>
+                        <td><p:inputText value="#{incidentRadiogramMBean.nomor}" style="width: 312px"/></td>
+                        <td><p:outputLabel value="TWT" style="width: 200px"/></td>
+                        <td><p:calendar value="#{incidentRadiogramMBean.datePenunjukan}" mask="true" navigator="true" showOn="button" style="width:290px"/></td>
+                    </tr>   
+
+                    <tr>
+                        <td><p:outputLabel value="Nama" style="width: 100px"/></td>
+                        <td><p:inputText value="#{incidentRadiogramMBean.nomor}" style="width: 272px"/>
+                            <p:commandButton icon="ui-icon-search" >
+                                <p:ajax event="click"/>
+                            </p:commandButton></td>
+                        <td><p:outputLabel value="TWK" style="width: 200px"/></td>
+                        <td><p:calendar value="#{incidentRadiogramMBean.datePenunjukan}" mask="true" navigator="true" showOn="button" style="width:290px"/></td>
+                    </tr>
+
+                    <tr>
+                        <td><p:outputLabel value="Pangkat" style="width: 100px"/></td>
+                        <td><p:inputText value="#{incidentRadiogramMBean.nomor}" style="width: 312px"/></td>
+                        <td><p:outputLabel value="Tanggal Buat" style="width: 200px"/></td>
+                        <td><p:calendar value="#{incidentRadiogramMBean.datePenunjukan}" mask="true" navigator="true" showOn="button" style="width:290px"/></td>
+                    </tr>
+
+                    <tr>
+                        <td><p:outputLabel value="Jabatan" style="width: 100px"/></td>
+                        <td><p:inputText value="#{incidentRadiogramMBean.nomor}" style="width: 312px"/></td>
+                        <td><p:outputLabel value="Sistem" style="width: 200px"/></td>
+                        <td><p:inputText value="#{incidentRadiogramMBean.nomor}" style="width: 290px"/></td>
+                    </tr>
+
+                    <tr>
+                        <td style="width: 100px"></td>
+                        <td style="width: 312px"></td>
+                        <td><p:outputLabel value="Paraf" style="width: 200px"/></td>
+                        <td><p:inputText value="#{incidentRadiogramMBean.nomor}" style="width: 290px"/></td>
+                    </tr>
+                </table>
+
+                <table cellpadding="1" cellspacing="3">
+                    <tr>
+                        <td>
+                            <p:commandButton value="Kirim" styleClass="green-btn" actionListener="#{daftarLogMBean.simpanDaftarLog()}" update="@form" 
+                                             process="@form" style="width:130px" rendered="#{daftarLogMBean.showButton}">
+                                <p:confirm header="Konfirmasi" message="Apakah anda yakin ingin menyimpan log ini?" icon="ui-icon-alert" />
+                            </p:commandButton>
+                        </td>
+                        <td>
+                            <p:commandButton value="Print" styleClass="green-btn" actionListener="#{daftarLogMBean.simpanDaftarLog()}" update="@form" 
+                                             process="@form" style="width:130px" rendered="#{daftarLogMBean.showButton}">
+                                <p:confirm header="Konfirmasi" message="Apakah anda yakin ingin menyimpan log ini?" icon="ui-icon-alert" />
+                            </p:commandButton>
+                        </td>
+                        <td>
+                            <p:commandButton value="Simpan" styleClass="green-btn" actionListener="#{daftarLogMBean.simpanDaftarLog()}" update="@form" 
+                                             process="@form" style="width:130px" rendered="#{daftarLogMBean.showButton}">
+                                <p:confirm header="Konfirmasi" message="Apakah anda yakin ingin menyimpan log ini?" icon="ui-icon-alert" />
+                            </p:commandButton>
+                        </td>
+                        <td>
+                            <p:commandButton value="Tutup" styleClass="green-btn" actionListener="#{daftarLogMBean.simpanDaftarLog()}" update="@form" 
+                                             process="@form" style="width:130px" rendered="#{daftarLogMBean.showButton}">
+                                <p:confirm header="Konfirmasi" message="Apakah anda yakin ingin menyimpan log ini?" icon="ui-icon-alert" />
+                            </p:commandButton>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </h:form>
+
+    <h:form id="form-Radiogram-UmumInter" rendered="#{!incidentRadiogramMBean.isDisabled}">
+        <div class="ui-g ui-fluid">
+            <div class="ui-g-12 ui-lg-6">
+                <table cellpadding="8" cellspacing="3">
+                    <tr>
+                        <td><p:outputLabel value="Date" style="width: 200px"/></td>
+                        <td><p:calendar value="#{incidentRadiogramMBean.datePenunjukan}" mask="true" navigator="true" showOn="button" style="width:290px"/></td>
+                    </tr>
+
+                    <tr>
+                        <td rowspan="3" style="width: 50px">
+                            <p:outputLabel value="To" style="width: 100px"/>
+                        </td>
+                        <td rowspan="3">
+                            <p:commandButton icon="ui-icon-more-horiz" >
+                                <p:ajax event="click"/>
+                            </p:commandButton>
+                            <p:inputText value="#{incidentRadiogramMBean.jumlahKata}" style="width: 305px"/>
+                        </td>
+                    </tr>
+                </table>
+                    
+                <table cellpadding="8" cellspacing="3">
+                    <tr>
+                        <td><p:outputLabel value="Subject" style="width: 100px"/></td>
+                        <td><p:inputText value="#{incidentRadiogramMBean.nomor}" style="width: 162px"/></td>
+                    </tr>
+
+                    <tr>
+                        <td><p:outputLabel value="No" style="width: 100px"/></td>
+                        <td><p:inputText value="#{incidentRadiogramMBean.nomor}" style="width: 162px"/></td>
+                    </tr>
+
+                    <tr>
+                        <td><p:outputLabel value="Sender" style="width: 100px"/></td>
+                        <td><p:inputText value="#{incidentRadiogramMBean.nomor}" style="width: 162px"/></td>
+                    </tr>
+
+                    <tr>
+                        <td><p:outputLabel value="Name" style="width: 100px"/></td>
+                        <td><p:inputText value="#{incidentRadiogramMBean.jumlahKata}" style="width: 290px"/></td>
+                        <td><p:commandButton icon="ui-icon-more-horiz" >
+                                <p:ajax event="click"/>
+                            </p:commandButton></td>
+                    </tr>
+                    
+                    <tr>
+                        <td><p:outputLabel value="Rank" style="width: 100px"/></td>
+                        <td><p:inputText value="#{incidentRadiogramMBean.nomor}" style="width: 162px"/></td>
+                    </tr>
+                    
+                    <tr>
+                        <td><p:outputLabel value="Employment" style="width: 100px"/></td>
+                        <td><p:inputText value="#{incidentRadiogramMBean.nomor}" style="width: 162px"/></td>
+                    </tr>
+                    
+                    <tr>
+                        <td><p:outputLabel value="Date Created" style="width: 200px"/></td>
+                        <td><p:calendar value="#{incidentRadiogramMBean.datePenunjukan}" mask="true" navigator="true" showOn="button" style="width:290px"/></td>
+                    </tr>
+                </table>
+
+                <table cellpadding="1" cellspacing="3">
+                    <tr>
+                        <td>
+                            <p:commandButton value="Kirim" styleClass="green-btn" actionListener="#{daftarLogMBean.simpanDaftarLog()}" update="@form" 
+                                             process="@form" style="width:130px" rendered="#{daftarLogMBean.showButton}">
+                                <p:confirm header="Konfirmasi" message="Apakah anda yakin ingin menyimpan log ini?" icon="ui-icon-alert" />
+                            </p:commandButton>
+                        </td>
+                        <td>
+                            <p:commandButton value="Print" styleClass="green-btn" actionListener="#{daftarLogMBean.simpanDaftarLog()}" update="@form" 
+                                             process="@form" style="width:130px" rendered="#{daftarLogMBean.showButton}">
+                                <p:confirm header="Konfirmasi" message="Apakah anda yakin ingin menyimpan log ini?" icon="ui-icon-alert" />
+                            </p:commandButton>
+                        </td>
+                        <td>
+                            <p:commandButton value="Simpan" styleClass="green-btn" actionListener="#{daftarLogMBean.simpanDaftarLog()}" update="@form" 
+                                             process="@form" style="width:130px" rendered="#{daftarLogMBean.showButton}">
+                                <p:confirm header="Konfirmasi" message="Apakah anda yakin ingin menyimpan log ini?" icon="ui-icon-alert" />
+                            </p:commandButton>
+                        </td>
+                        <td>
+                            <p:commandButton value="Tutup" styleClass="green-btn" actionListener="#{daftarLogMBean.simpanDaftarLog()}" update="@form" 
+                                             process="@form" style="width:130px" rendered="#{daftarLogMBean.showButton}">
+                                <p:confirm header="Konfirmasi" message="Apakah anda yakin ingin menyimpan log ini?" icon="ui-icon-alert" />
+                            </p:commandButton>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </h:form>
+</ui:composition>

@@ -1,0 +1,98 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="user-detail">
+        <p:panel id="pnl-user" class="card card-w-title no-padding no-border content-title" header="#{userMBean.headerDetail}">                    
+            <p:messages closable="true"/>
+            <p:panelGrid id="basic-data" class="no-padding no-border" columns="2" layout="grid" 
+                         styleClass="ui-panelgrid-blank form-group" style="margin-top: 10px"
+                         columnClasses="ui-grid-col-2,ui-grid-col-6">
+                <p:outputLabel value="#{msg.user_dtl_username}" styleClass="asterix"/>
+                <p:inputText required="true" requiredMessage="Username harus diisi"
+                             id="username" value="#{userMBean.userDetail.login}" maxlength="100"
+                             disabled="#{!userMBean.isSecureItemEditable('UsernameInput') or userMBean.disabled}" 
+                             style="width: 50%" />
+                <p:outputLabel value="#{msg.user_dtl_password}" styleClass="asterix"/>
+                <p:password id="password" value="#{userMBean.passwordInput}" maxlength="60" 
+                            match="confirm-password" validatorMessage="Password dan Konfirmasi Password tidak sesuai" 
+                            required="#{!userMBean.generatedPassword}" requiredMessage="Password harus diisi" 
+                            disabled="#{!userMBean.isSecureItemEditable('PasswordInput') or userMBean.generatedPassword
+                                        or userMBean.disabled}" style="width: 50%" />
+                <p:outputLabel value="Konfirmasi Password"  styleClass="asterix"/>
+                <p:password id="confirm-password" value="#{userMBean.passwordInput}" maxlength="60"
+                            required="#{!userMBean.generatedPassword}" requiredMessage="Konfirmasi Password harus diisi" 
+                            disabled="#{!userMBean.isSecureItemEditable('PasswordInput') or userMBean.generatedPassword
+                                        or userMBean.disabled}" style="width: 50%" />
+                <p:outputLabel value="Nama Lengkap" styleClass="asterix"/>
+                <p:inputText id="full-name" value="#{userMBean.fullNameInput}" maxlength="100"
+                             disabled="#{!userMBean.isSecureItemEditable('FullNameInput') or userMBean.disabled}" 
+                             required="true" requiredMessage="Nama Lengkap harus diisi" style="width: 50%" />
+                <p:outputLabel value="Hak Akses" styleClass="asterix"/>
+                <p:selectOneMenu id="role" value="#{userMBean.selectedRole}" converter="listConverter"
+                                 disabled="#{!userMBean.isSecureItemEditable('RoleInput') or userMBean.disabled}"
+                                 required="true" requiredMessage="Hak Akses harus dipilih" style="width: 50%">
+                    <f:selectItem itemLabel="--- Pilih ---" itemValue="" />
+                    <f:selectItems value="#{userMBean.availableRoles}" var="role" 
+                                   itemLabel="#{role.roleName} #{role.tenant != null ? '- '.concat(role.tenant.tenantName) : ''}" itemValue="#{role}" />
+                </p:selectOneMenu>
+            </p:panelGrid>
+            <p:panelGrid class="no-padding no-border" columns="1" layout="grid" style="margin-top: 20px;" 
+                         styleClass="ui-panelgrid-blank form-group" columnClasses="ui-grid-col-9"
+                         rendered="#{userMBean.isSecureItemVisible('RoleInput') and userMBean.multipleRoles}">
+                    <p:pickList id="roles" value="#{userMBean.roles}" var="roles" itemLabel="#{roles}" itemValue="#{roles}"
+                                showTargetControls="true" showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains"
+                                responsive="true" converter="listConverter" itemDisabled="#{!userMBean.isSecureItemEditable('RoleInput') or userMBean.disabled}">
+                        <f:facet name="sourceCaption">#{msg.user_dtl_available_roles}</f:facet>
+                        <f:facet name="targetCaption">#{msg.user_dtl_assigned_roles}</f:facet>
+                        <p:column>
+                            <p:outputLabel value="#{roles.roleName} #{roles.tenant != null ? '- '.concat(roles.tenant.tenantName) : ''}" />
+                        </p:column>
+                    </p:pickList>
+
+                    <p class="field-note">#{msg.user_dtl_roles_note}</p>
+            </p:panelGrid>
+
+            <!--            <p:panelGrid class="ui-g-12 no-padding no-border" columns="1" layout="grid" style="margin-top: 20px;" 
+                                     styleClass="ui-panelgrid-blank form-group" columnClasses="ui-grid-col-6"
+                                     rendered="{userMBean.isSecureItemVisible('GeneratePasswordCheckBox') or userMBean.isSecureItemVisible('MustChangePasswordCheckBox')}">
+            
+                            <p:fieldset id="authentication" legend="{msg.user_dtl_authentication}">
+                                <p:panelGrid columns="1" layout="grid" class="no-padding no-border" styleClass="ui-panelgrid-blank form-group">
+                                    <h:panelGroup rendered="{userMBean.isSecureItemVisible('GeneratePasswordCheckBox')}">
+                                        <p:selectBooleanCheckbox id="generate-password" value="{userMBean.generatedPassword}" 
+                                                                 disabled="{!userMBean.isSecureItemEditable('GeneratePasswordCheckBox')}">
+                                            <p:ajax update="@form:password @form:confirm-password" process="@this" />
+                                        </p:selectBooleanCheckbox>
+                                        <p:spacer />
+                                        <p:outputLabel value="{msg.user_dtl_generate_password}" />
+                                    </h:panelGroup>
+            
+                                    <h:panelGroup rendered="{userMBean.isSecureItemVisible('MustChangePasswordCheckBox')}">
+                                        <p:selectBooleanCheckbox id="change-password" value="{userMBean.userDetail.changePassword}"
+                                                                 disabled="{!userMBean.isSecureItemEditable('MustChangePasswordCheckBox')}" />
+                                        <p:spacer />
+                                        <p:outputLabel value="{msg.user_dtl_must_change_password}" />
+                                    </h:panelGroup>
+                                </p:panelGrid>
+                            </p:fieldset>
+                        </p:panelGrid>-->
+            
+            <p:panel class="control-button no-border no-padding">
+                <p:commandButton value="Simpan" icon="fa fa-save" class="green-btn" disabled="#{userMBean.disabled}" style="width: 130px">
+                    <p:confirm header="Konfirmasi" message="Apakah Anda yakin akan menyimpan data pengguna ini?" />
+                    <p:ajax event="click" listener="#{userMBean.saveDetail()}" process="@form" update="user-content:user-detail:pnl-user" />
+                </p:commandButton>
+                <p:spacer width="10"/>
+                <p:commandButton value="Batal" icon="ui-icon-cancel" class="red-btn" style="width: 130px">
+                    <p:ajax event="click" listener="#{userMBean.hideDetail()}" process="@this" update=":user-content" />
+                </p:commandButton>                
+            </p:panel>
+            <p:panel class="control-button no-border no-padding">
+            </p:panel>
+        </p:panel>
+    </h:form>
+
+</ui:composition>

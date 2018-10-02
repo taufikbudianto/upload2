@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="NewSubPeralatanIncident" pageWidth="554" pageHeight="555" whenNoDataType="AllSectionsNoDetail" columnWidth="554" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="30611db5-3e5f-4021-9ddf-a76eeecb7945">
+	<property name="ireport.zoom" value="1.815000000000002"/>
+	<property name="ireport.x" value="22"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="INCIDENTID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT * FROM
+(SELECT * FROM INC_ASSET)A
+LEFT JOIN
+(SELECT * FROM RES_POTENCY)B
+ON A.POTENCYID =B.POTENCYID
+WHERE USAGEQTY=0
+AND INCIDENTID= $P{INCIDENTID}]]>
+	</queryString>
+	<field name="INCASSETID" class="java.lang.String"/>
+	<field name="ASSETTYPEID" class="java.lang.String"/>
+	<field name="KANTORSARID" class="java.lang.String"/>
+	<field name="POSSARID" class="java.lang.String"/>
+	<field name="POTENCYID" class="java.lang.String"/>
+	<field name="CODE" class="java.lang.String"/>
+	<field name="NAME" class="java.lang.String"/>
+	<field name="GOODQTY" class="java.math.BigDecimal"/>
+	<field name="REJECTEDQTY" class="java.math.BigDecimal"/>
+	<field name="SERVICEDQTY" class="java.math.BigDecimal"/>
+	<field name="OTHERQTY" class="java.math.BigDecimal"/>
+	<field name="ASSETCONDITION" class="java.lang.String"/>
+	<field name="CARGO" class="java.lang.String"/>
+	<field name="LONGITUDE" class="java.lang.String"/>
+	<field name="LATITUDE" class="java.lang.String"/>
+	<field name="FUNCTIONAL" class="java.lang.String"/>
+	<field name="ASSETID" class="java.lang.String"/>
+	<field name="INCIDENTID" class="java.lang.String"/>
+	<field name="USAGEQTY" class="java.math.BigDecimal"/>
+	<field name="USAGEDATE" class="java.sql.Timestamp"/>
+	<field name="ASSIGNMENTDATE" class="java.sql.Timestamp"/>
+	<field name="ASSIGNMENTENDDATE" class="java.sql.Timestamp"/>
+	<field name="DATECREATED" class="java.sql.Timestamp"/>
+	<field name="LASTMODIFIED" class="java.sql.Timestamp"/>
+	<field name="MODIFIEDBY" class="java.lang.String"/>
+	<field name="USERSITEID" class="java.lang.String"/>
+	<field name="CREATEDBY" class="java.lang.String"/>
+	<field name="ISDELETED" class="java.math.BigDecimal"/>
+	<field name="STATUS" class="java.math.BigDecimal"/>
+	<field name="ENDURANCE" class="java.math.BigDecimal"/>
+	<field name="SPEED" class="java.math.BigDecimal"/>
+	<field name="VEHICLETYPE" class="java.lang.String"/>
+	<field name="REMARKS" class="java.lang.String"/>
+	<field name="POTENCYNAME" class="java.lang.String"/>
+	<field name="ADDRESS" class="java.lang.String"/>
+	<field name="POTENCYLEVEL" class="java.math.BigDecimal"/>
+	<field name="PHONENUMBER1" class="java.lang.String"/>
+	<field name="PHONENUMBER2" class="java.lang.String"/>
+	<field name="PHONENUMBER3" class="java.lang.String"/>
+	<field name="FAXNUMBER" class="java.lang.String"/>
+	<field name="RADIOFREQUENCY" class="java.lang.String"/>
+	<field name="EMAIL" class="java.lang.String"/>
+	<field name="SOCIALNETWORK" class="java.lang.String"/>
+	<field name="GISSYMBOL" class="java.lang.String"/>
+	<field name="POTENCYTYPE" class="java.math.BigDecimal"/>
+	<field name="REGIONID" class="java.lang.String"/>
+	<field name="AREACODEID" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="21" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="c2e59151-a075-4005-a36f-dae3d6f14f55" x="121" y="0" width="200" height="20"/>
+				<box topPadding="2" leftPadding="3" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[NAMA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c05ff0ce-6126-4099-ab51-41a6c76ee414" x="321" y="0" width="233" height="20"/>
+				<box topPadding="2" leftPadding="3" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[KANSAR / POTENSI]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="bcf1c551-6b69-4671-a72a-789cf436199b" x="21" y="0" width="100" height="20"/>
+				<box topPadding="2" leftPadding="3" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[TIPE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="54872a66-066c-485d-923f-1f2c48170bea" x="0" y="0" width="21" height="20"/>
+				<box topPadding="2" leftPadding="3" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[NO]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="67106588-b640-404c-bbb7-fac8035c29a8" x="121" y="0" width="200" height="20"/>
+				<box topPadding="2" leftPadding="3" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{NAME}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="1b609cd3-2b21-40ee-90ee-5edc772b3f9b" x="21" y="0" width="100" height="20"/>
+				<box topPadding="2" leftPadding="3" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{ASSETTYPEID}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="b4c02db6-5e18-4375-8dbc-ac5a0d7bc273" x="321" y="0" width="233" height="20"/>
+				<box topPadding="2" leftPadding="3" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{POTENCYNAME}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="6099fb0b-ee3b-4235-946e-9911a5b6704f" x="0" y="0" width="21" height="20"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="19">
+			<printWhenExpression><![CDATA[new Boolean($V{REPORT_COUNT} == 0)]]></printWhenExpression>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="67106588-b640-404c-bbb7-fac8035c29a8" x="121" y="-1" width="200" height="20"/>
+				<box topPadding="2" leftPadding="3" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement/>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="b4c02db6-5e18-4375-8dbc-ac5a0d7bc273" x="321" y="-1" width="233" height="20"/>
+				<box topPadding="2" leftPadding="3" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement/>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="1b609cd3-2b21-40ee-90ee-5edc772b3f9b" x="21" y="-1" width="100" height="20"/>
+				<box topPadding="2" leftPadding="3" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement/>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="6099fb0b-ee3b-4235-946e-9911a5b6704f" x="0" y="-1" width="21" height="20"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

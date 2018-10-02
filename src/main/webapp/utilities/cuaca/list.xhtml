@@ -1,0 +1,162 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+    <ui:define name="title">Cuaca</ui:define>
+    <ui:define name="content">
+        <h:form>
+            <p:panel class="ui-fluid card no-border no-padding card-w-title" header="Cuaca" rendered="#{!utiWeatherBmkgMBean.showDetail}">
+                <p:panelGrid columns="4" >
+                    <p:outputLabel value="Tanggal"/>
+                    <p:calendar id="tanggalmulai" pattern="dd/MM/yyyy" 
+                                value="#{utiWeatherBmkgMBean.startDate}" 
+                                showOn="button" mask="true" navigator="true"/>
+                    <p:outputLabel value="    s.d   "/>
+                    <p:calendar id="tanggalakhir" pattern="dd/MM/yyyy" 
+                                value="#{utiWeatherBmkgMBean.endDate}" 
+                                showOn="button" mask="true" navigator="true"/>
+
+                    <p:outputLabel value="Latitude" />
+                    <p:panelGrid id="latitudeAwal" columns="5" style="width: 100%;"
+                                 columnClasses ="ui-grid-col-2,ui-grid-col-7,ui-grid-col-3"                                     
+                                 class="no-border no-padding-table ui-fluid">
+                        <ui:include src="coordinate/latitude.xhtml"/>
+                    </p:panelGrid>
+                    <p:outputLabel value="    s.d   "/>
+                    <p:panelGrid id="latitudeAkhir" columns="5" style="width: 100%;"
+                                 columnClasses ="ui-grid-col-2,ui-grid-col-7,ui-grid-col-3"                                     
+                                 class="no-border no-padding-table ui-fluid">
+                        <ui:include src="coordinate/latitudeakhir.xhtml"/>
+                    </p:panelGrid>
+
+                    <p:outputLabel value="Longitude" />
+                    <p:panelGrid id="longitudeAwal" columns="5" style="width: 100%;"
+                                 columnClasses ="ui-grid-col-2,ui-grid-col-7,ui-grid-col-3"                                    
+                                 class="no-border no-padding-table ui-fluid">
+                        <ui:include src="coordinate/longitude.xhtml"/>
+                    </p:panelGrid>
+                    <p:outputLabel value="               s.d   "/>
+                    <p:panelGrid id="longitudeAkhir" columns="5" style="width: 100%;"
+                                 columnClasses ="ui-grid-col-2,ui-grid-col-7,ui-grid-col-3"                                    
+                                 class="no-border no-padding-table ui-fluid">
+                        <ui:include src="coordinate/longitudeakhir.xhtml"/>
+                    </p:panelGrid>
+
+
+                    <p:outputLabel value="Kolom Pencarian"/>
+                    <p:outputLabel value="Kata Kunci"/>
+                    <p:spacer/>
+                    <p:spacer/>
+                    <p:selectOneMenu value="#{utiWeatherBmkgMBean.field}">
+                        <f:selectItem itemLabel="Wind Dir" itemValue="windDir"/>
+                        <f:selectItem itemLabel="Wind Speed" itemValue="windSpd"/>
+                        <f:selectItem itemLabel="WSC" itemValue="wsc"/>
+                        <f:selectItem itemLabel="Cu Dir" itemValue="cuDir"/>
+                        <f:selectItem itemLabel="Cu Speed" itemValue="cuSpd"/>
+                        <f:selectItem itemLabel="EKP" itemValue="ekp"/>
+                        <f:selectItem itemLabel="Wave Dir" itemValue="waveDir"/>
+                        <f:selectItem itemLabel="P Tot" itemValue="pTot"/>
+                        <f:selectItem itemLabel="H Tot" itemValue="hTot"/>
+                        <f:selectItem itemLabel="H (1/10)" itemValue="h1Per10"/>
+                        <f:selectItem itemLabel="H (1/100)" itemValue="h1Per100"/>
+                        <f:selectItem itemLabel="Sea Dir" itemValue="seaDir"/>
+                        <f:selectItem itemLabel="P Sea" itemValue="pSea"/>
+                        <f:selectItem itemLabel="H Sea" itemValue="hSea"/>
+                        <f:selectItem itemLabel="Swell Dir" itemValue="swellDir"/>
+                        <f:selectItem itemLabel="P Swell" itemValue="pSwell"/>
+                        <f:selectItem itemLabel="H Swell" itemValue="hSwell"/>
+                    </p:selectOneMenu>
+                    <p:inputText id="value" value="#{utiWeatherBmkgMBean.value}"/>
+                    <p:commandButton id="search-btn" type="button"  value="Cari" icon="ui-icon-search" onclick="PF('listWidget').getPaginator().setPage(0);">
+                        <p:ajax event="click" update="j_id_x:list-cuaca" process="@form"/>
+                    </p:commandButton>
+                    <p:button value="Reset" icon="ui-icon-replay"/>
+                </p:panelGrid>
+                <p:panel class="ui-fluid no-border no-padding card card-w-title">
+                    <p:dataTable id="list-cuaca" var="cuaca" value="#{utiWeatherBmkgMBean.lazyDataModelJPA}" 
+                                 reflow="true" rowKey="#{cuaca.weatherBmkgID}" lazy="true"
+                                 paginator="true" paginatorPosition="bottom" rows="10"
+                                 tableStyle="table-layout:auto" emptyMessage="Data Not Found"
+                                 widgetVar="listWidget" rowIndexVar="index">
+                        <p:column headerText="No" style="width: 20px">
+                            <p:outputLabel value="#{index + 1}"/>
+                        </p:column>
+                        <p:column headerText="Tanggal Dibuat" sortBy="#{cuaca.dateCreated}">
+                            <p:outputLabel value="#{cuaca.dateCreated}"/>
+                        </p:column>
+                        <p:column headerText="Latitude" sortBy="#{cuaca.latitude}">
+                            <p:outputLabel value="#{utiWeatherBmkgMBean.latitude.getConvertDdToDms(cuaca.latitude, true)}"/>
+                        </p:column>
+                        <p:column headerText="Longitude" sortBy="#{cuaca.longitude}">
+                            <p:outputLabel value="#{utiWeatherBmkgMBean.longitude.getConvertDdToDms(cuaca.longitude, false)}"/>
+                        </p:column>
+                        <p:column headerText="Wind Dir" sortBy="#{cuaca.windDir}">
+                            <p:outputLabel value="#{cuaca.windDir}"/>
+                        </p:column>
+                        <p:column headerText="Wind Speed" sortBy="#{cuaca.windSpd}">
+                            <p:outputLabel value="#{cuaca.windSpd}"/>
+                        </p:column>
+                        <p:column headerText="Cu Dir" sortBy="#{cuaca.cuDir}">
+                            <p:outputLabel value="#{cuaca.cuDir}"/>
+                        </p:column>
+                        <p:column headerText="WSC" sortBy="#{cuaca.wsc}">
+                            <p:outputLabel value="#{cuaca.wsc}"/>
+                        </p:column>
+                        <p:column headerText="Cu Speed" sortBy="#{cuaca.cuSpd}">
+                            <p:outputLabel value="#{cuaca.cuSpd}"/>
+                        </p:column>
+                        <p:column headerText="EKP" sortBy="#{cuaca.ekp}">
+                            <p:outputLabel value="#{cuaca.ekp}"/>
+                        </p:column>
+                        <p:column headerText="Wave Dir" sortBy="#{cuaca.waveDir}">
+                            <p:outputLabel value="#{cuaca.waveDir}"/>
+                        </p:column>
+                        <p:column headerText="P Tot" sortBy="#{cuaca.PTot}">
+                            <p:outputLabel value="#{cuaca.PTot}"/>
+                        </p:column>
+                        <p:column headerText="H Tot" sortBy="#{cuaca.HTot}">
+                            <p:outputLabel value="#{cuaca.HTot}"/>
+                        </p:column>
+                        <p:column headerText="H (1/10)" sortBy="#{cuaca.h1Per10}">
+                            <p:outputLabel value="#{cuaca.h1Per10}"/>
+                        </p:column>
+                        <p:column headerText="H (1/100)" sortBy="#{cuaca.h1Per100}">
+                            <p:outputLabel value="#{cuaca.h1Per100}"/>
+                        </p:column>
+                        <p:column headerText="Sea Dir" sortBy="#{cuaca.seaDir}">
+                            <p:outputLabel value="#{cuaca.seaDir}"/>
+                        </p:column>
+                        <p:column headerText="P Sea" sortBy="#{cuaca.PSea}">
+                            <p:outputLabel value="#{cuaca.PSea}"/>
+                        </p:column>
+                        <p:column headerText="H Sea" sortBy="#{cuaca.HSea}">
+                            <p:outputLabel value="#{cuaca.HSea}"/>
+                        </p:column>
+                        <p:column headerText="Swell Dir" sortBy="#{cuaca.swellDir}">
+                            <p:outputLabel value="#{cuaca.swellDir}"/>
+                        </p:column>
+                        <p:column headerText="P Swell" sortBy="#{cuaca.PSwell}">
+                            <p:outputLabel value="#{cuaca.PSwell}"/>
+                        </p:column>
+                        <p:column headerText="H Swell" sortBy="#{cuaca.HSwell}">
+                            <p:outputLabel value="#{cuaca.HSwell}"/>
+                        </p:column>
+                        <p:column headerText="Aksi">
+                            <p:commandButton label="lihat" icon="fa fa-search" class="blue-grey-btn">
+                                <p:ajax event="click" listener="#{utiWeatherBmkgMBean.viewCuaca(cuaca, true)}" update="@form"/>
+                            </p:commandButton>
+                        </p:column>
+
+                    </p:dataTable>
+                </p:panel>
+
+            </p:panel>
+
+            <p:panel id="detailcuaca" class="no-border no-padding" rendered="#{utiWeatherBmkgMBean.showDetail}">
+                <ui:include src="detailCuaca.xhtml" />
+            </p:panel>
+        </h:form>
+    </ui:define>
+</ui:composition>

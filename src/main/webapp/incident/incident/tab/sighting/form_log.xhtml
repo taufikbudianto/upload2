@@ -1,0 +1,43 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <p:panel header="Detail">
+        <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank grid-pad" columnClasses="ui-grid-col-3,ui-grid-col-8">
+            <p:outputLabel value="Tanggal &amp; Waktu" />
+            <p:panelGrid columns="2" class="no-border no-padding no-padding-table">
+                <p:calendar pattern="yyyy-MM-dd HH:mm" value="#{incidentMBean.incident.startdate}" mask="true" navigator="true" showOn="button" readonlyInput="true"/>
+                <p:selectOneMenu value="#{incidentMBean.incident.startdatetimezone}">
+                    <f:selectItems value="#{timezone.ALL_ENUM_VALUES}" var="tz" 
+                                   itemValue="#{tz.timezone}" itemLabel="#{tz.shorttimezone}" />
+                </p:selectOneMenu>
+            </p:panelGrid>
+            <p:outputLabel value="Deskripsi" />
+            <p:inputTextarea value="#{incidentMBean.incident.remarks}"/>
+            <p:outputLabel value="No. Radiogram" />
+            <p:panelGrid columns="3" class="no-border no-padding no-padding-table">
+                <p:inputText value="#{incidentMBean.incident.owneraddress}"/>
+                <p:spacer width="10"/>
+                <p:commandButton value="Ubah" disabled="true">
+                    <p:ajax event="click"/>
+                </p:commandButton>
+            </p:panelGrid>
+            <p:outputLabel value="Lampiran" />
+            <p:panelGrid columns="5" class="no-border no-padding no-padding-table">
+                <p:inputText value="#{incidentMBean.incident.owneremail}"/>
+                <p:spacer width="10"/>
+                <p:commandButton icon="ui-icon-search">
+                    <p:ajax event="click"/>
+                </p:commandButton>
+                <p:spacer width="10"/>
+                <p:commandButton icon="ui-icon-save" disabled="true"/>
+            </p:panelGrid>
+        </p:panelGrid>
+        <p:panelGrid columns="2" class="no-border no-padding">
+            <p:commandButton value="Simpan" icon="ui-icon-save" class="green-btn"/>
+            <p:commandButton value="Tutup" icon="ui-icon-cancel" class="red-btn"
+                             onclick="PF('wgFormSighting').hide()"/>
+        </p:panelGrid>
+    </p:panel>
+</ui:composition>

@@ -1,0 +1,144 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <p:dialog showEffect="fade" hideEffect="fade" dynamic="true"
+              position="center" id="idDialogSPP"
+              header="Search Pattern Parameter" appendTo="@(body)"  
+              widgetVar="showDialogSPP"  
+              modal="true" height="95%" 
+              responsive="true" resizable="false">
+        <h:form prependId="false">
+            <p:panel id="idPanelSpp" style="overflow: auto; width: 100% ; max-height: 55vh" 
+                     class="no-border card ui-fluid">
+                <p:messages closable="true"/>
+                <p:panelGrid columns="2" columnClasses="ui-grid-col-5,ui-grid-col-8"
+                             style="width: 100%" layout="grid"
+                             styleClass="ui-panelgrid-blank form-group">
+                    <p:outputLabel value="Name"/>
+                    <p:inputText value="#{searchPatternMBean.patternParameter.name}" 
+                                 required="true" requiredMessage="Nama belum diisi"/>
+                    <p:outputLabel value="Task Search Area" rendered="#{searchPatternMBean.isTaskArea}"/>
+                    <p:selectOneMenu 
+                        value="#{searchPatternMBean.patternParameter.incTaskSearchArea}"
+                        converter="objectListConverter" 
+                        filter="true" filterMatchMode="startsWith"
+                        rendered="#{searchPatternMBean.isTaskArea}"
+                        disabled="#{searchPatternMBean.isEdit}">
+                        <p:ajax listener="#{searchPatternMBean.onTaskSearchChange}" update="idPgParameter" />
+                        <f:selectItems value="#{searchPatternMBean.listTaskSearchArea}" 
+                                       var="list" 
+                                       itemLabel="#{list.name}"
+                                       itemValue="#{list}"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel value="SRU"/>
+                    <p:selectOneMenu 
+                        value="#{searchPatternMBean.patternParameter.incidentAsset}"
+                        converter="objectListConverter" style="max-width: 40vw"
+                        filter="true" filterMatchMode="startsWith"
+                        disabled="#{searchPatternMBean.isEdit}"
+                        required="true" 
+                        requiredMessage="Mohon alokasikan SRU untuk melakukan proses penyimpanan Search Pattern">
+                        <f:selectItem itemLabel="Pilih" itemValue="#{null}" noSelectionOption="true" />
+                        <f:selectItems value="#{searchPatternMBean.listIncidentAsset}" 
+                                       var="list" 
+                                       itemLabel="#{list.name}"
+                                       itemValue="#{list}"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel value="Color"/>
+                    <p:colorPicker value="#{searchPatternMBean.patternParameter.hexColor}"/>
+
+                </p:panelGrid>
+                <p:fieldset legend="Start Position" class="no-padding">
+
+                    <p:panelGrid id="idPgStart"
+                                 columns="2" columnClasses="ui-grid-col-3,ui-grid-col-8"
+                                 style="width: 100%"
+                                 styleClass="ui-panelgrid-blank form-group ">
+                        <p:outputLabel value="Latitude"/>
+                        <p:panelGrid id="latitudeSpp" columns="3"
+                                     columnClasses ="ui-grid-col-2,ui-grid-col-7,ui-grid-col-3"                         
+                                     class="no-border no-padding-table"
+                                     style="width: 100%">
+                            <ui:include src="coordinateSPP/latitude.xhtml"/>
+                        </p:panelGrid>
+                        <p:outputLabel value="Longtitude"/>
+                        <p:panelGrid id="longitudeSpp" columns="3"
+                                     columnClasses ="ui-grid-col-2,ui-grid-col-7,ui-grid-col-3"                         
+                                     class="no-border no-padding-table"
+                                     style="width: 100%">
+                            <ui:include src="coordinateSPP/longitude.xhtml"/>
+                        </p:panelGrid>
+                    </p:panelGrid>
+                </p:fieldset>
+                <p:panelGrid columns="2" columnClasses="ui-grid-col-3,ui-grid-col-9"
+                             style="width: 100%" layout="grid"
+                             styleClass="ui-panelgrid-blank form-group">
+                    <p:outputLabel value="Type"/>
+                    <p:selectOneMenu value="#{searchPatternMBean.mapTypePattern}" autoWidth="false" appendTo="@(this)"
+                                     disabled="#{searchPatternMBean.mapTypePattern.name == 'Trapezium Pararel Search'}">
+                        <p:ajax listener="#{searchPatternMBean.onPatternTypeChange()}" update="idPgParameter" />
+                        <f:selectItems value="#{searchPatternMBean.mapPattern}" var="s" itemValue="#{s}" itemLabel="#{s.name}" />
+                    </p:selectOneMenu>
+                    <p:outputLabel value="Waypoint" 
+                                   rendered="#{searchPatternMBean.mapTypePattern.name == 'Trapezium Pararel Search'}"/>
+                    <p:selectOneMenu value="#{searchPatternMBean.waypointIndex}" autoWidth="false" appendTo="@(this)"
+                                     rendered="#{searchPatternMBean.mapTypePattern.name == 'Trapezium Pararel Search'}">
+                        <p:ajax listener="#{searchPatternMBean.onWaypointChange}" update="idPgParameter"/>
+                        <f:selectItems value="#{searchPatternMBean.listWaypoint}" var="i" itemLabel="#{i}" itemValue="#{i}"/>
+                    </p:selectOneMenu>
+                </p:panelGrid>
+                <p:fieldset legend="Parameter" class="no-padding">
+                    <p:panelGrid id="idPgParameter"
+                                 columns="3" columnClasses="ui-grid-col-3,ui-grid-col-5,ui-grid-col-2"
+                                 style="width: 100%" layout="grid"
+                                 styleClass="ui-panelgrid-blank form-group">
+                        <p:outputLabel value="Min. Search Leg" rendered="#{searchPatternMBean.patternParameter.isSearchMinLeg}"/>
+                        <p:inputText value="#{searchPatternMBean.patternParameter.minSearchLeg}" 
+                                     disabled="#{searchPatternMBean.isNew}"
+                                     rendered="#{searchPatternMBean.patternParameter.isSearchMinLeg}"/>
+                        <p:outputLabel value="Nm" rendered="#{searchPatternMBean.patternParameter.isSearchMinLeg}"/>
+
+                        <p:outputLabel value="Max. Search Leg" rendered="#{searchPatternMBean.patternParameter.isSearchMaxLeg}"/>
+                        <p:inputText value="#{searchPatternMBean.patternParameter.maxSearchLeg}" 
+                                     disabled="#{searchPatternMBean.isNew}"
+                                     rendered="#{searchPatternMBean.patternParameter.isSearchMaxLeg}"/>
+                        <p:outputLabel value="Nm" rendered="#{searchPatternMBean.patternParameter.isSearchMaxLeg}"/>
+
+                        <p:outputLabel value="Track Spacing" rendered="#{searchPatternMBean.patternParameter.isSearchTrackSpacing}"/>
+                        <p:inputText value="#{searchPatternMBean.patternParameter.trackSpacing}" 
+                                     rendered="#{searchPatternMBean.patternParameter.isSearchTrackSpacing}"/>
+                        <p:outputLabel value="Nm" rendered="#{searchPatternMBean.patternParameter.isSearchTrackSpacing}"/>
+
+                        <p:outputLabel value="Width" rendered="#{searchPatternMBean.patternParameter.isSearchWidth}"/>
+                        <p:inputText value="#{searchPatternMBean.patternParameter.width}" 
+                                     rendered="#{searchPatternMBean.patternParameter.isSearchWidth}"/>
+                        <p:outputLabel value="Nm" rendered="#{searchPatternMBean.patternParameter.isSearchWidth}"/>
+
+                        <p:outputLabel value="Search Leg" rendered="#{searchPatternMBean.patternParameter.isSearchLeg}"/>
+                        <p:inputText value="#{searchPatternMBean.patternParameter.searchLeg}" 
+                                     rendered="#{searchPatternMBean.patternParameter.isSearchLeg}"/>
+                        <p:outputLabel value="Nm" rendered="#{searchPatternMBean.patternParameter.isSearchLeg}"/>
+
+                        <p:outputLabel value="Search Radius" rendered="#{searchPatternMBean.patternParameter.isSearchRadius}"/>
+                        <p:inputText value="#{searchPatternMBean.patternParameter.searchRadius}" 
+                                     rendered="#{searchPatternMBean.patternParameter.isSearchRadius}"/>
+                        <p:outputLabel value="Nm" rendered="#{searchPatternMBean.patternParameter.isSearchRadius}"/>
+
+                        <p:outputLabel value="Heading" rendered="#{searchPatternMBean.patternParameter.isSearchHeading}"/>
+                        <p:inputText value="#{searchPatternMBean.patternParameter.heading}" 
+                                     rendered="#{searchPatternMBean.patternParameter.isSearchHeading}"/> 
+                        <p:outputLabel value="°" rendered="#{searchPatternMBean.patternParameter.isSearchHeading}"/>
+
+                    </p:panelGrid>
+                </p:fieldset>
+            </p:panel>
+            <p:separator/>
+            <p:panel class="control-button">
+                <p:commandButton value="Create" actionListener="#{searchPatternMBean.createPattern}" 
+                                 update="@form" process="@form"/>
+            </p:panel>
+        </h:form>
+    </p:dialog>
+</ui:composition>

@@ -1,0 +1,138 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <p:importEnum type="prosia.basarnas.enumeration.Timezone" var="timezone" allSuffix="ALL_ENUM_VALUES" />
+    <p:panelGrid columns="2" layout="grid" class="no-border no-padding">
+        <p:panel class="no-border no-padding card">
+            <p:messages closable="true"/>
+            <p:panelGrid columns="3" layout="grid" 
+                         styleClass="ui-panelgrid-blank form-group" 
+                         columnClasses="ui-grid-col-4,ui-grid-col-10,ui-grid-col-3" 
+                         class="no-border no-padding no-padding-table ui-fluid" style="max-width: 500px">
+                <p:outputLabel for="dtTanggal" value="Tanggal" styleClass="asterix"/>
+
+                <p:calendar id="dtTanggal" pattern="dd/MM/yyyy HH:mm:ss" mask="true" navigator="true"
+                            value="#{incidentLogMBean.twTgl}" disabled="#{incidentLogMBean.disabled}"/>
+
+                <p:selectOneMenu id="idInsidenTimezone" autoWidth="false"
+                                 value = "#{incidentLogMBean.incidentLog.logDateTimeZone}"
+                                 disabled="#{incidentLogMBean.disabled}"
+                                 required="true" requiredMessage="Alert Timezone harus dipilih">
+                    <f:selectItem itemLabel="--- Pilih ---" itemValue="" />
+                    <f:selectItems value="#{timezone.ALL_ENUM_VALUES}" var="tz" 
+                                   itemValue="#{tz.timezone}" itemLabel="#{tz.shorttimezone}" />
+                </p:selectOneMenu>
+
+
+                <p:outputLabel value="Tipe Log" />
+                <p:selectOneMenu id="cboTipeLog" value="#{incidentLogMBean.incidentLog.logType}"
+                                 autoWidth="false"
+                                 disabled="#{incidentLogMBean.disabled}">
+                    <f:selectItem itemLabel="Umum" itemValue="umum" />
+                    <f:selectItem itemLabel="Operasional" itemValue="operasional" />
+                    <f:selectItem itemLabel="Sighting" itemValue="sighting" />
+                    <f:selectItem itemLabel="Dll" itemValue="dll" />
+                </p:selectOneMenu>
+                <br/>
+                
+                <p:outputLabel value="Subyek" />
+                <p:inputText value="#{incidentLogMBean.incidentLog.subject}" disabled="#{incidentLogMBean.disabled}"/>
+                <br/>
+                
+                <p:outputLabel value="Deskripsi" styleClass="asterix"/>
+                <p:inputTextarea value="#{incidentLogMBean.incidentLog.remarks}" required="true" 
+                                 requiredMessage="Deskripsi harus diisi" disabled="#{incidentLogMBean.disabled}"/>
+                <br/>
+
+                <p:outputLabel value="No Radiogram" />
+                <p:inputText value="" disabled="true"/>
+                <br/>
+
+                <p:outputLabel value="Latitude" style="width: 100px" />
+                <p:panelGrid id="latitude" columns="3" style="width: 100%;" 
+                             columnClasses ="ui-grid-col-2,ui-grid-col-7,ui-grid-col-3"
+                             class="no-border no-padding-table ui-fluid">
+                    <ui:include src="coordinate/latitude.xhtml"/>
+                </p:panelGrid>
+                <br/>
+
+                <p:outputLabel value="Longitude" />
+                <p:panelGrid id="longitude" columns="3" style="width: 100%"
+                             columnClasses ="ui-grid-col-2,ui-grid-col-7,ui-grid-col-3"
+                             class="no-border no-padding-table ui-fluid">
+                    <ui:include src="coordinate/longitude.xhtml"/>
+                </p:panelGrid>
+                <br/>
+                
+                <p:outputLabel value="Status Approve" />
+                <p:selectOneMenu id="cboStsApprove" value="#{incidentLogMBean.incidentLog.stsapprove}"
+                                 autoWidth="false"
+                                 disabled="#{incidentLogMBean.disabled}">
+                    <f:selectItem itemLabel="--- Pilih ---" itemValue="" />
+                    <f:selectItem itemLabel="Pending Approval" itemValue="Pending Approval" />
+                    <f:selectItem itemLabel="Approved" itemValue="Approved" />
+                    <f:selectItem itemLabel="Rejected" itemValue="Rejected" />
+                </p:selectOneMenu>
+                <br/>
+            </p:panelGrid>
+        </p:panel>
+    <p:panelGrid columns="1" layout="grid"  class="no-border no-padding card">
+        <p:panel>
+            <p:panelGrid columns="3" layout="grid" 
+                         styleClass="ui-panelgrid-blank form-group" 
+                         columnClasses="ui-grid-col-4,ui-grid-col-10,ui-grid-col-3" 
+                         class="no-border no-padding no-padding-table ui-fluid" style="max-width: 500px">
+                <p:outputLabel value="Lampiran" />
+                <p:fileUpload id="fileImport" fileUploadListener="#{incidentLogMBean.upload}" 
+                              mode="advanced" dragDropSupport="false"  multiple="true" 
+                              auto="true" sizeLimit="10000000" required="true" 
+                              process="@form" accept="image/*"
+                              disabled="#{incidentLogMBean.disabled}"/>
+                <br/>
+            </p:panelGrid>
+        </p:panel>
+        <br/>
+        <p:dataTable id="listImg" widgetVar="widListImg"
+                     value="#{incidentLogMBean.listImage}" var="list"
+                     reflow="true" paginator="true" paginatorPosition="bottom" 
+                     rows="1" tableStyle="table-layout:auto"
+                     emptyMessage="Data tidak ditemukan">
+            <p:column headerText="Images" >
+                <h:form>
+                    <h:panelGroup style="display:block; text-align:center">
+                        <p:lightBox id="lighbox1"> 
+                            <h:outputLink value="/document/temp/#{list.pathname != null ? list.pathname.replace('\\','/') : ''}" title="#{list.pathname}">
+                                <p:graphicImage url="/document/temp/#{list.pathname != null ? list.pathname.replace('\\','/') : ''}" width="300" height="300" cache="false" />
+                            </h:outputLink>
+                        </p:lightBox>
+                        <p:commandLink value="Hapus" actionListener="#{incidentLogMBean.hapusImage(list)}" 
+                                       update="incidentdetail:tablog-content:listImg @form" 
+                                       process="incidentdetail:tablog-content:listImg @form"
+                                       disabled="#{incidentLogMBean.disabled}">
+                            <p:confirm header="Konfirmasi" message="Apakah anda yakin ingin menghapus image ini?" 
+                                       icon="ui-icon-alert"/>
+                        </p:commandLink>
+                    </h:panelGroup>
+                </h:form>
+            </p:column>
+        </p:dataTable>
+
+    <p:panel class="control-button no-border no-padding">
+        <p:commandButton value="Simpan" styleClass="green-btn" icon="fa fa-save"
+                         actionListener="#{incidentLogMBean.simpanIncidentLog()}" 
+                         update="incidentdetail:tablog-content" 
+                         process="@form" style="width:130px" 
+                         rendered="#{incidentLogMBean.showButton}">
+            <p:confirm header="Konfirmasi" message="Apakah anda yakin ingin menyimpan log ini?" 
+                       icon="ui-icon-alert" />
+        </p:commandButton>
+        <p:commandButton type="button" value="#{incidentLogMBean.showButton ? 'Batal' : 'Kembali'}" 
+                         styleClass="red-btn" style="width:130px" icon="ui-icon-cancel">
+            <p:ajax event="click" update="incidentdetail:tablog-content" listener="#{incidentLogMBean.hideForm}"/>
+        </p:commandButton>
+    </p:panel>
+    </p:panelGrid>
+    </p:panelGrid>
+</ui:composition>

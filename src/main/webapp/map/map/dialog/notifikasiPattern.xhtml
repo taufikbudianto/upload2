@@ -1,0 +1,41 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <p:dialog showEffect="fade" hideEffect="fade" dynamic="true"
+              position="center" id="idDialogNotifPattern"
+              header="Konfirmasi" appendTo="@(body)"  
+              widgetVar="showDialogNotifPattern"  
+              modal="true" width="750"
+              responsive="true" resizable="false">
+        <h:form prependId="false">
+            <p:panelGrid layout="grid"
+                         columns="1" columnClasses="ui-grid-col-12"
+                         style="width: 100%;"
+                         styleClass="ui-panelgrid-blank no-padding ui-fluid">
+                <p:outputLabel value="Sistem Mendeteksi Keberadaan Search Area pada Peta.
+                               Apakah anda ingin melakukan pembuatan Search Pattern Secara otomatis ?"
+                               rendered="#{!searchPatternMBean.isTaskArea}"/>
+                <p:outputLabel value="Terdapat Task Search Area Pada List, 
+                               Silahkan pilih tipe pencarian yang akan anda lakukan"
+                               rendered="#{searchPatternMBean.isTaskArea}"/>
+                <p:selectOneMenu value="#{searchPatternMBean.mapPatternType}"
+                                 rendered="#{searchPatternMBean.isTaskArea}"
+                                 autoWidth="false" appendTo="@(this)">
+                    <f:selectItems value="#{searchPatternMBean.listMapPatternType}" 
+                                   var="s" itemValue="#{s}" itemLabel="#{s.name}" />
+                </p:selectOneMenu>
+
+            </p:panelGrid>
+            <p:panel class="control-button">
+                <p:commandButton value="Yes" 
+                                 actionListener="#{searchPatternMBean.showDialogSPP}"
+                                 update="@form" process="@form"
+                                 onclick="PF('showDialogNotifPattern').hide()"/>
+                <p:commandButton value="No" 
+                                 onclick="PF('showDialogNotifPattern').hide()"/>
+            </p:panel>
+        </h:form>
+    </p:dialog>
+</ui:composition>

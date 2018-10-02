@@ -1,0 +1,38 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="tabSAR-content">
+        <div class="ui-g ui-fluid value-readonly">
+            <div class="ui-g-12 ui-lg-12 ">
+                <p:dataTable var="sar" value="#{resPeralatanMBean.lazyDataModeltabSARJPA}" reflow="true" rowKey="#{sar.assetid}"
+                             lazy="true" paginator="true" paginatorPosition="bottom" rows="#{viewBean.rowsPageDefault}"
+                             rowsPerPageTemplate="#{viewBean.rowsPerPageTemplate}" emptyMessage="Data tidak ditemukan">
+                    <p:column headerText="Nama">
+                        <h:outputText value="#{sar.name}" />
+                    </p:column>
+                    <p:column headerText="Tipe">
+                        <h:outputText value="#{sar.assettypeid.assetname}" />
+                    </p:column>
+                    <p:column headerText="Kuantitas">
+                        <h:outputText value="#{sar.goodqty}" />
+                    </p:column>
+                    <p:column headerText="Kondisi">
+                        <h:outputText value="#{sar.assetcondition}" />
+                    </p:column>
+                    <p:column headerText="Kapasitas">
+                        <h:outputText value="#{sar.cargo}" />
+                    </p:column>
+                    <p:column headerText="Fungsi">
+                        <h:outputText value="#{sar.functional}" />
+                    </p:column>
+                    <p:column headerText="Keterangan">
+                        <h:outputText value="#{sar.remarks}" />
+                    </p:column>
+                </p:dataTable>
+            </div>
+        </div>
+    </h:form>
+</ui:composition>

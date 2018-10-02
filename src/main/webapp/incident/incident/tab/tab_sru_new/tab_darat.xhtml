@@ -1,0 +1,135 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <p:panelGrid columns="3" layout="grid" styleClass="ui-panelgrid-blank form-group" class="no-padding no-border">
+        <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group" class="no-padding no-border">
+            <p:commandButton id="check-pilih-incident-sru-tab-darat" 
+                             value="Check All" actionListener="#{incidentSruMBean.checkallpilih}" 
+                             process="incidentdetail:daratsruinc" 
+                             update="incidentdetail:daratsruinc" styleClass="green-btn"
+                             disabled="#{incidentSruMBean.disabled}">
+                <f:attribute name="sruCheckAllPilih" value="Darat"/>
+            </p:commandButton>
+
+            <p:commandButton id="uncheck-pilih-incident-sru-tab-darat" 
+                             value="Uncheck All" 
+                             actionListener="#{incidentSruMBean.uncheckallpilih}" 
+                             process="incidentdetail:daratsruinc" 
+                             update="incidentdetail:daratsruinc" styleClass="red-btn"
+                             disabled="#{incidentSruMBean.disabled}">
+                <f:attribute name="sruUncheckAllPilih" value="Darat"/>
+            </p:commandButton>
+        </p:panelGrid>
+
+        <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group" class="no-padding no-border">
+            <p:commandButton id="kirim-notif-incident-sru-tab-darat" value="Kirim Notifikasi"
+                             actionListener="#{incidentSruMBean.showDialogNotif}"
+                             update="incidentdetail:daratsruinc" 
+                             process="incidentdetail:daratsruinc"
+                             disabled="#{incidentSruMBean.disabled}">            
+                <f:attribute name="sruActionKirim" value="Darat"/>
+            </p:commandButton>
+        </p:panelGrid>
+
+        <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group" class="no-padding no-border">
+            <p:commandButton id="check-kirim-incident-sru-tab-darat" 
+                             value="Check All" 
+                             actionListener="#{incidentSruMBean.checkallkirim}" 
+                             process="incidentdetail:daratsruinc" 
+                             update="incidentdetail:daratsruinc" styleClass="green-btn"
+                             disabled="#{incidentSruMBean.disabled}">
+                <f:attribute name="sruCheckAllKirim" value="Darat"/>
+            </p:commandButton>
+
+            <p:commandButton id="uncheck-kirim-incident-sru-tab-darat" 
+                             value="Uncheck All" 
+                             actionListener="#{incidentSruMBean.uncheckallkirim}" 
+                             process="incidentdetail:daratsruinc" 
+                             update="incidentdetail:daratsruinc" styleClass="red-btn"
+                             disabled="#{incidentSruMBean.disabled}">
+                <f:attribute name="sruUncheckAllKirim" value="Darat"/>
+            </p:commandButton>
+        </p:panelGrid>
+    </p:panelGrid>
+
+    <p:dataTable var="daratsruinc" value="#{incidentSruMBean.listAssetDarat}"
+                 reflow="true"  paginator="true" paginatorPosition="bottom" 
+                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} 
+                 {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                 emptyMessage="Data tidak ditemukan" 
+                 rows="10" rowsPerPageTemplate="5,10,15" lazy="true"
+                 id="daratsruinc" tableStyle="table-layout:auto" 
+                 style="font-size: smaller" rowIndexVar="index">                
+        <p:column headerText="No" style="width: 20px">
+            <p:outputLabel value="#{index + 1}"/>
+        </p:column>
+        <p:column style="width: 5%; text-align: center;" headerText="Pilih" >
+            <p:selectBooleanCheckbox value="#{incidentSruMBean.checkedPilihDarat[daratsruinc]}"
+                                     disabled="#{incidentSruMBean.disabled}">
+                <p:ajax process="@this"/>
+            </p:selectBooleanCheckbox>
+        </p:column>
+        <p:column style="width: 5%; text-align: center;" headerText="Kirim">
+            <p:selectBooleanCheckbox value="#{incidentSruMBean.checkedKirimDarat[daratsruinc]}"
+                                     disabled="#{incidentSruMBean.disabled}">
+                <p:ajax process="@this"/>
+            </p:selectBooleanCheckbox>
+        </p:column>
+        <p:column headerText="Nama SRU" sortBy="#{daratsruinc.name}">
+            <h:outputText value="#{daratsruinc.name}" />
+        </p:column>
+        <p:column headerText="Kansar/Sru" sortBy="#{daratsruinc.potencyid.potencyname}">
+            <h:outputText value="#{daratsruinc.potencyid.potencyname}" />
+        </p:column>
+        <p:column headerText="Jarak(NM)" >
+            <p:outputLabel value="#{incidentSruMBean.distance(daratsruinc.longitude, daratsruinc.latitude)}" />
+        </p:column>
+        <p:column headerText="Arah(Derajat)">
+            <p:outputLabel value="#{incidentSruMBean.angle(daratsruinc.longitude, daratsruinc.latitude)}" />
+        </p:column>
+        <p:column headerText="Kecepatan(Knots)" sortBy="#{daratsruinc.speed}">
+            <h:outputText value="#{daratsruinc.speed}" />
+        </p:column>
+        <p:column headerText="Endurance(Jam)" sortBy="#{daratsruinc.endurance}">
+            <h:outputText value="#{daratsruinc.endurance}" />
+        </p:column>
+        <p:column headerText="Fungsi" sortBy="#{daratsruinc.functional}">
+            <h:outputText value="#{daratsruinc.functional}" />
+        </p:column>
+        <p:column headerText="Kapasitas" sortBy="#{daratsruinc.cargo}">
+            <h:outputText value="#{daratsruinc.cargo}" />
+        </p:column>
+        <p:column headerText="Keterangan" sortBy="#{daratsruinc.remarks}">
+            <h:outputText value="#{daratsruinc.remarks}" />
+        </p:column>
+
+        <p:column headerText="Aksi">
+            <p:commandButton id="ubahDarat"
+                             label="Edit"
+                             onclick="PF('tTipUbah').hide();"
+                             icon="fa fa-edit" 
+                             class="blue-grey-btn" 
+                           actionListener="#{incidentSruMBean.showDetail}" 
+                           process="@form" disabled="#{incidentSruMBean.disabled}">
+                <f:attribute name="resAsset" value="#{daratsruinc}"/>
+                <f:attribute name="sruAction" value="Darat"/>
+            </p:commandButton>
+            <p:tooltip value="Ubah" for="ubahDarat"
+                       trackMouse="true" widgetVar="tTipUbah"/>
+        </p:column>
+    </p:dataTable>
+    <p:spacer width="10" />
+    <p:panel class="control-button no-border no-padding" >
+        <p:commandButton value="Simpan SRU Darat" icon="fa fa-save" 
+                         style="width:200px" styleClass="green-btn"  
+                         actionListener="#{incidentSruMBean.action}"  
+                         process="incidentdetail:daratsruinc"
+                         update="incidentdetail:daratsruinc"
+                         disabled="#{incidentSruMBean.disabled}">
+            <f:attribute name="sruAction" value="Darat"/>
+        </p:commandButton>
+    </p:panel>
+    
+</ui:composition>

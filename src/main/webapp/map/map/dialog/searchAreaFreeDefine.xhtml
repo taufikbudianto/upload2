@@ -1,0 +1,79 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <p:dialog showEffect="fade" hideEffect="fade" dynamic="true"
+              position="center" id="idDialogSAD"
+              header="Search Area Dialog" appendTo="@(body)"  
+              widgetVar="showDialogSAD"  
+              modal="true" height="100%" 
+              responsive="true" resizable="false">
+        <h:form prependId="false">
+            <p:panel class="no-border card ui-fluid">
+                <p:messages closable="true"/>
+                <p:fieldset legend="Datum" class="no-padding">
+                    <p:panelGrid 
+                        columns="2" columnClasses="ui-grid-col-3,ui-grid-col-8"
+                        style="width: 100%"
+                        styleClass="ui-panelgrid-blank form-group ">
+                        <p:outputLabel value="Latitude"/>
+                        <p:panelGrid id="latitudeSad" columns="3"
+                                     columnClasses ="ui-grid-col-2,ui-grid-col-7,ui-grid-col-3"                         
+                                     class="no-border no-padding-table"
+                                     style="width: 100%">
+                            <ui:include src="coordinateSAD/latitude.xhtml"/>
+                        </p:panelGrid>
+                        <p:outputLabel value="Longtitude"/>
+                        <p:panelGrid id="longitudeSad" columns="3"
+                                     columnClasses ="ui-grid-col-2,ui-grid-col-7,ui-grid-col-3"                         
+                                     class="no-border no-padding-table"
+                                     style="width: 100%">
+                            <ui:include src="coordinateSAD/longitude.xhtml"/>
+                        </p:panelGrid>
+                    </p:panelGrid>
+                </p:fieldset>
+                <p:panelGrid columns="2" columnClasses="ui-grid-col-3,ui-grid-col-8"
+                             style="width: 100%;margin-bottom: -20px" layout="grid"
+                    styleClass="ui-panelgrid-blank form-group">
+                                 <p:outputLabel value="Shape"/>
+                    <p:selectOneRadio value="#{searchAreaMBean.areaDialog.shape}" >
+                        <p:ajax event="change" update="idPgInput" process="@this"/>
+                        <f:selectItem itemLabel="Square" itemValue="Square"/>
+                        <f:selectItem itemLabel="Circle" itemValue="Circle"/>
+
+                    </p:selectOneRadio>
+                </p:panelGrid>
+                <p:panelGrid id="idPgInput"
+                    columns="3" columnClasses="ui-grid-col-3,ui-grid-col-5,ui-grid-col-3"
+                             style="width: 100%" layout="grid"
+                             styleClass="ui-panelgrid-blank form-group">
+                    
+                    <p:outputLabel value="Radius"/>
+                    <p:inputText value="#{searchAreaMBean.areaDialog.searchNilai}" 
+                                 required="true" requiredMessage="Radius belum diisi"/>
+                    <p:selectOneMenu value="#{searchAreaMBean.areaDialog.satuan}" 
+                                      appendTo="@(this)" style="width: 70px">
+                        <f:selectItem itemLabel="KM" itemValue="KM"/>
+                        <f:selectItem itemLabel="Meter" itemValue="Meter"/>
+                        <f:selectItem itemLabel="NM" itemValue="NM"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel value="Kemiringan"/>
+                    <p:inputText value="#{searchAreaMBean.areaDialog.searchHeading}"
+                                 disabled="#{searchAreaMBean.areaDialog.shape == 'Circle'}"
+                                 required="true" requiredMessage="Kemiringan belum diisi"/>
+                    <p:outputLabel value="°" />
+
+                </p:panelGrid>
+             
+
+            </p:panel>
+               <p:separator/>
+            <p:panel class="control-button">
+                <p:commandButton value="Create" actionListener="#{searchAreaMBean.createArea}" 
+                                 update="@form" process="@form"/>
+            </p:panel>
+        </h:form>
+    </p:dialog>
+
+</ui:composition>

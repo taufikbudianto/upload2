@@ -1,0 +1,99 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+    <ui:define name="title">Daftar Checklist</ui:define>
+    <ui:define name="content">
+                <h:form id="checklist-content">
+                    <p:panel class="ui-fluid" id="list-checklist" header="Daftar Checklist" styleClass="penelHeaderGreen ui-shadow-content">
+                        <p:panelGrid id="search" columns="5" layout="grid" 
+                             styleClass="ui-panelgrid-blank form-group" 
+                             columnClasses ="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-2,ui-grid-col-2"
+                             style="margin-top: 20px;margin-bottom: 20px; width: 100%"
+                             class="no-padding no-border">
+                                                              <p:selectOneMenu id="fieldchecklist" value="#{mstChecklistMBean.field}">
+                                        <p:ajax event="change" update="search"/>
+                                        <f:selectItem itemLabel="Nama" itemValue="name" />
+                                    </p:selectOneMenu>
+                                    <p:inputText id="value" value="#{mstChecklistMBean.value}"/>
+                                    <p:commandButton id="search-btn" icon="ui-icon-search" type="button" onclick="PF('listWidget').getPaginator().setPage(0);" value="Cari">
+                                        <p:ajax event="click" update=":checklist-content:list-checklist" process="@form"/>
+                                    </p:commandButton> 
+                                    <p:button value="Reset" icon="ui-icon-replay"/>
+                                    <p:commandButton value="Tambah Data Baru" icon="fa fa-plus-circle" styleClass="green-btn">
+                                        <p:ajax event="click" listener="#{mstChecklistMBean.add}" />
+                                    </p:commandButton>
+                          </p:panelGrid>
+                        <p:dataTable id="checklist_datatable" var="checklist" value="#{mstChecklistMBean.lazyDataModelJPA}" reflow="true" rowKey="#{checklist.checklistid}"
+                                     lazy="true" paginator="true" paginatorPosition="bottom" rows="10"
+                                     rowsPerPageTemplate="5,10,15" widgetVar="listWidget" 
+                                     emptyMessage="Data tidak ditemukan" tableStyle="table-layout:fixed"
+                                     rowIndexVar="index" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                            <p:ajax event="page" listener="#{viewBean.onPageChange}"/> 
+                            <p:column headerText="No" style="width: 20px">
+                                <p:outputLabel value="#{index + 1}"/>
+                            </p:column>
+                            <p:column headerText="Nama" sortBy="#{checklist.name}">
+                                <h:outputText value="#{checklist.name}" />
+                            </p:column>
+                            <p:column headerText="Aksi" style="width: 105px; text-align: center">
+                                <p:commandButton id="lihatChecklist"
+                                                 label="Lihat"
+                                                 onclick="PF('tTipLihat').hide();"
+                                                 icon="fa fa-search" 
+                                                 class="blue-grey-btn" >
+                                    <p:ajax event="click" listener="#{mstChecklistMBean.viewCheck(checklist.checklistid, true)}" update=":form-checklist" />
+                                </p:commandButton> 
+                                <p:tooltip value="Lihat" for="lihatChecklist"
+                                           trackMouse="true" widgetVar="tTipLihat"/>
+                                <p:outputLabel value="    "/>
+                                <p:commandButton id="ubahChecklist"
+                                                 label="Ubah"
+                                                 onclick="PF('tTipUbah').hide();"
+                                                 icon="fa fa-edit" 
+                                                 class="blue-grey-btn">
+                                    <p:ajax event="click" listener="#{mstChecklistMBean.viewCheck(checklist.checklistid, false)}" update=":form-checklist" />
+                                </p:commandButton> 
+                                <p:tooltip value="Ubah" for="ubahChecklist"
+                                           trackMouse="true" widgetVar="tTipUbah"/>
+                                <p:outputLabel value="    "/>
+                                <p:commandButton id="hapusChecklist"
+                                                 label="Hapus"
+                                                 onclick="PF('tTipHapus').hide();"
+                                                 icon="fa fa-trash" 
+                                                 class="red-btn" 
+                                                 actionListener="#{mstChecklistMBean.hapus(checklist)}"
+                                                 update=":checklist-content:checklist_datatable">
+                                    <p:confirm header="Konfirmasi" message="Apakah anda yakin ingin menghapus checklist ini?" icon="ui-icon-alert"/>
+                                </p:commandButton>
+                                <p:tooltip value="Hapus" for="hapusChecklist"
+                                           trackMouse="true" widgetVar="tTipHapus"/>
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                </h:form>
+        
+         <p:dialog id="idChecklist" widgetVar="widgetChecklist"
+                  header="Data "
+                  width="50%" height="50%"
+                  appendTo="@(body)"
+                  responsive="true" modal="true"
+                  maximizable="false"
+                  position="center" 
+                  resizable="false" closable="true" style="overflow-y: auto;max-height: 100%">
+            <ui:include src="./checklist.xhtml"/>
+        </p:dialog>
+        
+         <p:dialog id="idChecklistInput" widgetVar="widgetChecklistInput"
+                  header="Data "
+                  width="50%" height="50%"
+                  appendTo="@(body)"
+                  responsive="true" modal="true"
+                  maximizable="false" closable="true" 
+                  resizable="false">
+            <ui:include src="./checklistInput.xhtml"/>
+        </p:dialog>
+    </ui:define>
+</ui:composition>

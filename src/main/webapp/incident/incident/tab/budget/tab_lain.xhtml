@@ -1,0 +1,110 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="budgetdetail">
+        <p:messages/>
+        <p:panel class="control-button no-border no-padding" >
+            <p:commandButton  value="Tambah Data Baru" icon="fa fa-plus-circle" class="green-btn" 
+                              style="width:200px"
+                             actionListener="#{incidentBudgetLainMBean.tambah()}" 
+                             process="@form"
+                             disabled="#{incidentBudgetLainMBean.disabled}" update="incidentdetail:budgetdetail">
+            </p:commandButton>
+        </p:panel>
+        <p:spacer width="10" />
+        <p:dataTable id ="tableBudgetLain" var="budgetAssetLain" 
+                     value="#{incidentBudgetLainMBean.listBiayaLain}"
+                     paginator="true" paginatorPosition="bottom" 
+                     paginatorTemplate=" {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                     rows="10" rowsPerPageTemplate="5,10,15" rowIndexVar="index" 
+                     sortBy="#{budgetAssetLain.incident.incidentid}">
+
+            <p:column headerText="No" style="width: 20px">
+                <p:outputLabel value="#{index + 1}"/>
+            </p:column>
+            <p:column headerText="Deskripsi">
+                <p:inputText value="#{budgetAssetLain.deskripsi}">
+                    <p:ajax listener="#{incidentBudgetLainMBean.changeBiaya(budgetAssetLain)}" 
+                            update="tableBudgetLain"/>
+                </p:inputText>
+            </p:column>
+            <p:column headerText="Jenis">
+                <p:selectOneMenu value="#{budgetAssetLain.mstJenisBiaya.nama}" style="width:120px" 
+                                 disabled="#{incidentBudgetLainMBean.disabled}">
+                    <p:ajax listener="#{incidentBudgetLainMBean.changeBiaya(budgetAssetLain)}" 
+                            update="tableBudgetLain"/>
+                    <f:selectItems value="#{incidentBudgetLainMBean.listJenis}"/>
+                </p:selectOneMenu>
+            </p:column>
+            <p:column headerText="Total">
+                <p:outputLabel value="#{budgetAssetLain.total}">
+                    <f:convertNumber currencySymbol="Rp. " type="currency" />
+                </p:outputLabel>
+            </p:column>
+            <p:column headerText="Action">
+                <p:outputLabel value="   "/>
+                <p:commandButton label="Hapus" icon="fa fa-trash" class="red-btn" 
+                                 actionListener="#{incidentBudgetLainMBean.hapusBudget(budgetAssetLain)}"
+                                 update="@form,incidentdetail:budgetdetail-lain" process="@this" 
+                                 disabled="#{incidentBudgetLainMBean.disabled}">
+                    <p:confirm header="Konfirmasi" 
+                               message="Apakah anda yakin ingin Menghapus Biaya Asset ini?" icon="ui-icon-alert"/>
+                </p:commandButton>
+            </p:column>
+            <p:summaryRow>
+                <p:column colspan="3" style="text-align:right">
+                    Total : 
+                </p:column>
+                <p:column colspan="2">
+                    <h:outputText value="#{incidentBudgetLainMBean.totalAll}">
+                        <f:convertNumber currencySymbol="Rp. " type="currency" />
+                    </h:outputText>
+                </p:column>
+            </p:summaryRow>
+        </p:dataTable>
+        <p:spacer width="10" />
+        <p:panel class="control-button no-border no-padding" >
+            <p:commandButton value="Simpan Budget BBM" icon="fa fa-save" 
+                             style="width:200px" styleClass="green-btn"   
+                             actionListener="#{incidentBudgetLainMBean.save}" 
+                             process="@form"
+                             disabled="#{incidentBudgetLainMBean.disabled}">
+            </p:commandButton>
+        </p:panel>
+    </h:form>
+    <p:dialog id="budgetdetail-lain" widgetVar="budgetlain-dlg" 
+              appendTo="@(body)" dynamic="true" responsive="true"
+              showEffect="fade" hideEffect="fade" draggable="false" 
+              resizable="true" closable="true" modal="true" width="850"
+              position="center">
+        <p:dataTable id ="tableBudgetLaintambah" var="budgetAssetLaTambah" value="#{incidentBudgetLainMBean.tambahlistbiaya}">
+            <p:column headerText="Deskripsi">
+                <p:inputText value="#{budgetAssetLaTambah.deskripsi}"/>
+            </p:column>
+            <p:column headerText="Jenis">
+                <p:selectOneMenu value="#{budgetAssetLaTambah.mstJenisBiaya.nama}" style="width:120px" disabled="#{incidentBudgetLainMBean.disabled}">
+                    <p:ajax listener="#{incidentBudgetLainMBean.changeBiaya(budgetAssetLain)}"/>
+                    <f:selectItems value="#{incidentBudgetLainMBean.listJenis}"/>
+                </p:selectOneMenu>
+            </p:column>
+            <p:column headerText="Total">
+                <p:outputLabel value="#{budgetAssetLaTambah.total}">
+                    <f:convertNumber currencySymbol="Rp. " type="currency" />
+                </p:outputLabel>
+            </p:column>
+            <p:column>
+                <p:panel class="control-button no-border no-padding" >
+                    <p:commandButton type="button" value="Tambah" icon="fa fa-plus-circle" 
+                                     class="green-btn" 
+                                     process="@this" disabled="#{incidentBudgetLainMBean.disabled}">
+                        <p:ajax listener="#{incidentBudgetLainMBean.updatepilih(budgetAssetLaTambah)}" update="incidentdetail:budgetdetail"/>
+                    </p:commandButton>
+                </p:panel>
+            </p:column>
+        </p:dataTable>
+        <p:spacer width="10" />
+    </p:dialog>
+</ui:composition>

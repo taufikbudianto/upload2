@@ -1,0 +1,41 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+<h:form id="form-Radiogram-Umum">
+        <div class="ui-g ui-fluid">
+            <div class="ui-g-12 ui-lg-6 ">
+                <p:panelGrid columns="4" layout="grid" styleClass="ui-panelgrid-blank form-group" style="width: 800px">
+                    <p:outputLabel value="Panggilan" style="width: 100px"/>
+                    <p:inputText value="#{incidentRadiogramMBean.panggilan}"/>
+                    <p:outputLabel value="Instruksi Penerusan" style="width: 200px"/>
+                    <p:inputText value="#{incidentRadiogramMBean.instruksi}"/>
+                </p:panelGrid>
+                <p:panelGrid columns="6" layout="grid" styleClass="ui-panelgrid-blank form-group" style="width: 800px">
+                    <p:outputLabel value="Jenis" style="width: 100px"/>
+                    <p:inputText value="#{incidentRadiogramMBean.jenis}"/>
+                    <p:outputLabel value="Nr. Stn" style="width: 100px"/>
+                    <p:inputText value="#{incidentRadiogramMBean.nomor}"/>
+                    <p:outputLabel value="TW Penunjukan" style="width: 200px"/>
+                    <p:calendar value="#{incidentRadiogramMBean.datePenunjukan}" mask="true" navigator="true" showOn="button"/>
+                </p:panelGrid>
+                <p:panelGrid columns="6" layout="grid" styleClass="ui-panelgrid-blank form-group" style="width: 800px">
+                    <p:outputLabel value="Derajat" style="width: 100px"/>
+                    <p:inputText value="#{incidentRadiogramMBean.derajat}"/>
+                    <p:outputLabel value="Tipe" style="width: 100px"/>
+                    <p:inputText value=""/>
+                    <p:outputLabel value="Jumlah Kata" style="width: 200px"/>
+                    <p:inputText value="#{incidentRadiogramMBean.jumlahKata}"/>
+                </p:panelGrid>
+                <p:panelGrid columns="4" layout="grid" styleClass="ui-panelgrid-blank form-group" style="width: 800px">
+                    <p:outputLabel value="Aksi" style="width: 100px"/>
+                    
+                    <p:outputLabel value="Aksi Lain" style="width: 100px"/>
+                    <p:inputTextarea id="txtAksiLain" value=""/>
+                </p:panelGrid>
+            </div>
+        </div>
+</h:form>
+</ui:composition>

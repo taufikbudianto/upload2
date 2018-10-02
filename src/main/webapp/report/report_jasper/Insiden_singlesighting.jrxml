@@ -1,0 +1,475 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="singlesighting" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e91ea29e-758d-4867-bd3a-e61af72c4e41">
+	<property name="ireport.zoom" value="1.3310000000000015"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="564"/>
+	<parameter name="SightingId" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="user" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT * FROM
+(SELECT INCIDENTID,SIGHTINGID,SIGHTINGNUMBER,CASE STATUS WHEN 1 THEN 'Belum Diproses' WHEN 2 THEN 'Sedang Diproses' WHEN 3 THEN 'Selesai Diproses' ELSE '-' END STATUS,
+OBSERVERNAME AS NAMACALLSIGN,OBSERVERLOCATION AS NAMALOKASI,OBSERVERPHONE AS TLP,
+CASE WHEN OBSERVERLATITUDE IS NULL THEN '-' ELSE DEGREES_TO_DMS(OBSERVERLATITUDE,0) END ||','||CASE WHEN OBSERVERLONGITUDE IS NULL THEN '-' ELSE DEGREES_TO_DMS(OBSERVERLONGITUDE,1) END KORDINATLOKASI,
+TO_CHAR(OBJECTDTG,'YYYYMMDDHH24MI')||OBJECTDTGTIMEZONESYMBOL AS TANGGALWAKTU,
+CASE WHEN OBJECTLATITUDE IS NULL THEN '-' ELSE DEGREES_TO_DMS(OBJECTLATITUDE,0) END ||','||CASE WHEN OBJECTLONGITUDE IS NULL THEN '-' ELSE DEGREES_TO_DMS(OBJECTLONGITUDE,1) END KORDINATOBJECT,
+OBJECTPOSITION AS POSISI,
+CASE REPORTTYPE WHEN 1 THEN 'Lihat' WHEN 2 THEN 'Dengar' END JENISLAPORAN,CASE OBJECTTYPE
+WHEN 1 THEN 'Kapal'
+WHEN 2 THEN 'Orang'
+WHEN 3 THEN 'Polusi'
+WHEN 4 THEN 'Pesawat'
+WHEN 5 THEN 'Sinyal'
+WHEN 6 THEN 'Kendaraan'
+WHEN 7 THEN 'Lain-Lain'
+END TYPEE,WEATHERDESCRIPTION AS CUACA,REMARKS,
+CREATEDBY,TO_CHAR(DATECREATED,'YYYYMMDDHH24MI')||OBJECTDTGTIMEZONESYMBOL AS WAKTUPENULISAN,OBSERVERREMARKS AS KETPENUGASAN
+FROM UTI_SIGHTING where ISDELETED =0) A
+LEFT JOIN
+(SELECT INCIDENTNUMBER,REMARKS AS KETPENUGASAN,INCIDENTID FROM INCIDENT)B
+ON A.INCIDENTID=B.INCIDENTID
+WHERE A.SightingId=$P{SightingId}]]>
+	</queryString>
+	<field name="INCIDENTID" class="java.lang.String"/>
+	<field name="SIGHTINGID" class="java.lang.String"/>
+	<field name="SIGHTINGNUMBER" class="java.lang.String"/>
+	<field name="STATUS" class="java.lang.String"/>
+	<field name="NAMACALLSIGN" class="java.lang.String"/>
+	<field name="NAMALOKASI" class="java.lang.String"/>
+	<field name="TLP" class="java.lang.String"/>
+	<field name="KORDINATLOKASI" class="java.lang.String"/>
+	<field name="TANGGALWAKTU" class="java.lang.String"/>
+	<field name="KORDINATOBJECT" class="java.lang.String"/>
+	<field name="POSISI" class="java.lang.String"/>
+	<field name="JENISLAPORAN" class="java.lang.String"/>
+	<field name="TYPEE" class="java.lang.String"/>
+	<field name="CUACA" class="java.lang.String"/>
+	<field name="REMARKS" class="java.lang.String"/>
+	<field name="CREATEDBY" class="java.lang.String"/>
+	<field name="WAKTUPENULISAN" class="java.lang.String"/>
+	<field name="KETPENUGASAN" class="java.lang.String"/>
+	<field name="INCIDENTNUMBER" class="java.lang.String"/>
+	<title>
+		<band height="82" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="d81ee1d8-d197-40da-8f63-06157210aaa1" x="128" y="40" width="246" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Laporan Sighting / Hearing ]]></text>
+			</staticText>
+			<image>
+				<reportElement uuid="7aa31a7d-f6d9-4bb0-b052-ea86587248c6" x="3" y="0" width="113" height="70"/>
+				<imageExpression><![CDATA["sar_image.jpg"]]></imageExpression>
+			</image>
+			<textField pattern="dd-MM-yyyy HH:mm">
+				<reportElement uuid="7402473f-017d-4b5f-a73c-8baa1cf23a60" x="454" y="0" width="101" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="64818897-1130-488b-8d56-20c8e65359cd" x="378" y="0" width="76" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tanggal Cetak : ]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="8bbb30c8-de84-49c1-8ba1-bcc5de182f3f" x="378" y="19" width="177" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["User : " +$P{user}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<detail>
+		<band height="686" splitType="Stretch">
+			<rectangle>
+				<reportElement uuid="e476ec1f-e478-44c3-b4ab-4c6f0c4c3251" x="0" y="0" width="555" height="20" backcolor="#D3D3D3"/>
+				<graphicElement>
+					<pen lineWidth="0.0" lineStyle="Solid"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="d3679ff9-8a4b-4fd2-a294-0c0638db31f7" x="0" y="0" width="555" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Lokasi Pengamat ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="ffe245f4-c280-4e06-840a-a0797bfd6fc4" x="0" y="22" width="116" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Nama/Callsign ]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="2b8c50dd-b710-4ecd-be0f-01a8782c7b64" x="116" y="22" width="261" height="20"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="53a309fc-3856-4d64-97cd-3c573c0befa7" x="377" y="22" width="47" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Telepon ]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="7e40c634-302e-4baf-a53f-7e9a8b3a28e9" x="424" y="22" width="131" height="20"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="b2977e21-b83f-4a81-ad77-3f1e95281927" x="0" y="44" width="116" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Nama Lokasi ]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="585bc0e1-aa8c-4a4e-9781-0889585a4969" x="116" y="44" width="439" height="20"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="489d9eb1-2038-4adc-866c-f575d6eef5c7" x="0" y="66" width="116" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Koordinat Lokasi ]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="8278a5ca-309a-4cec-b942-0a3118897227" x="116" y="66" width="261" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="720fe2d9-be15-4902-97d6-80be90799524" x="0" y="134" width="555" height="20" backcolor="#D3D3D3"/>
+				<graphicElement>
+					<pen lineWidth="0.0" lineStyle="Solid"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="0275d04e-fade-48dd-acaf-093e8999ce74" x="0" y="134" width="555" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Posisi Objek ]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="e44b184e-de2b-47e1-92fd-e334a7f1eb06" x="116" y="178" width="261" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="6dad4533-43b6-4ea1-95ba-74040f252421" x="116" y="156" width="439" height="20"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="0a7f745e-b00f-4cd2-a052-8b21eb968391" x="0" y="178" width="116" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Koordinat Lokasi ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="bef6b43a-d131-4b23-9ec8-3bcee5a8f3cc" x="0" y="156" width="116" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Posisi ]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="bf8f9704-f212-49ec-b748-278e6af8ac3e" x="116" y="200" width="261" height="20"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="1c8d13c8-c137-4c07-8629-cd279c8448ac" x="0" y="200" width="116" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Tanggal Waktu ]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="58dae9d1-ca8d-44a8-9395-3f19245bcbae" x="0" y="266" width="555" height="20" backcolor="#D3D3D3"/>
+				<graphicElement>
+					<pen lineWidth="0.0" lineStyle="Solid"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="1b8a85b6-15b5-4592-8afa-070401d753f1" x="0" y="266" width="555" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Deskripsi ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="5961c254-17e1-44e7-ab93-0d14390ad29b" x="0" y="286" width="116" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Jenis Laporan ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="bb9089b7-7623-4690-b6a6-5c66518c0d85" x="252" y="286" width="39" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Type ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="cd9bc62a-921a-402b-a482-6e8d82e27ff8" x="0" y="355" width="116" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Cuaca ]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="ae55d3e0-b5a1-45e1-83ad-6e095f57b50a" x="116" y="354" width="439" height="42"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="661517f4-3146-4524-be89-d2c8bbdf79b6" x="0" y="434" width="555" height="20" backcolor="#D3D3D3"/>
+				<graphicElement>
+					<pen lineWidth="0.0" lineStyle="Solid"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="572834d7-8974-4814-bc15-89335fb48d7c" x="0" y="434" width="555" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Penugasan ]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="ce050244-0d72-4a19-9b14-7c379c7bcf11" x="116" y="454" width="261" height="20"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="076e3456-c540-452b-be50-a3c0a8c38cc0" x="0" y="454" width="116" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Nomor Insiden ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="a791a490-47c6-4b56-a1cc-bfd01df6c30b" x="0" y="500" width="116" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Keterangan ]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="53624f76-333e-41d1-b0f6-bb29101e42da" x="116" y="500" width="439" height="42"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="9400d0e9-1de8-4036-b4db-a10572b2bfcd" x="0" y="581" width="555" height="20" backcolor="#D3D3D3"/>
+				<graphicElement>
+					<pen lineWidth="0.0" lineStyle="Solid"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="4423edd4-28bf-4c1d-ab0e-94a2e6656d56" x="0" y="581" width="555" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Admin]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="281ecd2a-f9ec-4b44-8d5d-f69329538e28" x="116" y="603" width="261" height="20"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="80c48906-9e00-4d0f-88da-9de36632930d" x="0" y="603" width="116" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Penulis laporan ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e2981d93-875a-44d1-b684-35c4bf42cdb7" x="0" y="625" width="116" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Waktu penulisan ]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="e3cdcf1e-9449-44de-9e87-3bc7eae33df5" x="116" y="625" width="261" height="20"/>
+			</rectangle>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="5b668457-fd28-4b87-ab8a-6dc42711dd75" x="116" y="22" width="248" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NAMACALLSIGN}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="f25f1ff3-0b94-471d-b2a2-0b1050fa503f" x="116" y="44" width="424" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NAMALOKASI}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="c6736a78-4bae-4bca-8dbb-2f61fdea7668" x="424" y="22" width="116" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TLP}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="a86be4c0-a28c-455a-8a10-6a1a113b1fdd" x="116" y="66" width="261" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{KORDINATLOKASI}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="e6a4d52f-11f6-40b6-af55-8357bd3cfa98" x="116" y="178" width="248" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{KORDINATOBJECT}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="804cdd98-cd8f-47d6-b767-15763f83b67a" x="116" y="156" width="424" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{POSISI}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="8290fbd7-227b-48e9-925b-1f72052d48e2" x="116" y="200" width="248" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TANGGALWAKTU}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="35a11ac9-d19b-4415-a812-65c0217849f0" x="116" y="355" width="424" height="42"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CUACA}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="037dc6ed-ef11-4d2c-ad12-780567778901" x="116" y="500" width="424" height="42"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{KETPENUGASAN}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="e309165f-c6ad-433c-9936-d4399492f6e1" x="116" y="455" width="248" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{INCIDENTNUMBER}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="9f1e0742-95c2-4203-b04d-fd19eea288c5" x="116" y="603" width="248" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CREATEDBY}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="ee0e94b2-b065-4631-9a02-bf92f1a43a02" x="116" y="625" width="248" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{WAKTUPENULISAN}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="59de9ac3-8c47-4625-8207-6a0314d2d8e8" x="0" y="477" width="116" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Status ]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="b40a3e2c-3c2b-4500-b659-8ae66e31cff0" x="116" y="477" width="261" height="20"/>
+			</rectangle>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="50b9015b-8d4d-4c1f-a019-644705d87108" x="116" y="477" width="248" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{STATUS}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement uuid="5bdba189-323e-47b8-b4cf-6fcae44708f1" x="116" y="310" width="439" height="42"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="d8c7a246-f40a-4ad6-92c8-d80f8c6b94d4" x="0" y="311" width="116" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Keterangan ]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="f17efa9d-ea23-4eec-8d8f-58ac7824e9b2" x="116" y="311" width="424" height="42"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{REMARKS}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="13f92215-80cd-45ed-b19c-15e6cf97c50b" x="116" y="286" width="124" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{JENISLAPORAN}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="445881f3-34f2-435d-8c60-1625308835dd" x="291" y="286" width="186" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TYPEE}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="20">
+			<textField evaluationTime="Report">
+				<reportElement uuid="51de0110-2205-4885-b834-e8c74f7f55e3" x="523" y="0" width="33" height="20"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[+ $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="adb66797-5bca-4c50-af46-9da50a0bdf6b" x="439" y="0" width="81" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+ " of"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

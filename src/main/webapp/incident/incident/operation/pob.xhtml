@@ -1,0 +1,35 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:panelGrid columns="3" layout="grid" styleClass="ui-panelgrid-blank grid-pad" >
+       <p:commandButton value="Tambah Data Baru" styleClass="purple-btn"/>
+    </p:panelGrid>
+    <p:dataTable var="pob" value="#{pobMBean.pobEntitys}" 
+                 reflow="true" paginator="true" rows="10"
+                 paginatorPosition="bottom" tableStyle="table-layout:auto">
+        <p:column headerText="Nama">
+            <h:outputText value="#{pob.nama}" />
+        </p:column>
+        <p:column headerText="JK">
+            <h:outputText value="#{pob.jk}" />
+        </p:column>
+        <p:column headerText="Usia">
+            <h:outputText value="#{pob.usia}" />
+        </p:column>
+        <p:column headerText="TW Ditemukan">
+            <h:outputText value="#{pob.dtDitemukan}" >
+                <f:convertDateTime pattern="dd/MM/yyyy" />
+            </h:outputText>
+        </p:column>
+        <p:column headerText="Koordinat">
+            <h:outputText value="#{pob.koordinat}" />
+        </p:column>
+        <p:column >
+            <p:link value="Edit"/> | 
+            <p:link value="Hapus" /> 
+        </p:column>
+    </p:dataTable>
+</ui:composition>

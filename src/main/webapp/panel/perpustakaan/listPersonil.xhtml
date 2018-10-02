@@ -1,0 +1,88 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <p:panelGrid id="search-personil" columns="5" layout="grid" 
+                 styleClass="ui-panelgrid-blank form-group" 
+                 columnClasses ="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-2,ui-grid-col-2"
+                 style="margin-top: 20px;margin-bottom: 20px; width: 100%"
+                 class="no-padding no-border">
+
+        <p:selectOneMenu value="#{perpustakaanMBean.fieldPersonil}" autoWidth="false">
+            <p:ajax update="@form" process="@this" global="false"
+                    listener="#{perpustakaanMBean.onChangeValue}"/>
+            <f:selectItem itemLabel="Nama" itemValue="personnelName" />
+            <f:selectItem itemLabel="NIP/NRP" itemValue="personnelCode" />
+            <f:selectItem itemLabel="KANSAR" itemValue="kantorsarname" />
+            <f:selectItem itemLabel="Tipe" itemValue="personnelType" />
+            <f:selectItem itemLabel="Golongan" itemValue="employmentClass" />
+            <f:selectItem itemLabel="Unit Kerja" itemValue="unit" />
+            <f:selectItem itemLabel="Jabatan" itemValue="functionalPosition" />
+        </p:selectOneMenu>
+
+        <p:inputText value="#{perpustakaanMBean.valuePersonil}" 
+                     rendered="#{perpustakaanMBean.isFieldPersonil}"/>
+        <p:selectOneMenu  value="#{perpustakaanMBean.valuePersonil}" 
+                          autoWidth="false"
+                          rendered="#{!perpustakaanMBean.isFieldPersonil}">
+            <f:selectItems value ="#{perpustakaanMBean.listDropDown}" />
+        </p:selectOneMenu>
+
+        <p:commandButton value="Cari" type="button" icon="ui-icon-search" >
+            <p:ajax event="click" global="false" process="@form" update="@form"/>
+        </p:commandButton>
+
+        <p:commandButton value="Reset" type="button" icon="ui-icon-replay">
+            <p:ajax event="click" update="@form" global="false"
+                    listener="#{perpustakaanMBean.resetFilter}"/>
+        </p:commandButton>
+
+        <p:commandButton value="Tambahkan" styleClass="green-btn" global="false"
+                         icon="fa fa-plus-circle" update="@form"
+                         actionListener="#{perpustakaanMBean.personilChecked}">
+        </p:commandButton>
+    </p:panelGrid>
+
+
+    <p:dataTable var="personil" value="#{perpustakaanMBean.listPersonil}"
+                 widgetVar="listPersonil" reflow="true" paginator="true" rows="5" lazy="true"
+                 rowsPerPageTemplate="#{viewBean.rowsPerPageTemplate}"
+                 rowKey="#{personil.personnelID}" paginatorPosition="bottom" rowIndexVar="index"
+                 selection="#{perpustakaanMBean.listPersonilChecked}" tableStyle="table-layout:auto">
+        <p:column selectionMode="multiple" style="width: 15px; text-align: center"/>
+        <p:column headerText="No" style="width: 20px">
+            <p:outputLabel value="#{index + 1}"/>
+        </p:column>
+        <p:column headerText="NIP/NRP" sortBy="#{personil.personnelCode}">
+            <h:outputText value="#{personil.personnelCode}" />
+        </p:column>
+        <p:column headerText="Nama" sortBy="#{personil.personnelName}">
+            <h:outputText value="#{personil.personnelName}" />
+        </p:column>
+        <p:column headerText="Tipe" sortBy="#{personil.personnelType}">
+            <h:outputText value="#{personil.personnelType != null ? 
+                                   (personil.personnelType eq '0' ? 'Personil' : 'Potensi') : '-'}" />
+        </p:column>
+        <p:column headerText="KanSAR" sortBy="#{personil.officeSar.kantorsarname}">
+            <h:outputText value="#{personil.officeSar.kantorsarname}" />
+        </p:column>
+        <p:column headerText="Golongan" sortBy="#{personil.employmentClass.employmentclassname}">
+            <h:outputText value="#{personil.employmentClass.employmentclassname}" />
+        </p:column>
+        <p:column headerText="Unit Kerja" sortBy="#{personil.unit.employmentunitname}">
+            <h:outputText value="#{personil.unit.employmentunitname}" />
+        </p:column>
+        <p:column headerText="Jabatan" sortBy="#{personil.functionalPosition.employmentpositionname}">
+            <h:outputText value="#{personil.functionalPosition.employmentpositionname}" />
+        </p:column>
+    </p:dataTable>
+    
+    <p:panel class="control-button no-border no-padding" >
+        <p:commandButton value="Kembali" type="button" icon="ui-icon-cancel" styleClass="red-btn" 
+                         style="width:130px">
+            <p:ajax event="click" global="false" update="@form"
+                    listener="#{perpustakaanMBean.hideListPersonil}"/>
+        </p:commandButton>
+    </p:panel>
+</ui:composition>

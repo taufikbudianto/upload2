@@ -1,0 +1,27 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">      
+        <p:dialog id="idTambahKepadaOut" widgetVar="widgetTambahKepadaOut"
+              header="Pencarian Kepada"
+              width="85%" height="85%"
+              appendTo="@(body)"
+              responsive="true" modal="true"
+              maximizable="false" style="overflow-y: auto;max-height: 90%;font-size: x-small"
+              resizable="false">
+        <!--<h:form prependId="false">-->
+            <p:tabView class="card" prependId="false">
+                <p:tab title="Personil">
+                    <ui:include src="kepadapersonil.xhtml"/>
+                </p:tab>
+                <p:tab title="Potensi">
+                    <ui:include src="kepadapotensi.xhtml"/>
+                </p:tab>
+                <p:tab title="Aset">
+                    <ui:include src="kepadaaset.xhtml"/>
+                </p:tab>
+            </p:tabView>
+        <!--</h:form>-->
+    </p:dialog>
+</ui:composition>

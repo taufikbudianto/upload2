@@ -1,0 +1,128 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">               
+    <ui:define name="title">Dashboard</ui:define>
+    <ui:define name="content">
+        <!-- PROSIA API (Email) user : prosistimatikaautomasi@gmail.com -->
+        <script src="http://maps.google.com/maps/api/js?key=AIzaSyBJtKrXTplFU9WlnpYHXn6UxtxVVKqUzEU" type="text/javascript" />
+        <h:form prependId="false">
+            <div class="ui-g ui-fluid">
+                <div class="ui-g-12 ui-lg-7">
+                    <!-- Left Side -->
+                    <p:gmap id="idMap" widgetVar="idnGmap" 
+                            center="-1.105428, 120.0475485" zoom="4" type="HYBRID" 
+                            style="width:100%;height:100%" model="#{dashboard.mapModel}"
+                            class="card" streetView="true">
+                        <p:ajax event="overlaySelect" listener="#{dashboard.onMarkerSelect}" update="growl" />
+                        <p:ajax event="reverseGeocode" listener="#{dashboard.onReverseGeocode}" update="@this" />
+                        <p:gmapInfoWindow id="infoWindow" rendered="#{dashboard.marker.data != null}" >
+                            <p:outputPanel style="text-align: center; display: block; margin: auto">
+                                <p:panelGrid columns="1" styleClass="ui-panelgrid-blank grid-pad">
+                                    <p:outputLabel value="#{dashboard.marker.title}" />
+                                    <p:outputLabel value="#{dashboard.marker.data}" escape="false"/>
+                                </p:panelGrid>
+                            </p:outputPanel>
+                        </p:gmapInfoWindow>
+                    </p:gmap>
+
+
+                    <!--                    <div class="card card-w-title">
+                                            <h1>Weather</h1>
+                                            <p:panelGrid styleClass="nba-grid">
+                                                <f:facet name="header">
+                                                    <p:row>
+                                                        <p:column>Merauke</p:column>
+                                                        <p:column>Padang</p:column>
+                                                        <p:column>Palangkaraya</p:column>
+                                                        <p:column>Palembang</p:column>
+                                                        <p:column>Palu</p:column>
+                                                    </p:row>
+                    
+                                                </f:facet>
+                                                <p:row>
+                                                    <p:column>
+                                                        <p:graphicImage name="images/weather/simple_weather_icon_17.png" 
+                                                                        library="basarnas" 
+                                                                        style="width: 50%;"/><br/>
+                                                        <p:outputLabel value="Hujan Petir"/><br/>
+                                                        <p:outputLabel value="25&#8451;" escape="true"/>
+                                                    </p:column>
+                                                    <p:column>  
+                                                        <p:graphicImage name="images/weather/simple_weather_icon_11.png" 
+                                                                        library="basarnas" 
+                                                                        style="width: 50%;"/><br/>
+                                                        <p:outputLabel value="Hujan Ringan"/><br/>
+                                                        <p:outputLabel value="24&#8451;" escape="true"/>
+                                                    </p:column>
+                                                    <p:column>  
+                                                        <p:graphicImage name="images/weather/simple_weather_icon_12.png" 
+                                                                        library="basarnas" 
+                                                                        style="width: 50%;"/><br/>
+                                                        <p:outputLabel value="Hujan Sedang"/><br/>
+                                                        <p:outputLabel value="26&#8451;" escape="true"/>
+                                                    </p:column>
+                                                    <p:column>  
+                                                        <p:graphicImage name="images/weather/simple_weather_icon_13.png" 
+                                                                        library="basarnas" 
+                                                                        style="width: 50%;"/><br/>
+                                                        <p:outputLabel value="Hujan Lokal"/><br/>
+                                                        <p:outputLabel value="24&#8451;" escape="true"/>
+                                                    </p:column>
+                                                    <p:column>  
+                                                        <p:graphicImage name="images/weather/simple_weather_icon_11.png" 
+                                                                        library="basarnas" 
+                                                                        style="width: 50%;"/><br/>
+                                                        <p:outputLabel value="Hujan Ringan"/><br/>
+                                                        <p:outputLabel value="26&#8451;" escape="true"/>
+                                                    </p:column>
+                                                </p:row>
+                                            </p:panelGrid>
+                                        </div>-->
+                </div>
+                <div class="ui-g-12 ui-lg-5">
+                    <!-- Right Side -->
+
+                    <p:panel header="New Distress Detected" toggleable="true" closable="true" class="card">
+                        <p:panelGrid columns="3" columnClasses="ui-grid-col-5,ui-grid-col-5,ui-grid-col-2" 
+                                     style="margin-left: -10px;margin-right: -10px" layout="grid"
+                                     styleClass="ui-panelgrid-blank"
+                                     >
+                            <p:graphicImage name="images/cargo-ship-accident.jpg" library="basarnas" 
+                                            style="width: 100%;"/>
+                            <p:panelGrid columns="1" styleClass="ui-panelgrid-blank">
+                                <p:outputLabel value="IMO : 9396945"/>
+                                <p:outputLabel value="Callsign : HSB4939"/>
+                                <p:outputLabel value="MMSI : 5674690000"/>
+                                <p:outputLabel value="Vessel Name : Arimata Ship"/>
+                            </p:panelGrid>
+                            <p:commandButton value="More Detail" actionListener="#{dashboard.showMap}" 
+                                             style="height: 60px;width: 70px;margin-left: -10px;"
+                                             />
+                        </p:panelGrid>
+                        <p:outputLabel value="Detected Last Location : " style="font: bolder"/>
+                        <p:outputLabel value="Java Sea (-5.0405666, 112.6851581) " style="color: blue"/>
+                    </p:panel>
+
+                    <div class="card card-w-title">
+                        <h1>Insiden Aktif</h1>
+                        <p:dataTable var="insiden" value="#{incidentMBean.incidentOpen}" 
+                                     reflow="true" paginator="true" rows="10"
+                                     paginatorPosition="bottom" tableStyle="table-layout:auto">
+                            <p:column headerText="Subyek">
+                                <h:outputText value="#{insiden.incidentname}" />
+                            </p:column>
+                            <p:column headerText="Kansar">
+                                <h:outputText value="#{incidentMBean.getKantorSarByKantorSarId(insiden.usersiteid)}" />
+                            </p:column>
+                        </p:dataTable>
+                    </div>
+                </div>
+            </div>
+
+
+        </h:form>
+    </ui:define>
+</ui:composition>

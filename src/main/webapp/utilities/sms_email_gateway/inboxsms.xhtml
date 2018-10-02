@@ -1,0 +1,48 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">      
+
+    <p:panelGrid id="panelSearch-inboxsms" columns="6">
+        <p:outputLabel value="Kolom Pencarian :" style="font-weight:bold"/>
+
+        <p:selectOneMenu id="kolompencarian-inbox-sms" value="#{smsInMBean.kolompencarian}" style="width:150px">
+            <p:ajax update="panelSearch-inboxsms"/>
+            <f:selectItems value="#{smsInMBean.listKolomPencarian}" />
+        </p:selectOneMenu>
+
+        <p:outputLabel id = "katakunci" value="Kata Kunci :" style="font-weight:bold"/>
+
+        <p:inputText id="textfield" value ="#{smsInMBean.textfield}"/>       
+
+        <p:commandButton id="cari-btn-smsinbox" type="button" value="Cari">
+            <p:ajax event="click" update="@form" process="@form"/>
+        </p:commandButton>
+    </p:panelGrid>
+    <p:dataTable var="smsin" value="#{smsInMBean.lazyDataModelJPASms}"
+                 reflow="true" paginator="true" lazy="true" rows="10" rowsPerPageTemplate="5,10,15"
+                 paginatorPosition="bottom" id="sms-in" tableStyle="table-layout:auto"
+                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                 rowIndexVar="index" emptyMessage="Data tidak ditemukan">
+        <p:column headerText="No" style="width: 20px">
+            <p:outputLabel value="#{index + 1}"/>
+        </p:column>
+        <p:column headerText="Nama Pengirim">
+            <h:outputText value="#{smsin[0]}"/>
+        </p:column>
+
+        <p:column headerText="No. HP">
+            <h:outputText value="#{smsin[1]}" />
+        </p:column>
+
+        <p:column headerText="Tgl. Terima">
+            <h:outputText value="#{smsin[5]}" >
+                <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+            </h:outputText>
+        </p:column>
+        <p:column headerText="Isi SMS">
+            <h:outputText value="#{smsin[6]}" />
+        </p:column>
+    </p:dataTable>
+</ui:composition>

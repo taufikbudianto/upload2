@@ -1,0 +1,50 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <p:dialog id="kirim-notif-sru" widgetVar="wid-kirim-notif-sru" modal="true"
+              showEffect="fade" hideEffect="fade" resizable="false" responsive="true"
+              width="40%" height="50%" dynamic="true">
+        <h:form>
+            <p:panel id="panel" class="ui-fluid no-border card-w-title card" header="Kirim Notifikasi Email/SMS"> 
+                <p:messages closable="true"/>
+                <p:panelGrid columns="2" columnClasses="ui-grid-col-6, ui-grid-col-6" class="ui-fluid">
+                    <p:outputLabel value="Via"/>
+                    <p:panelGrid columns="4" columnClasses="">
+                        <p:outputLabel value="SMS"/>
+                        <p:selectBooleanCheckbox value="#{incidentSruMBean.kirimSms}">
+                            <p:ajax event="change" update="isiSMS"/>
+                        </p:selectBooleanCheckbox>
+                        <p:outputLabel value="Email"/>
+                        <p:selectBooleanCheckbox value="#{incidentSruMBean.kirimEmail}">
+                            <p:ajax event="change" update="emailnotif"/>
+                            <p:ajax event="change" update="subyekemail"/>
+                        </p:selectBooleanCheckbox>
+                    </p:panelGrid>
+                </p:panelGrid>
+                <p:panelGrid columns="2" columnClasses="ui-grid-col-4, ui-grid-col-6" class="ui-fluid">
+                    <p:outputLabel value="Isi Pesan SMS"/>
+                    <p:inputTextarea id="isiSMS" value="#{incidentSruMBean.isisms}" 
+                                     disabled="#{!incidentSruMBean.kirimSms}" required="true"
+                                     requiredMessage="Pesan SMS Wajib Di Isi" style="width: 300px"/>
+                    <p:outputLabel value="Subyek Email"/>
+                    <p:inputText id="subyekemail" value="#{incidentSruMBean.subyekEmail}" 
+                                 disabled="#{!incidentSruMBean.kirimEmail}" required="true" 
+                                 requiredMessage="Subyek Email Wajib Di Isi" style="width: 300px"/>
+                    <p:outputLabel value="Isi Pesan Email"/>
+                    <p:inputTextarea id="emailnotif" value="#{incidentSruMBean.isiEmail}" 
+                                     disabled="#{!incidentSruMBean.kirimEmail}" style="width: 300px"
+                                     required="true" requiredMessage="Pesan Email Wajib Di Isi"/>                                                   
+                </p:panelGrid>
+                <p:panel class="no-border no-padding ui-fluid control-button">
+                    <p:commandButton value="Kirim" icon="fa fa-send" style="width: 100px"
+                                     actionListener="#{incidentSruMBean.actionKirimNotif}" 
+                                     process="@form" update="@form" class="green-btn"/>                             
+                    <p:commandButton value="Kembali" class="red-btn" style="width: 100px"
+                                     icon="fa fa-close" onclick="PF('wid-kirim-notif-sru').hide();"/> 
+                </p:panel>                
+            </p:panel>
+        </h:form>
+    </p:dialog>
+</ui:composition>

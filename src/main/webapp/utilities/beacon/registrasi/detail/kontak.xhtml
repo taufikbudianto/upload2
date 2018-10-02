@@ -1,0 +1,93 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <p:panel header="Data Kontak Darurat">
+        <p:panelGrid columns="2" style="ui-panelgrid-blank">
+            <p:panel>
+                <p:panelGrid columns="2">
+                    <p:outputLabel value="Nama"/>
+                    <h:panelGroup>
+                        <p:inputText id="namaKontak1" value="#{registrasiBeaconMBean.airvessel.urgentContactName1}" style="width: 300px;" 
+                                     required="false" requiredMessage=" harus diisi." disabled="#{registrasiBeaconMBean.isUbah}"
+                                     onkeypress="if (event.which === 34 || event.which === 39 || event.which === 92 || event.which === 96) {
+                                                 return false;
+                                             }"
+                                     onchange="this.value = trim(this.value);" maxlength="50">
+                        </p:inputText>
+                        <p:message for="namaKontak1" style="float: none; display: block;"/>
+                    </h:panelGroup>
+                    <p:outputLabel value="Telpon Rumah"/>
+                    <h:panelGroup>
+                        <p:inputText id="teleponRumah1" value="#{registrasiBeaconMBean.airvessel.urgentContactHomePhone1}" style="width: 300px;" required="false" 
+                                     requiredMessage=" harus diisi." disabled="#{registrasiBeaconMBean.isUbah}"
+                                     onkeypress="return validatePhone(event);"
+                                     onchange="this.value = trim(this.value);" maxlength="50">
+                        </p:inputText>
+                        <p:message for="teleponRumah1" style="float: none; display: block;"/>
+                    </h:panelGroup>
+                    <p:outputLabel value="Telepon Kantor"/>
+                    <h:panelGroup>
+                        <p:inputText id="teleponKantor1" value="#{registrasiBeaconMBean.airvessel.urgentContactOfficePhone1}" style="width: 300px;" required="false" 
+                                     requiredMessage=" harus diisi." disabled="#{registrasiBeaconMBean.isUbah}"
+                                     onkeypress="return validatePhone(event);"                                     
+                                     onchange="this.value = trim(this.value);" maxlength="50">
+                        </p:inputText>
+                        <p:message for="teleponKantor1" style="float: none; display: block;"/>
+                    </h:panelGroup>
+                    <p:outputLabel value="Seluler"/>
+                    <h:panelGroup>
+                        <p:inputText id="seluler1" value="#{registrasiBeaconMBean.airvessel.urgentContactCellPhone1}" style="width: 300px;" required="false" 
+                                     requiredMessage=" harus diisi." disabled="#{registrasiBeaconMBean.isUbah}"
+                                     onkeypress="return validatePhone(event);"
+                                     onchange="this.value = trim(this.value);" maxlength="50">
+                        </p:inputText>
+                        <p:message for="seluler1" style="float: none; display: block;"/>
+                    </h:panelGroup>
+                </p:panelGrid>            
+            </p:panel>
+            <p:panel>
+                <p:panelGrid columns="2">
+                    <p:outputLabel value="Nama"/>
+                    <h:panelGroup>
+                        <p:inputText id="namaKontak2" value="#{registrasiBeaconMBean.airvessel.urgentContactName2}" style="width: 300px;" required="false" 
+                                     requiredMessage=" harus diisi." disabled="#{registrasiBeaconMBean.isUbah}"
+                                     onkeypress="if (event.which === 34 || event.which === 39 || event.which === 92 || event.which === 96) {
+                                                 return false;
+                                             }"
+                                     onchange="this.value = trim(this.value);" maxlength="50">
+                        </p:inputText>
+                        <p:message for="namaKontak2" style="float: none; display: block;"/>
+                    </h:panelGroup>
+                    <p:outputLabel value="Telpon Rumah"/>
+                    <h:panelGroup>
+                        <p:inputText id="teleponRumah2" value="#{registrasiBeaconMBean.airvessel.urgentContactHomePhone2}" style="width: 300px;" required="false" 
+                                     requiredMessage=" harus diisi." disabled="#{registrasiBeaconMBean.isUbah}"
+                                     onkeypress="return validatePhone(event);"
+                                     onchange="this.value = trim(this.value);" maxlength="50">
+                        </p:inputText>
+                        <p:message for="teleponRumah2" style="float: none; display: block;"/>
+                    </h:panelGroup>               
+                    <p:outputLabel value="Telepon Kantor"/>
+                    <h:panelGroup>
+                        <p:inputText id="teleponKantor2" value="#{registrasiBeaconMBean.airvessel.urgentContactOfficePhone2}" style="width: 300px;" required="false" 
+                                     requiredMessage=" harus diisi." disabled="#{registrasiBeaconMBean.isUbah}"
+                                     onkeypress="return validatePhone(event);"
+                                     onchange="this.value = trim(this.value);" maxlength="50">
+                        </p:inputText>
+                        <p:message for="teleponKantor2" style="float: none; display: block;"/>
+                    </h:panelGroup>
+                    <p:outputLabel value="Seluler"/>
+                    <h:panelGroup>
+                        <p:inputText id="seluler2" value="#{registrasiBeaconMBean.airvessel.urgentContactCellPhone2}" style="width: 300px;" required="false" 
+                                     requiredMessage=" harus diisi." disabled="#{registrasiBeaconMBean.isUbah}"
+                                     onkeypress="return validatePhone(event);"
+                                     onchange="this.value = trim(this.value);" maxlength="50">
+                        </p:inputText>
+                        <p:message for="seluler2" style="float: none; display: block;"/>
+                    </h:panelGroup>
+                </p:panelGrid>
+            </p:panel>
+        </p:panelGrid>
+    </p:panel>
+</ui:composition>

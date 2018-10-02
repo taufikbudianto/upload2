@@ -1,0 +1,43 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <p:importEnum type="prosia.basarnas.enumeration.AssetKategori" var="categori" allSuffix="ALL_ENUM_VALUES" />
+    <p:importEnum type="prosia.basarnas.enumeration.AssetMatra" var="matra" allSuffix="ALL_ENUM_VALUES" />
+    <h:form id="form-detail">
+        <p:panel class="ui-fluid no-border no-padding card">
+            <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group"
+                         columnClasses="ui-g-4, ui-g-8">
+                <p:outputLabel value="Message Number"/>
+                <p:panel style="border-style: none" >
+                    <p:inputText value="#{distressMBean.utiBeaconMessage.msgNumber}" maxlength="3" 
+                                 disabled="true"/>
+                </p:panel>
+
+                <p:outputLabel value="Transmit DTG" />
+                <p:panel style="border-style: none" >
+                    <p:inputText value="#{distressMBean.transmitDtgFormat(distressMBean.utiBeaconMessage)}" maxlength="50"
+                                 disabled="true"/>
+                </p:panel>
+
+                <p:outputLabel value="Message" />
+                <p:panel style="border-style: none" >
+                    <p:inputTextarea value="#{distressMBean.utiBeaconMessage.messageText}"  
+                                     disabled="true"/>
+                </p:panel>
+                <p:spacer/>
+                <p:panel class="control-button no-border no-padding ">
+                      <p:commandButton icon="ui-icon-cancel" style="margin-left: 10px;width: 100px;" value="#{distressMBean.showButton ? 'Batal' : 'Kembali'}" styleClass="red-btn" actionListener="#{mstEmployeeClassMBean.batal()}" immediate="true">
+                    <p:ajax event="click" update="@form" oncomplete="if(!args.validationFailed) PF('widgetDetail').hide()"/>
+                </p:commandButton>    
+                    
+                </p:panel>
+                
+                
+            </p:panelGrid>
+            
+        </p:panel>
+
+    </h:form>
+</ui:composition>

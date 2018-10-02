@@ -1,0 +1,155 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <p:panel header="Data Kapal">
+        <p:panelGrid columns="2" style="ui-panelgrid-blank">
+            <p:panel>
+                <p:panelGrid columns="2">
+                    <p:outputLabel value="Registrasi" />
+                    <h:panelGroup>
+                        <p:inputText id="registrasi-kapal" value="#{beaconCompositeMBean.airvessel.registrationNo}"
+                                     style="width: 300px;" disabled="true" maxlength="50">
+                        </p:inputText>
+                        <p:message for="registrasi-kapal" style="float: none; display: block;"/>
+                    </h:panelGroup>
+                    <p:outputLabel value="Nama" />
+                    <h:panelGroup>
+                        <p:inputText id="nama-kapal" value="#{beaconCompositeMBean.airvessel.name}"
+                                     style="width: 300px;" disabled="true" maxlength="50">
+                        </p:inputText>
+                        <p:message for="nama-kapal" style="float: none; display: block;"/>
+                    </h:panelGroup>
+                    <p:outputLabel value="Kategori" />
+                    <p:selectOneMenu id="kategori-kapal" style="width: 300px;" value="#{beaconCompositeMBean.airvessel.category}" disabled="true">
+                        <f:selectItem itemLabel="" itemValue=""/>                        
+                        <f:selectItems value="#{categoryEPIRB.ALL_ENUM_VALUES}" var="c" 
+                                       itemValue="#{c.itemValue}" itemLabel="#{c.itemLabel}"/>
+                    </p:selectOneMenu>                    
+                    <p:outputLabel value="Sail"/>
+                    <p:selectOneMenu id="sail-kapal" style="width: 300px;" value="#{beaconCompositeMBean.airvessel.sailType}" disabled="true">
+                        <f:selectItem itemLabel="" itemValue=""/>                        
+                        <f:selectItems value="#{sail.ALL_ENUM_VALUES}" var="s" 
+                                       itemValue="#{s.itemValue}" itemLabel="#{s.itemLabel}"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel />
+                    <h:panelGrid columns="3" id="other-sail-type">
+                        <p:outputLabel value="Lain"/>
+                        <p:spacer width="10"/>
+                        <h:panelGroup>
+                            <p:inputText id="sail-lain" value="#{beaconCompositeMBean.airvessel.otherSailType}"
+                                         style="width: 255px;" disabled="true" maxlength="50">
+                            </p:inputText>
+                            <p:message for="sail-lain" style="float: none; display: block;"/>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:outputLabel value="Bermesin"/>
+                    <p:selectOneMenu id="mesin-kapal" style="width: 300px;" value="#{beaconCompositeMBean.airvessel.machineType}" disabled="true">
+                        <f:selectItem itemLabel="" itemValue=""/>
+                        <f:selectItems value="#{mesin.ALL_ENUM_VALUES}" var="m" 
+                                       itemValue="#{m.itemValue}" itemLabel="#{m.itemLabel}"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel />
+                    <h:panelGrid columns="3" id="other-machine-type">
+                        <p:outputLabel value="Lain"/>
+                        <p:spacer width="10"/>
+                        <h:panelGroup>
+                            <p:inputText id="kapal-lain" value="#{beaconCompositeMBean.airvessel.otherMachineType}" 
+                                         style="width: 255px;" disabled="true" maxlength="50">
+                            </p:inputText>
+                            <p:message for="kapal-lain" style="float: none; display: block;"/>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:outputLabel value="Call Sign"/>
+                    <h:panelGrid columns="5">
+                        <h:panelGroup>
+                            <p:inputText id="callsign-kapal" value="#{beaconCompositeMBean.airvessel.callSign}"
+                                         style="width: 100px;" disabled="true" maxlength="50">
+                            </p:inputText>
+                            <p:message for="callsign-kapal" style="float: none; display: block;"/>
+                        </h:panelGroup>
+                        <p:spacer width="10"/>
+                        <p:outputLabel value="Warna"/>
+                        <p:spacer width="25"/>
+                        <h:panelGroup>
+                            <p:inputText id="warna-kapal" value="#{beaconCompositeMBean.airvessel.color}"
+                                         style="width: 100px;" maxlength="50" disabled="true">
+                            </p:inputText>
+                            <p:message for="warna-kapal" style="float: none; display: block;"/>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:outputLabel value="Panjang"/>
+                    <h:panelGrid columns="5">
+                        <h:panelGroup>
+                            <p:inputText id="panjang-kapal" value="#{beaconCompositeMBean.airvessel.alength}"
+                                         style="width: 100px;" maxlength="50" disabled="true">
+                            </p:inputText>
+                            <p:message for="panjang-kapal" style="float: none; display: block;"/>
+                        </h:panelGroup>
+                        <p:spacer width="10"/>
+                        <p:outputLabel value="POB Max"/>
+                        <p:spacer width="10"/>
+                        <h:panelGroup>
+                            <p:inputText id="pob-max-kapal" value="#{beaconCompositeMBean.airvessel.passenger}"
+                                         style="width: 100px;" disabled="true" maxlength="10">
+                                <f:validateRegex pattern="^[0-9]*$"/>
+                            </p:inputText>
+                            <p:message for="warna-kapal" style="float: none; display: block;"/>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                </p:panelGrid>
+            </p:panel>
+            <p:panel>
+                <p:panelGrid columns="2">
+                    <p:outputLabel value="Peralatan Komunikasi"/>
+                    <p:selectManyCheckbox id="per-kom" value="#{beaconCompositeMBean.toolsCom}" layout="grid" columns="3" disabled="true">
+                        <f:selectItems value="#{epirb.ALL_ENUM_VALUES}" var="epirb" itemLabel="#{epirb.item}" itemValue="#{epirb}" />
+                    </p:selectManyCheckbox>
+                    <p:outputLabel />
+                    <h:panelGroup id="other-tools">
+                        <p:inputText id="per-kom-lain" value="#{beaconCompositeMBean.airvessel.otherComequipment}"
+                                     style="width: 250px;" disabled="true" maxlength="50">
+                        </p:inputText>
+                        <p:message for="per-kom-lain" style="float: none; display: block;"/>
+                    </h:panelGroup> 
+                    <p:outputLabel value="Telepon INMARSAT"/>
+                    <h:panelGroup>
+                        <p:inputText id="telp-inmarsat" value="#{beaconCompositeMBean.airvessel.inmarsatVoice}"
+                                     style="width: 250px;" disabled="true" maxlength="50">
+                        </p:inputText>
+                        <p:message for="telp-inmarsat" style="float: none; display: block;"/>
+                    </h:panelGroup>                    
+                    <p:outputLabel value="Telepon Lainnya"/>
+                    <h:panelGroup>
+                        <p:inputText id="telp-lain" value="#{beaconCompositeMBean.airvessel.otherTelpNo}"
+                                     style="width: 250px;" disabled="true" maxlength="50">
+                        </p:inputText>
+                        <p:message for="telp-lain" style="float: none; display: block;"/>
+                    </h:panelGroup>                    
+                    <p:outputLabel value="No. MMSI"/>
+                    <h:panelGroup>
+                        <p:inputText id="no-mmsi" value="#{beaconCompositeMBean.airvessel.mmsi}"
+                                     style="width: 250px;" disabled="true" maxlength="50">
+                        </p:inputText>
+                        <p:message for="no-mmsi" style="float: none; display: block;"/>
+                    </h:panelGroup>                    
+                    <p:outputLabel value="Pelabuhan"/>
+                    <h:panelGroup>
+                        <p:inputText id="pelabuhan" value="#{beaconCompositeMBean.airvessel.homebase}"
+                                     style="width: 250px;" disabled="true" maxlength="50">
+                        </p:inputText>
+                        <p:message for="pelabuhan" style="float: none; display: block;"/>
+                    </h:panelGroup>
+                    <p:outputLabel value="Data Tambahan"/>
+                    <h:panelGroup>
+                        <p:inputTextarea id="data-tambahan-epirb" value="#{beaconCompositeMBean.airvessel.additionalDetail}" rows="3" style="width: 250px; resize: none;" 
+                                         disabled="true" autoResize="false" maxlength="100">
+                        </p:inputTextarea>
+                        <p:message for="data-tambahan-epirb" style="float: none; display: block;"/>
+                    </h:panelGroup>
+                </p:panelGrid>
+            </p:panel>
+        </p:panelGrid>
+    </p:panel>
+</ui:composition>

@@ -1,0 +1,77 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <div class="ui-g ui-fluid">
+        <div class="ui-g-12">
+            <h:form id="inc-potensi-content">
+                <p:panelGrid id="search-incident-potensi" columns="3" layout="grid" styleClass="ui-panelgrid-blank form-group" class="no-padding no-border">
+                    <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group" class="no-padding no-border">
+                        <p:commandButton id="check-pilih-incident-potensi" value="Check All" actionListener="#{incidentPotensiMBean.checkallpilih()}" process="@form" 
+                                         update="incidentdetail:inc-potensi-content:potensiinc" styleClass="green-btn"/>
+
+                        <p:commandButton id="uncheck-pilih-incident-sru-tab-udara" value="Uncheck All" actionListener="#{incidentPotensiMBean.uncheckallpilih()}" 
+                                         process="@form" update="incidentdetail:inc-potensi-content:potensiinc" styleClass="red-btn"/>
+                    </p:panelGrid>
+
+                    <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group" class="no-padding no-border">
+                        <p:commandButton id="kirim-notif-incident-sru-tab-udara" type="button"  value="Kirim Notifikasi">
+                            <p:ajax event="click" update="incidentdetail:inc-potensi-content:potensiinc" process="@form"/>
+                        </p:commandButton>
+                    </p:panelGrid>
+
+                    <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group" class="no-padding no-border">
+                        <p:commandButton id="check-kirim-incident-sru-tab-udara" value="Check All" actionListener="#{incidentPotensiMBean.checkallkirim()}" 
+                                         process="@form" update="incidentdetail:inc-potensi-content:potensiinc" styleClass="green-btn"/>
+
+                        <p:commandButton id="uncheck-kirim-incident-sru-tab-udara" value="Uncheck All" actionListener="#{incidentPotensiMBean.uncheckallkirim()}" 
+                                         process="@form" update="incidentdetail:inc-potensi-content:potensiinc" styleClass="red-btn"/>
+                    </p:panelGrid>
+                </p:panelGrid>
+
+                <p:dataTable var="potensiinc" value="#{incidentPotensiMBean.listTempCheck}"
+                             reflow="true"  paginator="true" paginatorPosition="bottom" rows="#{viewBean.rowsPageDefault}"
+                             rowsPerPageTemplate="#{viewBean.rowsPerPageTemplate}" first="#{viewBean.first}"
+                             emptyMessage="Data tidak ditemukan" 
+                             id="potensiinc" tableStyle="table-layout:auto" sortBy="#{potensiinc.resPotency.potencyname}"
+                             style="font-size: smaller" rowIndexVar="index">
+                    <p:column headerText="No" style="width: 20px">
+                        <p:outputLabel value="#{index + 1}"/>
+                    </p:column>
+                    <p:column style="width: 5%; text-align: center;" id="checkPilihPotensi" headerText="Pilih">
+                        <p:selectBooleanCheckbox value="#{potensiinc.pilih}">
+                            <p:ajax process="@this"/>
+                        </p:selectBooleanCheckbox>
+                    </p:column>
+                    <p:column style="width: 5%; text-align: center;" id="checkKirimPotensi" headerText="Kirim">
+                        <p:selectBooleanCheckbox value="#{potensiinc.kirim}">
+                            <p:ajax process="@this"/>
+                        </p:selectBooleanCheckbox>
+                    </p:column>
+
+                    <p:column headerText="Potency ID" sortBy="#{potensiinc.resPotency.potencyid}">
+                        <h:outputText value="#{potensiinc.resPotency.potencyid}" />
+                    </p:column>
+                    <p:column headerText="Nama" sortBy="#{potensiinc.resPotency.potencyname}">
+                        <h:outputText value="#{potensiinc.resPotency.potencyname}" />
+                    </p:column>
+                    <p:column headerText="Matra" sortBy="#{potensiinc.resPotency.potencytype}">
+                        <h:outputText value="#{potensiinc.resPotency.potencytype eq '0'?'Darat' : 
+                                               (potensiinc.resPotency.potencytype eq '1' ? 'Udara' :
+                                               'Laut')}" />
+                    </p:column>
+
+                    <p:column headerText="Jarak(NM)">
+                        <h:outputText value="" />
+                    </p:column>
+                    <p:column headerText="Arah(Derajat)">
+                        <h:outputText value="" />
+                    </p:column>                  
+                </p:dataTable>
+                <p:spacer width="10" />
+                <!--<p:commandButton value="Simpan" actionListener="{incidentPotensiMBean.action}" process="@form"/>-->
+            </h:form>
+        </div>
+    </div>
+</ui:composition>

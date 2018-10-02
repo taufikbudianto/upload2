@@ -1,0 +1,456 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Report_sighting_hearing" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isIgnorePagination="true" uuid="3fba4e95-2c7d-4d91-b372-a4f0647f6bd8">
+	<property name="ireport.zoom" value="0.7710865788590635"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="STARTDATE" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ENDDATE" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT * FROM
+(SELECT * FROM UTI_SIGHTING)A
+LEFT JOIN
+(SELECT * FROM INCIDENT)B
+ON A.INCIDENTID=B.INCIDENTID
+WHERE A.DATECREATED BETWEEN TO_DATE($P{STARTDATE},'dd-MM-yyyy') AND TO_DATE($P{ENDDATE},'dd-MM-yyyy')]]>
+	</queryString>
+	<field name="SIGHTINGID" class="java.lang.String"/>
+	<field name="CREATEDBY" class="java.lang.String"/>
+	<field name="DATECREATED" class="java.sql.Timestamp"/>
+	<field name="LASTMODIFIED" class="java.sql.Timestamp"/>
+	<field name="MODIFIEDBY" class="java.lang.String"/>
+	<field name="ISDELETED" class="java.math.BigDecimal"/>
+	<field name="INCIDENTID" class="java.lang.String"/>
+	<field name="OBSERVERNAME" class="java.lang.String"/>
+	<field name="OBSERVERPHONE" class="java.lang.String"/>
+	<field name="OBSERVERLOCATION" class="java.lang.String"/>
+	<field name="OBSERVERLONGITUDE" class="java.lang.String"/>
+	<field name="OBSERVERLATITUDE" class="java.lang.String"/>
+	<field name="OBSERVERUNCERTAINTY" class="java.lang.String"/>
+	<field name="OBSERVERREMARKS" class="java.lang.String"/>
+	<field name="OBJECTPOSITION" class="java.lang.String"/>
+	<field name="OBJECTLONGITUDE" class="java.lang.String"/>
+	<field name="OBJECTLATITUDE" class="java.lang.String"/>
+	<field name="OBJECTUNCERTAINTY" class="java.lang.String"/>
+	<field name="OBJECTREMARKS" class="java.lang.String"/>
+	<field name="REPORTTYPE" class="java.math.BigDecimal"/>
+	<field name="OBJECTTYPE" class="java.math.BigDecimal"/>
+	<field name="REMARKS" class="java.lang.String"/>
+	<field name="WEATHERDESCRIPTION" class="java.lang.String"/>
+	<field name="ASSESMENTPRIORITY" class="java.math.BigDecimal"/>
+	<field name="ASSESMENTANNOTATION" class="java.lang.String"/>
+	<field name="ASSESMENTNOTES" class="java.lang.String"/>
+	<field name="USERSITEID" class="java.lang.String"/>
+	<field name="OBJECTDTG" class="java.sql.Timestamp"/>
+	<field name="OBJECTDTGUNCERTAINTY" class="java.lang.String"/>
+	<field name="ASSESMENTSTATUS" class="java.math.BigDecimal"/>
+	<field name="ASSESMENTSTATUSOTHER" class="java.lang.String"/>
+	<field name="OBJECTTYPEOTHER" class="java.lang.String"/>
+	<field name="OBJECTDTGTIMEZONE" class="java.lang.String"/>
+	<field name="OBJECTUNCERTAINTYUNIT" class="java.lang.String"/>
+	<field name="OBJECTDTGUNCERTAINTYUNIT" class="java.lang.String"/>
+	<field name="STATUS" class="java.math.BigDecimal"/>
+	<field name="ISCRM" class="java.math.BigDecimal"/>
+	<field name="SIGHTINGNUMBER" class="java.lang.String"/>
+	<field name="INCIDENTNUMBER" class="java.lang.String"/>
+	<field name="INCIDENTTYPE" class="java.math.BigDecimal"/>
+	<field name="SITUATION" class="java.lang.String"/>
+	<field name="ALERTEDAT" class="java.sql.Timestamp"/>
+	<field name="ALERTEDBY" class="java.lang.String"/>
+	<field name="METHOD" class="java.lang.String"/>
+	<field name="PHONENUMBER" class="java.lang.String"/>
+	<field name="LOCATION" class="java.lang.String"/>
+	<field name="LATITUDE" class="java.lang.String"/>
+	<field name="LONGITUDE" class="java.lang.String"/>
+	<field name="DEATHPEOPLE" class="java.math.BigDecimal"/>
+	<field name="HEAVYINJUREDPEOPLE" class="java.math.BigDecimal"/>
+	<field name="LIGHTINJUREDPEOPLE" class="java.math.BigDecimal"/>
+	<field name="LOSTPEOPLE" class="java.math.BigDecimal"/>
+	<field name="SURVIVEDPEOPLE" class="java.math.BigDecimal"/>
+	<field name="CREATEBY" class="java.lang.String"/>
+	<field name="CHECKLISTID" class="java.lang.String"/>
+	<field name="CLOSEDATE" class="java.sql.Timestamp"/>
+	<field name="ALERTEDATTIMEZONE" class="java.lang.String"/>
+	<field name="CLOSEDATETIMEZONE" class="java.lang.String"/>
+	<field name="STARTDATE" class="java.sql.Timestamp"/>
+	<field name="STARTDATETIMEZONE" class="java.lang.String"/>
+	<field name="STARTOPSDATE" class="java.sql.Timestamp"/>
+	<field name="STARTOPSDATETIMEZONE" class="java.lang.String"/>
+	<field name="SMC" class="java.lang.String"/>
+	<field name="SMCPHONE" class="java.lang.String"/>
+	<field name="INCIDENTNAME" class="java.lang.String"/>
+	<field name="OWNERNAME" class="java.lang.String"/>
+	<field name="OWNERADDRESS" class="java.lang.String"/>
+	<field name="OWNERPHONE" class="java.lang.String"/>
+	<field name="OWNERCELL" class="java.lang.String"/>
+	<field name="OWNERFAX" class="java.lang.String"/>
+	<field name="OWNEREMAIL" class="java.lang.String"/>
+	<field name="OBJECTCALLSIGN" class="java.lang.String"/>
+	<field name="OBJECTCOLOR" class="java.lang.String"/>
+	<field name="OBJECTLENGTH" class="java.lang.String"/>
+	<field name="OBJECTCAPACITY" class="java.lang.String"/>
+	<field name="OBJECTHOMEBASE" class="java.lang.String"/>
+	<field name="KATEGORI" class="java.lang.String"/>
+	<field name="JENIS" class="java.lang.String"/>
+	<field name="TIMEZONE" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="103">
+			<image>
+				<reportElement uuid="409982b4-8747-4877-8900-b0df84025e95" x="3" y="2" width="109" height="99"/>
+				<imageExpression><![CDATA["sar_image.jpg"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement uuid="731b48a2-d4fa-4323-a852-55419e990b7e" x="113" y="37" width="688" height="33"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Data Sighting dan Hearing]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="41" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="f0889ac1-1701-4d89-b09c-8d8e4c4a451d" x="22" y="21" width="78" height="20"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Name/Callsign]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="63f8aba7-40ed-4fe9-a148-d86756f393b8" x="100" y="21" width="64" height="20"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[No. Telepon]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f0889ac1-1701-4d89-b09c-8d8e4c4a451d" x="283" y="21" width="113" height="20"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Posisi]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="63f8aba7-40ed-4fe9-a148-d86756f393b8" x="164" y="21" width="119" height="20"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Lokasi]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="63f8aba7-40ed-4fe9-a148-d86756f393b8" x="465" y="1" width="53" height="40"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Jenis Pelaporan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f0889ac1-1701-4d89-b09c-8d8e4c4a451d" x="283" y="1" width="182" height="20"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Data Objek]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f0889ac1-1701-4d89-b09c-8d8e4c4a451d" x="22" y="1" width="261" height="20"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Data Pelapor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="63f8aba7-40ed-4fe9-a148-d86756f393b8" x="396" y="21" width="69" height="20"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Jam]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f0889ac1-1701-4d89-b09c-8d8e4c4a451d" x="0" y="1" width="22" height="40"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[No]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="63f8aba7-40ed-4fe9-a148-d86756f393b8" x="518" y="1" width="32" height="40"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Jenis Objek]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="63f8aba7-40ed-4fe9-a148-d86756f393b8" x="661" y="1" width="67" height="40"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Dicatat Oleh]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="63f8aba7-40ed-4fe9-a148-d86756f393b8" x="550" y="1" width="111" height="40"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Keterangan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="63f8aba7-40ed-4fe9-a148-d86756f393b8" x="728" y="1" width="74" height="40"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Jam Pencatatan]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="79" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="3fc15155-9797-4db0-9c03-42b581fdace8" positionType="Float" stretchType="RelativeToBandHeight" x="22" y="0" width="78" height="79"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{OBSERVERNAME}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="c5d21ece-ba38-43d2-9c3c-d26ea54e7439" positionType="Float" stretchType="RelativeToBandHeight" x="100" y="0" width="64" height="79"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{OBSERVERPHONE}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="3fc15155-9797-4db0-9c03-42b581fdace8" positionType="Float" stretchType="RelativeToBandHeight" x="0" y="0" width="22" height="79"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement/>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="c5d21ece-ba38-43d2-9c3c-d26ea54e7439" positionType="Float" x="283" y="0" width="113" height="26"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{OBJECTPOSITION}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="3fc15155-9797-4db0-9c03-42b581fdace8" positionType="Float" x="164" y="0" width="119" height="26"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{OBSERVERLOCATION}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="3fc15155-9797-4db0-9c03-42b581fdace8" positionType="Float" stretchType="RelativeToTallestObject" x="550" y="0" width="111" height="79"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{REMARKS}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="c5d21ece-ba38-43d2-9c3c-d26ea54e7439" positionType="Float" stretchType="RelativeToBandHeight" x="465" y="0" width="53" height="79"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{REPORTTYPE}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="3fc15155-9797-4db0-9c03-42b581fdace8" stretchType="RelativeToTallestObject" x="396" y="0" width="69" height="79"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{OBSERVERNAME}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="3fc15155-9797-4db0-9c03-42b581fdace8" positionType="Float" stretchType="RelativeToBandHeight" x="518" y="0" width="32" height="79"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{OBJECTTYPE}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="3fc15155-9797-4db0-9c03-42b581fdace8" positionType="Float" stretchType="RelativeToBandHeight" x="661" y="0" width="67" height="79"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{CREATEDBY}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="3fc15155-9797-4db0-9c03-42b581fdace8" positionType="Float" stretchType="RelativeToBandHeight" x="728" y="0" width="74" height="79"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{SIGHTINGNUMBER}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="3fc15155-9797-4db0-9c03-42b581fdace8" positionType="Float" x="283" y="26" width="113" height="27"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{OBJECTLONGITUDE}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="3fc15155-9797-4db0-9c03-42b581fdace8" positionType="Float" x="283" y="53" width="113" height="26"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{OBJECTLATITUDE}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="3fc15155-9797-4db0-9c03-42b581fdace8" positionType="Float" x="164" y="26" width="119" height="27"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{OBSERVERLONGITUDE}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="3fc15155-9797-4db0-9c03-42b581fdace8" positionType="Float" x="164" y="53" width="119" height="26"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{OBSERVERLATITUDE}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="36" splitType="Stretch">
+			<textField evaluationTime="Report">
+				<reportElement uuid="51de0110-2205-4885-b834-e8c74f7f55e3" x="767" y="12" width="33" height="20"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[+$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="adb66797-5bca-4c50-af46-9da50a0bdf6b" x="686" y="12" width="81" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

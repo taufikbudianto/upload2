@@ -1,0 +1,64 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="beacon-content">                  
+        <p:panel id="list-beacon-msg" header="Daftar Beacon Message" styleClass="penelHeaderGreen ui-shadow-content" 
+                 class="no-border card card-w-title ui-fluid">
+            <p:panelGrid id="search" columns="4" layout="grid" 
+                         styleClass="ui-panelgrid-blank form-group" 
+                         columnClasses ="ui-grid-col-3,ui-grid-col-5,ui-grid-col-2,ui-grid-col-2,ui-grid-col-3"
+                         style="margin-top: 20px;margin-bottom: 20px"
+                         class="no-padding no-border">
+                <p:selectOneMenu id="field" value="#{distressMBean.field}">
+                    <p:ajax event="change" update="search" listener="#{distressMBean.changeValueSearch}"/>
+                    <f:selectItem itemLabel="Message Number" itemValue="msgNumber" />
+                    <f:selectItem itemLabel="Transmit DTG" itemValue="transmitDtg" />
+                </p:selectOneMenu>
+                <p:inputText id="value" value="#{distressMBean.value}" rendered="#{distressMBean.valueInput==2}" />
+                <p:calendar id="valueDate" showOn="button" value="#{distressMBean.valueDate}" mask="true" navigator="true" pattern="dd/MM/yyyy" readonlyInput="true" rendered="#{distressMBean.valueInput==1}"/>
+                <p:commandButton id="search-btn" type="button"  value="Cari" icon="ui-icon-search" onclick="PF('listWidget3').getPaginator().setPage(0);">
+                    <p:ajax event="click" update=":beacon-content:list-beacon-msg" process="@form"/>
+                </p:commandButton>
+                <p:commandButton id="clear-btn" type="button"  value="Reset" icon="ui-icon-replay">
+                    <p:ajax event="click" update=":beacon-content:list-beacon-msg" process="@form" listener="#{distressMBean.reset}"/>
+                </p:commandButton>
+            </p:panelGrid>
+            <p:dataTable var="utibeacon" value="#{distressMBean.lazyDataModelJPA}" reflow="true" rowKey="#{utibeacon.transmitDtg}" 
+                         lazy="true" paginator="true" paginatorPosition="bottom" rows="#{viewBean.rowsPageDefault}" style="width: fit-content;"
+                         rowsPerPageTemplate="#{viewBean.rowsPerPageTemplate}" emptyMessage="Data tidak ditemukan" tableStyle="table-layout:auto"
+                         rowIndexVar="index" widgetVar="listWidget3"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                <p:column headerText="No" style="width: 2%">
+                    <p:outputLabel value="#{index + 1}"/>
+                </p:column>
+                <p:column headerText="Message Number" style="width: 20%; text-align: center;" sortBy="#{utibeacon.msgNumber}">
+                    <h:outputText value="#{utibeacon.msgNumber}" />
+                </p:column>
+                <p:column headerText="Transmit DTG" style="width: 50%; text-align: center;" sortBy="#{utibeacon.transmitDtg}">
+                    <h:outputText value="#{distressMBean.transmitDtgFormat(utibeacon)}" />
+                </p:column>
+                <p:column headerText="Aksi" style="width: 6%;text-align: center;">
+                    <p:commandButton id="lihat" label="Lihat" icon="fa fa-search" class="blue-grey-btn">
+                        <p:ajax event="click" listener="#{distressMBean.viewDetailmsg(utibeacon, true)}" update=":form-detail"/>
+                    </p:commandButton>
+                    <p:tooltip id="toolTipTrack" for="lihat" value="Lihat" trackMouse="true" />
+                </p:column>
+            </p:dataTable>
+        </p:panel>
+    </h:form>
+
+
+    <p:dialog id="idDetail" widgetVar="widgetDetail"
+              header="Detail"
+              width="60%" height="100%"
+              appendTo="@(body)"
+              responsive="true" modal="true"
+              maximizable="true" position="top" 
+              resizable="false" closable="false">
+        <ui:include src="./detail.xhtml"/>
+    </p:dialog>
+
+</ui:composition>

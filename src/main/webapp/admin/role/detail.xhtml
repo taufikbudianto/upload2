@@ -1,0 +1,125 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="role-detail">
+        <p:panel class="ui-g-12 card-w-title no-padding no-border content-title" header="#{roleMBean.headerDetail}">
+            <p:messages closable="true"/>
+            <p:panelGrid id="basic-data" class="no-padding no-border" columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group"
+                         columnClasses="ui-grid-col-2,ui-grid-col-6" style="margin-top: 10px">
+                <p:outputLabel value="Identifikasi Hak Akses" styleClass="asterix" />
+                <p:inputText required="true" requiredMessage="Identifikasi Hak Akses harus diisi"
+                             id="role-identifier" value="#{roleMBean.roleDetail.roleIdentifier}" maxlength="30"
+                             disabled="#{!roleMBean.newRole and roleMBean.roleDetail.roleId != null}" 
+                             style="width: 50%"/>
+                <p:outputLabel value="Nama Hak Akses" styleClass="asterix"/>
+                <p:inputText id="role-name" value="#{roleMBean.roleDetail.roleName}" maxlength="50"
+                             disabled="#{!roleMBean.isSecureItemEditable('RoleNameInput') or roleMBean.disabled}" 
+                             required="true" requiredMessage="Nama Hak Akses harus diisi" style="width: 50%" />
+
+                <p:outputLabel value="Akses Yang Diberikan" styleClass="asterix"/>
+                    <p:selectOneMenu id="role-initial-access" value="#{roleMBean.roleDetail.initialAccess}" converter="listConverter"
+                                     disabled="#{!roleMBean.isSecureItemEditable('InitialAccessInput') or roleMBean.disabled}"
+                                     required="true" requiredMessage="Akses Yang Diberikan harus dipilih" style="width: 50%">
+                        <f:selectItem itemLabel="--- Pilih ---" itemValue="" />
+                        <f:selectItems value="#{roleMBean.accessRights}" />
+                    </p:selectOneMenu>
+                <p:outputLabel value="#{msg.role_dtl_tenant}" rendered="#{roleMBean.isSecureItemVisible('TenantInput')}" />
+                <h:panelGroup layout="grid" rendered="#{roleMBean.isSecureItemVisible('TenantInput')}">
+                    <p:selectOneMenu id="role-tenant" value="#{roleMBean.roleDetail.tenant}" converter="listConverter"
+                                     required="true" requiredMessage="#{msg.error_role_empty_tenant}"
+                                     disabled="#{!roleMBean.isSecureItemEditable('TenantInput')}">
+                        <f:selectItem itemLabel="#{msg.data_please_select}" itemValue="" />
+                        <f:selectItems value="#{roleMBean.tenants}" var="tenant" itemLabel="#{tenant.tenantName}" itemValue="#{tenant}" />
+                    </p:selectOneMenu>
+                    <p:message for="role-tenant" />
+                </h:panelGroup>
+
+                <p:outputLabel value="" rendered="#{menuNavMBean.userSession.firstRole.system}" />
+                <h:panelGroup layout="grid" rendered="#{menuNavMBean.userSession.firstRole.system}">
+                    <p:selectBooleanCheckbox id="role-system" value="#{roleMBean.roleDetail.system}" />
+                    <p:spacer />
+                    <p:outputLabel value="#{msg.role_dtl_is_system}" for="role-system" />
+                </h:panelGroup>
+            </p:panelGrid>
+        </p:panel>
+
+        <p:panelGrid class="ui-g-12 no-padding no-border" columns="2" layout="grid" style="margin-top: 20px;" 
+                     styleClass="ui-panelgrid-blank form-group" columnClasses="ui-grid-col-6,ui-grid-col-6"
+                     rendered="#{roleMBean.isSecureItemVisible('MenuEdit') and !roleMBean.newRole}">
+
+            <h:panelGroup>
+                <p:fieldset id="menu" legend="#{msg.role_dtl_menu}">
+                    <p:tree value="#{roleMBean.menus}" var="menu" style="width: 98%; overflow-x: hidden; overflow-y: auto; max-height: 55vh; max-width: 495px" class="no-border"
+                            selectionMode="checkbox" selection="#{roleMBean.selectedMenus}" >
+                        <p:treeNode>
+                            <p:commandLink value="#{menu.taskName}" class="tree-link" style="width: 98%;"
+                                           update="@form:nav-field" process="@form:nav-field" 
+                                           actionListener="#{roleMBean.showNavigationFields(menu)}" disabled="#{roleMBean.disabled}"/>
+                        </p:treeNode>
+                    </p:tree>
+                </p:fieldset>
+                <p class="field-note">#{msg.role_dtl_menu_note}</p>
+            </h:panelGroup>
+
+            <h:panelGroup>
+                <p:fieldset id="nav-field" legend="#{msg.role_dtl_navfield}">
+
+                    <p:dataTable var="navField" value="#{roleMBean.selectedNavFields}" class="no-border"
+                                 style="overflow-x: hidden; overflow-y: auto; max-height: 55vh; max-width: 495px"
+                                 editable="#{roleMBean.isSecureItemEditable('NavigationFieldEdit') ? 'true' : 'false'}" editMode="cell"
+                                 emptyMessage="Data tidak ditemukan" tableStyle="table-layout:auto">
+
+                        <p:column headerText="#{msg.role_dtl_navfield_secure_item}" style="width: 50%;" sortBy="#{viewBean.addWhiteSpaceBetweenCapitalLetters(navField.task.taskName)}">
+                            <p:outputLabel value="#{viewBean.addWhiteSpaceBetweenCapitalLetters(navField.task.taskName)}" />
+                        </p:column>
+
+                        <p:column headerText="#{msg.role_dtl_navfield_type}" style="width: 25%;" sortBy="#{viewBean.toFirstUppercase(navField.task.taskType)}">
+                            <p:outputLabel value="#{viewBean.toFirstUppercase(navField.task.taskType)}" />
+                        </p:column>
+
+                        <p:column headerText="#{msg.role_dtl_navfield_access_rights}" style="width: 25%;" sortBy="#{viewBean.toFirstUppercase(navField.accessRight)}">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <p:outputLabel value="#{viewBean.toFirstUppercase(navField.accessRight)}" />
+                                </f:facet>
+
+                                <f:facet name="input">
+                                    <p:selectOneMenu value="#{navField.accessRight}" converter="listConverter" style="width: 100%" >
+                                        <f:selectItems value="#{roleMBean.accessRights}" />
+                                    </p:selectOneMenu>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                    </p:dataTable>
+
+                </p:fieldset>
+
+                <p class="field-note">#{msg.role_dtl_navfield_note}</p>
+            </h:panelGroup>
+
+        </p:panelGrid>
+
+        <p:panel class="ui-g-12 control-button no-border no-padding">
+            <p:commandButton value="Simpan dan Lanjutkan" icon="fa fa-save" class="green-btn" 
+                             disabled="#{roleMBean.isSecureItemReadOnly('SaveButton')}"
+                             rendered="#{roleMBean.newRole and roleMBean.isSecureItemVisible('SaveButton')}">
+                <p:ajax event="click" listener="#{roleMBean.showMenuAndNavigationFields()}" process="@form" update=":role-content" />
+            </p:commandButton>
+            <p:spacer width="10"/>
+            <p:commandButton value="Simpan" icon="fa fa-save" class="green-btn" style="width: 130px"
+                             disabled="#{roleMBean.isSecureItemReadOnly('SaveButton') or roleMBean.disabled}"
+                             rendered="#{!roleMBean.newRole and roleMBean.isSecureItemVisible('SaveButton')}">
+                <p:confirm header="Konfirmasi" message="Apakah Anda yakin akan menyimpan data hak akses ini?" />
+                <p:ajax event="click" listener="#{roleMBean.saveDetail()}" process="@form" update="@form:basic-data" />
+            </p:commandButton>
+            <p:spacer width="10"/>
+            <p:commandButton value="Batal" icon="ui-icon-cancel" class="red-btn" style="width: 130px">
+                <p:ajax event="click" listener="#{roleMBean.hideDetail()}" process="@this" update=":role-content" />
+            </p:commandButton>
+        </p:panel>
+    </h:form>
+
+</ui:composition>

@@ -1,0 +1,52 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <h:form id="form-checklistdetailInput">
+        <p:panel class="ui-fluid no-border no-padding">
+            <p:messages closable="true"/>
+            <p:panelGrid columns="2" columnClasses="ui-grid-col-3,ui-grid-col-9" 
+                         layout="grid" styleClass="ui-panelgrid-blank form-group">
+                <p:outputLabel value="Kategori" styleClass="asterix"/>
+                <p:panel style="border-style: none" >
+                    <p:selectOneMenu id="idKategoriDetail" value="#{mstChecklistMBean.checklistdetail.category}"
+                                     required="true" requiredMessage="Kategori harus dipilih">
+                        <f:selectItem itemLabel="--- Pilih ---" itemValue="" />
+                        <f:selectItem itemLabel="Awareness" itemValue="Awareness" />
+                        <f:selectItem itemLabel="Initial Action" itemValue="Initial Action" />
+                        <f:selectItem itemLabel="Planning" itemValue="Planning" />
+                        <f:selectItem itemLabel="Operation" itemValue="Operation" />
+                        <f:selectItem itemLabel="Conclusion" itemValue="Conclusion" />
+                    </p:selectOneMenu>
+                </p:panel>
+            
+                <p:outputLabel value="Keterangan" styleClass="asterix"/>
+                <p:panel style="border-style: none" >
+                    <p:inputTextarea value="#{mstChecklistMBean.checklistdetail.description}" 
+                                     maxlength="255" required="true" 
+                                     requiredMessage="Deskripsi harus diisi">
+                    </p:inputTextarea>
+                </p:panel>
+            </p:panelGrid>
+
+            <p:panel class="control-button no-border no-padding" >
+                <p:commandButton icon="fa fa-save" value="Simpan" styleClass="green-btn" 
+                                 actionListener="#{mstChecklistMBean.simpandetail()}" 
+                                 update=":form-checklist:form-checklist_datatable @form" 
+                                 process=":form-checklist:form-checklist_datatable @form" style="width:130px">
+                    <p:confirm header="Konfirmasi" 
+                               message="Apakah anda yakin ingin menyimpan data detail checklist ini?" 
+                               icon="ui-icon-alert" />
+                </p:commandButton>
+                <p:outputLabel value="   "/>
+                <p:commandButton icon="ui-icon-cancel" 
+                                 value="#{mstChecklistMBean.showButtonDetail ? 'Batal' : 'Kembali'}" 
+                                 styleClass="red-btn" actionListener="#{mstChecklistMBean.batalDetail()}"
+                                 style="width:130px" onclick="PF('widgetChecklistDetailInput').hide()" 
+                                 process="@this"/>
+            </p:panel>
+        </p:panel>
+
+    </h:form>
+</ui:composition>

@@ -1,0 +1,32 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:panelGrid columns="3" layout="grid" styleClass="ui-panelgrid-blank grid-pad" >
+       <p:commandButton value="Tambah Data Baru" styleClass="purple-btn"/>
+    </p:panelGrid>
+    <p:dataTable var="lampiran" value="#{lampiranMBean.lampiranEntitys}" 
+                 reflow="true" paginator="true" rows="10"
+                 paginatorPosition="bottom" tableStyle="table-layout:auto">
+        <p:column headerText="Deskripsi">
+            <h:outputText value="#{lampiran.deskripsi}" />
+        </p:column>
+        <p:column headerText="Jenis File">
+            <h:outputText value="#{lampiran.jenisFile}" />
+        </p:column>
+        <p:column headerText="TW Upload">
+            <h:outputText value="#{lampiran.dtUpload}" >
+                  <f:convertDateTime pattern="dd/MM/yyyy" />
+            </h:outputText>
+        </p:column>
+         <p:column headerText="Diupload Oleh">
+            <h:outputText value="#{lampiran.uploadBy}" />
+        </p:column>
+         <p:column >
+            <p:link value="Lihat"/> | 
+            <p:link value="Hapus" /> 
+        </p:column>
+    </p:dataTable>
+</ui:composition>

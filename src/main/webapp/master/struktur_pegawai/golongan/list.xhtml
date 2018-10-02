@@ -1,0 +1,106 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+    <ui:define name="title">Daftar Golongan</ui:define>
+    <ui:define name="content">
+                <h:form id="golongan-content">
+                    <p:panel id="list-golongan" class="ui-fluid" header="Daftar Golongan" styleClass="penelHeaderGreen ui-shadow-content">
+                        <p:panelGrid id="search" columns="5" layout="grid" 
+                                     styleClass="ui-panelgrid-blank form-group" 
+                                     columnClasses ="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-2,ui-grid-col-2"
+                                     style="margin-top: 20px;margin-bottom: 20px; width: 100%"
+                                     class="no-padding no-border">
+                            <p:selectOneMenu id="fieldgolongan" value="#{mstEmployeeClassMBean.field}">
+                                <p:ajax event="change" update="search"/>
+                                <f:selectItem itemLabel="Golongan" itemValue="employmentclasscode" />
+                                <f:selectItem itemLabel="Pangkat" itemValue="employmentclassname" />
+                            </p:selectOneMenu>                               
+                            <p:inputText id="value" value="#{mstEmployeeClassMBean.value}"/>
+                            <p:commandButton id="search-btn" type="button" icon="ui-icon-search" onclick="PF('listWidget').getPaginator().setPage(0);" value="Cari">
+                                <p:ajax event="click" update=":golongan-content:list-golongan" process="@form"/>
+                            </p:commandButton>          
+                            <p:button value="Reset" icon="ui-icon-replay"/>
+                            <p:commandButton value="Tambah Data Baru" icon="fa fa-plus-circle" styleClass="green-btn">
+                                <p:ajax event="click" listener="#{mstEmployeeClassMBean.add}"/>
+                            </p:commandButton>                                                    
+                        </p:panelGrid>
+                        <p:dataTable id="golongan_datatable" var="golongan" value="#{mstEmployeeClassMBean.lazyDataModelJPA}" 
+                                     reflow="true" rowKey="#{golongan.employmentclassid}"
+                                     lazy="true" paginator="true" paginatorPosition="bottom" 
+                                     rows="10" rowsPerPageTemplate="5,10,15" widgetVar="listWidget" 
+                                     emptyMessage="Data tidak ditemukan" tableStyle="table-layout:fixed"
+                                     rowIndexVar="index" 
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                            <p:ajax event="page" listener="#{viewBean.onPageChange}"/>  
+                            <p:column headerText="No" style="width: 20px">
+                                <p:outputLabel value="#{index + 1}"/>
+                            </p:column>
+                            <p:column headerText="Golongan" sortBy="#{golongan.employmentclasscode}">
+                                <h:outputText value="#{golongan.employmentclasscode}" />
+                            </p:column>
+                            <p:column headerText="Pangkat" sortBy="#{golongan.employmentclassname}">
+                                <h:outputText value="#{golongan.employmentclassname}" />
+                            </p:column>
+                            <p:column headerText="Aksi" style="width: 105px; text-align: center">
+                                <p:commandButton id="lihatGolongan"
+                                                 label="Lihat" 
+                                                 onclick="PF('tTipLihat').hide();"
+                                                 icon="fa fa-search" 
+                                                 class="blue-grey-btn">
+                                    <p:ajax event="click" listener="#{mstEmployeeClassMBean.viewGolongan(golongan.employmentclassid, true)}" update=":form-golongan" />
+                                </p:commandButton> 
+                                <p:tooltip value="Lihat" for="lihatGolongan"
+                                           trackMouse="true" widgetVar="tTipLihat"/>
+                                <p:outputLabel value="    "/>
+                                <p:commandButton id="ubahGolongan"
+                                                 label="Ubah"
+                                                 onclick="PF('tTipUbah').hide();"
+                                                 icon="fa fa-edit" 
+                                                 class="blue-grey-btn">
+                                    <p:ajax event="click" listener="#{mstEmployeeClassMBean.viewGolongan(golongan.employmentclassid, false)}" update=":form-golongan" />
+                                </p:commandButton>
+                                <p:tooltip value="Ubah" for="ubahGolongan"
+                                           trackMouse="true" widgetVar="tTipUbah"/>
+                                <p:outputLabel value="    "/>
+                                <p:commandButton id="hapusGolongan"
+                                                 label="Hapus"
+                                                 onclick="PF('tTipHapus').hide();"
+                                                 icon="fa fa-trash" 
+                                                 class="red-btn" 
+                                                 actionListener="#{mstEmployeeClassMBean.hapus(golongan)}"
+                                                 update="golongan-content:golongan_datatable">
+                                    <p:confirm header="Konfirmasi" message="Apakah anda yakin ingin menghapus Golongan ini?" icon="ui-icon-alert"/>
+                                </p:commandButton>
+                                <p:tooltip value="Hapus" for="hapusGolongan"
+                                           trackMouse="true" widgetVar="tTipHapus"/>
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                </h:form>
+
+        <p:dialog id="idGolongan" widgetVar="widgetGolongan"
+                  header="Data "
+                  width="45%" height="50%"
+                  appendTo="@(body)"
+                  responsive="true" modal="true"
+                  maximizable="false"
+                  position="center" 
+                  resizable="false" closable="true">
+            <ui:include src="./golongan.xhtml"/>
+        </p:dialog>
+
+        <p:dialog id="idGolonganInput" widgetVar="widgetGolonganInput"
+                  header="Data "
+                  width="45%" height="50%"
+                  appendTo="@(body)"
+                  responsive="true" modal="true"
+                  maximizable="false"
+                  position="center" 
+                  resizable="false" closable="true">
+            <ui:include src="./golonganInput.xhtml"/>
+        </p:dialog>
+    </ui:define>
+</ui:composition>

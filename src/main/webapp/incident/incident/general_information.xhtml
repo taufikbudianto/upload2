@@ -1,0 +1,184 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">      
+    <div class="ui-g ui-fluid">
+        <div class="ui-g-12">
+            <p:panel id="list-insiden" header="Insiden" styleClass="penelHeaderGreen ui-shadow-content" rendered="#{incidentMBean.showIncidentDetail == 1}">
+                <p:panelGrid id="search-insiden" columns="5" layout="grid"
+                             styleClass="ui-panelgrid-blank form-group"
+                             columnClasses ="ui-grid-col-2,ui-grid-col-3,ui-grid-col-2,ui-grid-col-2,ui-grid-col-3"
+                             style="margin-top: 20px;margin-bottom: 20px;width: 100%"
+                             class="no-padding no-border">
+
+                    <p:selectOneMenu id="field-insiden" value="#{incidentMBean.field}">
+                        <p:ajax event="change" update="search-insiden" listener="#{incidentMBean.chengeToCombo()}"/>
+                        <f:selectItem itemLabel="Nama Insiden" itemValue="incidentname" />
+                        <f:selectItem itemLabel="Tipe" itemValue="incidenttype" />
+                        <f:selectItem itemLabel="Status Operasi" itemValue="status" />
+                        <f:selectItem itemLabel="Lokasi" itemValue="location" />
+                        <f:selectItem itemLabel="Nama kanSAR" itemValue="usersiteid" />
+                    </p:selectOneMenu>
+                    <p:inputText id="value-insiden" value="#{incidentMBean.value}" 
+                                 rendered="#{!incidentMBean.showCombo}"/>
+                    <p:selectOneMenu id="incident-type" value="#{incidentMBean.value}" rendered="#{incidentMBean.showCombo and incidentMBean.field == 'incidenttype'}">
+                        <f:selectItems value="#{type.ALL_ENUM_VALUES}" var="t" itemValue="#{t.itemValue}" itemLabel="#{t.itemLabel}" />
+                    </p:selectOneMenu>                            
+                    <p:selectOneMenu id="incident-status" value="#{incidentMBean.value}" rendered="#{incidentMBean.showCombo and incidentMBean.field == 'status'}">
+                        <f:selectItems value="#{status.ALL_ENUM_VALUES}" var="s" itemValue="#{s.item}" itemLabel="#{s.item}" />
+                    </p:selectOneMenu>
+                    <p:selectOneMenu id="kantor-sar" value="#{incidentMBean.value}" rendered="#{incidentMBean.showCombo and incidentMBean.field == 'usersiteid'}">
+                        <f:selectItem itemLabel="Semua" itemValue="ALL" />
+                        <f:selectItems value="#{incidentMBean.listKantorSar}" />
+                    </p:selectOneMenu>
+
+                    <p:commandButton id="search-btn-insiden" type="button"  value="Cari" icon="ui-icon-search">
+                        <p:ajax event="click" update=":insiden-content:list-insiden" process="@form:list-insiden"/>
+                    </p:commandButton>
+                    <p:button value="Reset" icon="ui-icon-replay"/>
+                    <p:commandButton type="button" value="Tambah Data Baru" icon="fa fa-plus-circle" class="green-btn">
+                        <p:ajax event="click" update="@form" listener="#{incidentMBean.prepareShowIncidentDetail(2,null)}"/>
+                    </p:commandButton>
+                </p:panelGrid>               
+                <p:dataTable var="incident" value="#{incidentMBean.dataModel}" reflow="true" rowKey="#{incident.incidentid}"
+                             lazy="true" paginator="true" paginatorPosition="bottom" rows="10"
+                             rowsPerPageTemplate="5,10,15" emptyMessage="Data tidak ditemukan" tableStyle="table-layout:auto"
+                             rowIndexVar="index">
+                    <p:column headerText="No" style="width: 20px">
+                        <p:outputLabel value="#{index + 1}"/>
+                    </p:column>
+                    <p:column headerText="Nama kanSAR" sortBy="#{incident.usersiteid}">
+                        <h:outputText value="#{incidentMBean.getKantorSarByKantorSarId(incident.usersiteid)}" />
+                    </p:column>
+                    <p:column headerText="Tipe" sortBy="#{incident.incidenttype}">
+                        <h:outputText value="#{incidentMBean.getStringTipeIncident(incident.incidenttype)}" />
+                    </p:column>
+                    <p:column headerText="Nama Insiden" sortBy="#{incident.incidentname}">
+                        <h:outputText value="#{incident.incidentname}" />
+                    </p:column>
+                    <p:column headerText="Status Operasi" sortBy="#{incident.status}">
+                        <h:outputText value="#{incidentMBean.getStatusOperasi(incident.status, incident)}" />
+                    </p:column>
+                    <p:column headerText="Lokasi" sortBy="#{incident.location}">
+                        <h:outputText value="#{incident.location}" />
+                    </p:column>
+                    <p:column headerText="Latitude" sortBy="#{incident.latitude}">
+                        <h:outputText value="#{incidentMBean.coordinateLatitude.getConvertDdToDms(incident.latitude, true)}" />
+                    </p:column>
+                    <p:column headerText="Longitude" sortBy="#{incident.longitude}">
+                        <h:outputText value="#{incidentMBean.coordinateLongitude.getConvertDdToDms(incident.longitude, false)}" />
+                    </p:column>
+                    <p:column headerText="No. Insiden" sortBy="#{incident.incidentnumber}">
+                        <h:outputText value="#{incident.incidentnumber}" />
+                    </p:column>
+                    <p:column headerText="Aksi" width="9%">
+                        <p:commandButton id="ubahInsiden" rendered="#{incident.status == 'Open'}"
+                                         label="View"
+                                         onclick="PF('tTipUbah').hide();"
+                                         icon="fa fa-edit" 
+                                         class="blue-grey-btn">
+                            <p:ajax event="click" process="@form:incidentdetail" update="@form" listener="#{incidentMBean.prepareShowIncidentDetail(2, incident)}"/>
+                        </p:commandButton>
+                        <p:tooltip value="Ubah" for="ubahInsiden"
+                                   trackMouse="true" widgetVar="tTipUbah"/>
+                        
+                        <p:commandButton id="lihatInsiden" rendered="#{incident.status == 'Close'}"
+                                         label="View"
+                                         onclick="PF('tTipLihat').hide();"
+                                         icon="fa fa-search" 
+                                         class="blue-grey-btn">
+                            <p:ajax event="click" process="@form:incidentdetail" update="@form" listener="#{incidentMBean.prepareShowIncidentDetail(2, incident)}"/>
+                        </p:commandButton>
+                         <p:tooltip value="Lihat" for="lihatInsiden"
+                                   trackMouse="true" widgetVar="tTipLihat"/>
+                        
+                        <p:outputLabel value="   "/>
+                        <!--                        <p:commandLink value="Print" id="print" styleClass="ui-priority-primary" 
+                                                               target="_blank" ajax="false" action="{incidentMBean.reportPrint(incident)}">
+                                                                                <p:confirm header="Print Data" message="Apakah anda yakin? (Proses akan memakan waktu bergantung pada jumlah data)"  icon="ui-icon-alert" />
+                                                </p:commandLink>    -->
+                        <p:commandButton id="cetakInsiden"
+                                         label="Cetak"
+                                         onclick="form.target = '_blank'" 
+                                         styleClass="ui-priority-primary"
+                                         class="blue-grey-btn" ajax="false" action="#{incidentMBean.reportPrint(incident)}" icon="fa fa-print">
+                        </p:commandButton>
+                        <p:tooltip value="Cetak" for="cetakInsiden"
+                                   trackMouse="true" widgetVar="_blank"/>
+                        <p:outputLabel value="   "/>
+                        <p:commandButton id="hapusInsiden"
+                                         label="Hapus"
+                                         onclick="PF('tTipHapus').hide();"
+                                         icon="fa fa-trash" 
+                                         class="red-btn" 
+                                         actionListener="#{incidentMBean.hapusInsiden(incident)}"
+                                         update="@this" oncomplete="location.reload();">
+                            <p:confirm header="Konfirmasi" message="Apakah anda yakin ingin menghapus insiden ini?" icon="ui-icon-alert"/>
+                        </p:commandButton>
+                        <p:tooltip value="Hapus" for="hapusInsiden"
+                                   trackMouse="true" widgetVar="tTipHapus"/>
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
+            <p:panel id="detail-insiden" header="Insiden #{incidentMBean.incident.incidentnumber}" 
+                     styleClass="penelHeaderGreen ui-shadow-content" 
+                     rendered="#{incidentMBean.showIncidentDetail == 2}">
+                <ui:include src="incident_detail.xhtml"/>
+                <p:panel class="control-button no-border no-padding">
+<!--                    <p:commandButton value="Drift Calculation" styleClass="blue-btn" icon="ui-icon-extension" 
+                                     disabled="{incidentMBean.incident.status == 'Close' or incidentMBean.disableTab}"
+                                     update="@form" actionListener="{incidentMBean.showDriftCalculation}"
+                                     process="@this"/>
+                    <p:commandButton value="Trapesium Search Area" styleClass="blue-btn" icon="ui-icon-location-searching" disabled="{incidentMBean.incident.status == 'Close' or incidentMBean.disableTab}">
+                        <p:ajax event="click" update="@form" listener="{incidentMBean.prepareShowIncidentDetail(4,incidentMBean.incident)}" />
+                    </p:commandButton>-->
+                    <p:commandButton value="Re-Open" styleClass="green-btn" rendered="#{incidentMBean.showButton}" 
+                                     icon="ui-icon-lock-open" style="width:130px"
+                                     disabled="#{incidentMBean.disableTab or incidentMBean.incident.status == 'Open'}">
+                        <p:confirm header="Konfirmasi" message="Apakah anda yakin ingin re-Open insiden ini?" 
+                                   icon="ui-icon-alert" />
+                        <p:ajax event="click" listener="#{incidentMBean.reOpenIncident(incidentMBean.incident)}" 
+                                process="@form:incidentdetail" update="@form"/>
+                    </p:commandButton>
+                    <p:commandButton value="Closing" styleClass="red-btn" icon="ui-icon-lock" style="width:130px"
+                                     disabled="#{incidentMBean.incident.status == 'Close' or incidentMBean.disableTab}">
+                        <p:confirm header="Konfirmasi" message="#{incidentMBean.message}" icon="ui-icon-alert" />
+                        <p:ajax event="click" 
+                                listener="#{incidentMBean.closingInsidenProcess(incidentMBean.incident)}" 
+                                process="@form:incidentdetail" update="@form"/>
+                    </p:commandButton>
+                    <p:commandButton value="Simpan" style="width:130px"
+                                     styleClass="green-btn" disabled="#{incidentMBean.incident.status == 'Close'}" 
+                                     icon="ui-icon-save" validateClient="true">
+                        <p:confirm header="Konfirmasi" message="Apakah anda yakin ingin menyimpan insiden ini?" 
+                                   icon="ui-icon-alert" />
+                        <p:ajax event="click" listener="#{incidentMBean.simpan}" process="@form:incidentdetail" 
+                                update="@form"/>                         
+                    </p:commandButton>
+                    <p:commandButton type="button" icon="ui-icon-cancel" 
+                                 value="Kembali" styleClass="red-btn" style="width:130px">
+                    <p:ajax event="click" update="@form" listener="#{incidentMBean.hideForm}"/>
+                    </p:commandButton>
+                </p:panel>
+            </p:panel>
+            
+        </div>
+    </div>
+    <p:dialog header="Closing insiden ?" widgetVar="closeInsidenInfo"
+              width="540" height="100" appendTo="@(body)"
+              modal="true" resizable="false">
+        <!--<h:form id="info-incident-open">-->
+        <h:outputText value="Apakah anda yakin menutup insiden pada tanggal #{incidentMBean.tanggalSekarang} ?"/><br />
+        <h:outputText value="Anda tidak dapat melakukan perubahan data pada insiden yang telah di-close"/><br />
+        <p style="text-align: right;">
+            <p:commandButton value="Ya" style="margin-right: 10px;" >
+                <p:ajax event="click" listener="#{incidentMBean.closingInsidenProcess(incidentMBean.incident)}" process="@form" update="@form"/>
+            </p:commandButton>
+            <p:commandButton value="No" oncomplete="PF('closeInsidenInfo').hide();" 
+                             style="margin-right: 10px;" />
+        </p>
+        <!--</h:form>-->
+    </p:dialog>
+    
+</ui:composition>

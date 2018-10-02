@@ -1,0 +1,36 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <p:outputLabel value="Log" style="font-weight: bold;font-size: 16px"/>
+    <p:panel>
+        <p:panelGrid columns="1" layout="grid" class="no-border no-padding no-padding-table">
+            <p:panel class="no-border no-padding-table" style="float: right;">
+                <p:commandButton value="Tambah" icon="ui-icon-add" class="green-btn">
+                    <p:ajax event="click" update=":incidentdetail:log-detail" listener="#{incidentSightingMBean.showDetailLog(null)}"/>
+                </p:commandButton>            
+            </p:panel>
+            <p:panel class="no-border no-padding no-padding-table">
+                <p:dataTable var="sLog" value="#{incidentSightingMBean.dmLogSighting}" reflow="true" rowKey="#{sLog.logID}"
+                             lazy="true" paginator="true" paginatorPosition="bottom" rows="#{viewBean.rowsPageDefault}"
+                             rowsPerPageTemplate="#{viewBean.rowsPerPageTemplate}" emptyMessage="Data tidak ditemukan" tableStyle="table-layout:auto">
+                    <p:column headerText="Tanggal">
+                        <h:outputText value="#{incidentSightingMBean.dateTimeStringConvert(sLog.logDate)}" />
+                    </p:column>
+                    <p:column headerText="Deskripsi">
+                        <h:outputText value="#{sLog.remarks}" />
+                    </p:column>
+                    <p:column headerText="Dibuat Oleh">
+                        <h:outputText value="#{sLog.createdBy}" />
+                    </p:column>
+                    <p:column headerText="Aksi">
+                        <p:commandLink value="Lihat">
+                            <p:ajax event="click" update=":incidentdetail:log-detail" listener="#{incidentSightingMBean.showDetailLog(sLog)}"/>
+                        </p:commandLink>
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
+        </p:panelGrid>
+    </p:panel>
+</ui:composition>

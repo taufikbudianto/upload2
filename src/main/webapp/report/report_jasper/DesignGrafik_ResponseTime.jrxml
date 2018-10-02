@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="LaporanResponseTimeInsiden" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="561b2146-8383-48ea-bf78-009043119df0">
+	<property name="ireport.zoom" value="1.0980750000000006"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[SELECT SAR.KANTORSARNAME,INC.* FROM
+(SELECT USERSITEID,
+  SUM(CASE WHEN SUBSTR(STARTDATE,4,6)= 'JAN-13' THEN RESPONSETIME ELSE 0 END) AS "01.JAN-13",
+  SUM(CASE WHEN SUBSTR(STARTDATE,4,6)= 'FEB-13' THEN RESPONSETIME ELSE 0 END) AS "02.FEB-13",
+  SUM(CASE WHEN SUBSTR(STARTDATE,4,6)= 'MAR-13' THEN RESPONSETIME ELSE 0 END) AS "03.MAR-13",
+  SUM(CASE WHEN SUBSTR(STARTDATE,4,6)= 'APR-13' THEN RESPONSETIME ELSE 0 END) AS "04.APR-13",
+  SUM(CASE WHEN SUBSTR(STARTDATE,4,6)= 'MAY-13' THEN RESPONSETIME ELSE 0 END) AS "05.MAY-13",
+  SUM(CASE WHEN SUBSTR(STARTDATE,4,6)= 'JUN-13' THEN RESPONSETIME ELSE 0 END) AS "06.JUN-13",
+  SUM(CASE WHEN SUBSTR(STARTDATE,4,6)= 'JUL-13' THEN RESPONSETIME ELSE 0 END) AS "07.JUL-13",
+  SUM(CASE WHEN SUBSTR(STARTDATE,4,6)= 'AUG-13' THEN RESPONSETIME ELSE 0 END) AS "08.AUG-13",
+  SUM(CASE WHEN SUBSTR(STARTDATE,4,6)= 'SEP-13' THEN RESPONSETIME ELSE 0 END) AS "09.SEP-13",
+  SUM(CASE WHEN SUBSTR(STARTDATE,4,6)= 'OCT-13' THEN RESPONSETIME ELSE 0 END) AS "10.OCT-13",
+  SUM(CASE WHEN SUBSTR(STARTDATE,4,6)= 'NOV-13' THEN RESPONSETIME ELSE 0 END) AS "11.NOV-13",
+  SUM(CASE WHEN SUBSTR(STARTDATE,4,6)= 'DEC-13' THEN RESPONSETIME ELSE 0 END) AS "12.DEC-13"
+FROM
+(SELECT USERSITEID,STARTDATE,CEIL(SUM((STARTOPSDATE-ALERTEDAT)*24*60)/COUNT(INCIDENTID))AS RESPONSETIME
+FROM INCIDENT
+WHERE ISDELETED =0
+AND TO_CHAR(TO_DATE(TRIM(STARTDATE),'DD-MON-YY'),'yyyy-MM-dd') >= '2013-01-01'
+AND TO_CHAR(TO_DATE(TRIM(STARTDATE),'DD-MON-YY'),'yyyy-MM-dd') <='2014-01-01'
+GROUP BY USERSITEID,STARTOPSDATE,ALERTEDAT,STARTDATE
+ORDER BY USERSITEID
+)A GROUP BY USERSITEID
+)INC
+LEFT JOIN
+(SELECT KANTORSARID,KANTORSARNAME FROM MST_KANTORSAR)SAR
+ON INC.USERSITEID=SAR.KANTORSARID
+ORDER BY USERSITEID ASC]]>
+	</queryString>
+	<field name="KANTORSARNAME" class="java.lang.String"/>
+	<field name="USERSITEID" class="java.lang.String"/>
+	<field name="01.JAN-13" class="java.math.BigDecimal"/>
+	<field name="02.FEB-13" class="java.math.BigDecimal"/>
+	<field name="03.MAR-13" class="java.math.BigDecimal"/>
+	<field name="04.APR-13" class="java.math.BigDecimal"/>
+	<field name="05.MAY-13" class="java.math.BigDecimal"/>
+	<field name="06.JUN-13" class="java.math.BigDecimal"/>
+	<field name="07.JUL-13" class="java.math.BigDecimal"/>
+	<field name="08.AUG-13" class="java.math.BigDecimal"/>
+	<field name="09.SEP-13" class="java.math.BigDecimal"/>
+	<field name="10.OCT-13" class="java.math.BigDecimal"/>
+	<field name="11.NOV-13" class="java.math.BigDecimal"/>
+	<field name="12.DEC-13" class="java.math.BigDecimal"/>
+	<pageFooter>
+		<band height="20">
+			<textField>
+				<reportElement uuid="fdc50589-0379-4257-9b3e-9343d1d9f291" x="681" y="0" width="80" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="26443371-ed41-489d-85bf-6689a6d7d091" x="761" y="0" width="40" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="423">
+			<staticText>
+				<reportElement uuid="73d358d3-d04c-4cab-9f1f-b6d1c8e7b70b" x="0" y="137" width="25" height="61"/>
+				<textElement rotation="Left">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[M e n i t]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="24be234f-8989-483d-9b31-b5b0ad700d43" x="365" y="8" width="161" height="20"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[RESPONSE TIME INSIDENT]]></text>
+			</staticText>
+			<lineChart>
+				<chart>
+					<reportElement uuid="e5001d06-9d8d-4e53-94d0-132dfe2f5428" x="1" y="28" width="801" height="352"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<categorySeries>
+						<seriesExpression><![CDATA["JAN"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{KANTORSARNAME}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{01.JAN-13}]]></valueExpression>
+					</categorySeries>
+					<categorySeries>
+						<seriesExpression><![CDATA["FEB"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{KANTORSARNAME}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{02.FEB-13}]]></valueExpression>
+					</categorySeries>
+					<categorySeries>
+						<seriesExpression><![CDATA["MAR"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{KANTORSARNAME}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{03.MAR-13}]]></valueExpression>
+					</categorySeries>
+					<categorySeries>
+						<seriesExpression><![CDATA["APR"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{KANTORSARNAME}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{04.APR-13}]]></valueExpression>
+					</categorySeries>
+					<categorySeries>
+						<seriesExpression><![CDATA["MEI"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{KANTORSARNAME}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{05.MAY-13}]]></valueExpression>
+					</categorySeries>
+					<categorySeries>
+						<seriesExpression><![CDATA["JUN"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{KANTORSARNAME}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{06.JUN-13}]]></valueExpression>
+					</categorySeries>
+					<categorySeries>
+						<seriesExpression><![CDATA["JUL"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{KANTORSARNAME}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{07.JUL-13}]]></valueExpression>
+					</categorySeries>
+					<categorySeries>
+						<seriesExpression><![CDATA["AUG"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{KANTORSARNAME}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{08.AUG-13}]]></valueExpression>
+					</categorySeries>
+					<categorySeries>
+						<seriesExpression><![CDATA["SEP"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{KANTORSARNAME}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{10.OCT-13}]]></valueExpression>
+					</categorySeries>
+					<categorySeries>
+						<seriesExpression><![CDATA["OCT"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{KANTORSARNAME}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{10.OCT-13}]]></valueExpression>
+					</categorySeries>
+					<categorySeries>
+						<seriesExpression><![CDATA["NOV"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{KANTORSARNAME}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{11.NOV-13}]]></valueExpression>
+					</categorySeries>
+					<categorySeries>
+						<seriesExpression><![CDATA["DEC"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{KANTORSARNAME}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{12.DEC-13}]]></valueExpression>
+					</categorySeries>
+				</categoryDataset>
+				<linePlot>
+					<plot labelRotation="-45.0"/>
+				</linePlot>
+			</lineChart>
+		</band>
+	</summary>
+</jasperReport>

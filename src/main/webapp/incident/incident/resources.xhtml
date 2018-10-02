@@ -1,0 +1,24 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">      
+    <div class="ui-g ui-fluid">
+        <div class="ui-g-12">
+            <p:accordionPanel cache="card" >
+                <p:tab title="Personil">
+                    <ui:include src="resources/personil.xhtml"/>
+                </p:tab>
+                <p:tab title="SRU">
+                    <ui:include src="resources/personil.xhtml"/>
+                </p:tab>
+                <p:tab title="Peralatan">
+                    <ui:include src="resources/personil.xhtml"/>
+                </p:tab>
+                <p:tab title="Potensi">
+                    <ui:include src="resources/personil.xhtml"/>
+                </p:tab>
+            </p:accordionPanel>
+        </div>
+    </div>
+</ui:composition>

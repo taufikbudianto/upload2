@@ -1,0 +1,400 @@
+.no-border,
+.no-border > .ui-widget-content,
+.no-border tr,
+.no-border td {
+    border: none !important;
+}
+.no-padding,
+.no-padding > .ui-widget-content,
+.no-padding-table > .ui-widget-content,
+.no-padding-table tr,
+.no-padding-table td {
+    padding: 0 !important;
+}
+
+.align-top {
+    vertical-align: top !important;
+}
+
+.panel-search,
+.panel-search > .ui-widget-content {
+    border: none !important;
+    padding: 0 !important;
+}
+.panel-search input {
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+
+.control-button {
+    border: none !important;
+    width: 100%;
+    text-align: right;
+}
+.control-button .ui-widget-content {
+    padding: 5px !important;
+}
+.control-button input {
+    margin-left: 3px;
+    margin-right: 7px;
+}
+.control-button button {
+    margin-top: 7px;
+    margin-left: 4px;
+    margin-right: 4px;
+}
+
+.content-title {
+    padding: 5px 10px 0 10px !important;
+}
+.content-title h1 {
+    font-weight: bold !important;
+    margin-bottom: 15px;
+}
+
+.field-note {
+    color: red; 
+    font-size: 0.9em; 
+    padding: 0; 
+    margin: 0;
+    margin-top: 3px;
+    margin-bottom: 3px;
+}
+
+.value-readonly textarea.ui-state-disabled, 
+.value-readonly input.ui-state-disabled,
+.value-readonly .ui-selectonemenu.ui-state-disabled {
+    opacity: 1 !important;
+    border-bottom: 1px solid #bdbdbd;
+    background-color: #d8d8d8;
+}
+
+.asterix:after{
+    content: " *";
+    color: red;
+}
+
+.ui-selectlistbox-filter-container, .ui-inputfield{
+    background-color: transparent !important;
+    color: #000000 !important;
+}
+
+body .ui-tree .ui-treenode-content .ui-treenode-icon{
+    margin: 0 -1px 0 -1px;
+}
+body .ui-tree .ui-treenode-children{
+    padding-left: 5px;
+}
+.ui-tree .ui-tree-container{
+    margin-left: -15px;
+}
+
+.ui-icon-custom { 
+    width: 16px; 
+    height: auto; 
+}
+
+.ui-icon-custom-treerouting {
+    background-image: url(/resources/basarnas/images/kml/map.png);
+    background-size:contain;}
+.ui-icon-custom-searcharea {
+    background-image: url(/resources/basarnas/images/kml/searcharea.png);
+    background-size:contain;}
+.ui-icon-custom-tasksearcharea {
+    background-image: url(/resources/basarnas/images/kml/tasksearcharea.png);
+    background-size:contain;}
+.ui-icon-custom-freedefine {
+    background-image: url(/resources/basarnas/images/kml/free_define_2.png);
+    background-size:contain;}
+.ui-icon-custom-pararel {
+    background-image: url(/resources/basarnas/images/kml/pararel_2.png);
+    background-size:contain;}
+.ui-icon-custom-sector {
+    background-image: url(/resources/basarnas/images/kml/sector_2.png);
+    background-size:contain;}
+.ui-icon-custom-square {
+    background-image: url(/resources/basarnas/images/kml/square_2.png);
+    background-size:contain;}
+.ui-icon-custom-trapezium {
+    background-image: url(/resources/basarnas/images/kml/trapezium_2.png);
+    background-size:contain;}
+.ui-icon-custom-tsn {
+    background-image: url(/resources/basarnas/images/kml/tsn_2.png);
+    background-size:contain;}
+.ui-icon-custom-tsr {
+    background-image: url(/resources/basarnas/images/kml/tsr_2.png);
+    background-size:contain;}
+.ui-icon-custom-incident {
+    background-image: url(/resources/basarnas/images/sarcoreapp/incident_transparant.png);
+    background-size:contain;}
+.ui-icon-custom-folder {
+    background-image: url(/resources/basarnas/images/sarcoreapp/folder_icon.png);
+    background-size:contain;}
+.ui-icon-custom-kansar {
+    background-image: url(/resources/basarnas/images/sarcoreapp/basarnas_transparant.png);
+    background-size:contain;}
+.ui-icon-custom-possar {
+    background-image: url(/resources/basarnas/images/sarcoreapp/pos_sar.png);
+    background-size:contain;}
+.ui-icon-custom-asset {
+    background-image: url(/resources/basarnas/images/sarcoreapp/asset.png);
+    background-size:contain;}
+.ui-icon-custom-potensi {
+    background-image: url(/resources/basarnas/images/sarcoreapp/potency.png);
+    background-size:contain;}
+.ui-icon-custom-log {
+    background-image: url(/resources/basarnas/images/sarcoreapp/log.png);
+    background-size:contain;}
+.ui-icon-custom-pob {
+    background-image: url(/resources/basarnas/images/sarcoreapp/pob.png);
+    background-size:contain;}
+.ui-icon-custom-sighting {
+    background-image: url(/resources/basarnas/images/sarcoreapp/sighting.png);
+    background-size:contain;}
+.ui-icon-custom-distress {
+    background-image: url(/resources/basarnas/images/sarcoreapp/signal.png);
+    background-size:contain;}
+.ui-icon-custom-composite {
+    background-image: url(/resources/basarnas/images/sarcoreapp/beacon_composite.png);
+    background-size:contain;}
+.ui-icon-custom-elemental {
+    background-image: url(/resources/basarnas/images/sarcoreapp/signal.png);
+    background-size:contain;}
+.ui-icon-custom-default_placemark {
+    background-image: url(/resources/basarnas/images/placemark/default_placemark.png);
+    background-size:contain;
+}
+.ui-icon-custom-aircraftsmall {
+    background-image: url(/resources/basarnas/images/placemark/aircraftsmall.png);
+    background-size:contain;
+}
+.ui-icon-custom-airport {
+    background-image: url(/resources/basarnas/images/placemark/airport.png);
+    background-size:contain;
+}
+.ui-icon-custom-airport_runway {
+    background-image: url(/resources/basarnas/images/placemark/airport_runway.png);
+    background-size:contain;
+}
+.ui-icon-custom-airport_terminal {
+    background-image: url(/resources/basarnas/images/placemark/airport_terminal.png);
+    background-size:contain;
+}
+.ui-icon-custom-asset_incident {
+    background-image: url(/resources/basarnas/images/placemark/asset_incident.png);
+    background-size:contain;
+}
+.ui-icon-custom-basarnas {
+    background-image: url(/resources/basarnas/images/placemark/basarnas.png);
+    background-size:contain;
+}
+.ui-icon-custom-boat {
+    background-image: url(/resources/basarnas/images/placemark/boat.png);
+    background-size:contain;
+}
+.ui-icon-custom-construction {
+    background-image: url(/resources/basarnas/images/placemark/construction.png);
+    background-size:contain;
+}
+.ui-icon-custom-ferry {
+    background-image: url(/resources/basarnas/images/placemark/ferry.png);
+    background-size:contain;
+}
+.ui-icon-custom-helicopter {
+    background-image: url(/resources/basarnas/images/placemark/helicopter.png);
+    background-size:contain;
+}
+.ui-icon-custom-train {
+    background-image: url(/resources/basarnas/images/placemark/train.png);
+    background-size:contain;
+}
+.ui-icon-custom-watercraft {
+    background-image: url(/resources/basarnas/images/placemark/watercraft.png);
+    background-size:contain;
+}
+.ui-icon-custom-letter_a {
+    background-image: url(/resources/basarnas/images/placemark/letter_a.png);
+    background-size:contain;
+}
+.ui-icon-custom-letter_b {
+    background-image: url(/resources/basarnas/images/placemark/letter_b.png);
+    background-size:contain;
+}
+.ui-icon-custom-letter_c {
+    background-image: url(/resources/basarnas/images/placemark/letter_c.png);
+    background-size:contain;
+}
+.ui-icon-custom-letter_d {
+    background-image: url(/resources/basarnas/images/placemark/letter_d.png);
+    background-size:contain;
+}
+.ui-icon-custom-letter_e {
+    background-image: url(/resources/basarnas/images/placemark/letter_e.png);
+    background-size:contain;
+}
+.ui-icon-custom-letter_f {
+    background-image: url(/resources/basarnas/images/placemark/letter_f.png);
+    background-size:contain;
+}
+.ui-icon-custom-letter_g {
+    background-image: url(/resources/basarnas/images/placemark/letter_g.png);
+    background-size:contain;
+}
+.ui-icon-custom-letter_h {
+    background-image: url(/resources/basarnas/images/placemark/letter_h.png);
+    background-size:contain;
+}
+.ui-icon-custom-letter_i {
+    background-image: url(/resources/basarnas/images/placemark/letter_i.png);
+    background-size:contain;
+}
+.ui-icon-custom-letter_j {
+    background-image: url(/resources/basarnas/images/placemark/letter_j.png);
+    background-size:contain;
+}
+.ui-icon-custom-letter_k {
+    background-image: url(/resources/basarnas/images/placemark/letter_k.png);
+    background-size:contain;
+}
+.ui-icon-custom-letter_l {
+    background-image: url(/resources/basarnas/images/placemark/letter_l.png);
+    background-size:contain;
+}
+.ui-icon-custom-letter_m {
+    background-image: url(/resources/basarnas/images/placemark/letter_m.png);
+    background-size:contain;
+}
+.ui-icon-custom-letter_n {
+    background-image: url(/resources/basarnas/images/placemark/letter_n.png);
+    background-size:contain;
+}
+.ui-icon-custom-letter_o {
+    background-image: url(/resources/basarnas/images/placemark/letter_o.png);
+    background-size:contain;
+}
+.ui-icon-custom-letter_p {
+    background-image: url(/resources/basarnas/images/placemark/letter_p.png);
+    background-size:contain;
+}
+.ui-icon-custom-letter_q {
+    background-image: url(/resources/basarnas/images/placemark/letter_q.png);
+    background-size:contain;
+}
+.ui-icon-custom-letter_r {
+    background-image: url(/resources/basarnas/images/placemark/letter_r.png);
+    background-size:contain;
+}
+.ui-icon-custom-letter_s {
+    background-image: url(/resources/basarnas/images/placemark/letter_s.png);
+    background-size:contain;
+}
+.ui-icon-custom-letter_t {
+    background-image: url(/resources/basarnas/images/placemark/letter_t.png);
+    background-size:contain;
+}
+.ui-icon-custom-letter_u {
+    background-image: url(/resources/basarnas/images/placemark/letter_u.png);
+    background-size:contain;
+}
+.ui-icon-custom-letter_v {
+    background-image: url(/resources/basarnas/images/placemark/letter_v.png);
+    background-size:contain;
+}
+.ui-icon-custom-letter_w {
+    background-image: url(/resources/basarnas/images/placemark/letter_w.png);
+    background-size:contain;
+}
+.ui-icon-custom-letter_x {
+    background-image: url(/resources/basarnas/images/placemark/letter_x.png);
+    background-size:contain;
+}
+.ui-icon-custom-letter_y {
+    background-image: url(/resources/basarnas/images/placemark/letter_y.png);
+    background-size:contain;
+}
+.ui-icon-custom-letter_z {
+    background-image: url(/resources/basarnas/images/placemark/letter_z.png);
+    background-size:contain;
+}
+.ui-icon-custom-number_0 {
+    background-image: url(/resources/basarnas/images/placemark/number_0.png);
+    background-size:contain;
+}
+.ui-icon-custom-number_1 {
+    background-image: url(/resources/basarnas/images/placemark/number_1.png);
+    background-size:contain;
+}
+.ui-icon-custom-number_2 {
+    background-image: url(/resources/basarnas/images/placemark/number_2.png);
+    background-size:contain;
+}
+.ui-icon-custom-number_3 {
+    background-image: url(/resources/basarnas/images/placemark/number_3.png);
+    background-size:contain;
+}
+.ui-icon-custom-number_4 {
+    background-image: url(/resources/basarnas/images/placemark/number_4.png);
+    background-size:contain;
+}
+.ui-icon-custom-number_5 {
+    background-image: url(/resources/basarnas/images/placemark/number_5.png);
+    background-size:contain;
+}
+.ui-icon-custom-number_6 {
+    background-image: url(/resources/basarnas/images/placemark/number_6.png);
+    background-size:contain;
+}
+.ui-icon-custom-number_7 {
+    background-image: url(/resources/basarnas/images/placemark/number_7.png);
+    background-size:contain;
+}
+.ui-icon-custom-number_8 {
+    background-image: url(/resources/basarnas/images/placemark/number_8.png);
+    background-size:contain;
+}
+.ui-icon-custom-number_9 {
+    background-image: url(/resources/basarnas/images/placemark/number_9.png);
+    background-size:contain;
+}
+.ui-icon-custom-number_10 {
+    background-image: url(/resources/basarnas/images/placemark/number_10.png);
+    background-size:contain;
+}
+
+/*.ui-panelgrid .ui-panelgrid-cell{
+    padding: 0px 0px;
+}
+*/
+body .ui-panelgrid .ui-panelgrid-cell{
+    padding: 8px 5px;
+}
+
+
+#position_bar{
+    /*     position:absolute;
+         width: 70%;
+         bottom:10;
+         height: 25px;
+         left: 90px;
+         font-size: 12px;
+         background-color:rgba(0,0,0,0.3);*/
+    color:white;
+}
+
+.layout-wrapper .topbar .topbar-menu > li.profile-item .profile-info {
+    display: inline-block;
+    vertical-align: middle;
+    max-width: none;
+    margin-top: -17px;
+}
+
+.layout-wrapper .topbar .topbar-menu > li.profile-item .profile-info .topbar-item-name.profile-name {
+    font-size: 14px;
+}
+
+body .ui-widget-header {
+    background-color: #0097a7;
+    color: #ffffff;
+    border: 1px solid #0097a7;
+    padding: 5px 34px;
+}

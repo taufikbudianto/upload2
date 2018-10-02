@@ -1,0 +1,68 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="respotensi-riwayat-sar">
+
+        <p:dataTable id="data-riwayat" var="list" value="#{potensiMBean.listPersonelHistory}" 
+                     reflow="true"  paginator="true" paginatorPosition="bottom" rows="5" 
+                     rowsPerPageTemplate="5" selectionMode="single" selection="#{potensiMBean.personnelHistory}"
+                     rowKey="#{list.personnelHistoryID}" rowIndexVar="index">
+
+            <f:facet name="header">
+                Daftar Riwayat tugas
+            </f:facet>
+
+            <p:ajax event="rowSelect" 
+                    update="@form :respotensi-content:potensi-detail:potensi-tabs:profil-detail:profil-tabs:respotensi-riwayat-sar:Input-riwayat"/>
+
+            <p:column headerText="No" style="width: 20px">
+                <p:outputLabel value="#{index + 1}"/>
+            </p:column>
+            <p:column headerText="Bulan /  Tahun">
+                <p:outputLabel value="#{list.incidentYear}"/>
+            </p:column>
+            <p:column headerText="Nama Insiden">
+                <p:outputLabel value="#{list.incidentName}" />
+            </p:column>
+            <p:column headerText="Jabatan">
+                <p:outputLabel value="#{list.incidentPosition}"/>
+            </p:column>
+            <p:column headerText="Deskripsi">
+                <p:outputLabel value="#{list.incidentDesc}"/>
+            </p:column>
+        </p:dataTable>
+
+        <p:contextMenu for="data-riwayat">
+            <p:menuitem value="Delete" process="@this" update="@form :respotensi-content:potensi-detail:potensi-tabs:profil-detail:profil-tabs:respotensi-riwayat-sar:data-riwayat" 
+                        icon="ui-icon-close" actionListener="#{potensiMBean.hpsHistory}"/>
+        </p:contextMenu>
+
+        <p:fieldset id="Input-riwayat" legend="Input" 
+                    class="ui-g-5 fieldset-search">
+            <h:form id="form-input-cert">
+                <p:panelGrid columns="2" layout="grid" class="ui-g-12 no-border " 
+                             columnClasses="ui-grid-col-4 no-padding label,ui-grid-col-9 no-padding value" style="margin-left: 7px;">
+
+                    <p:outputLabel value="Bulan / Tahun" />
+                    <p:inputText value="#{potensiMBean.personnelHistory.incidentYear}" disabled="#{potensiMBean.potencyDisabled}"/>
+                    <p:outputLabel value="Nama Insiden" />
+                    <p:inputText value="#{potensiMBean.personnelHistory.incidentName}" disabled="#{potensiMBean.potencyDisabled}"/>
+                    <p:outputLabel value="Jabatan"/>
+                    <p:inputText value="#{potensiMBean.personnelHistory.incidentPosition}" disabled="#{potensiMBean.potencyDisabled}" />
+                    <p:outputLabel value="Deskripsi"/>
+                    <p:inputText value="#{potensiMBean.personnelHistory.incidentDesc}" disabled="#{potensiMBean.potencyDisabled}"/>
+                    <p:panel class="no-border no-padding control-button" style="text-align: left">
+                        <p:commandButton value="Add" style="width:130px">
+                            <p:ajax event="click" listener="#{potensiMBean.tambahPersonilHistory()}" 
+                                    process="@form" 
+                                    update="@form :respotensi-content:potensi-detail:potensi-tabs:profil-detail:profil-tabs:respotensi-riwayat-sar:data-riwayat , :respotensi-content:potensi-detail:potensi-tabs:profil-detail:profil-tabs:respotensi-riwayat-sar:Input-riwayat" />
+                        </p:commandButton>
+                    </p:panel>
+                </p:panelGrid>
+            </h:form>
+        </p:fieldset>
+    </h:form>
+</ui:composition>

@@ -1,0 +1,62 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="form-Radiogram-Detail">
+        <div class="ui-g ui-fluid">
+            <div class="ui-g-12 ui-lg-12">
+                <p:panel id="list-detail" styleClass="penelHeaderGreen ui-shadow-content">
+                    <p:dataTable var="negara" value="#{mstNegaraMBean.lazyDataModelJPA}" reflow="true" rowKey="#{negara.countryID}"
+                                 lazy="true" paginator="true" editable="true" editMode="cell" paginatorPosition="bottom" rows="#{viewBean.rowsPageDefault}"
+                                 rowsPerPageTemplate="#{viewBean.rowsPerPageTemplate}" emptyMessage="Data tidak ditemukan" tableStyle="table-layout:auto">
+
+                        <p:column headerText="Kode">
+                            <p:cellEditor>
+                                <f:facet name="output"><h:outputText value="#{negara.countryName}" /></f:facet>
+                                <f:facet name="input"><p:inputText id="modelInput" value="#{negara.countryName}" style="width:100%"/></f:facet>
+                            </p:cellEditor>
+                        </p:column>
+
+                        <p:column headerText="Deskripsi">
+                            <p:cellEditor>
+                                <f:facet name="output"><h:outputText value="#{negara.mccID}" /></f:facet>
+                                <f:facet name="input"><p:inputText id="modelInput1" value="#{negara.mccID}" style="width:100%"/></f:facet>
+                            </p:cellEditor>
+                        </p:column>
+                    </p:dataTable>
+
+                    <table cellpadding="10" cellspacing="10">
+                        <tr>
+                            <td style="width: 150px">
+                                <p:commandButton value="Kirim" styleClass="green-btn" actionListener="#{daftarLogMBean.simpanDaftarLog()}" update="@form" 
+                                                 process="@form" style="width:130px" rendered="#{daftarLogMBean.showButton}">
+                                    <p:confirm header="Konfirmasi" message="Apakah anda yakin ingin menyimpan log ini?" icon="ui-icon-alert" />
+                                </p:commandButton>
+                            </td>
+                            <td style="width: 150px">
+                                <p:commandButton value="Print" styleClass="green-btn" actionListener="#{daftarLogMBean.simpanDaftarLog()}" update="@form" 
+                                                 process="@form" style="width:130px" rendered="#{daftarLogMBean.showButton}">
+                                    <p:confirm header="Konfirmasi" message="Apakah anda yakin ingin menyimpan log ini?" icon="ui-icon-alert" />
+                                </p:commandButton>
+                            </td>
+                            <td style="width: 150px">
+                                <p:commandButton value="Simpan" styleClass="green-btn" actionListener="#{daftarLogMBean.simpanDaftarLog()}" update="@form" 
+                                                 process="@form" style="width:130px" rendered="#{daftarLogMBean.showButton}">
+                                    <p:confirm header="Konfirmasi" message="Apakah anda yakin ingin menyimpan log ini?" icon="ui-icon-alert" />
+                                </p:commandButton>
+                            </td>
+                            <td style="width: 150px">
+                                <p:commandButton value="Tutup" styleClass="green-btn" actionListener="#{daftarLogMBean.simpanDaftarLog()}" update="@form" 
+                                                 process="@form" style="width:130px" rendered="#{daftarLogMBean.showButton}">
+                                    <p:confirm header="Konfirmasi" message="Apakah anda yakin ingin menyimpan log ini?" icon="ui-icon-alert" />
+                                </p:commandButton>
+                            </td>
+                        </tr>
+                    </table>
+                </p:panel>
+            </div>
+        </div>
+    </h:form>
+</ui:composition>

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="PotencySubAsset" pageWidth="479" pageHeight="44" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="479" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="02776f34-fa61-4a2a-b366-7d85dbecb9ee">
+	<property name="ireport.zoom" value="2.000000000000001"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="POTENCYID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT POTENCYID,TO_CLOB(WM_CONCAT(NAME))NAME,TO_CLOB(WM_CONCAT(GOODQTY))GOODQTY,TO_CLOB(WM_CONCAT(ASSETCONDITION))ASSETCONDITION,TO_CLOB(WM_CONCAT(CARGO)) AS CARGO,TO_CLOB(WM_CONCAT(FUNCTIONAL))FUNCTIONAL,TO_CLOB(WM_CONCAT(REMARKS))AS REMARKS
+FROM RES_ASSET
+WHERE POTENCYID =$P{POTENCYID}
+GROUP BY POTENCYID]]>
+	</queryString>
+	<field name="POTENCYID" class="java.lang.String"/>
+	<field name="NAME" class="java.lang.String"/>
+	<field name="GOODQTY" class="java.lang.String"/>
+	<field name="ASSETCONDITION" class="java.lang.String"/>
+	<field name="CARGO" class="java.lang.String"/>
+	<field name="FUNCTIONAL" class="java.lang.String"/>
+	<field name="REMARKS" class="java.lang.String"/>
+	<detail>
+		<band height="44" splitType="Stretch">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="851cfdd7-d2e7-4746-b34a-4975133d4b3b" positionType="Float" stretchType="RelativeToTallestObject" x="0" y="0" width="112" height="44" isPrintWhenDetailOverflows="true"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NAME}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="cad390a4-34d2-49af-94a2-1ebf35d4e04c" positionType="Float" stretchType="RelativeToTallestObject" x="112" y="0" width="30" height="44" isPrintWhenDetailOverflows="true"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{GOODQTY}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="dfd1ee05-4879-4a56-987c-e4460e274d5c" positionType="Float" stretchType="RelativeToTallestObject" x="142" y="0" width="61" height="44" isPrintWhenDetailOverflows="true"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ASSETCONDITION}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="b5d151a6-a498-4ff6-b848-973ab59e363a" positionType="Float" stretchType="RelativeToTallestObject" x="203" y="0" width="67" height="44" isPrintWhenDetailOverflows="true"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CARGO}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="51c40dec-ae17-42cc-9a43-bd7905f41faf" positionType="Float" stretchType="RelativeToTallestObject" x="270" y="0" width="76" height="44" isPrintWhenDetailOverflows="true"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{FUNCTIONAL}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="9830c049-357c-4eae-8bba-58796bb75ff6" positionType="Float" stretchType="RelativeToTallestObject" x="346" y="0" width="133" height="44" isPrintWhenDetailOverflows="true"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{REMARKS}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

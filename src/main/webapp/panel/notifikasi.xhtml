@@ -1,0 +1,107 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+    <ui:define name="title">Notifikasi</ui:define>
+    <ui:define name="content">
+        <ui:include src="notifikasi/detailTanggapan.xhtml"/>
+        <h:form id="notif-content" enctype="multipart/form-data">
+            <p:panel id="list-notif" class="no-border card card-w-title ui-fluid" 
+                     rendered="#{notifikasiMBean.showListNotif}"
+                     header="Daftar Notifikasi">
+
+                <p:panelGrid id="search-notif" columns="5" layout="grid" 
+                             styleClass="ui-panelgrid-blank form-group" 
+                             columnClasses ="ui-grid-col-2,ui-grid-col-3,ui-grid-col-2,
+                             ui-grid-col-2,ui-grid-col-3"
+                             style="margin-top: 20px;margin-bottom: 20px; width: 100%"
+                             class="no-padding no-border">
+                    <p:selectOneMenu value="#{notifikasiMBean.fieldNotifikasi}" 
+                                     autoWidth="false">
+                        <p:ajax update="notif-content:search-notif"
+                                process="@this" global="false"
+                                listener="#{notifikasiMBean.onKolomPencarianChange}"/>
+                        <f:selectItem itemLabel="Tanggal Notifikasi" itemValue="createdDate"/>
+                        <f:selectItem itemLabel="Judul" itemValue="notifJudul"/>
+                        <f:selectItem itemLabel="Dibuat Oleh" itemValue="createdBy"/>
+                        <f:selectItem itemLabel="Tipe" itemValue="notifTipe"/>
+                    </p:selectOneMenu>
+                    <p:inputText value="#{notifikasiMBean.valueNotifikasi}"
+                                 rendered="#{notifikasiMBean.isText}"/>
+                    <p:calendar value="#{notifikasiMBean.valueDate}" pattern="dd/MM/yyyy" 
+                                showOn="button" readonlyInput="true" navigator="true"
+                                rendered="#{notifikasiMBean.isDate}"/>
+                    <p:selectOneMenu value="#{notifikasiMBean.valueNotifikasi}"  
+                                     autoWidth="false" rendered="#{notifikasiMBean.isDropDown}">
+                        <f:selectItem itemLabel="Insiden" itemValue="0"/>
+                        <f:selectItem itemLabel="Umum" itemValue="1"/>
+                    </p:selectOneMenu>
+                    <p:commandButton value="Cari" global="false"
+                                     onclick="PF('listNotif').getPaginator().setPage(0);"
+                                     icon="ui-icon-search" process="@form" update="@form"/>
+                    <p:button value="Reset" icon="ui-icon-replay"/>
+                    <p:commandButton value="Tambah Data Baru" global="false"
+                                     class="green-btn" icon="fa fa-plus-circle" 
+                                     actionListener="#{notifikasiMBean.loadForm}"
+                                     update="@form">
+                        <p:resetInput target="@form" />
+                    </p:commandButton>
+                </p:panelGrid>
+
+                <p:dataTable var="data" 
+                             value="#{notifikasiMBean.listNotifikasi}"
+                             reflow="true" rowKey="#{data.notifId}" 
+                             lazy="true" paginator="true" paginatorPosition="bottom" 
+                             rows="10" tableStyle="table-layout:auto"
+                             emptyMessage="Data tidak ditemukan" 
+                             widgetVar="listNotif" rowIndexVar="index">
+
+                    <p:column headerText="No" style="width: 20px">
+                        <p:outputLabel value="#{index + 1}"/>
+                    </p:column>
+                    <p:column headerText="Tanggal Notifikasi" sortBy="#{data.createdDate}">
+                        <h:outputText value="#{notifikasiMBean.timestampConvert(data.createdDate)}" />
+                    </p:column>
+                    <p:column headerText="Judul" sortBy="#{data.notifJudul}">
+                        <h:outputText value="#{data.notifJudul}" />
+                    </p:column>
+                    <p:column headerText="Dibuat Oleh" sortBy="#{data.createdBy}">
+                        <h:outputText value="#{data.createdBy}" />
+                    </p:column>
+                    <p:column headerText="Tipe" sortBy="#{data.notifTipe}">
+                        <h:outputText value="#{data.notifTipe == 0 ? 'Insiden' : 'Umum'}" />
+                    </p:column>
+                    <p:column headerText="Aksi" style="width: 5%;">
+                        <p:commandButton id="lihatNotif"  
+                                         actionListener="#{notifikasiMBean.loadForm}"
+                                         update="@form" global="false"
+                                         onclick="PF('tTipNotif').hide();"
+                                         styleClass="blue-grey-btn" 
+                                         icon="fa fa-search">
+                            <f:attribute name="listRow" value="#{data}" />
+                        </p:commandButton>
+                        <p:tooltip value="Lihat" for="lihatNotif"
+                                   trackMouse="true" widgetVar="tTipNotif"/>
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
+            <p:panel id="notif-item" class="no-border card card-w-title ui-fluid" 
+                     header="#{notifikasiMBean.headerItem}"
+                     rendered="#{notifikasiMBean.showItemNotif}">
+                <ui:include src="notifikasi/detailNotifikasi.xhtml"/>     
+            </p:panel>
+            <p:panel class="no-border card card-w-title ui-fluid" 
+                     header="Daftar Personil"
+                     rendered="#{notifikasiMBean.showListPersonil}">
+                <ui:include src="notifikasi/listPersonil.xhtml"/>
+            </p:panel>
+            <p:panel class="no-border card card-w-title ui-fluid" 
+                     header="Detail Personil"
+                     rendered="#{notifikasiMBean.showDetailPersonil}">
+                <ui:include src="notifikasi/detailPersonil.xhtml"/>
+            </p:panel>
+        </h:form>
+    </ui:define>    
+</ui:composition>

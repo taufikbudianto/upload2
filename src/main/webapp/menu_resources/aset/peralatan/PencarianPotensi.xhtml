@@ -1,0 +1,82 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="caripotensi-content">
+        <div class="ui-g ui-fluid">
+            <div class="ui-g-12 ui-lg-12 ">
+                <p:panel id="list-caripotensi" header="Daftar Pencarian Potensi" styleClass="penelHeaderGreen ui-shadow-content">
+                    <p:panelGrid id="searchpotensi" columns="5" layout="grid" styleClass="ui-panelgrid-blank form-group" class="no-padding no-border">
+                        <p:panelGrid columns="2">
+                            <p:panelGrid columns="2" class="no-border no-padding">
+                                <p:selectOneMenu id="fieldcaripotensi" value="#{resPeralatanMBean.field}">
+                                    <p:ajax event="change" update="searchpotensi"/>
+                                    <f:selectItem itemLabel="Nama" itemValue="potencyname" />
+                                    <f:selectItem itemLabel="Alamat" itemValue="address" />
+                                    <f:selectItem itemLabel="No. Telepon" itemValue="phonenumber1" />
+                                    <f:selectItem itemLabel="No Fax" itemValue="faxnumber" />
+                                    <f:selectItem itemLabel="Freq radio" itemValue="radiofrequency" />
+                                </p:selectOneMenu>
+                            </p:panelGrid>    
+                            <p:panelGrid columns="3" class="no-border no-padding">
+                                <p:inputText id="value" value="#{resPeralatanMBean.value}"/>
+                                <p:commandButton id="search-btn" value="Cari" 
+                                                 update="caripotensi-content:datatable-potensi" process="@form" actionListener="#{resPeralatanMBean.potency()}">
+                                </p:commandButton> 
+                            </p:panelGrid>
+                        </p:panelGrid>                            
+                    </p:panelGrid>
+                </p:panel>
+                <p:dataTable id="datatable-potensi" var="caripotensi" value="#{resPeralatanMBean.lazyDataModelPotencyJPA}" reflow="true" rowKey="#{caripotensi.potencyid}"
+                             lazy="true" paginator="true" paginatorPosition="bottom" rows="#{viewBean.rowsPageDefault}"
+                             rowsPerPageTemplate="#{viewBean.rowsPerPageTemplate}" emptyMessage="Data tidak ditemukan">
+                    <p:column headerText="Nama">
+                        <h:outputText value="#{caripotensi.potencyname}" />
+                    </p:column>
+                    <p:column headerText="Alamat">
+                        <h:outputText value="#{caripotensi.address}" />
+                    </p:column>
+                    <p:column headerText="Latitude">
+                        <h:outputText value="#{resPeralatanMBean.coordinateLatitudePotensi.getConvertDdToDms(caripotensi.latitude, true)}" />
+                    </p:column>
+                    <p:column headerText="Longitude">
+                        <h:outputText value="#{resPeralatanMBean.coordinateLongitudePotensi.getConvertDdToDms(caripotensi.longitude, false)}" />
+                    </p:column>
+                    <p:column headerText="Matra">
+                        <h:outputText value="#{caripotensi.potencyname}" />
+                    </p:column>
+                    <p:column headerText="No. Telepon">
+                        <h:outputText value="#{caripotensi.phonenumber1}" />
+                    </p:column>
+                    <p:column headerText="No Fax">
+                        <h:outputText value="#{caripotensi.faxnumber}" />
+                    </p:column>
+                    <p:column headerText="Freq Radio">
+                        <h:outputText value="#{caripotensi.radiofrequency}" />
+                    </p:column>
+                    <p:column headerText="Aksi">
+                        <p:commandLink value="Pilih" actionListener="#{resPeralatanMBean.pilih()}">
+                            <f:attribute name="potensiPeralatan" value="#{caripotensi}"/>
+                        </p:commandLink>
+                        
+                        <p:outputLabel value=" | "/>
+                        <p:commandLink value="Lihat">
+                            <p:ajax event="click" listener="#{resPeralatanMBean.viewTab(caripotensi.potencyid)}" update=":tabView"/>
+                        </p:commandLink> 
+                    </p:column>
+                </p:dataTable>
+            </div>
+        </div>
+    </h:form>
+    <p:dialog id="idTab" widgetVar="widgetTab"
+              header="Data "
+              width="90%" height="50%"
+              appendTo="@(body)"
+              responsive="true" modal="true"
+              maximizable="true" style="overflow-y: auto;max-height: 80%;font-size: x-small"
+              resizable="false">
+    <ui:include src="./listTab.xhtml"/>
+    </p:dialog>
+</ui:composition>

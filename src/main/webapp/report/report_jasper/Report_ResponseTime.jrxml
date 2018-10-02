@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="LaporanResponseTimeInsiden" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="561b2146-8383-48ea-bf78-009043119df0">
+	<property name="ireport.zoom" value="1.0980750000000006"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="KANTORSARNAME" class="java.lang.String"/>
+	<parameter name="INCIDENTTYPES" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="STARTDATE" class="java.lang.String"/>
+	<parameter name="ENDDATE" class="java.lang.String"/>
+	<parameter name="user" class="java.lang.String"/>
+	<parameter name="currentDate" class="java.lang.String"/>
+	<parameter name="p_startDate" class="java.lang.String"/>
+	<parameter name="p_endDate" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT SAR.KANTORSARNAME,INC.INCIDENTTYPES,(SUM(MINUTES)/SUM(COUNTINCIDENT)) AS RESPONSETIME
+FROM
+(SELECT KANTORSARID,KANTORSARNAME FROM MST_KANTORSAR)SAR
+RIGHT JOIN
+(SELECT  CASE INCIDENTTYPE
+WHEN 1 THEN 'Musibah Pelayaran'
+WHEN 2 THEN 'Musibah Penerbangan'
+WHEN 3 THEN 'Musibah[Lain-Lain]'
+WHEN 4 THEN 'Bencana'
+ELSE 'Semua' END INCIDENTTYPES,
+DATECREATED,USERSITEID,LOSTPEOPLE,STARTDATE,INCIDENTID,
+STARTOPSDATE,ALERTEDAT,CAST(STARTOPSDATE AS TIMESTAMP)CASTSTARTOPSDATE,CAST(ALERTEDAT AS TIMESTAMP)CASTSTARTALERTEDAT
+,CEIL((STARTOPSDATE-ALERTEDAT)*24*60) AS MINUTES
+,COUNT(INCIDENTID)COUNTINCIDENT
+FROM INCIDENT
+WHERE ISDELETED =0
+GROUP BY INCIDENTTYPE,DATECREATED,USERSITEID,LOSTPEOPLE,STARTDATE,INCIDENTID,STARTOPSDATE,ALERTEDAT
+ORDER BY INCIDENTID
+)INC
+ON INC.USERSITEID=SAR.KANTORSARID
+WHERE ($P{KANTORSARNAME} = 'ALL' OR KANTORSARNAME = $P{KANTORSARNAME})
+AND ($P{INCIDENTTYPES}='Semua' OR INCIDENTTYPES=$P{INCIDENTTYPES})
+and TO_CHAR(TO_DATE(INC.STARTDATE,'DD-MON-YY'),'yyyy-MM-dd') >= $P{STARTDATE}
+AND TO_CHAR(TO_DATE(INC.STARTDATE,'DD-MON-YY'),'yyyy-MM-dd') <=$P{ENDDATE}
+GROUP BY SAR.KANTORSARNAME,INC.INCIDENTTYPES]]>
+	</queryString>
+	<field name="KANTORSARNAME" class="java.lang.String"/>
+	<field name="INCIDENTTYPES" class="java.lang.String"/>
+	<field name="RESPONSETIME" class="java.math.BigDecimal"/>
+	<title>
+		<band height="88" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="290adac3-aca9-4f57-81ef-af3e2d5343fc" x="182" y="21" width="11" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="5dd12455-a102-4537-9df6-158f82505a3e" x="102" y="1" width="80" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[INCIDENT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="2516b88a-78ad-4fe4-b794-581bc034e5e1" x="182" y="1" width="11" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="d17c309c-abb0-4463-95fe-3cb12998e184" x="102" y="21" width="80" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PERIODE]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="73318922-7c39-4e7b-9e56-9c2b2fff9ae7" x="193" y="1" width="242" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{INCIDENTTYPES}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="86fe0b8c-c13e-45f5-be28-b36e25eb8a5c" x="193" y="21" width="242" height="20"/>
+				<box rightPadding="0"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{p_startDate} + "  S/D  " + $P{p_endDate}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement uuid="48fd3e3d-6569-4931-9aa4-36d55e402832" x="1" y="-1" width="100" height="86"/>
+				<imageExpression><![CDATA["sar_image.jpg"]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement uuid="8bbb30c8-de84-49c1-8ba1-bcc5de182f3f" x="625" y="21" width="177" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["User : " +$P{user}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="6461cda1-77a8-4b39-8e0a-97abdd21c7ba" x="625" y="1" width="177" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Tanggal Cetak : " +$P{currentDate}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageFooter>
+		<band height="20">
+			<textField>
+				<reportElement uuid="fdc50589-0379-4257-9b3e-9343d1d9f291" x="681" y="0" width="80" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="26443371-ed41-489d-85bf-6689a6d7d091" x="761" y="0" width="40" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="423">
+			<staticText>
+				<reportElement uuid="73d358d3-d04c-4cab-9f1f-b6d1c8e7b70b" x="0" y="137" width="25" height="61"/>
+				<textElement rotation="Left">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[M e n i t]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="24be234f-8989-483d-9b31-b5b0ad700d43" x="365" y="8" width="161" height="20"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[RESPONSE TIME INSIDENT]]></text>
+			</staticText>
+			<bar3DChart>
+				<chart>
+					<reportElement uuid="0300ea76-4205-406c-a984-c01690560ebb" x="11" y="28" width="777" height="315"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<categorySeries>
+						<seriesExpression><![CDATA[$F{INCIDENTTYPES}]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{KANTORSARNAME}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{RESPONSETIME}]]></valueExpression>
+						<labelExpression><![CDATA[$F{INCIDENTTYPES}]]></labelExpression>
+					</categorySeries>
+				</categoryDataset>
+				<bar3DPlot>
+					<plot labelRotation="-45.0"/>
+					<itemLabel/>
+				</bar3DPlot>
+			</bar3DChart>
+		</band>
+	</summary>
+</jasperReport>

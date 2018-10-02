@@ -1,0 +1,33 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:tabView id="potensi-tabs" class="content-tabs" activeIndex="#{potensiMBean.activeIndex}" 
+               dynamic="true">
+        <p:tab title="Profil">
+            <ui:include src="tab/potensi_profil.xhtml"/>
+        </p:tab>
+        <p:tab title="Unsur SAR" >
+            <ui:include src="tab/potensi_unsur_sar.xhtml"/>
+        </p:tab>
+        <p:tab title="Personil">
+            <ui:include src="tab/potensi_personil.xhtml"/>
+        </p:tab>
+<!--        <p:tab title="Kontak" >
+            <ui:include src="tab/potensi_kontak.xhtml"/>
+        </p:tab>-->
+    </p:tabView>
+    <p:panel class="control-button no-border no-padding" style="text-align: right" >
+        <p:button value="#{potensiMBean.showButton ? 'Kembali' : 'Kembali'}" styleClass="red-btn" style="width:130px" icon="ui-icon-cancel" />
+<!--
+        <p:spacer width="10"/>
+
+        <p:commandButton value="Simpan" icon="fa fa-save" actionListener="{potensiMBean.simpan}" update="@form" 
+                         styleClass="green-btn"
+                         process="@form" style="width:130px" >
+            <p:confirm header="Konfirmasi" message="Apakah anda yakin ingin menyimpan pos SAR ini?" icon="ui-icon-alert" />
+        </p:commandButton>-->
+    </p:panel> 
+</ui:composition>

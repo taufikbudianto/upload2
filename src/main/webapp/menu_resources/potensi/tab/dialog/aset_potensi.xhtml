@@ -1,0 +1,104 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <p:dialog id="idAsetResPotensi" widgetVar="widgetAsetResPotensi"
+              header="Aset"
+              dynamic="true"
+              width="70%" height="70%"
+              appendTo="@(body)"
+              responsive="true" modal="true"
+              maximizable="true" 
+              resizable="false">
+        <h:form id="form-aset-potensi">
+            <p:panel style="overflow: auto;width: 100%;max-height: 55vh" class="no-border card card-w-title ui-fluid">
+                <p:messages closable="true"/>
+                <p:panelGrid class="ui-g-12 no-padding no-border" columns="2" 
+                             layout="grid" styleClass="ui-panelgrid-blank form-group"
+                             columnClasses="ui-grid-col-6,ui-grid-col-6">
+                    <p:panelGrid class="ui-g-12 no-padding no-border" columns="2" 
+                                 layout="grid" styleClass="ui-panelgrid-blank form-group"
+                                 columnClasses="ui-grid-col-4 label,ui-grid-col-8 value value-readonly">
+
+                        <p:outputLabel value="Kode" />
+                        <p:inputText value="#{potensiMBean.resAsset.code}" 
+                                     required="true" requiredMessage="Kode Tidak Boleh Kosong" disabled="#{potensiMBean.potencyDisabled}"/>
+                        <p:outputLabel value="Nama"/>
+                        <p:inputText value="#{potensiMBean.resAsset.name}" 
+                                     required="true" requiredMessage="Nama Tidak Boleh Kosong" disabled="#{potensiMBean.potencyDisabled}"/>
+
+                        <p:outputLabel value="Tipe" />
+                        <p:selectOneMenu value="#{potensiMBean.resAsset.assettypeid}" 
+                                         converter="objectListConverter" 
+                                         disabled="#{potensiMBean.disabled}" >
+                            <f:selectItem itemLabel="--- PILIH ---" itemValue=""/>
+                            <f:selectItems value="#{potensiMBean.listMstAset}" var="aset" 
+                                           itemLabel="#{aset.assetname}"
+                                           itemValue="#{aset}"/>
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="Kondisi"/>
+                        <p:inputText value="#{potensiMBean.resAsset.assetcondition}" disabled="#{potensiMBean.potencyDisabled}"/>
+
+                        <p:outputLabel value="Kapasitas"/>
+                        <p:inputText value="#{potensiMBean.resAsset.goodqty}" 
+                                     onkeypress="return isNumber(event)" disabled="#{potensiMBean.potencyDisabled}">
+                            <f:validateDoubleRange minimum="1" />
+                        </p:inputText>
+
+                        <p:outputLabel value="Fungsi"/>
+                        <p:inputText  value="#{potensiMBean.resAsset.functional}" disabled="#{potensiMBean.potencyDisabled}"/>
+
+                    </p:panelGrid>
+
+                    <p:panelGrid class="ui-g-12 no-border no-padding" columns="2" layout="grid" 
+                                 styleClass="ui-panelgrid-blank form-group"
+                                 columnClasses="ui-grid-col-4 label,ui-grid-col-8 value value-readonly">
+
+                        <p:outputLabel value="Deskripsi" />
+                        <p:inputTextarea value="#{potensiMBean.resAsset.remarks}" disabled="#{potensiMBean.potencyDisabled}"/>
+
+                        <p:outputLabel value="Status"/>
+                        <p:selectOneMenu value="#{potensiMBean.resAsset.status}" disabled="#{potensiMBean.potencyDisabled}">
+                            <f:selectItem itemLabel="--- PILIH ---" itemValue=""/>
+                            <f:selectItem itemLabel="BerOperasi" itemValue="0"/>
+                            <f:selectItem itemLabel="Tidak Beroperasi" itemValue="1"/>
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="Jumlah"/>
+                        <p:inputText value="#{potensiMBean.resAsset.servicedqty}" 
+                                     onkeypress="return isNumber(event)" disabled="#{potensiMBean.potencyDisabled}">
+                            <f:validateDoubleRange minimum="0" />
+                        </p:inputText>
+
+                        <p:outputLabel value="Koordinat Latitude" style="width: 100px" />
+                        <p:panelGrid id="latitude" columns="4" style="width: 100%;"  
+                                     columnClasses ="ui-grid-col-2,ui-grid-col-7,ui-grid-col-3"                                                              
+                                     class="no-border no-padding-table ui-fluid">
+                            <ui:include src="../coordinate/unsur_sar/unsur-sar-latitude.xhtml"/>
+                        </p:panelGrid>
+                        <p:outputLabel value="Koordinat Longitude" />
+                        <p:panelGrid id="longitude" columns="4" style="width: 100%;" 
+                                     columnClasses ="ui-grid-col-2,ui-grid-col-7,ui-grid-col-3"                                                              
+                                     class="no-border no-padding-table ui-fluid">
+                            <ui:include src="../coordinate/unsur_sar/unsur-sar-longitude.xhtml"/>
+                        </p:panelGrid>
+
+                    </p:panelGrid>
+                </p:panelGrid>
+            </p:panel>
+
+            <p:panel class="no-border no-padding control-button" style="text-align: right;">
+                <p:commandButton value="#{potensiMBean.showButton ? 'Batal' : 'Kembali'}" 
+                                 styleClass="red-btn" style="width:130px" process="@this"
+                                 onclick="PF('widgetAsetResPotensi').hide()"/>
+<!--                <p:commandButton value="Simpan" actionListener="{potensiMBean.tambahUnsur}" 
+                                 style="width:130px" styleClass="green-btn" 
+                                 process="@form" 
+                                 update="@form" />-->
+            </p:panel>
+
+        </h:form>
+    </p:dialog>
+</ui:composition>

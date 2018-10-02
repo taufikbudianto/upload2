@@ -1,0 +1,55 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <p:commandButton icon="ui-icon-autorenew" class="green-btn">
+        <p:ajax event="click" update="latitude4" global="false"
+                listener="#{driftCalcWorksheet8MBean.actionLatitude}"/>
+    </p:commandButton> 
+    <p:panelGrid rendered="#{driftCalcWorksheet8MBean.coordinateLat.counter == 3}" 
+                 columns="6" style="width: 100%" class="no-border ui-fluid"
+                 columnClasses ="ui-grid-col-2,ui-grid-col-2,ui-grid-col-2,
+                 ui-grid-col-2,ui-grid-col-2,ui-grid-col-2">
+        <p:inputNumber style="width: 40px;" value="#{driftCalcWorksheet8MBean.coordinateLat.degree}"  
+                       maxValue="90" maxlength="2" decimalPlaces="0" size="2">
+            <p:ajax event="keyup" process="@this"/>
+        </p:inputNumber>
+        <p:outputLabel value="°"/>
+        <p:inputNumber style="width: 40px;" value="#{driftCalcWorksheet8MBean.coordinateLat.minute}"  
+                       maxValue="60" maxlength="2" decimalPlaces="0" size="2">
+            <p:ajax event="keyup" process="@this"/>
+        </p:inputNumber>
+        <p:outputLabel value="'"/>
+        <p:inputNumber style="width: 40px;" value="#{driftCalcWorksheet8MBean.coordinateLat.second}"  
+                       maxValue="60" maxlength="2" decimalPlaces="0" size="2">
+            <p:ajax event="keyup" process="@this"/>
+        </p:inputNumber>
+        <p:outputLabel value="&quot;"/>
+    </p:panelGrid>
+    <p:panelGrid columns="3" rendered="#{driftCalcWorksheet8MBean.coordinateLat.counter == 2}" 
+                 class="no-border " style="width: 100%;"
+                 columnClasses ="ui-grid-col-2,ui-grid-col-2,ui-grid-col-6"> 
+        <p:inputNumber value="#{driftCalcWorksheet8MBean.coordinateLat.degree}" 
+                       maxValue="90" size="2" maxlength="2" decimalPlaces="0">
+            <p:ajax event="keyup" process="@this"/>                                    
+        </p:inputNumber>
+        <p:spacer width="5"/>
+        <p:inputText value="#{driftCalcWorksheet8MBean.coordinateLat.minutesM}" 
+                     onkeypress="return isDecimal(event)" maxlength="18">
+            <p:ajax event="keyup" process="@this"/>
+        </p:inputText>
+    </p:panelGrid>
+    <p:panelGrid columns="1" rendered="#{driftCalcWorksheet8MBean.coordinateLat.counter == 1}"
+                 class="no-border ui-fluid" style="width: 100%;" columnClasses="ui-grid-col-11"> 
+        <p:inputText value="#{driftCalcWorksheet8MBean.coordinateLat.decimalDegrees}" 
+                     onkeypress="return isDecimal(event)" maxlength="18">
+            <p:ajax event="keyup" process="@this"/>
+        </p:inputText>
+    </p:panelGrid>
+    <p:selectOneMenu value="#{driftCalcWorksheet8MBean.coordinateLat.garis}" 
+                     autoWidth="false">
+        <p:ajax event="itemSelect" process="@this"/>
+        <f:selectItem itemLabel="LU" itemValue="0" />
+        <f:selectItem itemLabel="LS" itemValue="1" />
+    </p:selectOneMenu>
+</ui:composition>

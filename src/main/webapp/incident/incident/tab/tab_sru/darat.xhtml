@@ -1,0 +1,96 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <div class="ui-g ui-fluid">
+        <div class="ui-g-12">
+            <h:form id="darat-content-tab">
+                <p:panelGrid id="search-incident-sru-tab-darat" columns="3" layout="grid" styleClass="ui-panelgrid-blank form-group" class="no-padding no-border">
+                    <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group" class="no-padding no-border">
+                        <p:commandButton id="check-pilih-incident-sru-tab-darat" value="Check All" actionListener="#{incidentSRUDaratMBean.checkallpilih()}" process="@form" update="@form" styleClass="green-btn"/>
+
+                        <p:commandButton id="uncheck-pilih-incident-sru-tab-darat" value="Uncheck All" actionListener="#{incidentSRUDaratMBean.uncheckallpilih()}" process="@form" update="@form" styleClass="red-btn"/>
+                    </p:panelGrid>
+
+                    <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group" class="no-padding no-border">
+                        <p:commandButton id="kirim-notif-incident-sru-tab-darat" type="button"  value="Kirim Notifikasi">
+                            <p:ajax event="click" update="@form" process="@form"/>
+                        </p:commandButton>
+                    </p:panelGrid>
+
+                    <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group" class="no-padding no-border">
+                        <p:commandButton id="check-kirim-incident-sru-tab-darat" value="Check All" actionListener="#{incidentSRUDaratMBean.checkallkirim()}" process="@form" update="@form" styleClass="green-btn"/>
+
+                        <p:commandButton id="uncheck-kirim-incident-sru-tab-darat" value="Uncheck All" actionListener="#{incidentSRUDaratMBean.uncheckallkirim()}" process="@form" update="@form" styleClass="red-btn"/>
+                    </p:panelGrid>
+                </p:panelGrid>
+
+                <p:dataTable var="daratsruinc" value="#{incidentSRUDaratMBean.listTempCheck}"
+                             reflow="true"  paginator="true" paginatorPosition="bottom" rows="#{viewBean.rowsPageDefault}"
+                             rowsPerPageTemplate="#{viewBean.rowsPerPageTemplate}" first="#{viewBean.first}"
+                             emptyMessage="Data tidak ditemukan"
+                             id="daratsruinc" tableStyle="table-layout:auto" sortBy="#{daratsruinc.resAsset.assetid}"
+                             style="font-size: smaller" rowIndexVar="index">
+                    <p:column headerText="No" style="width: 20px">
+                        <p:outputLabel value="#{index + 1}"/>
+                    </p:column>
+                    <p:column style="width: 5%; text-align: center;" id="checkPilihDarat" headerText="Pilih" sortBy="#{daratsruinc.pilih}">
+                        <p:selectBooleanCheckbox value="#{daratsruinc.pilih}">
+                            <p:ajax process="@this"/>
+                        </p:selectBooleanCheckbox>
+                    </p:column>
+                    <p:column style="width: 5%; text-align: center;" id="checkKirimDarat" headerText="Kirim">
+                        <p:selectBooleanCheckbox value="#{daratsruinc.kirim}">
+                            <p:ajax process="@this"/>
+                        </p:selectBooleanCheckbox>
+                    </p:column>
+                    <p:column headerText="Nama SRU" sortBy="#{daratsruinc.resAsset.name}">
+                        <h:outputText value="#{daratsruinc.resAsset.name}" />
+                    </p:column>
+                    <p:column headerText="Kansar/Potensi" sortBy="#{daratsruinc.resAsset.potencyid.potencyname}">
+                        <h:outputText value="#{daratsruinc.resAsset.potencyid.potencyname}" />
+                    </p:column>
+                    <p:column headerText="Jarak(NM)">
+                        <h:outputText value="#{daratsruinc.distance}" />
+                    </p:column>
+                    <p:column headerText="Arah(Derajat)">
+                        <h:outputText value="#{daratsruinc.angle}" />
+                    </p:column>
+                    <p:column headerText="Kecepatan(Knots)" sortBy="#{daratsruinc.resAsset.speed}">
+                        <h:outputText value="#{daratsruinc.resAsset.speed}" />
+                    </p:column>
+                    <p:column headerText="Endurance(Jam)" sortBy="#{daratsruinc.resAsset.endurance}">
+                        <h:outputText value="#{daratsruinc.resAsset.endurance}" />
+                    </p:column>
+                    <p:column headerText="Fungsi" sortBy="#{daratsruinc.resAsset.functional}">
+                        <h:outputText value="#{daratsruinc.resAsset.functional}" />
+                    </p:column>
+                    <p:column headerText="Kapasitas" sortBy="#{daratsruinc.resAsset.cargo}">
+                        <h:outputText value="#{daratsruinc.resAsset.cargo}" />
+                    </p:column>
+                    <p:column headerText="Keterangan" sortBy="#{daratsruinc.resAsset.remarks}">
+                        <h:outputText value="#{daratsruinc.resAsset.remarks}" />
+                    </p:column>
+                    <p:column headerText="Aksi">
+                        <p:commandLink value="Lihat">
+                            <p:ajax event="click" listener="#{incidentSRUDaratMBean.viewCheck(daratsruinc)}"/>
+                        </p:commandLink> 
+                    </p:column>
+                </p:dataTable>
+                <p:spacer width="10" />
+                <p:commandButton value="Simpan SRU Darat" actionListener="#{incidentSRUDaratMBean.action}" process="@form"/>
+
+            </h:form>
+            <p:dialog id="idviewsrudarat" widgetVar="widgetViewSruDarat"
+                      header="Data "
+                      width="75%" height="80%"
+                      appendTo="@(body)"
+                      responsive="true" modal="true"
+                      maximizable="true" closable="false" style="overflow-y: 100%;max-height: 100%;"
+                      resizable="false">
+                <ui:include src="./view_sru_darat.xhtml"/>
+            </p:dialog>
+        </div>
+    </div>
+</ui:composition>

@@ -1,0 +1,33 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <p:dialog id="idDtlTanggapan" widgetVar="wgDtlTanggapan"
+              header="Tanggapan" dynamic="true" resizable="false"
+              width="40%" height="70%" appendTo="@(body)"
+              responsive="true" modal="true">
+        <h:form id="form-dtl-tanggapan">
+            <p:panelGrid columns="2" layout="grid" 
+                         styleClass="ui-panelgrid-blank form-group" 
+                         columnClasses ="ui-grid-col-2,ui-grid-col-3"
+                         style="margin-top: 20px;margin-bottom: 20px; width: 100%"
+                         class="no-padding no-border">
+                <p:outputLabel value="Tanggal"/>
+                <p:inputText value="#{notifikasiMBean.timestampConvert(notifikasiMBean.tanggapan.createdDate)}"
+                             readonly="true"/>
+                <p:outputLabel value="Nama"/>
+                <p:inputText value="#{notifikasiMBean.tanggapan.personil.personnelName}"
+                             readonly="true"/>
+                <p:outputLabel value="Tanggapan"/>
+                <p:inputTextarea value="#{notifikasiMBean.tanggapan.tanggapan}"
+                                 maxlength="100" readonly="true"/>
+            </p:panelGrid>
+            <p:panel class="control-button no-border no-padding">
+                <p:commandButton value="Kembali" icon="fa fa-backward"
+                                 class="red-btn" style="width: 100px;"
+                                 global="false"
+                                 onclick="PF('wgDtlTanggapan').hide();"/>
+            </p:panel>
+        </h:form>
+    </p:dialog>
+</ui:composition>

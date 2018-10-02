@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Dashboard_ResponseTime" pageWidth="1500" pageHeight="800" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="1500" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="f6c43050-ec58-4f25-9029-e5f66705c650">
+	<property name="ireport.zoom" value="0.5131581182307068"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="idKansar" class="java.lang.String"/>
+	<parameter name="dashresponinsidentype" class="java.lang.String"/>
+	<parameter name="responawal" class="java.lang.String"/>
+	<parameter name="responahir" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT KANTORSARNAME,INCIDENTTYPES,
+SUM(CASE WHEN SUBSTR(STARTDATE,4,3)= 'JAN' THEN RESPONSETIME ELSE 0 END) "JAN",
+SUM(CASE WHEN SUBSTR(STARTDATE,4,3)= 'FEB' THEN RESPONSETIME ELSE 0 END) "FEB",
+SUM(CASE WHEN SUBSTR(STARTDATE,4,3)= 'MAR' THEN RESPONSETIME ELSE 0 END) "MAR",
+SUM(CASE WHEN SUBSTR(STARTDATE,4,3)= 'APR' THEN RESPONSETIME ELSE 0 END) "APR",
+SUM(CASE WHEN SUBSTR(STARTDATE,4,3)= 'MAY' THEN RESPONSETIME ELSE 0 END) "MEI",
+SUM(CASE WHEN SUBSTR(STARTDATE,4,3)= 'JUN' THEN RESPONSETIME ELSE 0 END) "JUN",
+SUM(CASE WHEN SUBSTR(STARTDATE,4,3)= 'JUL' THEN RESPONSETIME ELSE 0 END) "JUL",
+SUM(CASE WHEN SUBSTR(STARTDATE,4,3)= 'AUG' THEN RESPONSETIME ELSE 0 END) "AGU",
+SUM(CASE WHEN SUBSTR(STARTDATE,4,3)= 'SEP' THEN RESPONSETIME ELSE 0 END) "SEP",
+SUM(CASE WHEN SUBSTR(STARTDATE,4,3)= 'OCT' THEN RESPONSETIME ELSE 0 END) "OCT",
+SUM(CASE WHEN SUBSTR(STARTDATE,4,3)= 'NOV' THEN RESPONSETIME ELSE 0 END) "NOV",
+SUM(CASE WHEN SUBSTR(STARTDATE,4,3)= 'DEC' THEN RESPONSETIME ELSE 0 END) "DES"
+FROM
+(SELECT SAR.KANTORSARNAME,INC.INCIDENTTYPES,STARTDATE,(SUM(MINUTES)/SUM(COUNTINCIDENT)) AS RESPONSETIME FROM
+(SELECT KANTORSARID,KANTORSARNAME FROM MST_KANTORSAR)SAR
+RIGHT JOIN
+(SELECT  CASE INCIDENTTYPE
+WHEN 1 THEN 'Musibah Pelayaran'
+WHEN 2 THEN 'Musibah Penerbangan'
+WHEN 3 THEN 'Musibah[Lain-Lain]'
+WHEN 4 THEN 'Bencana'
+ELSE 'Semua' END INCIDENTTYPES,STARTDATE,DATECREATED,USERSITEID,LOSTPEOPLE,INCIDENTID,
+STARTOPSDATE,ALERTEDAT,CAST(STARTOPSDATE AS TIMESTAMP)CASTSTARTOPSDATE,CAST(ALERTEDAT AS TIMESTAMP)CASTSTARTALERTEDAT
+,CEIL((STARTOPSDATE-ALERTEDAT)*24*60) AS MINUTES,COUNT(INCIDENTID)COUNTINCIDENT
+FROM INCIDENT
+WHERE ISDELETED =0
+GROUP BY INCIDENTTYPE,DATECREATED,USERSITEID,LOSTPEOPLE,STARTDATE,INCIDENTID,STARTOPSDATE,ALERTEDAT
+ORDER BY INCIDENTID
+)INC
+ON INC.USERSITEID=SAR.KANTORSARID
+WHERE TO_CHAR(TO_DATE(INC.STARTDATE,'DD-MON-YY'),'yyyy-MM-dd') >= $P{responawal}
+AND TO_CHAR(TO_DATE(INC.STARTDATE,'DD-MON-YY'),'yyyy-MM-dd') <= $P{responahir}
+AND ($P{idKansar} = 'ALL' OR KANTORSARNAME =$P{idKansar})
+AND ($P{dashresponinsidentype}='ALL' OR INCIDENTTYPES=$P{dashresponinsidentype})
+GROUP BY SAR.KANTORSARNAME,INC.INCIDENTTYPES,STARTDATE)AX
+GROUP BY KANTORSARNAME,INCIDENTTYPES
+ORDER BY KANTORSARNAME]]>
+	</queryString>
+	<field name="KANTORSARNAME" class="java.lang.String"/>
+	<field name="INCIDENTTYPES" class="java.lang.String"/>
+	<field name="JAN" class="java.math.BigDecimal"/>
+	<field name="FEB" class="java.math.BigDecimal"/>
+	<field name="MAR" class="java.math.BigDecimal"/>
+	<field name="APR" class="java.math.BigDecimal"/>
+	<field name="MEI" class="java.math.BigDecimal"/>
+	<field name="JUN" class="java.math.BigDecimal"/>
+	<field name="JUL" class="java.math.BigDecimal"/>
+	<field name="AGU" class="java.math.BigDecimal"/>
+	<field name="SEP" class="java.math.BigDecimal"/>
+	<field name="OCT" class="java.math.BigDecimal"/>
+	<field name="NOV" class="java.math.BigDecimal"/>
+	<field name="DES" class="java.math.BigDecimal"/>
+	<pageFooter>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement uuid="5424f975-554f-4439-87c9-eefdc35186dd" x="1379" y="0" width="80" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="f9a35b97-840e-4d2c-a809-ce0409ece4d0" x="1459" y="0" width="40" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="750" splitType="Stretch">
+			<lineChart>
+				<chart>
+					<reportElement uuid="f161ee70-da5f-498e-b5b6-a9ce09ab3450" x="0" y="19" width="1500" height="731"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<categorySeries>
+						<seriesExpression><![CDATA["JAN"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{KANTORSARNAME} + " " + $F{INCIDENTTYPES}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{JAN}]]></valueExpression>
+					</categorySeries>
+					<categorySeries>
+						<seriesExpression><![CDATA["FEB"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{KANTORSARNAME} + " " + $F{INCIDENTTYPES}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{FEB}]]></valueExpression>
+					</categorySeries>
+					<categorySeries>
+						<seriesExpression><![CDATA["MAR"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{KANTORSARNAME} + " " + $F{INCIDENTTYPES}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{MAR}]]></valueExpression>
+					</categorySeries>
+					<categorySeries>
+						<seriesExpression><![CDATA["APR"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{KANTORSARNAME} + " " + $F{INCIDENTTYPES}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{APR}]]></valueExpression>
+					</categorySeries>
+					<categorySeries>
+						<seriesExpression><![CDATA["MEI"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{KANTORSARNAME} + " " + $F{INCIDENTTYPES}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{MEI}]]></valueExpression>
+					</categorySeries>
+					<categorySeries>
+						<seriesExpression><![CDATA["JUN"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{KANTORSARNAME} + " " + $F{INCIDENTTYPES}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{JUN}]]></valueExpression>
+					</categorySeries>
+					<categorySeries>
+						<seriesExpression><![CDATA["JUL"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{KANTORSARNAME} + " " + $F{INCIDENTTYPES}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{JUL}]]></valueExpression>
+					</categorySeries>
+					<categorySeries>
+						<seriesExpression><![CDATA["AGU"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{KANTORSARNAME} + " " + $F{INCIDENTTYPES}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{AGU}]]></valueExpression>
+					</categorySeries>
+					<categorySeries>
+						<seriesExpression><![CDATA["SEP"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{KANTORSARNAME} + " " + $F{INCIDENTTYPES}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{SEP}]]></valueExpression>
+					</categorySeries>
+					<categorySeries>
+						<seriesExpression><![CDATA["OKT"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{KANTORSARNAME} + " " + $F{INCIDENTTYPES}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{OCT}]]></valueExpression>
+					</categorySeries>
+					<categorySeries>
+						<seriesExpression><![CDATA["NOV"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{KANTORSARNAME} + " " + $F{INCIDENTTYPES}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{NOV}]]></valueExpression>
+					</categorySeries>
+					<categorySeries>
+						<seriesExpression><![CDATA["DES"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{KANTORSARNAME} + " " + $F{INCIDENTTYPES}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{DES}]]></valueExpression>
+					</categorySeries>
+				</categoryDataset>
+				<linePlot>
+					<plot labelRotation="-45.0"/>
+				</linePlot>
+			</lineChart>
+			<staticText>
+				<reportElement uuid="2d726c96-6861-4fa2-b967-dde2bf790b6f" x="0" y="319" width="19" height="44"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Menit]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

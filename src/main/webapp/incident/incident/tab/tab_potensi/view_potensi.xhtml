@@ -1,0 +1,19 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:tabView id="view-potensi" class="ui-g-12 no-padding no-border content-tabs" dynamic="true" cache="true">
+        <p:tab title="Profil">
+            <ui:include src="potensi_profil.xhtml"/>
+        </p:tab>
+        <p:tab title="Unsur SAR">
+            <ui:include src="potensi_unsur_sar.xhtml"/>
+        </p:tab>
+        <p:tab title="Kontak">
+            <ui:include src="potensi_kontak.xhtml"/>
+        </p:tab>
+    </p:tabView>
+    
+</ui:composition>

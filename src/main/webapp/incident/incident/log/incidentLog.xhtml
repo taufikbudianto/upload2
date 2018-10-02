@@ -1,0 +1,75 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+                    
+    <h:form id="form-insidenLog">
+        <div class="ui-g ui-fluid">
+            <div class="ui-g-12 ui-lg-6 ">
+                
+                <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                    <p:outputLabel value="Tanggal" style="width: 100px"/>
+                    <p:panel style="width: 230px; border-style: none" >
+                        <p:calendar value="#{incidentLogMBean.incidentLog.logDate}" mask="true" navigator="true" showOn="button"/>
+                    </p:panel>
+                    
+                    <p:outputLabel value="Deskripsi" style="width: 100px" />
+                    <p:panel style="width: 350px; border-style: none" >
+                        <p:inputTextarea value="#{incidentLogMBean.incidentLog.remarks}" style="width: 200px"/>
+                    </p:panel>
+                    
+                    <p:outputLabel value="No Radiogram" style="width: 100px" />
+                    <p:panel style="width: 350px; border-style: none" >
+                        <p:inputText value="#{incidentLogMBean.incidentLog.attachment}" style="width: 200px"/>
+                         <p:commandButton value="Ubah" styleClass="green-btn" onclick="PF('widgetIncidentRadiogram').show()" style="width: 100px"/>
+                    </p:panel>
+                    
+                    <p:outputLabel value="Lampiran" style="width: 100px" />
+                    <p:panel style="width: 350px; border-style: none" >
+                        <p:inputText value="#{incidentLogMBean.incidentLog.attachment}" style="width: 200px"/>
+                        <p:fileUpload value="#{incidentLogMBean.file}" mode="simple" skinSimple="true" style="width: 100px"/>
+                    </p:panel>  
+                    
+                    <p:outputLabel value="Latitude" style="width: 100px" />
+                    <p:panel style="width: 350px; border-style: none" >
+                        <p:inputMask value="#{incidentLogMBean.incidentLog.latitude}" mask="999-99-99" style="width:130px"/>
+                        <p:selectOneMenu id="cboLatitute" value="#{incidentLogMBean.latitude}" style="width:100px">
+                            <f:selectItem itemLabel="LU" itemValue="lu" />
+                            <f:selectItem itemLabel="LS" itemValue="ls" />
+                        </p:selectOneMenu>
+                    </p:panel>
+                    
+                    <p:outputLabel value="Longitude" style="width: 100px" />
+                    <p:panel style="width: 350px; border-style: none" >
+                        <p:inputMask value="#{incidentLogMBean.incidentLog.longitude}" mask="999-99-99" style="width:130px"/>
+                        <p:selectOneMenu id="cboLongitude" value="#{incidentLogMBean.longitude}" style="width:100px">
+                            <f:selectItem itemLabel="BT" itemValue="bt" />
+                            <f:selectItem itemLabel="BB" itemValue="bb" />
+                        </p:selectOneMenu>
+                    </p:panel>
+                </p:panelGrid>
+                
+                <p:panelGrid columns="3" layout="grid" styleClass="ui-panelgrid-blank form-group" style="width: 500px;">
+                    <p:commandButton value="Simpan" styleClass="green-btn" actionListener="#{incidentLogMBean.simpan()}" update="@form" rendered="#{incidentLogMBean.showButton}" style="width:130px">
+                        <p:confirm header="Konfirmasi" message="Apakah anda yakin ingin menyimpan insiden ini?" icon="ui-icon-alert" />
+                    </p:commandButton>
+                    <p:commandButton value="#{incidentLogMBean.showButton ? 'Batal' : 'Kembali'}" styleClass="red-btn" style="width:130px">
+                        <p:ajax event="click" listener="#{incidentLogMBean.batal()}" oncomplete="location.reload();"/>
+                    </p:commandButton>
+                </p:panelGrid>
+                
+            </div>
+        </div>
+    </h:form>    
+    
+    <p:dialog id="idIncidentradiogram" widgetVar="widgetIncidentRadiogram"
+                  header="Data Log"
+                  width="90%" height="90%"
+                  appendTo="@(body)"
+                  responsive="true" modal="true"
+                  maximizable="true" style="overflow-y: auto;max-height: 90%"
+                  resizable="false">
+            <ui:include src="./radiogram/incidentRadiogram.xhtml"/>
+    </p:dialog>
+</ui:composition>

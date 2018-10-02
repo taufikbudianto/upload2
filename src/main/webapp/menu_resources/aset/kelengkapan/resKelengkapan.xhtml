@@ -1,0 +1,246 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="form-resKelengkapan">
+        <p:panel class="card ui-fluid value-readonly" header="Detail Kelengkapan" >
+            <p:messages closable="true"/>
+            <p:panelGrid columns="2" layout="grid">
+                <p:panel>
+                    <p:panelGrid columns="2" layout="grid" 
+                                 styleClass="ui-panelgrid-blank form-group" 
+                                 columnClasses="ui-grid-col-4,ui-grid-col-10" 
+                                 class="no-border no-padding no-padding-table ui-fluid" style="max-width: 500px">
+                        <p:outputLabel value="Kode"/>
+                        <p:inputText value="#{resKelengkapanMBean.resAsset.code}" maxlength="50" 
+                                     disabled="#{resKelengkapanMBean.disabled}"/>
+
+                        <p:outputLabel value="Nama"/>
+                        <p:inputText value="#{resKelengkapanMBean.resAsset.name}" maxlength="300" 
+                                     disabled="#{resKelengkapanMBean.disabled}" required="true" 
+                                     requiredMessage="Nama harus diisi"/>
+
+                        <p:outputLabel value="Tipe"/>
+                        <p:inputText value="#{resKelengkapanMBean.assetname}" maxlength="300" 
+                                     disabled="#{resKelengkapanMBean.disabled}"
+                                     required="true" requiredMessage="Tipe harus dipilih" />
+
+                        <p:outputLabel value="Kondisi"/>
+                        <p:inputText value="#{resKelengkapanMBean.resAsset.assetcondition}" maxlength="50" 
+                                     disabled="#{resKelengkapanMBean.disabled}"/>
+
+                        <p:outputLabel value="Jumlah"/>
+                        <p:inputText value="#{resKelengkapanMBean.resAsset.goodqty}" 
+                                     disabled="#{resKelengkapanMBean.disabled}" 
+                                     onkeypress="return isNumber(event);"/>
+
+                        <p:outputLabel value="Kapasitas"/>
+                        <p:inputText value="#{resKelengkapanMBean.resAsset.cargo}" maxlength="250" 
+                                     disabled="#{resKelengkapanMBean.disabled}" 
+                                     onkeypress="return isNumber(event);"/>
+
+                        <p:outputLabel value="Fungsi"/>
+                        <p:inputTextarea value="#{resKelengkapanMBean.resAsset.functional}" maxlength="200" 
+                                         disabled="#{resKelengkapanMBean.disabled}"/>
+
+                        <p:outputLabel value="Status"/>
+                        <p:inputText value="#{resKelengkapanMBean.resAsset.status eq '0'?'Tidak Beroperasi':
+                                              (resKelengkapanMBean.resAsset.status eq '1'?'Beroperasi' :'')}"
+                                     disabled="#{resKelengkapanMBean.disabled}" onkeypress="return isNumber(event);"/>
+
+                        <p:outputLabel value="Tipe Operasional" />
+                        <p:inputText value="#{resKelengkapanMBean.resAsset.op_type eq '0'?'Darat':
+                                              (resKelengkapanMBean.resAsset.op_type eq '1'?'Udara' : 
+                                              (resKelengkapanMBean.resAsset.op_type eq '2'?'Laut' : ''))}"
+                                     disabled="#{resKelengkapanMBean.disabled}"/>
+                    </p:panelGrid>
+                </p:panel>
+
+                <p:panel id="idPanelKelengkapanRight">
+                    <p:panelGrid columns="3" layout="grid" 
+                                 styleClass="ui-panelgrid-blank form-group" 
+                                 columnClasses="ui-grid-col-6,ui-grid-col-12,ui-grid-col-3" 
+                                 class="no-border no-padding no-padding-table ui-fluid" style="max-width: 500px">
+                        <p:outputLabel value="Nama KanSAR"/>
+                        <p:inputText value="#{resKelengkapanMBean.kantorsarname}"
+                                     required="true" requiredMessage="Kansar harus dipilih" 
+                                     disabled="#{resKelengkapanMBean.disabled}"/>
+                        <br/>
+
+                        <p:outputLabel value="Nama Potensi"/>
+                        <h:outputText value="#{resKelengkapanMBean.potencyname}" />
+                        <p:commandButton icon="ui-icon-search" disabled="#{resKelengkapanMBean.disabled}">
+                            <p:ajax event="click" listener="#{resKelengkapanMBean.showListPotency}"/>
+                        </p:commandButton>
+
+
+                        <p:outputLabel value="Latitude" style="width: 100px" />
+                        <p:panelGrid id="latitude" columns="4" style="width: 100%;"
+                                     class="no-border no-padding-table ui-fluid">
+                            <ui:include src="coordinate/latitude.xhtml"/>
+                        </p:panelGrid>
+                        <br/>
+
+                        <p:outputLabel value="Longitude" />
+                        <p:panelGrid id="longitude" columns="4" style="width: 100%;"
+                                     class="no-border no-padding-table ui-fluid">
+                            <ui:include src="coordinate/longitude.xhtml"/>
+                        </p:panelGrid>
+                        <br/>
+
+                        <p:outputLabel value="Deskripsi"/>
+                        <p:inputText value="#{resKelengkapanMBean.resAsset.remarks}" maxlength="1000" 
+                                     disabled="#{resKelengkapanMBean.disabled}"/>
+                        <br/>
+
+                        <p:outputLabel value="Search Platform"/>
+                        <p:inputText value="#{resKelengkapanMBean.vehicletype}" maxlength="50" 
+                                     disabled="#{resKelengkapanMBean.disabled}"/>
+                        <br/>
+
+                        <p:outputLabel value="Endurance" />
+                        <p:inputText value="#{resKelengkapanMBean.resAsset.endurance}" 
+                                     disabled="#{resKelengkapanMBean.disabled}" onkeypress="return isNumber(event);"/>
+                        <p:outputLabel value="Jam"/>
+
+                        <p:outputLabel value="Kecepatan"/>
+                        <p:inputText value="#{resKelengkapanMBean.resAsset.speed}" 
+                                     disabled="#{resKelengkapanMBean.disabled}" onkeypress="return isNumber(event);"/>
+                        <p:outputLabel value="Knots"/>
+
+                        <p:outputLabel value="Foto" />
+                        <p:fileUpload id="fileImportResKelengkapan" mode="advanced" auto="true"
+                                      dragDropSupport="false" sizeLimit="10000000" multiple="true"
+                                      fileUploadListener="#{resKelengkapanMBean.uploadImage}"
+                                      process="@this" update="kelengkapan-content:form-resKelengkapan:imgResKelengkapan"
+                                      accept="image/*" disabled="#{resKelengkapanMBean.disabled}"/>
+                        <br/>
+
+                        <p:spacer />
+                        <p:panel class="control-button">
+                            <p:dataTable id="imgResKelengkapan" widgetVar="widImgResKelengkapan" var="imageResKelengkapan"
+                                         value="#{resKelengkapanMBean.listResAssetImages}" reflow="true"
+                                         rows="1" emptyMessage="No records found" paginator="true"
+                                         paginatorPosition="bottom" tableStyle="table-layout:auto"
+                                         style="text-align: center">
+                                <p:column headerText="Image">
+                                    <h:form>
+                                        <h:panelGroup style="display: block; text-align: center">
+                                            <p:lightBox id="lightBoxResKelengkapan" widgetVar="dlgResKelengkapan">
+                                                <h:outputLink value="/document/temp/#{imageResKelengkapan.pathname != null ? imageResKelengkapan.pathname.replace('\\','/'): ''}"
+                                                              title="Image">
+                                                    <p:graphicImage url="/document/temp/#{imageResKelengkapan.pathname != null ? imageResKelengkapan.pathname.replace('\\','/'): ''}"
+                                                                    width="200" height="200" cache="false"/>
+                                                </h:outputLink>
+                                            </p:lightBox>
+                                            <p:commandLink value="Hapus" actionListener="#{resKelengkapanMBean.hapusImage(imageResKelengkapan)}"
+                                                           disabled="#{resKelengkapanMBean.disabled}" process="@this"
+                                                           update="kelengkapan-content:form-resKelengkapan:imgResKelengkapan">
+                                                <p:confirm header="Konfirmasi" message="Apakah Anda yakin ingin menghapus image ini?"
+                                                           icon="ui-icon-alert"/>
+                                            </p:commandLink>
+                                        </h:panelGroup>
+                                    </h:form>                                
+                                </p:column>
+                            </p:dataTable>
+                        </p:panel>
+                        <br/>
+
+                    </p:panelGrid>
+
+                </p:panel>
+
+            </p:panelGrid>
+
+            <p:panel class="control-button no-border no-padding">
+                <p:commandButton id="add-btn" type="button"  value="Tambah Data Baru" icon="fa fa-plus-circle" 
+                                 class="green-btn" style="width:170px"
+                                 disabled="#{resKelengkapanMBean.disabled}" rendered="false">
+                    <p:ajax event="click" process="@this" update="@this" 
+                            listener="#{resKelengkapanMBean.resetContactInput}"/>
+                </p:commandButton>    
+            </p:panel>
+
+            <!--Right Side--> 
+
+            <p:panel header="List Kontak Aset" style="text-align:center">
+                <p:dataTable id="contact_datatable_res_kelengkapan" var="contact" 
+                             value="#{resKelengkapanMBean.assetContacts}" reflow="true" 
+                             rowKey="#{contact.assetid}" lazy="true" 
+                             paginator="true" paginatorPosition="bottom" rows="#{viewBean.rowsPageDefault}"
+                             rowsPerPageTemplate="#{viewBean.rowsPerPageTemplate}" 
+                             emptyMessage="Data tidak ditemukan" tableStyle="table-layout:auto"
+                             rowIndexVar="index">
+                    <p:column headerText="No" style="width: 20px">
+                        <p:outputLabel value="#{index + 1}"/>
+                    </p:column>
+                    <!--                    <p:column headerText="Title">
+                                            <h:outputText value="#{contact.contacttitle}" />
+                                        </p:column>-->
+                    <p:column headerText="Nama (1)" sortBy="#{contact.contactname}">
+                        <h:outputText value="#{contact.contactname}" />
+                    </p:column>
+                    <!--                    <p:column headerText="Suffix">
+                                            <h:outputText value="#{contact.contactsuffix}" />
+                                        </p:column>-->
+                    <!--                    <p:column headerText="Jabatan">
+                                            <h:outputText value="#{contact.contactposition}" />
+                                        </p:column>-->
+                    <p:column headerText="No. Telepon (1)" sortBy="#{contact.phonenumber1}">
+                        <h:outputText value="#{contact.phonenumber1}" />
+                    </p:column>
+                    <p:column headerText="Nama (2)" sortBy="#{contact.contactname}">
+                        <h:outputText value="#{contact.contactname}" />
+                    </p:column>
+                    <p:column headerText="No. Telepon (2)" sortBy="#{contact.phonenumber2}">
+                        <h:outputText value="#{contact.phonenumber2}" />
+                    </p:column>
+                    <!--                    <p:column headerText="Email">
+                                            <h:outputText value="#{contact.email}" />
+                                        </p:column>-->
+                    <p:column headerText="Aksi" rendered="false" style="width: 50px">
+                        <h:form>
+                            <!--<p:commandLink value="Lihat" disabled="#resKelengkapanMBean.disabled}">-->
+                            <p:commandButton label="lihat" rendered="false" icon="fa fa-search" class="blue-grey-btn">
+                                <p:ajax event="click" 
+                                        listener="#{resKelengkapanMBean.viewCheckContactTemp(contact,true)}" 
+                                        update="form-resContactInput" process="@this"/>
+                            </p:commandButton>
+                            <p:outputLabel value=" | " rendered="false"/>
+                            <p:commandLink value="Edit" rendered="false" disabled="#{resKelengkapanMBean.disabled}">
+                                <p:ajax event="click" 
+                                        listener="#{resKelengkapanMBean.viewCheckContactTemp(contact,false)}" 
+                                        update="form-resContactInput" process="@this"/>
+                            </p:commandLink> 
+                            <p:outputLabel value=" | " rendered="false"/>
+                            <p:commandLink value="Hapus" rendered="false" disabled="#{resKelengkapanMBean.disabled}"
+                                           actionListener="#{resKelengkapanMBean.hapusContactTempKelengkapan(contact)}"
+                                           update="kelengkapan-content:form-resKelengkapan:contact_datatable_res_kelengkapan" 
+                                           process="@this">
+                                <p:confirm header="Konfirmasi" 
+                                           message="Apakah anda yakin ingin menghapus kontak ini?" 
+                                           icon="ui-icon-alert"/>
+                            </p:commandLink>
+                        </h:form>
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
+
+            <p:panel class="control-button no-border no-padding" >
+                <p:commandButton value="Simpan" styleClass="green-btn" 
+                                 actionListener="#{resKelengkapanMBean.simpan()}" update="kelengkapan-content" 
+                                 process="@form" style="width:130px" rendered="#{resKelengkapanMBean.showButton}">
+                    <p:confirm header="Konfirmasi" 
+                               message="Apakah anda yakin ingin menyimpan resource kelengkapan ini?" 
+                               icon="ui-icon-alert" />
+                </p:commandButton>
+                <p:commandButton value="#{resKelengkapanMBean.showButton ? 'Batal' : 'Kembali'}"  
+                                 style="margin-left: 10px;width: 130px;" class="red-btn" icon="ui-icon-cancel">
+                    <p:ajax event="click" update="kelengkapan-content" listener="#{resKelengkapanMBean.hideForm}"/>
+                </p:commandButton>
+            </p:panel>
+        </p:panel>
+    </h:form>
+</ui:composition>

@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="grafikcoba" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="37e6d2b0-9d8d-41b0-acc9-892dc7d348ea">
+	<property name="ireport.zoom" value="0.9982500000000006"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="KANTORSARNAME" class="java.lang.String"/>
+	<parameter name="INCIDENTTYPE" class="java.lang.String"/>
+	<parameter name="STARTDATE" class="java.lang.String"/>
+	<parameter name="ENDDATE" class="java.lang.String"/>
+	<parameter name="user" class="java.lang.String"/>
+	<parameter name="currentDate" class="java.lang.String"/>
+	<parameter name="p_startDate" class="java.lang.String"/>
+	<parameter name="p_endDate" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT A.KANTORSARNAME,
+CASE B.INCIDENTTYPE
+WHEN 1 THEN 'MUSIBAH PELAYARAN'
+WHEN 2 THEN 'MUSIBAH PENERBANGAN'
+WHEN 3 THEN 'MUSIBAH [LAINNYA]'
+WHEN 4 THEN 'BENCANA' END
+INCIDENTTYPE
+,TO_CHAR(TO_DATE(SYSDATE,'DD-MON-YY'),'dd-MM-yyyy') AS TANGGAL_CETAK
+,SUM(DEATHPEOPLE+LIGHTINJUREDPEOPLE+HEAVYINJUREDPEOPLE+LOSTPEOPLE+SURVIVEDPEOPLE)TOTALKORBAN
+ FROM
+(SELECT * FROM MST_KANTORSAR )A
+INNER JOIN
+(SELECT USERSITEID,INCIDENTTYPE,DEATHPEOPLE,LIGHTINJUREDPEOPLE,HEAVYINJUREDPEOPLE,LOSTPEOPLE,SURVIVEDPEOPLE
+,STARTDATE,DATECREATED,STATUS,ISDELETED
+FROM INCIDENT
+)B
+ON B.USERSITEID=A.KANTORSARID
+WHERE B.ISDELETED =0 AND B.STATUS ='Close'
+AND ($P{KANTORSARNAME} = 'ALL' OR KANTORSARNAME = $P{KANTORSARNAME})
+AND (0=$P{INCIDENTTYPE} OR B.INCIDENTTYPE =$P{INCIDENTTYPE})
+AND TO_CHAR(TO_DATE(B.STARTDATE,'DD-MON-YY'),'yyyy-MM-dd') >= $P{STARTDATE}
+AND TO_CHAR(TO_DATE(B.STARTDATE,'DD-MON-YY'),'yyyy-MM-dd') <=$P{ENDDATE}
+GROUP BY KANTORSARNAME,INCIDENTTYPE
+ORDER BY KANTORSARNAME]]>
+	</queryString>
+	<field name="KANTORSARNAME" class="java.lang.String"/>
+	<field name="INCIDENTTYPE" class="java.lang.String"/>
+	<field name="TANGGAL_CETAK" class="java.lang.String"/>
+	<field name="TOTALKORBAN" class="java.math.BigDecimal"/>
+	<title>
+		<band height="88" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="ca52eee1-6b98-4325-aacf-37f4c720fa9c" x="105" y="2" width="90" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TIPE INSIDEN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="b33b13e4-0427-4fc2-a9c5-d4799a071495" x="194" y="22" width="11" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="47f0b11f-a5dc-4c9f-8101-f59e6ba1319e" x="194" y="2" width="11" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="5071e0a5-a376-48f6-bab1-47180c717cd6" x="105" y="22" width="90" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PERIODE]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="40b919b2-7955-41f1-8f74-bfce4d0bd4ee" x="204" y="2" width="211" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($P{INCIDENTTYPE}.equals("1"))?"Musibah Pelayaran":(
+    ($P{INCIDENTTYPE}.equals("2"))?"Musibah Penerbangan":(
+        ($P{INCIDENTTYPE}.equals("3"))?"Musibah[Lain-Lain]":(
+            ($P{INCIDENTTYPE}.equals("4"))?"Bencana":"Semua"
+        )
+    )
+)]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement uuid="39935252-2f77-48e2-a95e-c7f8e15b889a" x="2" y="2" width="100" height="86"/>
+				<imageExpression><![CDATA["sar_image.jpg"]]></imageExpression>
+			</image>
+			<textField pattern="">
+				<reportElement uuid="6e75911b-d7ba-40de-89f3-92b971b88c30" x="204" y="22" width="211" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{p_startDate} + "  S/D  " + $P{p_endDate}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="8bbb30c8-de84-49c1-8ba1-bcc5de182f3f" x="624" y="22" width="177" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["User : " +$P{user}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="6461cda1-77a8-4b39-8e0a-97abdd21c7ba" x="624" y="2" width="177" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Tanggal Cetak : " +$P{currentDate}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageFooter>
+		<band height="20">
+			<textField>
+				<reportElement uuid="811a21b9-abb1-4233-bf4f-a6bae7d554f2" x="680" y="0" width="80" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="ef45254b-e048-4a39-b1cb-03710e46da13" x="760" y="0" width="40" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="392">
+			<staticText>
+				<reportElement uuid="26c6a5a2-aa5f-4bba-9d92-d6e2ea71b925" x="47" y="3" width="732" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[JUMLAH KORBAN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="73d358d3-d04c-4cab-9f1f-b6d1c8e7b70b" x="10" y="147" width="25" height="61"/>
+				<textElement rotation="Left">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[M e n i t]]></text>
+			</staticText>
+			<bar3DChart>
+				<chart evaluationTime="Report">
+					<reportElement uuid="6b1e47c2-d104-4ddb-8851-fb5e0c4ec7b4" positionType="Float" stretchType="RelativeToTallestObject" x="25" y="23" width="754" height="369"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<categorySeries>
+						<seriesExpression><![CDATA[$F{INCIDENTTYPE}]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{KANTORSARNAME}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{TOTALKORBAN}]]></valueExpression>
+						<labelExpression><![CDATA[$F{KANTORSARNAME}]]></labelExpression>
+					</categorySeries>
+				</categoryDataset>
+				<bar3DPlot>
+					<plot labelRotation="-45.0"/>
+					<itemLabel/>
+				</bar3DPlot>
+			</bar3DChart>
+		</band>
+	</summary>
+</jasperReport>

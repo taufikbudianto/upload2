@@ -1,0 +1,106 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <div class="ui-g ui-fluid">
+        <div class="ui-g-12">
+            <h:form id="tablog-content">
+                <p:panel id="list-tablog" styleClass="penelHeaderGreen ui-shadow-content" 
+                         rendered="#{!incidentLogMBean.isShowIncLog}">
+                    <p:panel class="control-button no-border no-padding" >
+                        <p:commandButton value="Tambah Data Baru" icon="fa fa-plus-circle"
+                                         styleClass="green-btn" update="@form" 
+                                         process="@this" actionListener="#{incidentLogMBean.add}" 
+                                         disabled="#{incidentLogMBean.disabled}" style="width:200px"/>
+                    </p:panel>
+                    <p:dataTable id="datatablelog" var="incidentlog" value="#{incidentLogMBean.dataModel}" 
+                                 reflow="true" rowKey="#{incidentlog.logID}" lazy="true" paginator="true" 
+                                 paginatorPosition="bottom" rows="10"
+                                 rowsPerPageTemplate="5,10,15" emptyMessage="Data tidak ditemukan" 
+                                 tableStyle="table-layout:auto" rowIndexVar="index" 
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} 
+                             {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                        <p:column headerText="No" style="width: 20px">
+                            <p:outputLabel value="#{index + 1}"/>
+                        </p:column>
+                        <p:column headerText="Tanggal" style="width: 70px" sortBy="#{incidentlog.logDate}">
+                            <h:outputText value="#{incidentlog.logDate}"  />
+                        </p:column>
+
+                        <p:column headerText="Tipe" style="width: 70px" sortBy="#{incidentlog.logType}">
+                            <h:outputText value="#{incidentlog.logType}" />
+                        </p:column>
+                        <p:column headerText="Deskripsi" style="width: 180px" sortBy="#{incidentlog.remarks}">
+                            <h:outputText value="#{incidentlog.remarks}" />
+                        </p:column>
+                        <p:column headerText="Latitude" style="width: 80px" sortBy="#{incidentlog.latitude}">
+                            <h:outputText value="#{incidentLogMBean.coordinateLatitude.getConvertDdToDms(incidentlog.latitude, true)}" />
+                        </p:column>
+                        <p:column headerText="Longitude" style="width: 80px" sortBy="#{incidentlog.longitude}">
+                            <h:outputText value="#{incidentLogMBean.coordinateLongitude.getConvertDdToDms(incidentlog.longitude, false)}" />
+                        </p:column>
+                        <p:column headerText="Radiogram" style="width: 80px" sortBy="#{incidentlog.radiogram.radiogramID}">
+                            <h:outputText value="#{incidentlog.radiogram.radiogramID}" />
+                        </p:column>
+                        <p:column headerText="Tanggal Modifikasi" style="width: 70px" sortBy="#{incidentlog.lastModified}">
+                            <h:outputText value="#{incidentlog.lastModified}" />
+                        </p:column>
+                        <p:column headerText="No. Insiden" style="width: 80px" sortBy="#{incidentlog.incidentId}">
+                            <h:outputText value="#{incidentLogMBean.getIncidentByIncidentId(incidentlog.incidentId)}" />
+                        </p:column>
+                        <p:column headerText="Nama KanSAR" style="width: 120px" sortBy="#{incidentlog.userSiteID}">
+                            <h:outputText value="#{incidentlog.userSiteID != null ? incidentLogMBean.getKantorSarByKantorSarId(incidentlog.userSiteID) : ''}" />
+                        </p:column>
+                        <p:column headerText="Status Approve" style="width: 120px" sortBy="#{incidentlog.stsapprove}">
+                            <h:outputText value="#{incidentlog.stsapprove}" />
+                        </p:column>
+                        <p:column headerText="Aksi" width="10%">
+                            <p:commandButton id="lihatLog"
+                                             label="Lihat"
+                                             onclick="PF('tTipLihat').hide();"
+                                             icon="fa fa-search" 
+                                             class="blue-grey-btn" 
+                                             disabled="#{incidentLogMBean.disabled}">
+                                <p:ajax event="click" 
+                                        listener="#{incidentLogMBean.viewIncidentLog(incidentlog.logID, true)}" 
+                                        update="@form" />
+                            </p:commandButton>
+                            <p:tooltip value="Lihat" for="lihatLog"
+                                       trackMouse="true" widgetVar="tTipLihat"/>
+                            <p:outputLabel value="   "/>
+                            <p:commandButton id="ubahLoh"
+                                             label="Edit"
+                                             onclick="PF('tTipUbah').hide();"
+                                             icon="fa fa-edit" 
+                                             class="blue-grey-btn" 
+                                             disabled="#{incidentLogMBean.disabled}">
+                                <p:ajax event="click" 
+                                        listener="#{incidentLogMBean.viewIncidentLog(incidentlog.logID, false)}" 
+                                        update="@form"/>
+                            </p:commandButton>
+                            <p:tooltip value="Ubah" for="ubahLoh"
+                                       trackMouse="true" widgetVar="tTipUbah"/>
+                            <p:outputLabel value="   "/>
+                            <p:commandButton id="hapusLog"
+                                             label="Hapus"
+                                             onclick="PF('tTipHapus').hide();"
+                                             icon="fa fa-trash" 
+                                             class="red-btn" disabled="#{incidentLogMBean.disabled}">
+                                <p:ajax event="click" listener="#{incidentLogMBean.hapusIncidentLog(incidentlog)}" 
+                                        update="incidentdetail:tablog-content:datatablelog @form"/>
+                                <p:confirm header="Konfirmasi" message="Apakah anda yakin ingin menghapus Log ini?" icon="ui-icon-alert"/>
+                            </p:commandButton>
+                            <p:tooltip value="Hapus" for="hapusLog"
+                                       trackMouse="true" widgetVar="tTipHapus"/>
+                        </p:column>
+                    </p:dataTable>
+                </p:panel>
+                <p:panel id="IncLog" rendered="#{incidentLogMBean.isShowIncLog}">
+                    <ui:include src="formLog.xhtml" />
+                </p:panel>
+            </h:form>
+        </div>
+    </div>  
+</ui:composition>

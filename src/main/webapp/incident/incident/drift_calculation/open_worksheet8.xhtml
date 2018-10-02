@@ -1,0 +1,33 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    
+
+        <div class="ui-g ui-fluid">
+            <div class="ui-g-12 ui-lg-10">
+                <h:form id="open-ws8">
+                    <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                        <p:outputLabel value="Worksheet Name" style="width: 200px"/>
+                        <p:selectOneMenu id="cboWs1Name" value="#{driftCalcWorksheet8MBean.worksheetID}">
+                            <p:ajax event="change" process="@this" update="open-ws8" listener="#{driftCalcWorksheet8MBean.changeWorksheetName}"/>            
+                            <f:selectItems value="#{driftCalcWorksheet8MBean.listWorksheetName}" />                        
+                        </p:selectOneMenu> 
+                        <p:outputLabel value="Created By" style="width: 200px" />
+                        <p:outputLabel value="#{driftCalcWorksheet8MBean.createdBy}"/>
+                        <p:outputLabel value="Last Update" style="width: 200px" />
+                        <p:outputLabel value="#{driftCalcWorksheet8MBean.lastModified}"/>
+                    </p:panelGrid>
+                    <p:panelGrid columns="3" layout="grid" styleClass="ui-panelgrid-blank form-group" style="width: 500px;">
+                        <p:commandButton value="Pilih" styleClass="green-btn"  style="width:130px">
+                            <p:ajax event="click" listener="#{driftCalcWorksheet8MBean.pilihWS8}" process="@form" update="incidentdetail:tabplanning-content:form-ws8,@form"  />
+                        </p:commandButton>
+                    <p:commandButton value="Batal"  styleClass="red-btn" style="width:130px">
+                        <p:ajax event="click" listener="#{driftCalcWorksheet8MBean.batalWS8}" process="@form" update="@form"/>
+                    </p:commandButton>
+                </p:panelGrid>
+                </h:form>  
+            </div>
+        </div>
+</ui:composition>

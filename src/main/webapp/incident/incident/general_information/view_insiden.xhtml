@@ -1,0 +1,242 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <h:form id="form-insiden">
+        <div class="ui-g ui-fluid">
+            <div class="ui-g-12 ui-lg-5">
+                <!--Left Side--> 
+                <p:panel class="card" header="Informasi Umum" >
+                    <p:messages closable="true"/>
+                    <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group"  columnClasses="ui-grid-col-3,ui-grid-col-8" class="no-border no-padding no-padding-table">                      
+                        <p:outputLabel value="Skala Insiden" styleClass="asterix"/>
+                        <p:selectOneRadio id="skala" value="#{incidentMBean.incident.incidentScala}" disabled="#{incidentMBean.disableForm}" 
+                                          required="true" requiredMessage="Skala insiden harus dipilih">
+                            <p:ajax event="change" update="input" listener="#{incidentMBean.selectSkala()}"/>
+                            <f:selectItem itemLabel="Daerah" itemValue="0" />
+                            <f:selectItem itemLabel="Nasional" itemValue="1" />                            
+                        </p:selectOneRadio>                        
+                        <p:outputLabel value="Nama kanSAR" styleClass="asterix" />
+                        <h:panelGroup id="input">
+                            <p:selectOneMenu style="margin-bottom:10px;" value="#{incidentMBean.incident.usersiteid}"
+                                             disabled="#{incidentMBean.disableForm}" rendered="#{!incidentMBean.isNasional}"
+                                             required="true" requiredMessage="Nama KanSAR harus dipilih" >
+                                <f:selectItem itemLabel="--- Pilih ---" itemValue="" />
+                                <f:selectItems value="#{incidentMBean.listKantorSar}"/>
+                            </p:selectOneMenu>
+                            <p:selectCheckboxMenu id="multiple" value="#{incidentMBean.selectedKansar}" label="Kansar" multiple="true"
+                                                  filter="true" filterMatchMode="startsWith" panelStyle="width:250px"
+                                                  rendered="#{incidentMBean.isNasional}" disabled="#{incidentMBean.disableForm}">
+                                <f:selectItem itemLabel="--- Pilih ---" itemValue="" />
+                                <f:selectItems value="#{incidentMBean.listKantorSar}" />
+                            </p:selectCheckboxMenu>
+
+                        </h:panelGroup>
+
+                        <p:outputLabel value="No. Insiden" />
+                        <p:inputText value="#{incidentMBean.incident.incidentnumber}" disabled="true"
+                                     maxlength="25"/>
+
+                        <p:outputLabel value="Jenis" styleClass="asterix"/>
+                        <p:selectOneMenu style="margin-bottom:10px;"
+                                         value="#{incidentMBean.incident.incidenttype}"
+                                         disabled="#{incidentMBean.disableForm}"
+                                         required="true" requiredMessage="Jenis insiden harus dipilih">
+                            <f:selectItem itemLabel="--- Pilih ---" itemValue="" />
+                            <f:selectItems value="#{type.ALL_ENUM_VALUES}" var="j" itemValue="#{j.itemValue}" itemLabel="#{j.itemLabel}" />
+                        </p:selectOneMenu>
+                        <p:outputLabel value="Nama Insiden" styleClass="asterix"/>
+                        <p:inputText value="#{incidentMBean.incident.incidentname}" disabled="#{incidentMBean.disableForm}"                                    
+                                     required="true" requiredMessage="Nama insiden harus diisi"
+                                     maxlength="30"/>
+
+                        <p:outputLabel value="Objek" />
+                        <p:inputText value="#{incidentMBean.incident.situation}" disabled="#{incidentMBean.disableForm}"
+                                     maxlength="30"/>
+
+                        <p:outputLabel value="Lokasi" styleClass="asterix"/>
+                        <p:inputText value="#{incidentMBean.incident.location}" required="true" requiredMessage="Lokasi insiden harus diisi" disabled="#{incidentMBean.disableForm}"
+                                     maxlength="30"/>
+
+                        <p:outputLabel value="Latitude" styleClass="asterix"/>
+                        <p:panelGrid id="latitude" columns="3" style="width: 100%;" 
+                                     columnClasses ="ui-grid-col-2,ui-grid-col-7,ui-grid-col-3"
+                                     class="no-border no-padding-table ui-fluid">
+                            <ui:include src="coordinate/latitude.xhtml"/>
+                        </p:panelGrid>
+                        <p:outputLabel value="Longitude" styleClass="asterix"/>
+                        <p:panelGrid id="longitude" columns="3" style="width: 100%"
+                                     columnClasses ="ui-grid-col-2,ui-grid-col-7,ui-grid-col-3"
+                                     class="no-border no-padding-table ui-fluid">
+                            <ui:include src="coordinate/longitude.xhtml"/>
+                        </p:panelGrid>
+                        <p:outputLabel value="SMC" />
+                        <p:inputText value="#{incidentMBean.incident.smc}" disabled="#{incidentMBean.disableForm}"
+                                     maxlength="30"/>
+                        <p:outputLabel value="Keterangan" />
+                        <p:inputTextarea value="#{incidentMBean.incident.remarks}" disabled="#{incidentMBean.disableForm}"
+                                         maxlength="50"/>
+                    </p:panelGrid>
+                </p:panel>
+            </div>
+            <div class="ui-g-12 ui-lg-7">
+                <!--Right Side--> 
+                <p:panel header="Tanggal dan Waktu" styleClass="penelHeaderBlue ui-shadow-content" >
+                    <p:panelGrid columns="3" layout="grid" styleClass="ui-panelgrid-blank grid-pad" columnClasses="ui-grid-col-8,ui-grid-col-8" class="no-border no-padding no-padding-table"> 
+                        <p:outputLabel for="dtInsiden" value="Tanggal &amp; Waktu Insiden" />
+                        <p:calendar id="dtInsiden" pattern="dd-MM-yyyy HH:mm:ss" value="#{incidentMBean.incident.startdate}" maxdate="#{incidentMBean.minDate}"
+                                    readonlyInput="true" disabled="#{incidentMBean.disableForm}" showOn="button" mask="true" navigator="true">
+                            <p:ajax event="dateSelect" listener="#{incidentMBean.calculateDays}" update="lama-operasi,lama-insiden" global="false"/>
+                        </p:calendar>
+                        <p:selectOneMenu id="idInsidenTimezone" style="margin-bottom:10px;width: 40px;"
+                                         value = "#{incidentMBean.incident.startdatetimezone}"
+                                         disabled="#{incidentMBean.disableForm}"
+                                         required="true" requiredMessage="Alert Timezone harus dipilih">
+                            <f:selectItems value="#{timezone.ALL_ENUM_VALUES}" var="tz" 
+                                           itemValue="#{tz.timezone}" itemLabel="#{tz.shorttimezone}" />
+                        </p:selectOneMenu>
+                        <p:outputLabel for="dtLaporan" value="Tanggal &amp; Waktu Laporan" />
+                        <p:calendar id="dtLaporan" pattern="dd-MM-yyyy HH:mm:ss" value="#{incidentMBean.incident.alertedat}" disabled="#{incidentMBean.disableForm}"
+                                    readonlyInput="true" maxdate="#{incidentMBean.minDate}" showOn="button" mask="true" navigator="true">
+                            <p:ajax event="dateSelect" listener="#{incidentMBean.calculateDays}" update="lama-operasi,lama-insiden" global="false"/>
+                        </p:calendar>
+                        <p:selectOneMenu id="idLaporanTimezone" style="margin-bottom:10px;width: 40px;"
+                                         value = "#{incidentMBean.incident.alertedattimezone}"
+                                         disabled="#{incidentMBean.disableForm}"
+                                         required="true" requiredMessage="Laporan Timezone harus dipilih">
+                            <f:selectItems value="#{timezone.ALL_ENUM_VALUES}" var="tz" 
+                                           itemValue="#{tz.timezone}" itemLabel="#{tz.shorttimezone}" />
+                        </p:selectOneMenu>
+                        <p:outputLabel for="dtStarOperasi" value="Tanggal &amp; Waktu Mulai Operasi" />
+                        <p:calendar id="dtStarOperasi" pattern="dd-MM-yyyy HH:mm:ss" value="#{incidentMBean.incident.startopsdate}" 
+                                    mask="true" navigator="true" disabled="#{incidentMBean.disableForm}" mindate="#{incidentMBean.minDate}" showOn="button">
+                            <p:ajax event="blur" listener="#{incidentMBean.calculateDays}" update="lama-operasi,lama-insiden,startTimezone" global="false"/>
+                        </p:calendar>
+                        <p:selectOneMenu id="startTimezone" style="margin-bottom:10px;width: 40px;"
+                                         value = "#{incidentMBean.incident.startopsdatetimezone}"
+                                         disabled="#{incidentMBean.disableForm}">
+                            <f:selectItem itemLabel="" itemValue="" /> 
+                            <f:selectItems value="#{timezone.ALL_ENUM_VALUES}" var="tz" 
+                                           itemValue="#{tz.timezone}" itemLabel="#{tz.shorttimezone}" />
+                        </p:selectOneMenu>
+                        <p:outputLabel for="dtEndOperasi" value="Tanggal &amp; Waktu Akhir Operasi" />
+                        <p:calendar id="dtEndOperasi" pattern="dd-MM-yyyy HH:mm:ss" value="#{incidentMBean.incident.closedate}"
+                                    mask="true" navigator="true" mindate="#{incidentMBean.minDate}" disabled="#{incidentMBean.disableForm}" showOn="button">
+                            <p:ajax event="blur" listener="#{incidentMBean.calculateDays}" update="lama-operasi,lama-insiden,endTimezone" global="false"/>
+                        </p:calendar>
+                        <p:selectOneMenu id="endTimezone" style="margin-bottom:10px;width: 40px;"
+                                         value = "#{incidentMBean.incident.closedatetimezone}"
+                                         disabled="#{incidentMBean.disableForm}">
+                            <f:selectItem itemLabel="" itemValue="" /> 
+                            <f:selectItems value="#{timezone.ALL_ENUM_VALUES}" var="tz"
+                                           itemValue="#{tz.timezone}" itemLabel="#{tz.shorttimezone}" />
+                        </p:selectOneMenu>                       
+                        <p:outputLabel value="Status Insiden"/>
+                        <p:selectOneMenu value="#{incidentMBean.incident.status}" disabled="true" style="width: 100px;">
+                            <f:selectItem itemLabel="Open" itemValue="Open"/>
+                            <f:selectItem itemLabel="Close" itemValue="Close"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value=""/>
+                        <p:panelGrid columns="3" class="no-border no-padding no-padding-table" id="lama-operasi">
+                            <p:outputLabel value="Lama Operasi (hari)" />
+                            <p:spacer width="5"/>
+                            <p:inputText value="#{incidentMBean.lamaoperasi}" style="width: 100px;" readonly="true" disabled="#{incidentMBean.disableForm}"/>
+                        </p:panelGrid>                        
+                        <p:panelGrid columns="3" class="no-border no-padding no-padding-table" id="lama-insiden">
+                            <p:spacer width="5"/>
+                            <p:outputLabel value="Lama Insiden (hari)" />
+                            <p:inputText value="#{incidentMBean.lamainsiden}" readonly="true" disabled="#{incidentMBean.disableForm}"/>
+                        </p:panelGrid>
+                        <p:spacer/>
+                    </p:panelGrid>
+                    <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank grid-pad" columnClasses="ui-grid-col-8,ui-grid-col-8">
+                        <p:outputLabel value="Korban" />
+                        <p:outputLabel value="" />
+                        <p:panelGrid id="total-korban-1" columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                            <p:outputLabel value="Selamat" />
+                            <p:spinner value="#{incidentMBean.incident.survivedpeople}" disabled="#{incidentMBean.disableForm}" min="0">
+                                <p:ajax event="valueChange" update="total-korban-1,total-korban-2" listener="#{incidentMBean.totalKorban}" global="false"/>
+                            </p:spinner>
+                            <p:outputLabel value="Luka Berat" />
+                            <p:spinner value="#{incidentMBean.incident.heavyinjuredpeople}" disabled="#{incidentMBean.disableForm}" min="0">
+                                <p:ajax event="valueChange" update="total-korban-1,total-korban-2" listener="#{incidentMBean.totalKorban}" global="false"/>
+                            </p:spinner>
+                            <p:outputLabel value="Luka Ringan" />
+                            <p:spinner value="#{incidentMBean.incident.lightinjuredpeople}" disabled="#{incidentMBean.disableForm}" min="0">
+                                <p:ajax event="valueChange" update="total-korban-1,total-korban-2" listener="#{incidentMBean.totalKorban}" global="false"/>
+                            </p:spinner>
+                        </p:panelGrid>
+                        <p:panelGrid id="total-korban-2" columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                            <p:outputLabel value="Meninggal" />
+                            <p:spinner value="#{incidentMBean.incident.deathpeople}" disabled="#{incidentMBean.disableForm}" min="0">
+                                <p:ajax event="valueChange" update="total-korban-1,total-korban-2" listener="#{incidentMBean.totalKorban}" global="false"/>
+                            </p:spinner>
+                            <p:outputLabel value="Dalam Pencarian" />
+                            <p:spinner value="#{incidentMBean.incident.lostpeople}" disabled="#{incidentMBean.disableForm}" min="0">
+                                <p:ajax event="valueChange" update="total-korban-1,total-korban-2" listener="#{incidentMBean.totalKorban}" global="false"/>
+                            </p:spinner>
+                            <p:outputLabel value="Total" />
+                            <p:inputText value="#{incidentMBean.totalKorban}" disabled="true"/>
+                        </p:panelGrid>
+                    </p:panelGrid>
+                </p:panel>
+            </div>                        
+        </div>
+        <p:outputLabel value="Objek Insiden" style="font: bold;font-size: 16px"/>
+        <p:panel>
+            <div class="ui-g ui-fluid">
+                <div class="ui-g-12 ui-lg-6 ">
+                    <p:panel header="Pemilik" styleClass="penelHeaderBlue ui-shadow-content" >
+                        <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank grid-pad" columnClasses="ui-grid-col-3,ui-grid-col-8">
+                            <p:outputLabel value="Nama" />
+                            <p:inputText value="#{incidentMBean.incident.ownername}" disabled="#{incidentMBean.disableForm}"
+                                         maxlength="30"/>
+                            <p:outputLabel value="Alamat" />
+                            <p:inputText value="#{incidentMBean.incident.owneraddress}" disabled="#{incidentMBean.disableForm}"
+                                         maxlength="30"/>
+                            <p:outputLabel value="Email" />
+                            <p:inputText value="#{incidentMBean.incident.owneremail}" disabled="#{incidentMBean.disableForm}" style="text-transform: uppercase;"
+                                         maxlength="50">
+                                <f:validator validatorId="custom.emailValidator" />
+                            </p:inputText>
+                            <p:outputLabel value="No. Telepon" />
+                            <p:inputText value="#{incidentMBean.incident.ownerphone}" maxlength="15"
+                                         disabled="#{incidentMBean.disableForm}" onkeypress="return validatePhone(event);">
+                            </p:inputText>
+                            <p:outputLabel value="No. Handphone" />
+                            <p:inputText value="#{incidentMBean.incident.ownercell}" maxlength="15" 
+                                         disabled="#{incidentMBean.disableForm}" onkeypress="return validatePhone(event);">
+                            </p:inputText>
+                            <p:outputLabel value="No. Fax" />
+                            <p:inputText value="#{incidentMBean.incident.ownerfax}" maxlength="10" 
+                                         disabled="#{incidentMBean.disableForm}" onkeypress="return validatePhone(event);">
+                            </p:inputText>
+                        </p:panelGrid>
+                    </p:panel>
+                </div>
+                <div class="ui-g-12 ui-lg-6">
+                    <p:panel header="Data Objek" styleClass="penelHeaderBlue ui-shadow-content" >
+                        <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank grid-pad" columnClasses="ui-grid-col-3,ui-grid-col-8">
+                            <p:outputLabel value="Call Sign" />
+                            <p:inputText value="#{incidentMBean.incident.objectcallsign}" disabled="#{incidentMBean.disableForm}" onkeypress="return isNumber(event);"
+                                         maxlength="15"/>
+                            <p:outputLabel value="Panjang" />
+                            <p:inputText value="#{incidentMBean.incident.objectlength}" disabled="#{incidentMBean.disableForm}" onkeypress="return isNumber(event);"
+                                         maxlength="10"/>
+                            <p:outputLabel value="Warna" />
+                            <p:inputText value="#{incidentMBean.incident.objectcolor}" disabled="#{incidentMBean.disableForm}"
+                                         maxlength="15"/>
+                            <p:outputLabel value="Kapasitas" />
+                            <p:inputText value="#{incidentMBean.incident.objectcapacity}" disabled="#{incidentMBean.disableForm}" onkeypress="return isNumber(event);"
+                                         maxlength="10"/>
+                            <p:outputLabel value="Bandara/Pelabuhan" />
+                            <p:inputText value="#{incidentMBean.incident.objecthomebase}" disabled="#{incidentMBean.disableForm}"
+                                         maxlength="25"/>
+                        </p:panelGrid>
+                    </p:panel>
+                </div>
+            </div>
+        </p:panel>
+    </h:form>
+</ui:composition>

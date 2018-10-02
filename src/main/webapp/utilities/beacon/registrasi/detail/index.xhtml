@@ -1,0 +1,129 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <p:importEnum type="prosia.basarnas.enumeration.BeaconType" var="beaconType" allSuffix="ALL_ENUM_VALUES" />
+    <p:importEnum type="prosia.basarnas.enumeration.RegistrationType" var="registrationType" allSuffix="ALL_ENUM_VALUES" />
+    <p:importEnum type="prosia.basarnas.enumeration.Usage" var="usage" allSuffix="ALL_ENUM_VALUES" />    
+    <p:importEnum type="prosia.basarnas.enumeration.DetailUsage" var="detailUsage" allSuffix="ALL_ENUM_VALUES" />    
+    <p:importEnum type="prosia.basarnas.enumeration.UsageTypePLB" var="usageType" allSuffix="ALL_ENUM_VALUES" />    
+    <p:importEnum type="prosia.basarnas.enumeration.UsageTypeELT" var="usageTypeELT" allSuffix="ALL_ENUM_VALUES" />        
+    <p:importEnum type="prosia.basarnas.enumeration.CategoryEPIRB" var="categoryEPIRB" allSuffix="ALL_ENUM_VALUES" />        
+    <p:importEnum type="prosia.basarnas.enumeration.Mesin" var="mesin" allSuffix="ALL_ENUM_VALUES" />        
+    <p:importEnum type="prosia.basarnas.enumeration.Sail" var="sail" allSuffix="ALL_ENUM_VALUES" />        
+    <p:importEnum type="prosia.basarnas.enumeration.ComequipmentELT" var="elt" allSuffix="ALL_ENUM_VALUES" />        
+    <p:importEnum type="prosia.basarnas.enumeration.ComequipmentEPIRB" var="epirb" allSuffix="ALL_ENUM_VALUES" />        
+    <p:panel>
+        <p:panelGrid columns="2" styleClass="ui-panelgrid-blank" style="width: 1250px;">
+            <p:panelGrid columns="2" styleClass="ui-panelgrid-blank">
+                <p:outputLabel value="ID Beacon" />
+                <h:panelGrid columns="3">
+                    <h:panelGroup>
+                        <p:inputText size="40" style="width: 120px;" value="#{registrasiBeaconMBean.airvessel.beaconId}"
+                                     required="true" requiredMessage="ID Beacon Tidah Boleh Kosong" disabled="#{registrasiBeaconMBean.isUbah}"/>
+                    </h:panelGroup>
+                    <p:spacer/>
+                    <p:selectOneMenu id="jenisBeacon" style="width: 70px;" value="#{registrasiBeaconMBean.airvessel.beaconType}" 
+                                     required="false" requiredMessage="Pilih salah satu." disabled="#{registrasiBeaconMBean.isUbah}">
+                        <p:ajax event="change" update="@form" listener="#{registrasiBeaconMBean.changeDetail}"/>
+                        <f:selectItems value="#{beaconType.ALL_ENUM_VALUES}" var="bt" 
+                                       itemValue="#{bt}" itemLabel="#{bt.item}"/>
+                    </p:selectOneMenu>         
+                </h:panelGrid>
+                <p:outputLabel value="Tanggal Registrasi"/>
+                <p:calendar pattern="dd-MM-yyyy" showOn="button" locale="en_US" mask="true" navigator="true"
+                            yearRange="c-20:c+20" readonlyInput="true"
+                            value="#{registrasiBeaconMBean.airvessel.registrationDate}" 
+                            disabled="#{registrasiBeaconMBean.isUbah}"/>
+                <p:outputLabel value="Tipe Registrasi"/>
+                <p:selectOneMenu id="tipeRegistrasi" style="width: 210px;" value="#{registrasiBeaconMBean.airvessel.registrationType}"
+                                 disabled="#{registrasiBeaconMBean.isUbah}">
+                    <p:ajax event="change" update="id-lama" listener="#{registrasiBeaconMBean.changeRegistrasiType}"/>
+                    <f:selectItems value="#{registrationType.ALL_ENUM_VALUES}" var="regType" 
+                                   itemValue="#{regType.itemValue}" itemLabel="#{regType.itemLabel}"/>
+                </p:selectOneMenu>
+                <p:outputLabel value="ID Lama"/>
+                <h:panelGrid id="id-lama">
+                    <p:inputText size="40" style="width: 210px;" value="#{registrasiBeaconMBean.airvessel.oldBeaconId}"
+                                 onkeypress="if (event.which === 34 || event.which === 39 || event.which === 92 || event.which === 96) {
+                                             return false;
+                                         }" disabled="#{registrasiBeaconMBean.isUbah}"/>                
+                </h:panelGrid>
+                <p:outputLabel value="Nomor Persetujuan"/>
+                <p:inputText size="40" style="width: 210px;" value="#{registrasiBeaconMBean.airvessel.approvalNo}" disabled="#{registrasiBeaconMBean.isUbah}"
+                             onkeypress="if (event.which === 34 || event.which === 39 || event.which === 92 || event.which === 96) {
+                                         return false;
+                                     }"/>
+            </p:panelGrid> 
+            <p:panelGrid id="form-grid" columns="2" styleClass="ui-panelgrid-blank grid-pad">
+                <p:outputLabel value="Pembuat"/>
+                <p:selectOneMenu id="pembuat" style="width: 230px;" value="#{registrasiBeaconMBean.manufacturerId}"
+                                 disabled="#{registrasiBeaconMBean.isUbah}">
+                    <p:ajax event="change" update="form-grid" listener="#{registrasiBeaconMBean.changeManufacuter}"/>                    
+                    <f:selectItem itemLabel="Lain-lain" itemValue=""/>
+                    <f:selectItems value="#{registrasiBeaconMBean.listManufacturer}"/>
+                </p:selectOneMenu>
+                <p:outputLabel value="Pembuat Lain"/>
+                <p:inputText size="40" style="width: 230px;" value="#{registrasiBeaconMBean.airvessel.otherManufacturer}"
+                             disabled="#{registrasiBeaconMBean.isUbah}"
+                             onkeypress="if (event.which === 34 || event.which === 39 || event.which === 92 || event.which === 96) {
+                                         return false;
+                                     }"/>
+                <p:outputLabel value="Model"/>
+                <p:selectOneMenu id="model" style="width: 230px;" value="#{registrasiBeaconMBean.beaconModelId}"
+                                 disabled="#{registrasiBeaconMBean.isUbah}">
+                    <p:ajax event="change" update="form-grid" listener="#{registrasiBeaconMBean.changeBeaconModel}"/>
+                    <f:selectItem itemLabel="Lain-lain" itemValue="0"/>
+                    <f:selectItems value="#{registrasiBeaconMBean.listBeaconModel}" var="model" itemLabel="#{model.beaconModelName}" itemValue="#{model.beaconModelId}"/>
+                </p:selectOneMenu>
+                <p:outputLabel value="Model Lain"/>
+                <p:inputText size="40" style="width: 230px;" value="#{registrasiBeaconMBean.airvessel.otherBeaconModel}"
+                             disabled="#{registrasiBeaconMBean.isUbah}"
+                             onkeypress="if (event.which === 34 || event.which === 39 || event.which === 92 || event.which === 96) {
+                                         return false;
+                                     }"/>
+                <p:outputLabel value="Tanggal Kadaluarsa"/>
+                <p:calendar pattern="dd-MM-yyyy" showOn="button" locale="en_US" mask="true" navigator="true"
+                            yearRange="c-20:c+20" readonlyInput="true"
+                            value="#{registrasiBeaconMBean.airvessel.batteryExpDate}" 
+                            disabled="#{registrasiBeaconMBean.isUbah}"/>
+            </p:panelGrid>
+        </p:panelGrid>
+        <p:panelGrid columns="1" style="width: 1200px;" styleClass="ui-panelgrid-blank" class="card-w-title no-border no-padding">
+            <p:tabView id="tabViewBeacon" activeIndex="#{registrasiBeaconMBean.activeTabIndexBeacon}">
+
+                <!--<p:ajax event="tabChange" listener="{registrasiBeaconMBean.onTabChangeBeacon}" update="tabViewBeacon" process="@this"/>-->
+
+                <p:tab title="Pemilik">
+                    <ui:include src="pemilik.xhtml"/>
+                </p:tab>
+                <p:tab title="Kontak">
+                    <ui:include src="kontak.xhtml"/>                        
+                </p:tab>
+                <p:tab title="Detail PLB" rendered="#{registrasiBeaconMBean.detailPlb}">
+                    <ui:include src="detail_plb.xhtml"/>
+                </p:tab>
+                <p:tab title="Detail ELT" rendered="#{registrasiBeaconMBean.detailElt}">
+                    <ui:include src="detail_elt.xhtml"/>
+                </p:tab>
+                <p:tab title="Detail EPIRB" rendered="#{registrasiBeaconMBean.detailEpirb}">
+                    <ui:include src="detail_epirb.xhtml"/>
+                </p:tab>
+            </p:tabView>
+        </p:panelGrid>
+        <p:panel class="no-border no-padding control-button">
+            <p:panelGrid styleClass="ui-panelgrid-blank" style="width: 1250px;">
+                <p:commandButton value="Simpan" style="margin-left: 10px;width: 100px;" icon="ui-icon-save" actionListener="#{registrasiBeaconMBean.saved}" update="@form"
+                                 rendered="#{!registrasiBeaconMBean.isUbah}">
+                    <p:confirm header="Konfirmasi" message="Simpan data ini?" icon="ui-icon-alert" />
+                </p:commandButton>
+                <p:commandButton value="Kembali" style="margin-left: 10px;width: 100px;" class="red-btn" icon="ui-icon-cancel">
+                    <p:ajax event="click" update="@form" listener="#{registrasiBeaconMBean.hideForm}"/>
+                </p:commandButton>
+            </p:panelGrid>
+        </p:panel>
+
+
+    </p:panel>
+</ui:composition>

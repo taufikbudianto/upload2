@@ -1,0 +1,370 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <div class="ui-g ui-fluid">
+        <div class="ui-g-12">
+            <h:form id="personel-content-tab">
+                <p:messages/>
+                <p:panelGrid id="personel-panel-grid" 
+                             columns="7" layout="grid" 
+                             styleClass="ui-panelgrid-blank form-group" 
+                             columnClasses="ui-grid-col-4,ui-grid-col-4,ui-grid-col-4,ui-grid-col-4
+                             ,ui-grid-col-4,ui-grid-col-4,ui-grid-col-4" 
+                             class="no-border no-padding no-padding-table ui-fluid">
+
+                    <p:commandButton id="check-pilih-personel" class="green-btn" value="Check All" 
+                                     actionListener="#{incidentPersonilMbean.checkallpilih()}" 
+                                     process="@form" update="@form"
+                                     disabled="#{incidentPersonilMbean.disabledTab}"/>
+
+                    <p:commandButton id="uncheck-pilih-personel" class="red-btn" value="Uncheck All"
+                                     actionListener="#{incidentPersonilMbean.uncheckallpilih()}" 
+                                     process="@form" update="@form"
+                                     disabled="#{incidentPersonilMbean.disabledTab}"/>
+
+                    <p:commandButton id="kirim-notif-incident-personel" type="button"  
+                                     value="Kirim Notifikasi" disabled="#{incidentPersonilMbean.disabledTab}">
+                        <p:ajax event="click" update="@form" process="@form" 
+                                listener="#{incidentPersonilMbean.kirimNotifikasi()}"/>
+                    </p:commandButton>
+                    <p:commandButton id="tambah-kirim-personel" value="Tambah Data Baru" 
+                                     process="@form" onclick="PF('personel-dlg').show();" class="green-btn"
+                                     update="@form" disabled="#{incidentPersonilMbean.disabledTab}"/>
+
+                    <p:commandButton id="hapus-kirim-personel" value="Hapus" 
+                                     actionListener="#{incidentPersonilMbean.hapus()}"
+                                     process="@form" update="@form"
+                                     disabled="#{incidentPersonilMbean.disabledTab}"/>
+
+                    <p:commandButton id="check-kirim-personel" class="green-btn" value="Check All" 
+                                     actionListener="#{incidentPersonilMbean.checkallkirim()}" 
+                                     process="@form" update="@form"
+                                     disabled="#{incidentPersonilMbean.disabledTab}"/>
+
+                    <p:commandButton id="uncheck-kirim-personel" class="red-btn" value="Uncheck All" 
+                                     actionListener="#{incidentPersonilMbean.uncheckallkirim()}" 
+                                     process="@form" update="@form"
+                                     disabled="#{incidentPersonilMbean.disabledTab}"/>
+
+                </p:panelGrid>
+
+                <p:dataTable var="dtpersonil" value="#{incidentPersonilMbean.listTempCheck}"
+                             reflow="true"  paginator="true" paginatorPosition="bottom" rows="10"
+                             rowsPerPageTemplate="5,10,15" id="data-personil" tableStyle="table-layout:auto"
+                             rowIndexVar="index" rowKey="#{dtpersonil.personnelDetails.incidentPersonnelID}"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} 
+                             {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" style="font-size: smaller">
+                    <p:column headerText="No" style="width: 2%">
+                        <p:outputLabel value="#{index + 1}"/>
+                    </p:column>
+                    <p:column style="width: 5%; text-align: center;" id="checkPilihPersonel" headerText="Pilih">
+                        <p:selectBooleanCheckbox value="#{dtpersonil.pilih}" disabled="#{incidentPersonilMbean.disabledTab}">
+                            <p:ajax process="@this"/>
+                        </p:selectBooleanCheckbox>
+                    </p:column>
+
+                    <p:column style="width: 5%; text-align: center;" id="checkKirimPersonel" headerText="Kirim">
+                        <p:selectBooleanCheckbox value="#{dtpersonil.kirim}" disabled="#{incidentPersonilMbean.disabledTab}">
+                            <p:ajax process="@this"/>
+                        </p:selectBooleanCheckbox>
+                    </p:column>
+
+                    <p:column headerText="Kode Personil" style="width: 5%" sortBy="#{dtpersonil.personnelDetails.personnelCode}">
+                        <h:outputText value="#{dtpersonil.personnelDetails.personnelCode}" />
+                    </p:column>
+
+                    <p:column headerText="Nama Personil" style="width: 15%" sortBy="#{dtpersonil.personnelDetails.personnelName}">
+                        <h:outputText value="#{dtpersonil.personnelDetails.personnelName}" />
+                    </p:column>
+
+                    <p:column headerText="Jabatan" style="width: 10%" sortBy="#{dtpersonil.personnelDetails.employmentClass.employmentclassname}">
+                        <h:outputText value="#{dtpersonil.personnelDetails.employmentClass.employmentclassname}" />
+                    </p:column>
+
+                    <p:column headerText="Tanggung Jawab" style="width: 10%" sortBy="#{dtpersonil.personnelDetails.responsibility}">
+                        <h:outputText value="#{dtpersonil.personnelDetails.responsibility}" />
+                    </p:column>
+
+                    <p:column headerText="Tanggal Penugasan" style="width: 5%" sortBy="#{dtpersonil.personnelDetails.assignmentDate}">
+                        <h:outputText value="#{dtpersonil.personnelDetails.assignmentDate}" />
+                    </p:column>
+
+                    <p:column headerText="Aksi" style="width: 2%">
+                        <p:commandButton id="lihatP"
+                                         label="Lihat"
+                                         onclick="PF('tTipLihat').hide();"
+                                         icon="fa fa-search" 
+                                         class="blue-grey-btn"
+                                         disabled="#{incidentPersonilMbean.disabledTab}">
+                            <p:ajax event="click" 
+                                    listener="#{incidentPersonilMbean.lihat(true, dtpersonil.personnelDetails.incidentPersonnelID,dtpersonil.personnelDetails.personnelCode)}" 
+                                    process="@this" update="@form"/>
+                        </p:commandButton>
+                        <p:tooltip value="Lihat" for="lihatP"
+                                   trackMouse="true" widgetVar="tTipLihat"/>
+                    </p:column>
+                </p:dataTable>                              
+
+                <p:panelGrid class="no-border" style="float: right" columns="1">
+                    <p:commandButton value="Simpan Personil" icon="fa fa-save" style="width:200px"
+                                     actionListener="#{incidentPersonilMbean.simpan}" 
+                                     disabled="#{incidentMBean.incident.status == 'Close' or incidentMBean.disableTab}" 
+                                     class="green-btn" process="@form" update="@form" />
+                </p:panelGrid>
+
+            </h:form>
+
+            <p:dialog id="personnel-detail" widgetVar="personel-dlg" 
+                      appendTo="@(body)" dynamic="true" responsive="true"
+                      showEffect="fade" hideEffect="fade" draggable="false" 
+                      resizable="true" closable="true" modal="true" width="850"
+                      position="center">
+                <h:form id="form">
+                    <p:panel style="overflow:auto;width:100%;max-height:80vh" 
+                             class="no-border card ui-fluid no-padding">
+                        <p:panel class="no-border no-padding ui-fluid">
+                            <p:panelGrid columns="3" layout="grid" class="ui-fluid no-border no-padding" columnClasses="ui-g-5, ui-g-3, ui-g-3">
+                                <p:inputText value="#{incidentPersonilMbean.cari}"/>
+                                <p:commandButton value="Cari" icon="fa fa-search" process="@form" actionListener="#{incidentPersonilMbean.cari()}"/>                                         
+                                <p:commandButton value="Reset" icon="ui-icon-replay">
+                                    <p:ajax listener="#{incidentPersonilMbean.reset()}" update="incidentdetail:form"/>
+                                </p:commandButton>
+                            </p:panelGrid> 
+                            <p:spacer/>
+                            <p:panel class="no-border no-padding ui-fluid">
+                                <p:selectOneRadio id="tipe" value="#{incidentPersonilMbean.jenis}" disabled="false">
+                                    <p:ajax event="change" update="form" listener="#{incidentPersonilMbean.changeJenis()}"/>
+                                    <f:selectItem itemLabel="Siaga" itemValue="1" />
+                                    <f:selectItem itemLabel="Daftar Personil" itemValue="0" />
+                                </p:selectOneRadio>      
+                            </p:panel>
+
+                        </p:panel>
+                        <p:spacer/>                    
+
+                        <p:panel class="card card-w-title no-border no-padding" header="Personil" rendered="#{incidentPersonilMbean.jenis == 0}">
+                            <p:dataTable id="idDtDlgPersonel" var="dtPersonel" value="#{incidentPersonilMbean.listPersonelRes}"
+                                         paginator="true" paginatorPosition="bottom" rows="8" rowKey="#{dtPersonel.personnelID}"
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} 
+                                         {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         rowsPerPageTemplate="5,10,15" selectionMode="single"  
+                                         widgetVar="listWidgetPsnl" lazy="true"
+                                         selection="#{incidentPersonilMbean.selectedPresonil}">
+
+                                <p:ajax event="rowSelect" listener="#{incidentPersonilMbean.onRowSelect}" update="incidentdetail:dlg-dtl"  />
+                                <p:column headerText="Nama" sortBy="#{dtPersonel.personnelName}">
+                                    <h:outputText value="#{dtPersonel.personnelName}" />                           
+                                </p:column>
+                                <p:column headerText="Golongan" sortBy="#{dtPersonel.employmentClass.employmentclassname}">
+                                    <h:outputText value="#{dtPersonel.employmentClass.employmentclassname}" />
+                                </p:column>
+                                <p:column headerText="No HP" >
+                                    <h:outputText value="#{dtPersonel.mobilePhoneNumber}" />
+                                </p:column>
+                                <p:column headerText="Kantor Sar" sortBy="#{dtPersonel.officeSar.kantorsarname}">
+                                    <h:outputText value="#{dtPersonel.officeSar.kantorsarname}" />
+                                </p:column>
+
+                            </p:dataTable >
+                        </p:panel>
+                        <p:scrollPanel>
+                            <p:panel class="card card-w-title no-border no-padding" header="Siaga" rendered="#{incidentPersonilMbean.jenis == 1}" >
+                                <p:dataTable id="idDtDlgSiaga" paginator="true" value="#{incidentPersonilMbean.listSiapSiaga}"
+                                             paginatorPosition="bottom" rowIndexVar="index" var="siapsiaga"
+                                             paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                                             rowsPerPageTemplate="5,10,15" scrollable="true" scrollHeight="350">
+
+                                    <p:column headerText="No" style="width: 10px">
+                                        <p:outputLabel value="#{index+1}"/>
+                                    </p:column>
+
+                                    <p:column headerText="Detail">
+                                        <p:outputLabel value="#{siapsiaga.detail}"/>
+                                    </p:column>
+
+                                    <p:column headerText="Nama Kansar">
+                                        <p:outputLabel value="#{siapsiaga.nama}"/>
+                                    </p:column>
+
+
+                                </p:dataTable>    
+                            </p:panel>
+                        </p:scrollPanel>
+
+
+                    </p:panel>
+
+                </h:form>
+            </p:dialog>
+            <p:dialog header="Detail Seleksi Personil"
+                      id="dlg-dtl" class="no-border " 
+                      widgetVar="dlg-PersonelDetail" 
+                      showEffect="fade" hideEffect="fade" resizable="false">
+                <h:form id="form2">
+                    <p:outputPanel id="personelDetail" style="text-align:left;" >
+                        <p:panelGrid  columns="2" rendered="#{not empty incidentPersonilMbean.selectedPresonil}" >
+
+                            <h:outputText value="Kode Personil" />
+                            <h:inputText value="#{incidentPersonilMbean.selectedPresonil.personnelCode}" disabled="true"/>
+
+                            <h:outputText value="Nama Personil" />
+                            <h:inputText value="#{incidentPersonilMbean.selectedPresonil.personnelName}" disabled="true"/>
+
+                            <h:outputText value="Jabatan" />
+                            <p:selectOneMenu id="jbt" value="#{incidentPersonilMbean.selectedPresonil.employmentClass.employmentclassid}" >
+                                <f:selectItem itemLabel="-Pilih-" itemValue="#{null}" />
+                                <f:selectItems value="#{incidentPersonilMbean.listEmployeClass}" var="cls" 
+                                               itemLabel="#{cls.employmentclassname}" 
+                                               itemValue="#{cls.employmentclassid}"  />
+                            </p:selectOneMenu>
+
+                            <h:outputText value="Posisi" />
+                            <p:inputText id="posisi" value="#{incidentPersonilMbean.posisition}"/>
+
+                            <h:outputText value="Tanggung Jawab" />
+                            <p:inputText id="tangungJawab" value="#{incidentPersonilMbean.responsibility}"/>
+
+                            <h:outputText value="Tanggal Penugasan" />
+                            <p:calendar value="#{incidentPersonilMbean.assignmentDate}" pattern="dd-MM-yyyy" mask="true" navigator="true" showOn="button" />
+
+                            <h:outputText value="Akhir Penugasan" />
+                            <p:calendar value="#{incidentPersonilMbean.assignmentEndDate}" pattern="dd-MM-yyyy" mask="true" navigator="true" showOn="button"/>
+                        </p:panelGrid>
+
+                        <p:panel class="ui-g-12 no-border no-padding control-button">
+
+                            <p:panelGrid class="ui-g-12" columns="4" columnClasses="ui-grid-col-1, ui-grid-col-3, ui-grid-col-4, ui-grid-col-4">
+                                <p:spacer width="3"/>
+                                <p:spacer width="3"/>
+                                <p:commandButton value="Simpan" icon="fa fa-save" class="green-btn" >
+                                    <p:ajax event="click" listener="#{incidentPersonilMbean.loadIncidentPersonnel()}" oncomplete="PF('dlg-PersonelDetail').hide();"
+                                            update="incidentdetail:personel-content-tab:data-personil" process="@form" />
+                                </p:commandButton>   
+                                <p:commandButton type="button" value="Batal" icon="ui-icon-cancel" class="red-btn" styleClass="secondary">
+                                    <p:ajax event="click" process="@this" update="@this" oncomplete="PF('dlg-PersonelDetail').hide();" />
+                                </p:commandButton> 
+                            </p:panelGrid>
+
+                        </p:panel>
+                    </p:outputPanel>
+
+                </h:form>
+            </p:dialog>
+
+            <p:dialog id="kirim-notif-coba" widgetVar="kirim-notif-coba" modal="true"
+                      showEffect="fade" hideEffect="fade" resizable="false" responsive="true"
+                      width="40%" height="50%">
+                <h:form>
+                    <p:panel id="panel" class="ui-fluid no-border card-w-title card" header="Kirim Notifikasi Email/SMS"> 
+                        <p:panelGrid columns="2" columnClasses="ui-grid-col-6, ui-grid-col-6" class="ui-fluid">
+                            <p:outputLabel value="Via"/>
+                            <p:panelGrid columns="4" columnClasses="">
+                                <p:outputLabel value="SMS"/>
+                                <p:selectBooleanCheckbox value="#{incidentPersonilMbean.kirimSms}">
+                                    <p:ajax event="change" update="isiSMS"/>
+                                </p:selectBooleanCheckbox>
+                                <p:outputLabel value="Email"/>
+                                <p:selectBooleanCheckbox value="#{incidentPersonilMbean.kirimEmail}">
+                                    <p:ajax event="change" update="emailnotif"/>
+                                    <p:ajax event="change" update="subyekemail"/>
+                                </p:selectBooleanCheckbox>
+                            </p:panelGrid>
+                        </p:panelGrid>
+                        <p:panelGrid columns="2" columnClasses="ui-grid-col-4, ui-grid-col-6" class="ui-fluid">
+                            <p:outputLabel value="Isi Pesan SMS"/>
+                            <p:inputTextarea id="isiSMS" value="" 
+                                             disabled="#{!incidentPersonilMbean.kirimSms}" required="true"
+                                             requiredMessage="Pesan SMS Wajib Di Isi" style="width: 300px"/>
+                            <p:outputLabel value="Subyek Email"/>
+                            <p:inputText id="subyekemail" value="#{incidentPersonilMbean.subyekEmail}" 
+                                         disabled="#{!incidentPersonilMbean.kirimEmail}" required="true" 
+                                         requiredMessage="Subyek Email Wajib Di Isi" style="width: 300px"/>
+                            <p:outputLabel value="Isi Pesan Email"/>
+                            <p:inputTextarea id="emailnotif" value="#{incidentPersonilMbean.isiEmail}" 
+                                             disabled="#{!incidentPersonilMbean.kirimEmail}"
+                                             required="true" requiredMessage="Pesan Email Wajib Di Isi"
+                                             style="width: 300px"/>                        
+                        </p:panelGrid>
+                        <p:panel class="no-border no-padding ui-fluid control-button">
+                            <p:commandButton value="Kirim" icon="fa fa-send" class="green-btn"
+                                             actionListener="#{incidentPersonilMbean.kirim()}" 
+                                             process="@this" style="width: 100px"/>
+                            <p:commandButton value="Kembali" class="red-btn" icon="fa fa-close" 
+                                             actionListener="#{incidentPersonilMbean.refresh()}" 
+                                             onclick="PF('kirim-notif-coba').hide();"
+                                             style="width: 100px"/>                                                    
+                        </p:panel>
+
+                    </p:panel>
+                </h:form>
+            </p:dialog>
+
+
+            <h:form id="form3">
+                <p:dialog header="Detail Insiden Personil"
+                          id="idpersonel" class="no-border " 
+                          widgetVar="dlg-IncPersonelDetail" resizable="false">
+
+                    <p:outputPanel id="IncpersonelDetail" style="text-align:left;" >
+                        <p:panelGrid  columns="2">
+
+                            <h:outputText value="Kode Personil" />
+                            <p:inputText value="#{incidentPersonilMbean.personelCode}" disabled="true"/>
+
+                            <h:outputText value="Nama Personil" />
+                            <p:inputText value="#{incidentPersonilMbean.personelName}" disabled="true"/>
+
+                            <h:outputText value="Jabatan" />
+                            <p:selectOneMenu id="jbt" value="#{incidentPersonilMbean.employmentClassId}" disabled="true" >
+                                <f:selectItem itemLabel="-Pilih-" itemValue="#{null}" />
+                                <f:selectItems value="#{incidentPersonilMbean.listEmployeClass}" var="cls" 
+                                               itemLabel="#{cls.employmentclassname}" 
+                                               itemValue="#{cls.employmentclassid}"  />
+                            </p:selectOneMenu>
+
+                            <h:outputText value="Posisi" />
+                            <p:inputText id="posisi" value="#{incidentPersonilMbean.incidentPersonnel.position}" disabled="true"/>
+
+                            <h:outputText value="Tanggung Jawab" />
+                            <p:inputText id="tangungJawab" value="#{incidentPersonilMbean.incidentPersonnel.responsibility}" disabled="true"/>
+
+                            <h:outputText value="Tanggal Penugasan" />
+                            <p:calendar value="#{incidentPersonilMbean.incidentPersonnel.assignmentDate}" pattern="dd-MM-yyyy"  mask="true" navigator="true" showOn="button" disabled="true"/>
+
+                            <h:outputText value="Akhir Penugasan" />
+                            <p:calendar value="#{incidentPersonilMbean.incidentPersonnel.assignmentEndDate}" pattern="dd-MM-yyyy"  mask="true" navigator="true" showOn="button" disabled="true"/>
+                        </p:panelGrid>
+
+                        <p:panel class="ui-g-12 no-border no-padding control-button">
+
+                            <p:panelGrid class="ui-g-12" columns="4" columnClasses="ui-grid-col-2, ui-grid-col-3, ui-grid-col-3, ui-grid-col-4">
+                                <p:spacer width="3"/>
+                                <p:spacer width="3"/>
+                                <p:spacer/>
+                                <p:commandButton type="button" value="Kembali" icon="fa fa-times" style="width:125px;float:right" class="red-btn" styleClass="secondary">
+                                    <p:ajax event="click" process="@this" update="@this" oncomplete="PF('dlg-IncPersonelDetail').hide();" />
+                                </p:commandButton>
+                            </p:panelGrid>
+
+                        </p:panel>
+                    </p:outputPanel>
+                </p:dialog>
+            </h:form>
+            <p:dialog id="saveNotification" widgetVar="saveNotification" header="Notifikasi Penyimpanan" showHeader="true" appendTo="@(body)"
+                      showEffect="fade" hideEffect="fade" draggable="false" resizable="false" closable="false" modal="true" width="500">
+                <h:form>
+                    <p:outputLabel value="Data Berhasil Tersimpan" />
+                    <p:panel class="control-button">
+                        <p:commandButton value="Ok">
+                            <p:ajax event="click" listener="#{incidentPersonilMbean.closeSaveInformationDialog()}" 
+                                    update="incidentdetail:personel-content-tab:data-personil" process="@this"/>
+                        </p:commandButton>
+                    </p:panel>
+                </h:form>
+            </p:dialog>
+
+        </div>
+    </div>
+</ui:composition>

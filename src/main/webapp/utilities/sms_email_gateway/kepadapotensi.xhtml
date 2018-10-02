@@ -1,0 +1,57 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">      
+    <h:form prependId="false">
+        <p:panelGrid id="panelSearch-kepadapotensi" columns="7" 
+                     columnClasses="ui-grid-col-1,ui-grid-col-2,ui-grid-col-1,ui-grid-col-2,ui-grid-col-1,ui-grid-col-2,ui-grid-col-3"
+                     class="no-border no-padding" style="width: 100%;height: 100%;">
+            <p:outputLabel value="Kolom Pencarian:" style="font-weight:bold"/>
+
+            <p:selectOneMenu id="kolompencarian-kepadapotensi" value="#{pencarianPotensiMBean.kolompencarian}" style="width:150px">
+                <p:ajax listener="#{pencarianPotensiMBean.onKolomPencarianKepadaPotency()}" update="panelSearch-kepadapotensi"/>
+                <f:selectItems value="#{pencarianPotensiMBean.listKolomPencarian}" />
+            </p:selectOneMenu>
+
+            <p:outputLabel id = "katakuncikepadapotency" value="Kata Kunci:" style="font-weight:bold"/>
+
+            <p:inputText id="textfieldkepadapotency" value ="#{pencarianPotensiMBean.textfield}"/>
+
+            <p:commandButton id="cari-btn-kepadapotency" type="button" value="Cari">
+                <p:ajax event="click" update="accId:datakepadapotency" process="@form"/>
+            </p:commandButton>
+            
+            <p:commandButton value="Reset" actionListener="#{pencarianPotensiMBean.reset()}"
+                             process="@form" update="@form, accId:formtambahsmsout:kepada-sms-out" icon="ui-icon-replay"/>  
+
+            <p:commandButton value="Tambah" icon="fa fa-plus-circle" styleClass="green-btn"  
+                             id="tambah-kepadapotency" actionListener="#{pencarianPotensiMBean.sendSelected()}" 
+                             style="float:right" process="@form" update="@form, accId:formtambahsmsout:kepada-sms-out"/>
+        </p:panelGrid>
+
+
+        <p:dataTable var="kepadapotency" value="#{pencarianPotensiMBean.lazyDataModelJPAPotencyContact}"
+                     reflow="true" paginator="true" rows="10" lazy="true" rowsPerPageTemplate="5,10,15"
+                     rowKey="#{kepadapotency.potencycontactid}" paginatorPosition="bottom" id="datakepadapotency" 
+                     selection="#{pencarianPotensiMBean.checkboxpotency}" tableStyle="table-layout:auto"
+                     rowIndexVar="index" widgetVar="listWidget2" emptyMessage="Data tidak ditemukan">
+            <p:column selectionMode="multiple" style="width: 15px; text-align: center"></p:column>
+            <p:column headerText="No" style="width: 20px">
+                <p:outputLabel value="#{index + 1}"/>
+            </p:column>
+            <p:column headerText="Nama Lengkap">
+                <h:outputText value="#{kepadapotency.contactname}"/>
+            </p:column>
+            <p:column headerText="Nama Potensi">
+                <h:outputText value="#{kepadapotency.potencyid.potencyname}" />
+            </p:column>
+            <p:column headerText="No. HP" style="text-align: center; width: 10%">
+                <h:outputText value="#{kepadapotency.phonenumber2}" />
+            </p:column>
+            <p:column headerText="Email" style="text-align: center; width: 20%">
+                <h:outputText value="#{kepadapotency.email}" />
+            </p:column>
+        </p:dataTable>
+</h:form>
+</ui:composition>

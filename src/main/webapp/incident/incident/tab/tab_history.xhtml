@@ -1,0 +1,40 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <div class="ui-g ui-fluid">
+        <div class="ui-g-12">
+            <h:form id="history-content-tab">
+
+                <p:dataTable var="history" value="#{incidentHistoryMBean.dataModel}" reflow="true" rowKey="#{history.incidentid}"
+                             lazy="true" paginator="true" paginatorPosition="bottom" rows="#{viewBean.rowsPageDefault}"
+                             rowsPerPageTemplate="#{viewBean.rowsPerPageTemplate}" emptyMessage="Data tidak ditemukan" tableStyle="table-layout:fixed"
+                             rowIndexVar="index">           
+                    <p:column headerText="No" style="width: 20px">
+                        <p:outputLabel value="#{index + 1}"/>
+                    </p:column>
+                    <p:column headerText="No" sortBy="#{history.incidentnumber}">
+                        <h:outputText value="#{history.incidentnumber}" />
+                    </p:column>
+                    <p:column headerText="Nama" sortBy="#{history.incidentname}">
+                        <h:outputText value="#{history.incidentname}" />
+                    </p:column>
+                    <p:column headerText="Tanggal Mulai" sortBy="#{history.datecreated}">
+                        <h:outputText value="#{history.datecreated}" />
+                    </p:column>
+                    <p:column headerText="Lokasi" sortBy="#{history.location}">
+                        <h:outputText value="#{history.location}" />
+                    </p:column>
+                    <p:column headerText="Longitude" style="width: 80px" sortBy="#{history.longitude}">
+                        <h:outputText value="#{incidentHistoryMBean.getLatitudeFormat(history.latitude)}" />
+                    </p:column>
+                    <p:column headerText="Latitude" style="width: 80px" sortBy="#{history.latitude}">
+                        <h:outputText value="#{incidentHistoryMBean.getLongitudeFormat(history.longitude)}" />
+                    </p:column>
+
+                </p:dataTable>
+            </h:form>
+        </div>
+    </div>
+</ui:composition>

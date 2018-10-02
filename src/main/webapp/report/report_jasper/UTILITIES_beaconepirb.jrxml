@@ -1,0 +1,835 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="beaconelt" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="95189f7a-6114-4016-a38b-98fa69507624">
+	<property name="ireport.zoom" value="1.8181818181818197"/>
+	<property name="ireport.x" value="61"/>
+	<property name="ireport.y" value="565"/>
+	<parameter name="BEACONID" class="java.lang.String"/>
+	<parameter name="user" class="java.lang.String"/>
+	<parameter name="currentDate" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT * FROM
+(select  BEACONID,BEACONTYPE,to_char(REGISTRATIONDATE,'DD/MM/YYYY')REGISTRATIONDATE,REGISTRATIONTYPE,
+CASE WHEN REGISTRATIONTYPE = 1 then 'V' end Baru,
+CASE WHEN REGISTRATIONTYPE = 2 then 'V' end Perubahan_Informasi,
+CASE WHEN REGISTRATIONTYPE = 3 then 'V' end Penggantian,
+OLDBEACONID,MANUFACTURER,BEACONMODEL,to_char(BATTERYEXPDATE,'DD/MM/YYYY')BATTERYEXPDATE,APPROVALNO,OWNERNAME,
+OWNERADDRESS,OWNEREMAIL,OWNERPHONE,OWNERCELLPHONE,OWNERCOMPANYNAME,OWNERCOMPANYADDRESS,OWNERCOMPANYEMAIL,OWNERCOMPANYPHONE,OWNECOMPANYFAX,
+REGISTRATIONNO,NAME,OTHERSAILTYPE,MACHINETYPE,OTHERMACHINETYPE,CALLSIGN,MADEIN,MODEL,ALENGTH,A_WIDTH,A_WEIGHT,COLOR,
+CASE CATEGORY WHEN 1 THEN 'Manual' WHEN 2 THEN 'Otomatis' END KATEGORI,
+CASE SAILTYPE
+WHEN 1 THEN 'Yach'
+WHEN 2 THEN 'Schooner'
+WHEN 3 THEN 'Sekoci'
+WHEN 4 THEN 'Lain' end TIPEKAPAL,
+PASSENGER,
+CASE WHEN COMEQUIPMENT LIKE '%VHF,HF%' THEN 'V' END VHF,
+CASE WHEN COMEQUIPMENT LIKE '%MF%' THEN 'V' END MF,
+CASE WHEN COMEQUIPMENT = 'HF' THEN 'V' END HF,
+CASE WHEN COMEQUIPMENT LIKE '%INMARSAT%' THEN 'V' END INMARSAT,
+CASE WHEN COMEQUIPMENT IN ('LAIN','INMARSAT','INMARSAT C') THEN 'V' END OTHERSS
+,OTHERCOMEQUIPMENT,HOMEBASE,ADDITIONALDETAIL,INMARSATVOICE,INMARSATFAX,INMARSATTELEX,OTHERTELPNO,MMSI,
+CASE A_USAGE
+WHEN 1 THEN 'Komersial'
+WHEN 2 THEN 'Non Komersial'
+WHEN 3 THEN 'Militer'
+ELSE 'Pemerintah'
+END PENGGUNAAN,DETAILUSAGE,OTHERDETAILUSAGE,
+CASE USAGETYPE
+WHEN 1 THEN 'Baling-Baling, Mesin Tunggal'
+WHEN 2 THEN 'Baling-Baling, Multi Mesin'
+WHEN 3 THEN 'Jet, Mesin Tunggal'
+WHEN 4 THEN 'Jet, Multi Mesin'
+WHEN 5 THEN 'Helikopter'
+WHEN 6 THEN 'LAIN'
+END TIPE,OTHERUSAGETYPE,ADDITIONALUSAGE,URGENTCONTACTNAME1,URGENTCONTACTHOMEPHONE1,URGENTCONTACTOFFICEPHONE1,
+URGENTCONTACTCELLPHONE1,URGENTCONTACTNAME2,URGENTCONTACTHOMEPHONE2,URGENTCONTACTOFFICEPHONE2,URGENTCONTACTCELLPHONE2,CREATEBY,DATECREATED,
+MODIFIEDBY,LASTMODIFIED,USERSITEID,A_LENGTH,CREATEDBY,OWNERCOMPANYFAX,ISDELETED,OWNERFAX,APPROVED,OTHERMANUFACTURER,OTHERBEACONMODEL,
+BEACONREGNO
+from UTI_AIRVESSEL
+)A
+LEFT join
+(SELECT * FROM MST_manufacturer)B
+on A.MANUFACTURER=B.MANUFACTURERID
+LEFT JOIN
+(SELECT * FROM MST_BEACONMODEL)C
+ON A.BEACONMODEL=C.BEACONMODELID
+WHERE BEACONID =$P{BEACONID}]]>
+	</queryString>
+	<field name="BEACONID" class="java.lang.String"/>
+	<field name="BEACONTYPE" class="java.lang.String"/>
+	<field name="REGISTRATIONDATE" class="java.lang.String"/>
+	<field name="REGISTRATIONTYPE" class="java.math.BigDecimal"/>
+	<field name="BARU" class="java.lang.String"/>
+	<field name="PERUBAHAN_INFORMASI" class="java.lang.String"/>
+	<field name="PENGGANTIAN" class="java.lang.String"/>
+	<field name="OLDBEACONID" class="java.lang.String"/>
+	<field name="MANUFACTURER" class="java.lang.String"/>
+	<field name="BEACONMODEL" class="java.lang.String"/>
+	<field name="BATTERYEXPDATE" class="java.lang.String"/>
+	<field name="APPROVALNO" class="java.lang.String"/>
+	<field name="OWNERNAME" class="java.lang.String"/>
+	<field name="OWNERADDRESS" class="java.lang.String"/>
+	<field name="OWNEREMAIL" class="java.lang.String"/>
+	<field name="OWNERPHONE" class="java.lang.String"/>
+	<field name="OWNERCELLPHONE" class="java.lang.String"/>
+	<field name="OWNERCOMPANYNAME" class="java.lang.String"/>
+	<field name="OWNERCOMPANYADDRESS" class="java.lang.String"/>
+	<field name="OWNERCOMPANYEMAIL" class="java.lang.String"/>
+	<field name="OWNERCOMPANYPHONE" class="java.lang.String"/>
+	<field name="OWNECOMPANYFAX" class="java.lang.String"/>
+	<field name="REGISTRATIONNO" class="java.lang.String"/>
+	<field name="NAME" class="java.lang.String"/>
+	<field name="OTHERSAILTYPE" class="java.lang.String"/>
+	<field name="MACHINETYPE" class="java.math.BigDecimal"/>
+	<field name="OTHERMACHINETYPE" class="java.lang.String"/>
+	<field name="CALLSIGN" class="java.lang.String"/>
+	<field name="MADEIN" class="java.lang.String"/>
+	<field name="MODEL" class="java.lang.String"/>
+	<field name="ALENGTH" class="java.lang.String"/>
+	<field name="A_WIDTH" class="java.lang.String"/>
+	<field name="A_WEIGHT" class="java.lang.String"/>
+	<field name="COLOR" class="java.lang.String"/>
+	<field name="KATEGORI" class="java.lang.String"/>
+	<field name="TIPEKAPAL" class="java.lang.String"/>
+	<field name="PASSENGER" class="java.math.BigDecimal"/>
+	<field name="VHF" class="java.lang.String"/>
+	<field name="MF" class="java.lang.String"/>
+	<field name="HF" class="java.lang.String"/>
+	<field name="INMARSAT" class="java.lang.String"/>
+	<field name="OTHERSS" class="java.lang.String"/>
+	<field name="OTHERCOMEQUIPMENT" class="java.lang.String"/>
+	<field name="HOMEBASE" class="java.lang.String"/>
+	<field name="ADDITIONALDETAIL" class="java.lang.String"/>
+	<field name="INMARSATVOICE" class="java.lang.String"/>
+	<field name="INMARSATFAX" class="java.lang.String"/>
+	<field name="INMARSATTELEX" class="java.lang.String"/>
+	<field name="OTHERTELPNO" class="java.lang.String"/>
+	<field name="MMSI" class="java.lang.String"/>
+	<field name="PENGGUNAAN" class="java.lang.String"/>
+	<field name="DETAILUSAGE" class="java.math.BigDecimal"/>
+	<field name="OTHERDETAILUSAGE" class="java.lang.String"/>
+	<field name="TIPE" class="java.lang.String"/>
+	<field name="OTHERUSAGETYPE" class="java.lang.String"/>
+	<field name="ADDITIONALUSAGE" class="oracle.jdbc.OracleClob"/>
+	<field name="URGENTCONTACTNAME1" class="java.lang.String"/>
+	<field name="URGENTCONTACTHOMEPHONE1" class="java.lang.String"/>
+	<field name="URGENTCONTACTOFFICEPHONE1" class="java.lang.String"/>
+	<field name="URGENTCONTACTCELLPHONE1" class="java.lang.String"/>
+	<field name="URGENTCONTACTNAME2" class="java.lang.String"/>
+	<field name="URGENTCONTACTHOMEPHONE2" class="java.lang.String"/>
+	<field name="URGENTCONTACTOFFICEPHONE2" class="java.lang.String"/>
+	<field name="URGENTCONTACTCELLPHONE2" class="java.lang.String"/>
+	<field name="CREATEBY" class="java.lang.String"/>
+	<field name="DATECREATED" class="java.sql.Timestamp"/>
+	<field name="MODIFIEDBY" class="java.lang.String"/>
+	<field name="LASTMODIFIED" class="java.sql.Timestamp"/>
+	<field name="USERSITEID" class="java.lang.String"/>
+	<field name="A_LENGTH" class="java.lang.String"/>
+	<field name="CREATEDBY" class="java.lang.String"/>
+	<field name="OWNERCOMPANYFAX" class="java.lang.String"/>
+	<field name="ISDELETED" class="java.math.BigDecimal"/>
+	<field name="OWNERFAX" class="java.lang.String"/>
+	<field name="APPROVED" class="java.math.BigDecimal"/>
+	<field name="OTHERMANUFACTURER" class="java.lang.String"/>
+	<field name="OTHERBEACONMODEL" class="java.lang.String"/>
+	<field name="BEACONREGNO" class="java.lang.String"/>
+	<field name="MANUFACTURERID" class="java.lang.String"/>
+	<field name="MANUFACTURERNAME" class="java.lang.String"/>
+	<field name="BEACONMODELID" class="java.lang.String"/>
+	<field name="BEACONMODELNAME" class="java.lang.String"/>
+	<field name="CSNO" class="java.lang.String"/>
+	<field name="APPLICATION" class="java.lang.String"/>
+	<title>
+		<band height="88" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="ccb1adfc-557b-4fb3-bf07-f018f76eebeb" x="98" y="39" width="310" height="37"/>
+				<textElement verticalAlignment="Middle">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FORMULIR REGISTRASI EPIRB 406 MHz ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="4942471e-d258-4fc9-9488-885730421767" x="435" y="59" width="28" height="12"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement verticalAlignment="Top">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[Fax : ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="86c6196c-3e3f-4400-8aa1-5a28166896fc" x="435" y="49" width="120" height="12"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement verticalAlignment="Top">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[Kemayoran Jak-Pus.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="83dc01ee-c0fe-44d4-861f-9ed293aa44a6" x="463" y="69" width="92" height="12"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement verticalAlignment="Top">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[(021) 65701116 ext (1853)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="348005de-8ed1-4627-b5df-b2e0b3d7ecf0" x="435" y="29" width="120" height="12"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement verticalAlignment="Top">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[Kirim ke/Mail to :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="11780f1b-5749-46e7-9871-f41423fa3eef" x="435" y="69" width="28" height="12"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement verticalAlignment="Top">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[Tel  : ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="fde0611b-498c-489f-af14-3b6f8ec4f90d" x="435" y="39" width="120" height="12"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement verticalAlignment="Top">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[Jl. Angkasa Blok B. 15 KAV 2-3]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e1995037-9d77-4b84-8dd7-32746141c95b" x="463" y="59" width="92" height="12"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement verticalAlignment="Top">
+					<font size="6"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[(021) 65867512]]></text>
+			</staticText>
+			<image>
+				<reportElement uuid="ada082a8-abea-4218-97a4-58d3173ae961" x="0" y="0" width="100" height="80"/>
+				<imageExpression><![CDATA["sar_image.jpg"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement uuid="64818897-1130-488b-8d56-20c8e65359cd" x="437" y="0" width="48" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tanggal Cetak : ]]></text>
+			</staticText>
+			<textField pattern="dd-MM-yyyy HH:mm">
+				<reportElement uuid="7402473f-017d-4b5f-a73c-8baa1cf23a60" x="485" y="0" width="71" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="8bbb30c8-de84-49c1-8ba1-bcc5de182f3f" x="438" y="12" width="118" height="16"/>
+				<textElement verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["User : " +$P{user}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<detail>
+		<band height="611" splitType="Stretch">
+			<rectangle>
+				<reportElement uuid="762f52c2-235a-4a33-b4ea-21328b6eb89e" x="0" y="260" width="555" height="191"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="b4df5f1b-e611-4213-84ee-606c411f6786" x="0" y="94" width="555" height="77"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="360dff03-1af4-4fa2-a80f-ef43eee2c3fe" x="0" y="0" width="555" height="94"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="2b6a24df-d73d-44b0-a1ae-9611c4addbc2" x="0" y="24" width="100" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement/>
+				<text><![CDATA[ID Beacon ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="b01e2c13-0c42-4218-b729-4a71d39288c0" x="0" y="44" width="100" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement/>
+				<text><![CDATA[Pembuat ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="1bcc53ac-13cc-4d60-9f4f-210f74516c7a" x="0" y="64" width="100" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement/>
+				<text><![CDATA[Model ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="dccfa9c5-ffa5-4023-a55b-0b15925cbcfe" x="296" y="44" width="139" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement/>
+				<text><![CDATA[No Persetujuan ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="42556f5e-ef99-4415-b74f-0b30837eb2bc" x="296" y="64" width="139" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement/>
+				<text><![CDATA[Tanggal Kadaluarsa Baterai ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="2058b360-c40a-42c1-b3f5-d7c058e1058a" x="0" y="2" width="100" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Data EPIRB ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="03df97ce-d49d-45a0-aa54-ca249aec71f2" x="0" y="94" width="119" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Registrasi EPIRB ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="0fdde529-33bc-4206-be6e-5877c486c0f1" x="15" y="114" width="138" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement/>
+				<text><![CDATA[Registrasi EPIRB Baru ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="48f25c32-9513-4ab5-9d79-768105f8e4d6" x="15" y="137" width="219" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement/>
+				<text><![CDATA[Perubahan Informasi atau Kepemilikan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="df31fc19-9934-4a95-96c1-1bee84764dde" x="331" y="114" width="220" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement/>
+				<text><![CDATA[Penggantian ID EPIRB yang telah diregister]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c7874545-e8b5-433c-982b-98f0a8619592" x="301" y="137" width="88" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement/>
+				<text><![CDATA[ID EPIRB Lama]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="bf14330e-dae8-4e91-a34c-533807acf80a" x="0" y="171" width="555" height="93"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="90723cc0-ed2a-4b2c-9d42-35f450c61882" x="0" y="172" width="100" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Data Pemilik]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="8ed4ee7e-23cf-4fbe-a50a-6032bd7b63cd" x="0" y="194" width="100" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement/>
+				<text><![CDATA[Nama ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="b4101f04-6601-4195-bd3e-697a4b4ec58a" x="0" y="214" width="100" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement/>
+				<text><![CDATA[Alamat ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="299225f6-76a5-46c1-af69-9746181448dd" x="296" y="194" width="82" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement/>
+				<text><![CDATA[Email ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="5a40e825-2750-4fc7-9569-99051145a055" x="296" y="214" width="82" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement/>
+				<text><![CDATA[Telepon ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="53301003-1763-403b-bfe7-568342f1d31f" x="1" y="265" width="100" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Data Kapal ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="dff6ba48-ee34-4f3f-a0bd-3baea904f52a" x="1" y="285" width="100" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement/>
+				<text><![CDATA[No. Registrasi ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="67f3bea6-6695-4950-aeb3-d754e3383b0a" x="1" y="305" width="100" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement/>
+				<text><![CDATA[Nama Kapal ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f14ec868-e647-4a54-8d82-0a465115394a" x="1" y="325" width="100" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement/>
+				<text><![CDATA[Tipe Kapal ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f428da03-7ba4-465e-a689-d6c03eb2b131" x="296" y="285" width="57" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement/>
+				<text><![CDATA[Callsign ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="412e94dc-6ac4-46fc-aaf7-e763fbbd6ac2" x="296" y="305" width="57" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement/>
+				<text><![CDATA[Panjang ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="3c7a03d8-fc85-442d-a905-7e59c5753f0a" x="424" y="305" width="57" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement/>
+				<text><![CDATA[Maks POB ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="aa2d112e-b1b4-465c-bc84-bf4da95ab47c" x="1" y="344" width="100" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement/>
+				<text><![CDATA[Bermesin ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="b67e1f8c-b3d9-478d-805f-7163d7650ae5" x="1" y="403" width="100" height="31"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement/>
+				<text><![CDATA[Peralatan Komunikasi ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="0179980b-2f47-4479-8957-de725602a338" x="296" y="344" width="83" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement/>
+				<text><![CDATA[Pelabuhan ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="75b9d77b-ae30-40a5-ba5e-d9d1b1a36847" x="296" y="383" width="83" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement/>
+				<text><![CDATA[Data Tambahan ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="2a3e7c78-f9bb-4c7b-8c95-e044fc83175d" x="245" y="407" width="34" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement/>
+				<text><![CDATA[MF ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c3ea64e5-e6e3-4c1c-9b37-5b325ba1b5f5" x="245" y="426" width="34" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement/>
+				<text><![CDATA[HF ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="ffd39161-b994-4354-8234-95eeb12b636a" x="317" y="426" width="34" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement/>
+				<text><![CDATA[Other ]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="c468d4f2-d239-4450-9f4f-f569f9a899aa" x="0" y="451" width="555" height="140"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="1e5a30f0-9e22-4515-acdf-8a421a104740" x="0" y="455" width="153" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Data Kontak Darurat ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="86627259-1225-453b-a760-48fd29b04867" x="1" y="475" width="194" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement/>
+				<text><![CDATA[Nama Kontak Darurat Utama ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="a184d861-4520-4b1e-9a31-3fbc6ce00d7b" x="1" y="515" width="100" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement/>
+				<text><![CDATA[Telepon Rumah ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="07fb5eb5-3223-4184-bfb0-63a0d9bb035b" x="1" y="535" width="100" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement/>
+				<text><![CDATA[Telepon Kantor ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="2f7fb55d-895e-400b-8ddd-1570c5aeed5c" x="1" y="554" width="100" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement/>
+				<text><![CDATA[Telepon Seluler ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="a6fdf4b4-aea5-46ab-ac7f-b442997311d2" x="301" y="515" width="100" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement/>
+				<text><![CDATA[Telepon Rumah ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="53e1ea89-d0e9-4961-acc7-4306ec31ebbd" x="301" y="535" width="100" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement/>
+				<text><![CDATA[Telepon Kantor ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="b8f8b879-35f2-4b15-9f49-9a4ea027dc6c" x="301" y="554" width="100" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement/>
+				<text><![CDATA[Telepon Seluler ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="3998b7ea-91b4-49c8-b3f8-12a1ebd31bd0" x="301" y="475" width="172" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement/>
+				<text><![CDATA[Nama Kontak Darurat Alternatif ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="cca71b00-327e-40d7-ac51-878f7d73f02d" x="0" y="591" width="158" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement/>
+				<text><![CDATA[Tanggal Registrasi ]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="5f0e700e-efe4-43a6-a82b-8c377493f3e7" x="6" y="119" width="9" height="10"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="f2824f86-028b-466c-b686-8ff0476b3296" x="6" y="141" width="9" height="10"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="4837c1f9-7fec-457f-a63d-f5e7e5989152" x="321" y="119" width="9" height="10"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="1171a079-6595-42aa-a4a1-45c88dc31724" x="236" y="411" width="9" height="10"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="e7641f26-18a0-4f8e-8f64-91a360e6552c" x="236" y="429" width="9" height="10"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="3fbedad8-6ffe-4c92-8738-8416c5e4ab72" x="308" y="429" width="9" height="10"/>
+			</rectangle>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="4df4c5c8-0b27-46b2-b9fa-a0e6e80312bc" x="100" y="24" width="295" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$F{BEACONID}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="6b7ecd30-c3c3-431f-a0de-a1d033df98e4" x="100" y="44" width="177" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$F{MANUFACTURERNAME}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="b86871d4-505f-4f8b-b0c4-e54fcb2f6316" x="100" y="64" width="177" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$F{OTHERBEACONMODEL}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="b51fedf6-8c10-4c9b-b2a8-c65f9cf91fee" x="435" y="44" width="118" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$F{APPROVALNO}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="5a55eb92-aafa-47b1-8efb-15037a31050a" x="435" y="64" width="118" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$F{BATTERYEXPDATE}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="f69f68f4-f208-495c-92d4-094c9ac977eb" x="389" y="137" width="164" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$F{OLDBEACONID}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="5df2fcc9-a348-4410-b7bf-924ca9d2b64b" x="100" y="194" width="177" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$F{OWNERNAME}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="069ced80-aa47-425b-8ff1-0c9c0f5f768f" x="100" y="214" width="177" height="46"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$F{OWNERADDRESS}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="aee4eb0e-6002-437b-ab16-e54c0bdd3ef9" x="379" y="194" width="174" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$F{OWNEREMAIL}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="e081f48b-50e9-488b-9cfa-89a180b641a1" x="379" y="214" width="174" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$F{OWNERPHONE}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="664be2b7-ca0d-4cca-9929-3c38e88ff6ed" x="101" y="285" width="173" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$F{REGISTRATIONNO}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="1be5c92c-6f33-48b9-8312-64e8c0d44611" x="101" y="305" width="173" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$F{NAME}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="f2eb722f-5d18-4698-ac47-7161faa9ee19" x="101" y="325" width="173" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$F{TIPEKAPAL}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="2f14ddc9-d790-409f-b036-056e2a0b0732" x="101" y="344" width="173" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$F{KATEGORI}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="12d7b2dd-3edf-4b53-829a-0149cc4c3e9b" x="379" y="344" width="165" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$F{HOMEBASE}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="ccc9c0f5-f3dd-487a-b91a-b428a599cda7" x="378" y="383" width="165" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$F{ADDITIONALDETAIL}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="533df9e1-ce0c-4eec-a432-80d008d3454b" x="353" y="305" width="73" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$F{A_LENGTH}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="ba1e108e-d597-4a02-a892-9d4124b40a58" x="481" y="305" width="75" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$F{PASSENGER}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="93b282da-da8f-40ed-889c-828d30e57968" x="351" y="426" width="165" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none"/>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="acb49cc0-6c9c-48d5-bfc1-525361de3c2f" x="1" y="495" width="276" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$F{URGENTCONTACTNAME1}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="e6c2fd8e-b238-4672-8847-e1a11a2f7629" x="301" y="495" width="250" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$F{URGENTCONTACTNAME2}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="802968a6-73d1-4b65-8290-31c7ad458765" x="101" y="515" width="176" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$F{URGENTCONTACTHOMEPHONE1}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="0b6cb6d7-7415-4a73-bc21-c68d533af753" x="101" y="535" width="176" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$F{URGENTCONTACTOFFICEPHONE1}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="8cdadbfc-4dc0-473e-aa80-2b16f826282b" x="101" y="554" width="176" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$F{URGENTCONTACTCELLPHONE1}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="b245d6d1-0985-4da3-a197-c3ab97cde40e" x="401" y="535" width="140" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$F{URGENTCONTACTOFFICEPHONE2}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="e527ff90-2129-4c6e-a8aa-0bcbc809ccb5" x="401" y="515" width="140" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$F{URGENTCONTACTHOMEPHONE2}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="42683422-495f-451f-837e-cdf116926531" x="401" y="554" width="140" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$F{URGENTCONTACTCELLPHONE2}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="e1fca520-c6c0-44ce-a8e7-fb3ba0d9e52b" x="158" y="591" width="250" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$F{REGISTRATIONDATE}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="cfc7b638-1687-44b7-bb0b-2b273175902e" x="6" y="114" width="9" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$F{BARU}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="ae009e1c-ac44-4fff-9e9c-bbb1c5f9f82b" x="6" y="137" width="9" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$F{PERUBAHAN_INFORMASI}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="f4fa94f0-9f09-4455-aa4f-b7c3b66bff47" x="321" y="114" width="9" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$F{PENGGANTIAN}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="75843874-f234-498c-a345-39959424aa7e" x="236" y="407" width="9" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$F{MF}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="b0768fd4-80d3-43b2-8a64-04529f771f93" x="308" y="426" width="9" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$F{OTHERSS}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="3c2a1248-f0a2-4161-9cda-9345827fdba8" x="236" y="426" width="9" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$F{HF}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="8bdb1e12-4f4d-4e0e-a31d-217b1f1b0d78" x="296" y="234" width="82" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement/>
+				<text><![CDATA[Seluler ]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="d9731551-ecc0-4df5-95a2-e11bbacde0e0" x="379" y="234" width="174" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$F{OWNERCELLPHONE}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="76a62cf4-3ba5-423a-b961-bb82120ee246" x="353" y="285" width="73" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$F{CALLSIGN}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="41c63068-559d-42fa-a187-fa77c88e8a21" x="481" y="285" width="75" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$F{COLOR}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="3529241c-45ec-4d0e-95a6-a165c5d88baf" x="424" y="285" width="57" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement/>
+				<text><![CDATA[Warna ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="04684a28-9527-4ef5-84fc-5b379d31e95e" x="296" y="364" width="83" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement/>
+				<text><![CDATA[No. MMSI ]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="3f244980-a0ab-470e-afb7-d5cfaa5a5c92" x="378" y="364" width="165" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$F{MMSI}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="3caa31b0-06c7-4523-8258-13806d432cea" x="1" y="364" width="100" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement/>
+				<text><![CDATA[Telp. INMARSAT ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="0503bc60-a30a-468f-8814-020ff2a00683" x="1" y="383" width="100" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement/>
+				<text><![CDATA[Telp. Lainnya ]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="a0cc7408-6294-41cf-a8da-761b6a1c165d" x="101" y="364" width="173" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$F{INMARSATVOICE}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="79de4799-6f07-4a84-8c04-754c59978502" x="101" y="383" width="173" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$F{OTHERTELPNO}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement uuid="32a97d3b-5bc1-496f-bb80-bd11b1994383" x="126" y="411" width="9" height="10"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="d654bfc2-a502-4758-820c-cdc53d4449ca" x="126" y="429" width="9" height="10"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="f34c3eb4-6015-46c1-a022-7d2f8faaa9ce" x="135" y="426" width="34" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement/>
+				<text><![CDATA[VHF ]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="ff01eecb-a6ec-4745-a06a-cd740b6aaba3" x="126" y="407" width="9" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$F{INMARSAT}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="f937d523-0e3e-4824-a57c-e84e35d22b7a" x="126" y="426" width="9" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$F{VHF}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="4de5bc83-266e-412e-9de2-ebc2793abe9f" x="135" y="407" width="70" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement/>
+				<text><![CDATA[INMARSAT ]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="20">
+			<textField evaluationTime="Report">
+				<reportElement uuid="51de0110-2205-4885-b834-e8c74f7f55e3" x="520" y="0" width="33" height="20"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[+ $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="adb66797-5bca-4c50-af46-9da50a0bdf6b" x="436" y="0" width="81" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+ " of"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

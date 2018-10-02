@@ -1,0 +1,42 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <p:panelGrid columns="2" styleClass="ui-panelgrid-blank"
+                 style="margin-left: -10px;margin-right: -10px">
+        <p:inputSwitch value="#{mapMBean.isIconInsiden}" onchange="#{mapMBean.showPoint()}">
+            <p:ajax listener="#{mapMBean.setIconInsiden}" update="idMap" />
+        </p:inputSwitch>
+        <h:outputText value="Icon Insiden " />
+        <p:inputSwitch value="#{mapMBean.isBatasKansar}" onchange="#{mapMBean.showPoint()}" >
+            <p:ajax listener="#{mapMBean.setBatasKansar()}" update="idMap" />
+        </p:inputSwitch>
+        <h:outputText value="Batas Wilayah Kansar" />
+        <p:inputSwitch value="#{mapMBean.isPoi}" >
+            <p:ajax listener="#{mapMBean.setPoi()}" update="idMap"/>
+        </p:inputSwitch>
+        <h:outputText value="POI" />
+        <p:inputSwitch value="#{mapMBean.isTraffic}" >
+            <p:ajax listener="#{mapMBean.callTraffic}"/>
+        </p:inputSwitch>
+        <h:outputText value="Traffic" />
+        <p:inputSwitch value="#{mapMBean.isBeacon}" >
+            <p:ajax listener="#{mapMBean.setBeacon()}" update="idMap"/>
+        </p:inputSwitch>
+        <h:outputText value="Beacon" />
+    </p:panelGrid>
+    <p:separator/>
+    <p:commandButton value="SEARCH AREA" style="background-color: whitesmoke; color: black; margin-bottom:10px;"
+                     rendered="false"/>
+    <p:button value="SEARCH PATTERN" styleClass="red-btn" style="margin-bottom:10px;" rendered="false"/>
+
+    <p:commandButton value="PRINT" onclick="groundOverlay()" rendered="false"/>
+    <p:panelGrid columns="2" styleClass="ui-panelgrid-blank" style="margin-left: -10px;margin-right: -10px">                            
+        <p:selectBooleanCheckbox value="#{mapMBean.clustercheck}" id="idBoolCluster" widgetVar="boolCluster" onchange="clusterMarkers()">
+            <p:ajax update="growl" listener="#{mapMBean.addMessage()}" />
+        </p:selectBooleanCheckbox>
+
+        <h:outputText value="Cluster Icon" />
+    </p:panelGrid>
+</ui:composition>

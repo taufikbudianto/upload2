@@ -1,0 +1,132 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="content">
+        <div class="ui-g">
+            <div class="ui-g-12 ui-g-nopad">
+                <div class="ui-g-12 card">
+                    <h:form id="role-content">
+
+                        <p:panel id="list" class="ui-g-12 no-border no-padding" rendered="#{!roleMBean.showDetail}" header="Hak Akses">
+
+                            <p:panelGrid columns="5" layout="grid" styleClass="ui-panelgrid-blank form-group" columnClasses="ui-grid-col-7,
+                                         ui-grid-col-1, ui-grid-col-1, ui-grid-col-1, ui-grid-col-2" style="width: 100%; line-height: 65px; margin-bottom: -20px"
+                                         class="no-padding no-border">
+
+                                <h:form id="search">
+                                    <p:panelGrid columns="3" class="ui-g-12" style="margin-top: -8px; margin-bottom: 5px">
+                                        <p:inputText value="#{roleMBean.roleFilter}" placeholder="Nama Hak Akses" style="width: 100%" />
+                                        <p:defaultCommand target="apply-btn" />                                        
+                                        <p:commandButton value="Cari" id="apply-btn" type="button" icon="ui-icon-search" style="width: 85%" >
+                                            <p:ajax event="click" update=":role-content:list" process="@form"/>
+                                        </p:commandButton>
+                                    </p:panelGrid>
+                                </h:form>
+
+<!--                                <p:commandButton value="{msg.btn_enabled}" icon="fa fa-check-circle-o" 
+                                                 disabled="{roleMBean.isSecureItemReadOnly('EnabledButton')}"
+                                                 rendered="{roleMBean.isSecureItemVisible('EnabledButton')}">
+                                    <p:ajax event="click" listener="{roleMBean.enabledOrDisabledSelectedRoles(true)}" update="@form:list" process="@form:role-datatable" />
+                                </p:commandButton>
+
+                                <p:commandButton value="{msg.btn_disabled}" icon="fa fa-ban" 
+                                                 disabled="{roleMBean.isSecureItemReadOnly('DisabledButton')}"
+                                                 rendered="{roleMBean.isSecureItemVisible('DisabledButton')}">
+                                    <p:ajax event="click" listener="{roleMBean.enabledOrDisabledSelectedRoles(false)}" update="@form:list" process="@form:role-datatable" />
+                                </p:commandButton>
+
+                                <p:commandButton value="{msg.btn_duplicate}" icon="fa fa-files-o" 
+                                                 disabled="{roleMBean.isSecureItemReadOnly('DuplicateButton')}"
+                                                 rendered="{roleMBean.isSecureItemVisible('DuplicateButton')}">
+                                    <p:ajax event="click" listener="{roleMBean.duplicateSelectedRole()}" update="@form" process="@form:role-datatable" />
+                                </p:commandButton>-->
+
+                                <p:button value="Reset" icon="ui-icon-replay" style="width: 175%; margin-left: -100px"/>
+
+                                <p:commandButton value="Tambah Data Baru" icon="fa fa-plus-circle" class="green-btn" style="width: 250%; margin-left: 50px"
+                                                 disabled="#{roleMBean.isSecureItemReadOnly('CreateButton')}"
+                                                 rendered="#{roleMBean.isSecureItemVisible('CreateButton')}">
+                                    <p:ajax event="click" listener="#{roleMBean.loadDetail(null)}" update="@form" process="@this" />
+                                </p:commandButton>
+                            </p:panelGrid>                            
+
+                            <p:dataTable id="role-datatable" var="role" value="#{roleMBean.rolesList}" reflow="true" rowKey="#{role.roleId}" class="ui-g-12"
+                                         lazy="true" selection="#{roleMBean.selectedRoles}" paginator="true" paginatorPosition="bottom" 
+                                         rows="#{viewBean.rowsPageDefault}" rowsPerPageTemplate="#{viewBean.rowsPerPageTemplate}" 
+                                         emptyMessage="Data tidak ditemukan" tableStyle="table-layout:auto"
+                                         rowIndexVar="index">
+
+                                <f:facet name="header">Daftar Hak Akses</f:facet>
+
+                                <p:column headerText="No" style="width: 20px; text-align: center">
+                                    <p:outputLabel value="#{index + 1}"/>
+                                </p:column>
+                                <!--<p:column selectionMode="multiple" style="width: 5%; text-align: center"/>-->
+
+                                <p:column headerText="Hak Akses" sortBy="#{role.roleName}">
+                                    <p:outputLabel value="#{role.roleName}"/>
+<!--                                    <p:commandLink value="{role.roleName}">
+                                        <p:ajax event="click" listener="{roleMBean.loadDetail(role)}" update="@form @form:role-detail" process="@this" />
+                                    </p:commandLink>-->
+                                </p:column>
+
+                                <p:column headerText="#{msg.role_datatable_created}" style="width: 25%; text-align: center;" sortBy="#{role.createdDate}">
+                                    <p:outputLabel value="#{role.createdDate}">
+                                        <f:convertDateTime pattern="#{viewBean.dateTimeFormatPattern}"/>
+                                    </p:outputLabel>
+                                </p:column>
+
+                                <p:column headerText="#{msg.role_datatable_lastmodified}" style="width: 25%; text-align: center;" sortBy="#{role.lastModifiedDate}">
+                                    <p:outputLabel value="#{role.lastModifiedDate}">
+                                        <f:convertDateTime pattern="#{viewBean.dateTimeFormatPattern}"/>
+                                    </p:outputLabel>
+                                </p:column>
+
+                                <p:column headerText="#{msg.role_datatable_status}" style="text-align: center" sortBy="#{role.enabled}">
+                                    <p:outputLabel value="#{role.enabled ? msg.data_active : msg.data_inactive}"/>
+                                </p:column>
+
+                                <p:column headerText="Aksi" style="text-align: center;width:100px;">
+                                    <p:commandButton label="Lihat" icon="fa fa-search" class="blue-grey-btn">
+                                        <p:ajax event="click" listener="#{roleMBean.view(role)}" update="@form @form:role-detail" process="@this"/>
+                                    </p:commandButton>
+                                    <p:commandButton label="Edit" icon="fa fa-edit" class="blue-grey-btn">
+                                        <p:ajax event="click" listener="#{roleMBean.loadDetail(role)}" update="@form @form:role-detail" process="@this"/>
+                                    </p:commandButton>
+                                    <p:commandButton label="Hapus" icon="fa fa-trash" class="red-btn" update="@form @form:role-detail" process="@this">
+                                        <p:confirm header="Konfirmasi" message="Apakah Anda yakin ingin menghapus data hak akses ini?" icon="ui-icon-alert"/>
+                                        <p:ajax event="click" listener="#{roleMBean.hapus(role)}" update="@form @form:role-detail" process="@this"/>
+                                    </p:commandButton>
+                                </p:column>
+                            </p:dataTable>
+
+                        </p:panel>
+
+                        <p:panel id="detail" class="ui-g-12 no-border no-padding" rendered="#{roleMBean.showDetail}">
+                            <ui:include src="detail.xhtml" />
+                        </p:panel>
+
+                        <p:dialog id="saveNotification" widgetVar="saveNotification" header="Informasi" showHeader="true" appendTo="@(body)"
+                                  showEffect="fade" hideEffect="fade" draggable="false" resizable="false" closable="false" modal="true" width="500">
+                            <h:form>
+                                <p:outputLabel value="Data berhasil disimpan!"/>
+                                <p:panel class="control-button">
+                                    <p:commandButton value="OK">
+                                        <p:ajax event="click" listener="#{roleMBean.closeSaveInformationDialog()}" 
+                                                update=":role-content" process="@this"/>
+                                    </p:commandButton>
+                                </p:panel>
+                            </h:form>
+                        </p:dialog>
+
+                    </h:form>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+
+</ui:composition>

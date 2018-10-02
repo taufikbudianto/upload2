@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Inciden_Pelayaran_subreport1" pageWidth="554" pageHeight="555" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="554" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="453a2b47-613f-48e4-9e8d-c162d97f08d1">
+	<property name="ireport.zoom" value="1.5000000000000024"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="INCIDENTID" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT SIGHTINGID,CREATEDBY,TO_DATE(DATECREATED,'DD-MM-YYYY')DATECREATED,LASTMODIFIED,
+MODIFIEDBY,ISDELETED,INCIDENTID,OBSERVERNAME,OBSERVERPHONE,OBSERVERLOCATION,OBSERVERLONGITUDE,
+OBSERVERLATITUDE,OBSERVERUNCERTAINTY,OBSERVERREMARKS,OBJECTPOSITION,OBJECTLONGITUDE,OBJECTLATITUDE,OBJECTUNCERTAINTY,OBJECTREMARKS,REPORTTYPE,OBJECTTYPE,REMARKS,WEATHERDESCRIPTION,ASSESMENTPRIORITY,ASSESMENTANNOTATION,ASSESMENTNOTES,USERSITEID,OBJECTDTG,OBJECTDTGUNCERTAINTY,ASSESMENTSTATUS,ASSESMENTSTATUSOTHER,OBJECTTYPEOTHER,OBJECTDTGTIMEZONE,OBJECTUNCERTAINTYUNIT,OBJECTDTGUNCERTAINTYUNIT,STATUS,ISCRM,SIGHTINGNUMBER,OBJECTDTGTIMEZONESYMBOL,OBJECTLATITUDEDMS,OBJECTLATITUDEDD
+FROM UTI_SIGHTING WHERE ISDELETED =0
+AND INCIDENTID = $P{INCIDENTID}]]>
+	</queryString>
+	<field name="SIGHTINGID" class="java.lang.String"/>
+	<field name="CREATEDBY" class="java.lang.String"/>
+	<field name="DATECREATED" class="java.lang.String"/>
+	<field name="LASTMODIFIED" class="java.sql.Timestamp"/>
+	<field name="MODIFIEDBY" class="java.lang.String"/>
+	<field name="ISDELETED" class="java.math.BigDecimal"/>
+	<field name="INCIDENTID" class="java.lang.String"/>
+	<field name="OBSERVERNAME" class="java.lang.String"/>
+	<field name="OBSERVERPHONE" class="java.lang.String"/>
+	<field name="OBSERVERLOCATION" class="java.lang.String"/>
+	<field name="OBSERVERLONGITUDE" class="java.lang.String"/>
+	<field name="OBSERVERLATITUDE" class="java.lang.String"/>
+	<field name="OBSERVERUNCERTAINTY" class="java.lang.String"/>
+	<field name="OBSERVERREMARKS" class="java.lang.String"/>
+	<field name="OBJECTPOSITION" class="java.lang.String"/>
+	<field name="OBJECTLONGITUDE" class="java.lang.String"/>
+	<field name="OBJECTLATITUDE" class="java.lang.String"/>
+	<field name="OBJECTUNCERTAINTY" class="java.lang.String"/>
+	<field name="OBJECTREMARKS" class="java.lang.String"/>
+	<field name="REPORTTYPE" class="java.math.BigDecimal"/>
+	<field name="OBJECTTYPE" class="java.math.BigDecimal"/>
+	<field name="REMARKS" class="java.lang.String"/>
+	<field name="WEATHERDESCRIPTION" class="java.lang.String"/>
+	<field name="ASSESMENTPRIORITY" class="java.math.BigDecimal"/>
+	<field name="ASSESMENTANNOTATION" class="java.lang.String"/>
+	<field name="ASSESMENTNOTES" class="java.lang.String"/>
+	<field name="USERSITEID" class="java.lang.String"/>
+	<field name="OBJECTDTG" class="java.sql.Timestamp"/>
+	<field name="OBJECTDTGUNCERTAINTY" class="java.lang.String"/>
+	<field name="ASSESMENTSTATUS" class="java.math.BigDecimal"/>
+	<field name="ASSESMENTSTATUSOTHER" class="java.lang.String"/>
+	<field name="OBJECTTYPEOTHER" class="java.lang.String"/>
+	<field name="OBJECTDTGTIMEZONE" class="java.lang.String"/>
+	<field name="OBJECTUNCERTAINTYUNIT" class="java.lang.String"/>
+	<field name="OBJECTDTGUNCERTAINTYUNIT" class="java.lang.String"/>
+	<field name="STATUS" class="java.math.BigDecimal"/>
+	<field name="ISCRM" class="java.math.BigDecimal"/>
+	<field name="SIGHTINGNUMBER" class="java.lang.String"/>
+	<field name="OBJECTDTGTIMEZONESYMBOL" class="java.lang.String"/>
+	<field name="OBJECTLATITUDEDMS" class="java.lang.String"/>
+	<field name="OBJECTLATITUDEDD" class="java.lang.String"/>
+	<group name="INCIDENTID">
+		<groupExpression><![CDATA[$F{INCIDENTID}]]></groupExpression>
+	</group>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="3b22cd30-d28b-43f4-b2bd-ede5ece08af9" x="446" y="0" width="108" height="20"/>
+				<box topPadding="2" leftPadding="3" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[DESKRIPSI]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="704cae84-e8da-45f3-98e8-860cd5ef43bc" x="246" y="0" width="75" height="20"/>
+				<box topPadding="2" leftPadding="3" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[TELEPON]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="42f555fb-e2ad-479c-8f6f-99319743bfea" x="21" y="0" width="100" height="20"/>
+				<box topPadding="2" leftPadding="3" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[WAKTU KEJADIAN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="2ac718a0-c812-4497-bb5d-81a7668f883c" x="0" y="0" width="21" height="20"/>
+				<box topPadding="2" leftPadding="3" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[NO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="350675b7-82ce-46ea-b56b-369891624006" x="321" y="0" width="125" height="20"/>
+				<box topPadding="2" leftPadding="3" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[LOKASI]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="0c9a5a15-4b2b-4fb3-a6a7-4d6164ccbc9b" x="121" y="0" width="125" height="20"/>
+				<box topPadding="2" leftPadding="3" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[NAMA PELAPOR]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="90e2351f-8e21-4db2-9adc-171afc33363a" stretchType="RelativeToTallestObject" x="21" y="0" width="100" height="20"/>
+				<box topPadding="2" leftPadding="3" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{DATECREATED}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="f5668209-a18e-4d7f-bdba-cf50c057800f" stretchType="RelativeToTallestObject" x="321" y="0" width="125" height="20"/>
+				<box topPadding="2" leftPadding="3" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{OBJECTPOSITION}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="8e83f458-56cc-4feb-a024-0d09c57f6ca7" stretchType="RelativeToTallestObject" x="446" y="0" width="108" height="20"/>
+				<box topPadding="2" leftPadding="3" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{REMARKS}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="0a983953-40ad-46d3-ac0b-ab2fda2505f4" stretchType="RelativeToTallestObject" x="121" y="0" width="125" height="20"/>
+				<box topPadding="2" leftPadding="3" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{OBSERVERNAME}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="62b39810-68f5-4c09-9182-96dba8eb4fc1" stretchType="RelativeToTallestObject" x="0" y="0" width="21" height="20"/>
+				<box topPadding="2" leftPadding="3" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement/>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="b15a8871-12e7-4794-b2dc-31444c134c5b" stretchType="RelativeToTallestObject" x="246" y="0" width="75" height="20"/>
+				<box topPadding="2" leftPadding="3" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{OBSERVERPHONE}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="20">
+			<printWhenExpression><![CDATA[new Boolean($V{REPORT_COUNT} == 0)]]></printWhenExpression>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="b15a8871-12e7-4794-b2dc-31444c134c5b" stretchType="RelativeToTallestObject" x="246" y="0" width="75" height="20"/>
+				<box topPadding="2" leftPadding="3" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement/>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="f5668209-a18e-4d7f-bdba-cf50c057800f" stretchType="RelativeToTallestObject" x="321" y="0" width="125" height="20"/>
+				<box topPadding="2" leftPadding="3" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement/>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="90e2351f-8e21-4db2-9adc-171afc33363a" stretchType="RelativeToTallestObject" x="21" y="0" width="100" height="20"/>
+				<box topPadding="2" leftPadding="3" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement/>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="8e83f458-56cc-4feb-a024-0d09c57f6ca7" stretchType="RelativeToTallestObject" x="446" y="0" width="108" height="20"/>
+				<box topPadding="2" leftPadding="3" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement/>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="62b39810-68f5-4c09-9182-96dba8eb4fc1" stretchType="RelativeToTallestObject" x="0" y="0" width="21" height="20"/>
+				<box topPadding="2" leftPadding="3" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement/>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="0a983953-40ad-46d3-ac0b-ab2fda2505f4" stretchType="RelativeToTallestObject" x="121" y="0" width="125" height="20"/>
+				<box topPadding="2" leftPadding="3" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement/>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

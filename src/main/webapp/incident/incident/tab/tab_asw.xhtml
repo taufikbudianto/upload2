@@ -1,0 +1,193 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <p:importEnum type="prosia.basarnas.enumeration.IncidentType" var="jenis" allSuffix="ALL_ENUM_VALUES" />
+    <p:importEnum type="prosia.basarnas.enumeration.Timezone" var="timezone" allSuffix="ALL_ENUM_VALUES" />
+    <h:form id="form-asw">
+
+        <p:messages closable="true"/>
+        <p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-7"
+                     style="width: 100%"
+                     styleClass="ui-panelgrid-blank form-group">
+            <h:panelGroup>
+                <p:panel  class="no-border ui-fluid value-readonly card card-w-title">
+                    <p:panelGrid columns="3" columnClasses="ui-grid-col-4,ui-grid-col-6,ui-grid-col-2"
+                                 style="width: 100%"
+                                 styleClass="ui-panelgrid-blank form-group">
+
+                        <p:outputLabel value="Time Observation" />
+                        <p:calendar  pattern="yyyyMMddHHmm" 
+                                     value="#{incidentAswMBean.incidentAsw.timeObservation}" mask="true" navigator="true"
+                                     showOn="button">
+                        </p:calendar>
+                        <p:selectOneMenu id="idInsidenTimezone" style="margin-bottom:10px;width: 40px;"
+                                         value="#{incidentAswMBean.incidentAsw.timeZone}"
+                                         required="true" requiredMessage="Alert Timezone harus dipilih">
+                            <f:selectItems value="#{timezone.ALL_ENUM_VALUES}" var="tz" 
+                                           itemValue="#{tz.timezone}" itemLabel="#{tz.shorttimezone}" />
+                        </p:selectOneMenu>
+                        <p:outputLabel value="Time Interval" />
+                        <p:spinner  
+                            value="#{incidentAswMBean.incidentAsw.timeInterval1}"
+                            min="0" max="23">
+                            <p:ajax listener="#{incidentAswMBean.onChangeInterval}"
+                                    update="incidentdetail:form-asw:idNumberHours,
+                                    incidentdetail:form-asw:idNumberContribution" 
+                                    process="@this" />
+                        </p:spinner>
+                        <p:outputLabel/>
+                        <p:outputLabel value="Time Interval 2" />
+                        <p:spinner  
+                            value="#{incidentAswMBean.incidentAsw.timeInterval2}"
+                            min="0" max="23">
+                            <p:ajax listener="#{incidentAswMBean.onChangeInterval}"
+                                    update="incidentdetail:form-asw:idNumberHours,
+                                    incidentdetail:form-asw:idNumberContribution" 
+                                    process="@this" />
+                        </p:spinner>
+                        <p:outputLabel/>
+                        <p:outputLabel value="Number of Hours" />
+                        <p:outputLabel id="idNumberHours"
+                                       value="#{incidentAswMBean.incidentAsw.numberHours}"/>
+                        <p:outputLabel/>
+                        <p:outputLabel value="Wind Direction"/>
+                        <p:inputNumber value="#{incidentAswMBean.incidentAsw.winDir}"
+                                       thousandSeparator="" decimalSeparator="." decimalPlaces="0"/>
+                        <p:outputLabel value="T"/>
+                        <p:outputLabel value="Wind Speed"/>
+                        <p:inputNumber value="#{incidentAswMBean.incidentAsw.winSpeed}"
+                                       thousandSeparator="" decimalSeparator="." decimalPlaces="0">
+                            <p:ajax listener="#{incidentAswMBean.onChangeContribution}"
+                                    update="incidentdetail:form-asw:idNumberContribution" process="@this" />
+                        </p:inputNumber>
+                        <p:outputLabel value="Kts"/>
+                        <p:outputLabel value="Contribution"/>
+                        <p:outputLabel id="idNumberContribution"
+                                       value="#{incidentAswMBean.incidentAsw.contribution}"/>
+                        <p:outputLabel value="Nm"/>
+
+                    </p:panelGrid>
+                    <p:commandButton value="Tambah" 
+                                     styleClass="green-btn" 
+                                     actionListener="#{incidentAswMBean.tambahAsw}"
+                                     process="incidentdetail:form-asw"
+                                     disabled="#{incidentAswMBean.incidentMBean.incident.status == 'Close'}" 
+                                     icon="ui-icon-plus"/>
+                </p:panel>
+                <p:panel  class="no-border ui-fluid value-readonly card card-w-title" header="Summary">
+                    <p:panelGrid columns="3" columnClasses="ui-grid-col-5,ui-grid-col-1,ui-grid-col-3"
+                                 style="width: 100%"
+                                 styleClass="ui-panelgrid-blank form-group">
+                        <p:outputLabel value="Total Hours" />
+                        <p:outputLabel value=":" />
+                        <p:outputLabel value="#{incidentAswMBean.sumHours}" />
+                        <p:outputLabel value="Vector of Contribution" />
+                        <p:outputLabel value=":" />
+                        <p:outputLabel value="#{incidentAswMBean.sumVector}" />
+                        <p:outputLabel value="SQRT" />
+                        <p:outputLabel value=":" />
+                        <p:outputLabel value="#{incidentAswMBean.sumSqrt}" />
+                        <p:outputLabel value="Ry (sum A Sinus)" />
+                        <p:outputLabel value=":" />
+                        <p:outputLabel value="#{incidentAswMBean.sumASin}" />
+                        <p:outputLabel value="Rx (sum A Cos)" />
+                        <p:outputLabel value=":" />
+                        <p:outputLabel value="#{incidentAswMBean.sumACos}" />
+                        <p:outputLabel value="Ry2" />
+                        <p:outputLabel value=":" />
+                        <p:outputLabel value="#{incidentAswMBean.sumASin2}" />
+                        <p:outputLabel value="Rx2" />
+                        <p:outputLabel value=":" />
+                        <p:outputLabel value="#{incidentAswMBean.sumACos2}" />
+                        <p:outputLabel value="TAN -1 (Ry/Rx)" />
+                        <p:outputLabel value=":" />
+                        <p:outputLabel value="#{incidentAswMBean.sumAtan}" />
+                        <p:outputLabel value="Average (F/D)KTS" />
+                        <p:outputLabel value=":" />
+                        <p:outputLabel value="#{incidentAswMBean.sumHours
+                                                /incidentAswMBean.sumSqrt}" />
+                    </p:panelGrid>
+                </p:panel>
+            </h:panelGroup>
+
+            <p:dataTable id="idListIncAsw" widgetVar="idWidListIncAsw" var="list" reflow="true"
+                         value="#{incidentAswMBean.listIncidentAsw}" 
+                         style="max-width: 72%"
+                         paginator="true" paginatorPosition="bottom"
+                         paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} 
+                         {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                         rows="10" rowsPerPageTemplate="5,10,15" lazy="true"
+                         emptyMessage="Data tidak ditemukan."
+                         tableStyle="table-layout: auto;" 
+                         rowIndexVar="index">
+                <f:facet name="header">
+                    Daftar ASW
+                </f:facet>
+                <p:column headerText="No" style="width: 20px">
+                    <p:outputLabel value="#{index + 1}"/>
+                </p:column>
+                <p:column  headerText="Time Observation" sortBy="#{list.timeObservation}">
+                    <p:outputLabel value="#{list.timeObservation}">
+                        <f:convertDateTime type="date" pattern="dd/MM/yyyy HH:mm:ss"/>
+                    </p:outputLabel>
+                </p:column>
+                <p:column headerText="Time Interval" sortBy="#{list.timeInterval1}">
+                    <p:outputLabel value="#{list.timeInterval1}" />
+                </p:column>
+                <p:column headerText="Time Interval 2" sortBy="#{list.timeInterval2}">
+                    <p:outputLabel value="#{list.timeInterval2}" />
+                </p:column>
+                <p:column headerText="Number of Hours" sortBy="#{list.numberHours}">
+                    <p:outputLabel value="#{list.numberHours}" />
+                </p:column>
+                <p:column headerText="Wind Direction" sortBy="#{list.winDir}">
+                    <p:outputLabel value="#{list.winDir}" />
+                </p:column>
+                <p:column  headerText="Wind Speed" sortBy="#{list.winSpeed}">
+                    <p:outputLabel value="#{list.winSpeed}" />
+                </p:column>
+                <p:column headerText="Contribution" sortBy="#{list.contribution}">
+                    <p:outputLabel value="#{list.contribution}" />
+                </p:column>
+                <p:column headerText="Radian" sortBy="#{list.radian}">
+                    <p:outputLabel value="#{list.radian}" />
+                </p:column>
+                <p:column  headerText="Sin" sortBy="#{list.sinus}">
+                    <p:outputLabel value="#{list.sinus}" />
+                </p:column>
+                <p:column  headerText="Cos" sortBy="#{list.cosinus}">
+                    <p:outputLabel value="#{list.cosinus}" />
+                </p:column>
+                <p:column headerText="A Sin" sortBy="#{list.asin}">
+                    <p:outputLabel value="#{list.asin}" />
+                </p:column>
+                <p:column headerText="A Cos" sortBy="#{list.acos}">
+                    <p:outputLabel value="#{list.acos}" />
+                </p:column>
+                <p:column headerText="Aksi">
+                    <p:commandButton value="Edit" style="max-width: 80px" 
+                                     actionListener="#{incidentAswMBean.ubahAsw}"
+                                     process="incidentdetail:form-asw"
+                                     icon="fa fa-edit">
+                        <f:attribute name="listRow" value="#{list}" />
+                    </p:commandButton>
+                    <p:commandButton value="Hapus" style="max-width: 80px" 
+                                     actionListener="#{incidentAswMBean.hapusAsw}"
+                                     process="incidentdetail:form-asw"
+                                     icon="fa fa-trash">
+                        <f:attribute name="listRow" value="#{list}" />
+                        <p:confirm header="Konfirmasi" 
+                                   message="Apakah anda ingin menghapus data ?" 
+                                   icon="ui-icon-alert" />
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>
+
+
+        </p:panelGrid>
+
+
+    </h:form>
+</ui:composition>

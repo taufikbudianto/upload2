@@ -1,0 +1,113 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+    <ui:define name="title">Daftar Jabatan</ui:define>
+    <ui:define name="content">
+                <h:form id="jabatan-content">
+                    <p:panel id="list-jabatan" class="ui-fluid" header="Daftar Jabatan" styleClass="penelHeaderGreen ui-shadow-content">
+                        <p:panelGrid id="search" columns="5" layout="grid" 
+                                     styleClass="ui-panelgrid-blank form-group" 
+                                     columnClasses ="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-2,ui-grid-col-2"
+                                     style="margin-top: 20px;margin-bottom: 20px; width: 100%"
+                                     class="no-padding no-border">                          
+                            <p:selectOneMenu id="fieldjabatan" value="#{mstEmployeePositionMBean.field}">
+                                <p:ajax event="change" update="search" listener="#{mstEmployeePositionMBean.chengeToCombo()}"/>
+                                <f:selectItem itemLabel="Nama" itemValue="employmentpositionname"/>
+                                <f:selectItem itemLabel="Kategori" itemValue="category" />
+                            </p:selectOneMenu>                              
+                            <p:inputText id="value" value="#{mstEmployeePositionMBean.value}" rendered="#{!mstEmployeePositionMBean.showCombo}"/>
+                            <p:selectOneMenu id="categoryjabatan" value="#{mstEmployeePositionMBean.value}" rendered="#{mstEmployeePositionMBean.showCombo}">
+                                <f:selectItem itemLabel="Struktural" itemValue="0"/>
+                                <f:selectItem itemLabel="Fungsional" itemValue="1"/>
+                                <f:selectItem itemLabel="Operational" itemValue="2"/>
+                                <f:selectItem itemLabel="Siaga" itemValue="3"/>
+                            </p:selectOneMenu>
+                            <p:commandButton id="search-btn" icon="ui-icon-search" type="button" onclick="PF('listWidget').getPaginator().setPage(0);" value="Cari">
+                                <p:ajax event="click" update=":jabatan-content:list-jabatan" process="@form"/>
+                            </p:commandButton>         
+                            <p:button value="Reset" icon="ui-icon-replay"/>
+                            <p:commandButton value="Tambah Data Baru" icon="fa fa-plus-circle" styleClass="green-btn">
+                                <p:ajax event="click" listener="#{mstEmployeePositionMBean.add}"/>
+                            </p:commandButton>                                                     
+                        </p:panelGrid>
+                        <p:dataTable id="jabatan_datatable" var="jabatan" 
+                                     value="#{mstEmployeePositionMBean.lazyDataModelJPA}" reflow="true" 
+                                     rowKey="#{jabatan.employmentpositionid}" lazy="true" 
+                                     paginator="true" paginatorPosition="bottom" 
+                                     rows="10" rowsPerPageTemplate="5,10,15" widgetVar="listWidget" 
+                                     emptyMessage="Data tidak ditemukan" tableStyle="table-layout:fixed"
+                                     rowIndexVar="index" 
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                            <p:ajax event="page" listener="#{viewBean.onPageChange}"/>  
+                            <p:column headerText="No" style="width: 20px">
+                                <p:outputLabel value="#{index + 1}"/>
+                            </p:column>
+                            <p:column headerText="Nama" sortBy="#{jabatan.employmentpositionname}">
+                                <h:outputText value="#{jabatan.employmentpositionname}" />
+                            </p:column>
+                            <p:column headerText="Kategori" sortBy="#{jabatan.category}">
+                                <h:outputText value="#{jabatan.category eq '0'?'Struktural':(jabatan.category eq '1'?'Fungsional' : 
+                                                       jabatan.category eq '2'?'Operational' : 'Siaga')}" />
+                            </p:column>
+                            <p:column headerText="Aksi" style="width: 105px; text-align: center">
+                                <p:commandButton id="lihatJabatan"
+                                                 label="Lihat"
+                                                 onclick="PF('tTipLihat').hide();"
+                                                 icon="fa fa-search" 
+                                                 class="blue-grey-btn">
+                                    <p:ajax event="click" listener="#{mstEmployeePositionMBean.viewJabatan(jabatan.employmentpositionid,jabatan.responsibleto, true)}" update=":form-jabatan" />
+                                </p:commandButton>
+                                <p:tooltip value="Lihat" for="lihatJabatan"
+                                           trackMouse="true" widgetVar="tTipLihat"/>
+                                <p:outputLabel value="    "/>
+                                <p:commandButton id="ubahJabatan"
+                                                 label="Ubah"
+                                                 onclick="PF('tTipUbah').hide();"
+                                                 icon="fa fa-edit" 
+                                                 class="blue-grey-btn">
+                                    <p:ajax event="click" listener="#{mstEmployeePositionMBean.viewJabatan(jabatan.employmentpositionid,jabatan.responsibleto, false)}" update=":form-jabatan" />
+                                </p:commandButton>
+                                <p:tooltip value="Ubah" for="ubahJabatan"
+                                           trackMouse="true" widgetVar="tTipUbah"/>
+                                <p:outputLabel value="    "/>
+                                <p:commandButton id="hapusJabatan"
+                                                 label="Hapus"
+                                                 onclick="PF('tTipHapus').hide();"
+                                                 icon="fa fa-trash" 
+                                                 class="red-btn" 
+                                                 actionListener="#{mstEmployeePositionMBean.hapus(jabatan)}"
+                                                 update="jabatan-content:jabatan_datatable">
+                                    <p:confirm header="Konfirmasi" message="Apakah anda yakin ingin menghapus jabatan ini?" icon="ui-icon-alert"/>
+                                </p:commandButton>
+                                <p:tooltip value="Hapus" for="hapusJabatan"
+                                           trackMouse="true" widgetVar="tTipHapus"/>
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                </h:form>
+        <p:dialog id="idJabatan" widgetVar="widgetJabatan"
+                  header="Data "
+                  width="50%" height="50%"
+                  appendTo="@(body)"
+                  responsive="true" modal="true"
+                  maximizable="false"
+                  position="center" 
+                  resizable="false" closable="true">
+            <ui:include src="./jabatan.xhtml"/>
+        </p:dialog>
+
+        <p:dialog id="idJabatanInput" widgetVar="widgetJabatanInput"
+                  header="Data "
+                  width="50%" height="50%"
+                  appendTo="@(body)"
+                  responsive="true" modal="true"
+                  maximizable="false"
+                  position="center" 
+                  resizable="false" closable="true">
+            <ui:include src="./jabatanInput.xhtml"/>
+        </p:dialog>
+    </ui:define>
+</ui:composition>

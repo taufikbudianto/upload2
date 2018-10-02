@@ -1,0 +1,32 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <p:dialog id="idDialogScreenshot" position="center" 
+              header="Screenshot Map" dynamic="true"
+              showEffect="fade" hideEffect="fade"
+              widgetVar="showDialogScreenshot" modal="true"
+              height="50%" responsive="true"
+              appendTo="@(body)" closable="true">
+        <h:form prependId="false">
+            <p:panelGrid columns="1" layout="grid" style="width: 100%"
+                         styleClass="ui-panelgrid-blank form-group no-padding ui-fluid">
+                <p:outputLabel value="Pilih map mode yang ingin anda gunakan"/>
+                <p:selectOneMenu value="#{screenshotMBean.mapMode}" effect="fade" autoWidth="true">
+                    <f:selectItem itemLabel="Screenshot map sebagai file img" itemValue="img"/>
+                    <f:selectItem itemLabel="Screenshot map sebagai file kmz (archived kml)" itemValue="kml"/>
+                </p:selectOneMenu>
+            </p:panelGrid>
+            <p:panel class="control-button">
+                <p:commandButton value="Ok" id="btnSave" update="@form" process="@form"
+                                 actionListener="#{screenshotMBean.screenshotMap}"/>
+                <p:commandButton value="Cancel" onclick="PF('showDialogScreenshot').hide()" />
+            </p:panel>
+        </h:form>
+    </p:dialog>
+    <p:dialog id="eventDialog" widgetVar="eventDialog" position="top"
+              resizable="true" width="70%" height="70%" appendTo="@(body)">
+        <p:outputPanel id="img-out"/>
+    </p:dialog>
+</ui:composition>

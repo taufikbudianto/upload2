@@ -1,0 +1,23 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    
+
+        <div class="ui-g ui-fluid">
+            <div class="ui-g-12 ui-lg-12">
+                <h:form id="open-SearchArea">
+                  <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                        <p:outputLabel value="Data telah selesai dikalkulasi, apakah anda ingin men-set Search Area dan Datum ke Worksheet 2, 3 dan 8 ?" style="width: 200px"/>
+                  </p:panelGrid>
+                    <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group" style="width: 500px;">
+                        <p:commandButton value="Yes" styleClass="green-btn"  style="width:130px">
+                            <p:ajax event="click" listener="#{driftCalcWorksheet1MBean.setValueSetAreaDatum()}" update=":insiden-content,incidentdetail:tabplanning-content:form-ws1-panel1,incidentdetail:tabplanning-content:ws1-calculation" rendered="#{generalInfoMBean.isDetailProses}" />
+                        </p:commandButton>
+                        <p:commandButton value="No"  styleClass="red-btn" style="width:130px" onclick="PF('widgetOpenSearchArea').hide()"/>
+                </p:panelGrid>
+                </h:form>  
+            </div>
+        </div>
+</ui:composition>

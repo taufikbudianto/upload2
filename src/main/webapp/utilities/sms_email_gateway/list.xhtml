@@ -1,0 +1,23 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">      
+    <ui:define name="title">SMS Dan Email Gateway</ui:define>
+    <ui:define name="content">
+        <p:panel>
+            <p:tabView class="card" prependId="false">
+                <p:tab title="Outbox">
+                    <ui:include src="outbox.xhtml"/>
+                </p:tab>
+                <p:tab title="Inbox">
+                    <ui:include src="inbox.xhtml"/>
+                </p:tab>
+            </p:tabView>
+            <p:panel class="control-button no-border no-padding" >
+                <p:commandButton value="Tambah Data Baru" icon="fa fa-plus-circle" styleClass="green-btn"  id="tambah-sms-out" actionListener="#{smsOutMBean.openFormTambah}" />
+            </p:panel>
+        </p:panel>
+    </ui:define>
+</ui:composition>

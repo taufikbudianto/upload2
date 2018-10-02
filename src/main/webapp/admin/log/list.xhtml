@@ -1,0 +1,121 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+    <ui:define name="title">Log</ui:define>
+    <ui:define name="content">
+        <p:importEnum type="prosia.basarnas.enumeration.Timezone" var="timezone" allSuffix="ALL_ENUM_VALUES" />
+
+        <h:form id="form-Log" enctype="multipart/form-data">
+            <div class="ui-g-8 ui-lg-6 ">
+                <p:panel>
+                    <p:panelGrid columns="3" layout="grid" 
+                                 styleClass="ui-panelgrid-blank form-group" 
+                                 columnClasses="ui-grid-col-8,ui-grid-col-10,ui-grid-col-5" 
+                                 class="no-border no-padding no-padding-table ui-fluid" style="max-width: 700px">
+
+                        <p:outputLabel for="dtTanggal" value="Tanggal" />
+
+                        <p:calendar id="dtTanggal" pattern="dd/MM/yyyy HH:mm:ss" mask="true" navigator="true"
+                                    value="#{logMBean.twTgl}" disabled="#{logMBean.disabled}"/>
+
+                        <p:selectOneMenu id="idInsidenTimezone" autoWidth="false"
+                                         value = "#{logMBean.incidentLog.logDateTimeZone}"
+                                         disabled="#{logMBean.disabled}"
+                                         required="true" requiredMessage="Alert Timezone harus dipilih">
+                            <f:selectItem itemLabel="--- Pilih ---" itemValue="" />
+                            <f:selectItems value="#{timezone.ALL_ENUM_VALUES}" var="tz" 
+                                           itemValue="#{tz.timezone}" itemLabel="#{tz.shorttimezone}" />
+                        </p:selectOneMenu>
+
+
+                        <p:outputLabel value="Tipe Log" />
+                        <p:selectOneMenu id="cboTipeLog" value="#{logMBean.incidentLog.logType}"
+                                         autoWidth="false"
+                                         disabled="#{logMBean.disabled}">
+                            <f:selectItem itemLabel="Umum" itemValue="umum" />
+                            <f:selectItem itemLabel="Operasional" itemValue="operasional" />
+                            <f:selectItem itemLabel="Sighting" itemValue="sighting" />
+                            <f:selectItem itemLabel="Dll" itemValue="dll" />
+                        </p:selectOneMenu>
+                        <br/>
+
+                        <p:outputLabel value="Deskripsi" />
+                        <p:inputTextarea value="#{logMBean.incidentLog.remarks}" required="true" requiredMessage="Deskripsi tidak boleh kosong" disabled="#{logMBean.disabled}"/>
+                        <br/>
+
+                        <p:outputLabel value="No Radiogram" />
+                        <p:inputText value="" disabled="true"/>
+                        <br/>
+
+                    </p:panelGrid>
+                </p:panel>
+            </div>
+
+            <div class="ui-g-12 ui-lg-6 ">
+                <p:panel>
+                    <p:panelGrid columns="2" layout="grid" 
+                                 styleClass="ui-panelgrid-blank form-group" 
+                                 columnClasses="ui-grid-col-4,ui-grid-col-8" 
+                                 class="no-border no-padding no-padding-table ui-fluid" style="max-width: 900px">
+
+                        <p:outputLabel value="Lampiran" />
+                        <p:fileUpload id="fileImport" fileUploadListener="#{logMBean.upload}" 
+                                      mode="advanced" dragDropSupport="false"  multiple="true" 
+                                      auto="true" sizeLimit="10000000" required="true" 
+                                      process="@form" accept="image/*"
+                                      disabled="#{logMBean.disabled}"/>
+                        <br/>
+                    </p:panelGrid>
+                </p:panel>
+                <br/>
+                
+                <p:dataTable id="listImg" widgetVar="widListImg"
+                             value="#{logMBean.listImage}" var="list"
+                             reflow="true" paginator="true" paginatorPosition="bottom" 
+                             rows="1" tableStyle="table-layout:auto"
+                             emptyMessage="Data tidak ditemukan">
+                    <p:column headerText="Images" >
+                        <!--                            <p:outputLabel value="{list.pathname}"/>-->
+                        <p:graphicImage value="#{imageServlet.localImage}" cache="false" width="595" height="500">
+                            <f:param name="filename" value="#{list.pathname}" />
+                        </p:graphicImage>
+                        <h:form>
+                            <h:panelGroup style="display:block; text-align:center">
+                                <p:commandLink value="Lihat" onclick="PF('dlg').show()"/>
+                                <p:dialog header="Images" widgetVar="dlg" modal="true"
+                                          draggable="false" resizable="false"
+                                          showEffect="size"
+                                          width="100%" height="100%"
+                                          appendTo="@(body)" responsive="true" position="top">
+                                    <p:graphicImage value="#{imageServlet.localImage}" width="1300px" height="600px" cache="false">
+                                        <f:param name="filename" value="#{list.pathname}" />
+                                    </p:graphicImage>
+                                </p:dialog>
+                                <p:outputLabel value=" | "/>
+                                <p:commandLink  value="Hapus" actionListener="#{logMBean.hapusImage(list)}" 
+                                                update="form-Log:listImg @form" process="form-Log:listImg @form" disabled="#{logMBean.disabled}">
+                                    <p:confirm header="Konfirmasi" message="Apakah anda yakin ingin menghapus image ini?" icon="ui-icon-alert"/>
+                                </p:commandLink>
+                                <!--                                <p:commandLink value="Lihat" id="lihat"  styleClass="ui-priority-primary" target="_blank" ajax="false">
+                                                                    <p:ajax listener="{logMBean.showImage(list.pathname)}" update="lihat" process="lihat" />
+                                                                </p:commandLink>-->
+                            </h:panelGroup>
+                        </h:form>
+                    </p:column>
+
+
+                </p:dataTable>
+            </div>
+
+            <p:panelGrid columns="3" layout="grid" styleClass="ui-panelgrid-blank form-group" style="width: 500px;">
+                <p:commandButton type="button" value="Simpan" styleClass="green-btn"  style="width:130px" rendered="#{logMBean.showButton}">
+                    <p:confirm header="Konfirmasi" message="Apakah anda yakin ingin menyimpan logs ini?" icon="ui-icon-alert" />
+                    <p:ajax event="click" update="@form" process="@form" listener="#{logMBean.simpan()}"/>
+                </p:commandButton>
+            </p:panelGrid>
+        </h:form>
+    </ui:define>        
+</ui:composition>

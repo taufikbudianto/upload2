@@ -1,0 +1,149 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <h:form id="beacon-content-composites">                  
+        <p:panel id="list-beacon-msg-composites" header="Daftar Beacon Composites" 
+                 styleClass="penelHeaderGreen ui-shadow-content" class="no-border card card-w-title ui-fluid" 
+                 rendered="#{!distressCompositeMBean.isShowDetailComposite}">
+            <p:messages closable="true"/>
+            <p:panelGrid id="search" columns="5" layout="grid" 
+                         styleClass="ui-panelgrid-blank form-group" 
+                         columnClasses ="ui-grid-col-3,ui-grid-col-5,ui-grid-col-2,ui-grid-col-2,ui-grid-col-3"
+                         style="margin-top: 20px;margin-bottom: 20px"
+                         class="no-padding no-border">
+                <p:selectOneMenu id="field" value="#{distressCompositeMBean.field}">
+                    <p:ajax event="change" update="search" listener="#{distressCompositeMBean.chengeToCombo()}"/>
+                    <f:selectItem itemLabel="Message Number" itemValue="msgNumber" />
+                    <f:selectItem itemLabel="Transmit DTG" itemValue="transmitdtg" />
+                    <f:selectItem itemLabel="Beacon ID" itemValue="beaconID" />
+                    <f:selectItem itemLabel="No. Insiden" itemValue="incNumber" />
+                    <f:selectItem itemLabel="Nama KanSAR" itemValue="kansarName" />
+                    
+                </p:selectOneMenu>
+                <p:selectOneMenu id="idKansar" value="#{distressCompositeMBean.value}" 
+                                 rendered="#{distressCompositeMBean.showCombo==2}">
+                    <f:selectItems value="#{distressCompositeMBean.listKantorSar}"/>
+                        </p:selectOneMenu>
+                <p:inputText id="value" value="#{distressCompositeMBean.value}" 
+                             rendered="#{distressCompositeMBean.showCombo==0}" />
+                <p:calendar id="valueDate" showOn="button" value="#{distressCompositeMBean.valueDate}" 
+                            mask="true" navigator="true" pattern="dd/MM/yyyy" readonlyInput="true" 
+                            rendered="#{distressCompositeMBean.showCombo==1}"/>
+                <p:commandButton id="search-btn" type="button"  value="Cari" icon="ui-icon-search" 
+                                 onclick="PF('listWidget').getPaginator().setPage(0);">
+                    <p:ajax event="click" process="@form" update=":beacon-content-composites:list-beacon-msg-composites"/>
+                </p:commandButton>
+                <p:commandButton id="clear-btn" type="button"  value="Reset" icon="ui-icon-replay">
+                    <p:ajax event="click" update=":beacon-content-composites:list-beacon-msg-composites" 
+                            process="@form" listener="#{distressCompositeMBean.reset}"/>
+                </p:commandButton>
+                <p:commandButton id="add" type="button"  value="Tambah Data Baru" icon="fa fa-plus-circle" 
+                                 class="green-btn">
+                    <p:ajax event="click" update="@form" process="@form" 
+                            listener="#{distressCompositeMBean.tambahComposite(null, true)}" />
+                </p:commandButton>
+            </p:panelGrid>
+            <p:dataTable id="composite_datatable" var="composites" value="#{distressCompositeMBean.lazyDataModelJPA}" 
+                         reflow="true" rowKey="#{composites.transmitdtg}"
+                         lazy="true" paginator="true" paginatorPosition="bottom" 
+                         rows="#{viewBean.rowsPageDefault}" style="width: fit-content;"
+                         rowsPerPageTemplate="#{viewBean.rowsPerPageTemplate}" emptyMessage="Data tidak ditemukan" 
+                         tableStyle="table-layout:auto"
+                         rowIndexVar="index" widgetVar="listWidget"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                <p:column headerText="No" style="width: 20px">
+                    <p:outputLabel value="#{index + 1}"/>
+                </p:column>
+                <p:column  headerText="Message Number" style="text-align: center;" sortBy="#{composites.msgnumber}">
+                    <h:outputText  value="#{composites.msgnumber}" />
+                </p:column>
+                <p:column headerText="Transmit DTG" style="text-align: center;" sortBy="#{composites.transmitdtg}">
+                    <h:outputText style="text-align: center;" 
+                                  value="#{distressCompositeMBean.transmitDtgFormat(composites)}" />
+                </p:column>
+                <p:column  headerText="Beacon ID" style="text-align: center;" sortBy="#{composites.beaconid}">
+                    <h:outputText  value="#{composites.beaconid}" />
+                </p:column>
+                <p:column  headerText="No. Insiden" style="text-align: center;" sortBy="#{composites.incidentid}">
+                    <h:outputText  value="#{composites.incidentid != null ? composites.incidentid.incidentnumber : '-'}"  />
+                </p:column>
+                <p:column  headerText="Nama KanSAR" style="text-align: center;" sortBy="#{composites.kantorsarid.kantorsarname}">
+                    <h:outputText  value="#{composites.kantorsarid.kantorsarname}" />
+                </p:column>
+                <p:column  headerText="Latitude" style="text-align: center;" sortBy="#{composites.latitude}">
+                    <h:outputText  value="#{distressCompositeMBean.latitude.getConvertDdToDms(composites.latitude, true)}" />
+                </p:column>
+                <p:column  headerText="Longitude" style="text-align: center;" sortBy="#{composites.longitude}">
+                    <h:outputText  value="#{distressCompositeMBean.longitude.getConvertDdToDms(composites.longitude, false)}" />
+                </p:column>                                                
+                <p:column  headerText="Created Date" style="text-align: center;" sortBy="#{composites.datecreated}">
+                    <h:outputText  value="#{composites.datecreated}" />
+                </p:column>
+                <p:column  headerText="Aksi" style="width: 11%;text-align: center; ">
+                    <p:commandButton id="tambah" icon="fa fa-plus-circle" class="green-btn" label="Tambah Insiden" 
+                                     rendered="#{composites.incidentid == null}"
+                                     actionListener="#{beaconCompositeMBean.addIncidentFromComposites}"
+                                     process="@form">
+                        <f:attribute name="objList" value="#{composites}" />
+                        <p:confirm header="Konfirmasi" 
+                                   message="Membuat Insiden Baru Berdasarkan composites?" 
+                                   icon="ui-icon-alert"/>                                    
+                    </p:commandButton>                   
+                    <p:tooltip for="tambah" value="Tambah Insiden"/>
+                    <p:commandButton  id="lihat" 
+                                      label="Lihat"
+                                      onclick="PF('tTipLihat').hide();"
+                                      icon="fa fa-search" 
+                                      class="blue-grey-btn">
+                        <p:ajax event="click" listener="#{distressCompositeMBean.viewDetailComposite(composites, true)}" 
+                                update="@form"/>
+                    </p:commandButton>
+                    <p:tooltip value="Lihat" for="lihat"
+                               trackMouse="true" widgetVar="tTipLihat"/>
+                    <p:commandButton  id="ubahComposites" 
+                                      label="edit"
+                                      onclick="PF('tTipUbah').hide();"
+                                      icon="fa fa-edit" 
+                                      class="blue-grey-btn">
+                        <p:ajax event="click" listener="#{distressCompositeMBean.viewDetailComposite(composites, false)}" 
+                                update="@form"/>
+                    </p:commandButton>
+                    <p:tooltip value="Ubah" for="ubahComposites"
+                               trackMouse="true" widgetVar="tTipUbah"/>
+                    <p:commandButton  id="hapus" 
+                                      label="hapus"
+                                      onclick="PF('tTipHapus').hide();"
+                                      icon="fa fa-trash" 
+                                      update="composite_datatable" 
+                                      process="@this" class="red-btn" 
+                                      actionListener="#{distressCompositeMBean.hapus(composites)}">
+                        <p:confirm header="Konfirmasi" message="Apakah anda yakin ingin menghapus data ini?" 
+                                   icon="ui-icon-alert"/>
+                    </p:commandButton>
+                    <p:tooltip value="Hapus" for="hapus"
+                               trackMouse="true" widgetVar="tTipHapus"/>    
+                    <!--      <p:outputLabel value=" | " rendered="true"/>
+                          <p:commandLink value="Tambah Insiden">
+                              <p:ajax event="click" update="@form" listener="{registrasiBeaconMBean.showForm(beacon, true)}"  />
+                          </p:commandLink> -->
+                </p:column>
+            </p:dataTable>
+        </p:panel>
+
+        <p:panel id="compositedetail" rendered="#{distressCompositeMBean.isShowDetailComposite}">
+            <ui:include src="DetailComposites.xhtml" />
+        </p:panel>       
+    </h:form>
+    <!--    <p:dialog id="idDetailComposite" widgetVar="widgetDetailComposite"
+                  header="Detail"
+                  width="80%" height="100%"
+                  appendTo="@(body)"
+                  responsive="true" modal="true"
+                  maximizable="true"
+                  position="center" 
+                  resizable="false" style="font-size:x-small">
+            <ui:include src="./DetailComposites.xhtml"/>
+        </p:dialog>-->
+</ui:composition>

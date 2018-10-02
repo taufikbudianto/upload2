@@ -1,0 +1,85 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <h:inputHidden id="idLatPlacemark" value="#{placemarkMBean.latitude}" />
+    <h:inputHidden id="idLngPlacemark" value="#{placemarkMBean.longitude}" />
+    <p:remoteCommand name="remoteNewPlacemark" 
+                     actionListener="#{placemarkMBean.showDialog}"
+                     process="@form"/>
+    <p:dialog id="idDialogPlacemark" position="center" 
+              header="Placemark Dialog" dynamic="true"
+              showEffect="fade" hideEffect="fade"
+              widgetVar="showDialogPlacemark" modal="true"
+              height="50%" responsive="true" width="40%"
+              appendTo="@(body)" closable="false">
+        <h:form prependId="false">
+            <p:panel style="overflow: auto; width: 100%; max-height: 80vh"
+                     class="no-border no-padding card ui-fluid">            
+                <p:messages closable="true"/>
+                <p:panelGrid columns="2" layout="grid" style="width: 100%"
+                             columnClasses="ui-grid-col-2,ui-grid-col-6"
+                             styleClass="ui-panelgrid-blank form-group no-padding">
+                    <p:outputLabel value="Name" styleClass="asterix"/>
+                    <p:inputText id="pName" required="true" requiredMessage="Nama placemark harus diisi"
+                                 value="#{placemarkMBean.placemark.placemarkName}"/>
+                    <p:outputLabel for="icon" value="Icon"/>
+                    <p:selectOneMenu id="icon" value="#{placemarkMBean.theme}" 
+                                     converter="objectListConverter" panelStyle="width:180px"
+                                     effect="fade" var="t" autoWidth="false">
+                        <f:selectItems value="#{placemarkMBean.listIconPlacemark}" var="theme" 
+                                       itemLabel="#{theme.displayName}" itemValue="#{theme}" />
+                        <p:column style="width:10%">
+                            <h:outputText styleClass="ui-icon ui-icon-custom-#{t.displayName}"/>
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{t.displayName}" />
+                        </p:column>
+                    </p:selectOneMenu>
+                    <!--p:panelGrid columns="2">
+                        <p:commandButton icon="ui-icon-refresh"/>
+                    </p:panelGrid-->
+                    <!--p:outputLabel value="Tambah Icon"/>
+                    <p:panelGrid columns="3">
+                        <p:inputText value="" disabled="true"/>
+                        <p:commandButton icon="ui-icon-search" title="Search"/>
+                        <p:commandButton value="Upload Sym..."/>
+                    </p:panelGrid-->
+                </p:panelGrid>                
+                <p:fieldset legend="Position">
+                    <p:panelGrid columns="2" >
+                        <p:outputLabel value="Latitude" />
+                        <p:panelGrid id="latPlacemark" columns="3"
+                                     columnClasses ="ui-grid-col-2,ui-grid-col-7,ui-grid-col-3"                         
+                                     class="no-border no-padding-table"
+                                     style="width: 100%">
+                            <ui:include src="coordinatePlacemark/latitude.xhtml"/>
+                        </p:panelGrid>                                
+                        <p:outputLabel value="Longitude" />
+                        <p:panelGrid id="lngPlacemark" columns="3"
+                                     columnClasses ="ui-grid-col-2,ui-grid-col-7,ui-grid-col-3"                         
+                                     class="no-border no-padding-table"
+                                     style="width: 100%">
+                            <ui:include src="coordinatePlacemark/longitude.xhtml"/>
+                        </p:panelGrid>
+                    </p:panelGrid>
+                </p:fieldset>
+                <p:fieldset legend="Description">
+                    <p:inputTextarea value="#{placemarkMBean.placemark.description}"
+                                     maxlength="100"/>
+                </p:fieldset>
+            </p:panel>
+            <p:panel class="control-button">
+                <p:commandButton value="Buat" 
+                                 actionListener="#{placemarkMBean.addMarker}"
+                                 process="@form" update="@form">
+                    <p:confirm header="Konfirmasi" 
+                               message="Apakah anda yakin akan menyimpan placemark ini?" 
+                               icon="ui-icon-alert" />
+                </p:commandButton>
+                <p:commandButton value="Batal" onclick="PF('showDialogPlacemark').hide()" />
+            </p:panel>
+        </h:form>       
+    </p:dialog>    
+</ui:composition>

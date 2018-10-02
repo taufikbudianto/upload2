@@ -1,0 +1,87 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">      
+    <h:form prependId="false">
+        <p:panelGrid id="panelSearch-outboxsms" columns="9" style="width: 100%">
+            <p:outputLabel value="Kolom Pencarian :" style="font-weight:bold"/>
+
+            <p:selectOneMenu id="kolompencarian-outbox-sms" value="#{smsOutMBean.kolompencarian}" style="width:120px">
+                <p:ajax listener="#{smsOutMBean.onKolomPencarianChange()}" update="panelSearch-outboxsms"/>
+                <f:selectItems value="#{smsOutMBean.listKolomPencarian}" />
+            </p:selectOneMenu>
+
+            <p:outputLabel id = "katakunci" value="Kata Kunci :" style="font-weight:bold"/>
+
+            <p:inputText id="textfield" value ="#{smsOutMBean.textfield}" rendered="#{smsOutMBean.isText}"/>
+
+            <p:selectOneMenu id="dropdown" value="#{smsOutMBean.dropdown}" style="width:120px" 
+                             rendered="#{smsOutMBean.isDropDown}">
+                <f:selectItems value="#{smsOutMBean.listDropDown}" />
+            </p:selectOneMenu>
+
+            <p:panelGrid id="panelStatus" columns="6" >
+                <p:selectBooleanCheckbox value="#{smsOutMBean.terkirim}" id="idBoolTerkirim" widgetVar="boolTerkirim">
+                    <p:ajax listener="#{smsOutMBean.checkTerkirim()}" />
+                </p:selectBooleanCheckbox>
+                <p:outputLabel value="Terkirim" id="lblTerkirim"/>
+
+                <p:selectBooleanCheckbox value="#{smsOutMBean.pending}" id="idBoolPending" widgetVar="boolPending">
+                    <p:ajax listener="#{smsOutMBean.checkPending()}" />
+                </p:selectBooleanCheckbox>
+                <p:outputLabel value="Pending" id="lblPending"/>
+
+                <p:selectBooleanCheckbox value="#{smsOutMBean.tidakterkirim}" id="idBoolTidakTerkirim" widgetVar="boolTidakTerkirim">
+                    <p:ajax listener="#{smsOutMBean.checkTidakTerkirim()}" />
+                </p:selectBooleanCheckbox>
+                <p:outputLabel value="Tidak Terkirim" id="lblTidakTerkirim"/>
+            </p:panelGrid>    
+            
+            <p:commandButton id="cari-btn-smsemail" icon="ui-icon-search" type="button" value="Cari">
+                <p:ajax event="click" update="@form" process="@form"/>
+            </p:commandButton>
+            <p:button value="Reset" icon="ui-icon-replay"/> 
+           
+        </p:panelGrid>
+
+        <p:dataTable var="smsout" value="#{smsOutMBean.lazyDataModelJPASms}"
+                     reflow="true" paginator="true" lazy="true" 
+                     rows="10" rowsPerPageTemplate="5,10,15"
+                     rowKey="#{smsout.smsoutgoingid}" paginatorPosition="bottom" id="sms" tableStyle="table-layout:auto"
+                     rowIndexVar="index" emptyMessage="Data tidak ditemukan"
+                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+            <p:column headerText="No" style="width: 20px">
+                <p:outputLabel value="#{index + 1}"/>
+            </p:column>
+            <p:column headerText="Kategori" sortBy="#{smsout.smscategoryid}">
+                <h:outputText value="#{smsout.smscategoryid eq 'CGK-1211-0001'?'Penting':'-'}" />
+            </p:column>
+            <p:column headerText="Nama Penerima" sortBy="#{smsout.recipientname}">
+                <h:outputText value="#{smsout.recipientname}" />
+            </p:column>
+            <p:column headerText="No. Telp" sortBy="#{smsout.phonenumber}" style="text-align: center">
+                <h:outputText value="#{smsout.phonenumber}" />
+            </p:column>
+            <p:column headerText="Status" sortBy="#{smsout.isdelivered}" style="text-align: center">
+                <h:outputText value="#{smsout.isdelivered eq '1'?'Terkirim': (smsout.isdelivered eq '0'?'Tidak Terkirim' : 'Pending')}" />
+            </p:column>
+            <p:column headerText="Tipe Pesan" sortBy="#{smsout.messagetype}" style="text-align: center">
+                <h:outputText value="#{smsout.messagetype eq '0'?'Utilities':(smsout.messagetype eq '1'?'Insiden Personil' : 
+                                       (smsout.messagetype eq '2'?'Insiden SRU' : (smsout.messagetype eq '3'?'Insiden Peralatan' : 
+                                       (smsout.messagetype eq '4'?'Insiden Potensi' : 'Radiogram'))))}" />
+            </p:column>
+            <p:column headerText="Tgl. Kirim" sortBy="#{smsout.delivereddate}" style="text-align: center">
+                <h:outputText value="#{smsout.delivereddate}" >
+                    <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
+                </h:outputText>
+            </p:column>   
+            <p:column headerText="Deskripsi Pesan" style="text-align: justify">
+                <h:outputText value="#{smsout.textmessage}" />
+            </p:column>                                       
+        </p:dataTable>                 
+    </h:form>
+
+    <ui:include src="./tambahsmsout.xhtml"/>
+    <ui:include src="./pencariankepada.xhtml"/>
+</ui:composition>

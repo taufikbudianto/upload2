@@ -1,0 +1,786 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="worksheet3" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="66d453d2-ecee-4a37-a936-ad8594e5e2aa">
+	<property name="ireport.zoom" value="1.2100000000000002"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="COMPILED_BY" class="java.lang.String"/>
+	<parameter name="DATE" class="java.lang.String"/>
+	<parameter name="SEARCH_OBJECT" class="java.lang.String"/>
+	<parameter name="MET_VISIBILITY" class="java.lang.String"/>
+	<parameter name="VEGETATION" class="java.lang.String"/>
+	<parameter name="FATIGUE_FACTOR" class="java.lang.String"/>
+	<parameter name="SEARCH_HEIGHT_1" class="java.lang.String"/>
+	<parameter name="UNCORRECTED_SWEEP_WIDTH_1" class="java.lang.String"/>
+	<parameter name="TERRAIN_CORRECTION_FACTOR_1" class="java.lang.String"/>
+	<parameter name="FATIGUE_CORRECTION_FACTOR_1" class="java.lang.String"/>
+	<parameter name="SWEEP_WIDTH_FACTOR_1" class="java.lang.String"/>
+	<parameter name="PRACTICAL_TRACK_SPACING_1" class="java.lang.String"/>
+	<parameter name="COVERAGE_FACTOR_1" class="java.lang.String"/>
+	<parameter name="POD_1" class="java.lang.String"/>
+	<parameter name="SEARCH_AREA_1" class="java.lang.String"/>
+	<parameter name="SEARCH_HOURS_1" class="java.lang.String"/>
+	<parameter name="SEARCH_HEIGHT_2" class="java.lang.String"/>
+	<parameter name="UNCORRECTED_SWEEP_WIDTH_2" class="java.lang.String"/>
+	<parameter name="TERRAIN_CORRECTION_FACTOR_2" class="java.lang.String"/>
+	<parameter name="FATIGUE_CORRECTION_FACTOR_2" class="java.lang.String"/>
+	<parameter name="SWEEP_WIDTH_FACTOR_2" class="java.lang.String"/>
+	<parameter name="PRACTICAL_TRACK_SPACING_2" class="java.lang.String"/>
+	<parameter name="COVERAGE_FACTOR_2" class="java.lang.String"/>
+	<parameter name="POD_2" class="java.lang.String"/>
+	<parameter name="SEARCH_AREA_2" class="java.lang.String"/>
+	<parameter name="SEARCH_HOURS_2" class="java.lang.String"/>
+	<parameter name="SEARCH_HEIGHT_3" class="java.lang.String"/>
+	<parameter name="UNCORRECTED_SWEEP_WIDTH_3" class="java.lang.String"/>
+	<parameter name="TERRAIN_CORRECTION_FACTOR_3" class="java.lang.String"/>
+	<parameter name="FATIGUE_CORRECTION_FACTOR_3" class="java.lang.String"/>
+	<parameter name="SWEEP_WIDTH_FACTOR_3" class="java.lang.String"/>
+	<parameter name="PRACTICAL_TRACK_SPACING_3" class="java.lang.String"/>
+	<parameter name="COVERAGE_FACTOR_3" class="java.lang.String"/>
+	<parameter name="POD_3" class="java.lang.String"/>
+	<parameter name="SEARCH_AREA_3" class="java.lang.String"/>
+	<parameter name="SEARCH_HOURS_3" class="java.lang.String"/>
+	<parameter name="SEARCH_HEIGHT_4" class="java.lang.String"/>
+	<parameter name="UNCORRECTED_SWEEP_WIDTH_4" class="java.lang.String"/>
+	<parameter name="TERRAIN_CORRECTION_FACTOR_4" class="java.lang.String"/>
+	<parameter name="FATIGUE_CORRECTION_FACTOR_4" class="java.lang.String"/>
+	<parameter name="SWEEP_WIDTH_FACTOR_4" class="java.lang.String"/>
+	<parameter name="PRACTICAL_TRACK_SPACING_4" class="java.lang.String"/>
+	<parameter name="COVERAGE_FACTOR_4" class="java.lang.String"/>
+	<parameter name="POD_4" class="java.lang.String"/>
+	<parameter name="SEARCH_AREA_4" class="java.lang.String"/>
+	<parameter name="SEARCH_HOURS_4" class="java.lang.String"/>
+	<parameter name="user" class="java.lang.String"/>
+	<title>
+		<band height="104" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="ce24fdcc-f2be-4577-915d-a4473df1fae6" x="0" y="39" width="62" height="20"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Incident]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="93dd714b-dcb0-4d78-84eb-de3f6e3d40fc" x="0" y="51" width="73" height="20"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Reference]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="17f4be8d-52be-4aca-8c21-9785a9c9c7ba" x="77" y="39" width="209" height="65"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="93e50e3b-fa1c-43cd-a9f9-051913420adc" x="78" y="39" width="184" height="20"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Search and Rescue]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="53751207-0a76-4d9c-bc39-38f21386a3d7" x="78" y="84" width="198" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Worksheet No. 3 (Land)]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="c4d6ad62-cc9a-4ea3-96d5-349d0fa5a434" x="286" y="39" width="269" height="65"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="a4e44ab1-bdee-4fc5-9dd0-b6f4da3a3f3b" x="286" y="39" width="73" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Compiled by]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f435ec55-d1a8-44e0-a7ef-060fa58adc52" x="286" y="74" width="73" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Date]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="b63ebf9b-4c30-48e6-b9f3-ebe20d10fa30" x="372" y="39" width="183" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{COMPILED_BY}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="0161ee4b-1efc-462d-90e2-018c68996996" x="372" y="74" width="183" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{DATE}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="64818897-1130-488b-8d56-20c8e65359cd" x="377" y="0" width="76" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tanggal Cetak : ]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="8bbb30c8-de84-49c1-8ba1-bcc5de182f3f" x="377" y="19" width="177" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["User : " +$P{user}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd-MM-yyyy HH:mm">
+				<reportElement uuid="7402473f-017d-4b5f-a73c-8baa1cf23a60" x="453" y="0" width="101" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageFooter>
+		<band height="20">
+			<textField>
+				<reportElement uuid="cb1dbffb-2691-443c-a375-9e3a7995ece7" x="433" y="0" width="80" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="cfd6350f-6d2a-4b95-af35-b073fa8ac04e" x="513" y="0" width="40" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="329">
+			<rectangle>
+				<reportElement uuid="ee66fb6e-73cc-4c07-929d-7de883b0815a" x="0" y="0" width="555" height="51"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="ce0100d3-30af-4236-bc44-22e8df362979" x="1" y="29" width="77" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[MET Visibility]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="9ffd4968-92d9-4079-b974-a06a23231f04" x="1" y="2" width="79" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Search Object]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="227af8ec-7fe7-480a-a203-f43bcff2fb0f" x="293" y="2" width="79" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Fatigue factor]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="eea3e7ea-40bd-4999-b4a5-6d411c03d625" x="0" y="51" width="218" height="20"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="9f750a95-f6eb-4d3c-8235-57348b367921" x="1" y="51" width="217" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement/>
+				<text><![CDATA[Search Height (A G L)]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="2ba3d2fa-c339-4485-8201-bc4f3a0b334f" x="0" y="71" width="218" height="20"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="de8c5aea-8723-4b71-8002-1d8dfe8fbe76" x="1" y="71" width="217" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement/>
+				<text><![CDATA[Uncorrected Sweep Width (Wu) - Table I-9]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="cece218c-ed62-4071-8249-bd7146c3998c" x="0" y="91" width="218" height="34"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="edf324b5-5b54-402e-8f37-1fe5397a4203" x="1" y="105" width="217" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement/>
+				<text><![CDATA[Factor (Fv) - Table I-10 ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="59dc599a-1e9e-4ff8-92c6-a2acb14ddb8c" x="1" y="91" width="217" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Searches over land: use Terrain/Vegetation Correction]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="d62d41d5-f51f-4e4e-891f-567d3b49b2b8" x="0" y="125" width="218" height="58"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="e693a1bf-c6ba-4b20-b3a6-610e67d6d767" x="1" y="144" width="217" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement/>
+				<text><![CDATA[will be suffering significant fatigue enter]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="a79fcd86-fdf6-44a7-86dc-88c189112c1e" x="1" y="157" width="217" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement/>
+				<text><![CDATA[0.9, otherwise enter 1.0
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="00476844-0256-48b8-a008-0a7c1293145d" x="1" y="131" width="217" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement/>
+				<text><![CDATA[Fatigue Correction Factor (Ff) if crew]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="c271b6f1-7dde-4970-95e5-00149ed648a7" x="0" y="183" width="218" height="20"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="87ced9cf-5568-4a92-a5b9-ae7efb197177" x="1" y="183" width="217" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement/>
+				<text><![CDATA[Sweep Width Factor W = Wu.Fv.Ff ]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="4348d46f-b828-4b5b-9fd3-5259b71e5a8e" x="0" y="203" width="218" height="20"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="4ae39486-21f6-42e5-8fcd-f2a3813cac7c" x="1" y="203" width="217" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement/>
+				<text><![CDATA[Practical Track Spacing S (NM)]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="3f53d5ce-c5d2-4892-8123-6e582ebd3472" x="0" y="223" width="218" height="20"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="56cb5053-5e04-4c1d-998e-bc350f0e8f13" x="1" y="223" width="217" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement/>
+				<text><![CDATA[Coverage Factor C = W/S]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="25625e7f-4e45-425f-b871-098bc6e2c3e6" x="0" y="243" width="218" height="20"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="d5484cfb-6102-46dd-8220-e9253cebf7b0" x="1" y="243" width="217" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement/>
+				<text><![CDATA[Probability of Detection (POD_1)]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="f1e58c8f-47d9-48b0-94a4-a162e65cd98a" x="0" y="263" width="218" height="20"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="1b02142a-4716-4f09-bde7-5ffb84ebcb54" x="1" y="263" width="217" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement/>
+				<text><![CDATA[Search Area A (SQ NM)]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="dcc28085-1b5b-4a86-914a-1f07a359e51c" x="0" y="283" width="218" height="46"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="1648c8ee-c933-4fdc-bba9-48bb47113baa" x="1" y="290" width="217" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement/>
+				<text><![CDATA[Search Hours (T) Required at 120 KTS (V)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="1a5182c8-9ebf-493f-9054-e05bb228d98c" x="1" y="303" width="217" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement/>
+				<text><![CDATA[T = A/VS ]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="f7a85009-6c30-4fae-8685-f62fc936c8a3" x="218" y="51" width="85" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="49b78ab1-9102-48b7-86e0-c094ff1ff2ed" x="218" y="71" width="85" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="3d5b2798-0291-4508-9d41-40aa699b127f" x="218" y="91" width="85" height="34"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="1385f8d4-a1a5-40c6-af02-4c15dd9f2eb5" x="218" y="125" width="85" height="58"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="8b668f5f-b0d4-432e-9699-c4d7172eb67c" x="218" y="183" width="85" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="2cb36f2f-e8a3-4384-a6c7-50d5d746815e" x="218" y="203" width="85" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="cfeabcf1-0e83-49e0-9124-af190ef42bf0" x="218" y="223" width="85" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="59659182-c080-4ac3-8c69-0a5ef3566b06" x="218" y="243" width="85" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="ae03df22-46c0-423d-a31a-4c839e9d41bd" x="218" y="263" width="85" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="7b1b374f-cb9d-4026-95c5-016e1d8aff34" x="218" y="283" width="85" height="46"/>
+			</rectangle>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="491f02d4-9a7d-4b38-9f4b-966a4a284d01" x="78" y="29" width="139" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{MET_VISIBILITY} + " KM "]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="68a1163a-d3b1-4435-949c-9badfe644f6c" x="82" y="2" width="108" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{SEARCH_OBJECT}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="b3bd678d-49fc-4e81-aaf2-259609b092b1" x="374" y="2" width="86" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{FATIGUE_FACTOR}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="ddebf42b-609b-4cf9-9dd2-10d92b10f4ff" x="218" y="51" width="85" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{SEARCH_HEIGHT_1}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="92b3b494-1c50-4b5a-a743-6d270c003224" x="218" y="71" width="85" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{UNCORRECTED_SWEEP_WIDTH_1}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="a5dd714c-7340-4a13-92e5-4957f46e286d" x="218" y="98" width="85" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{TERRAIN_CORRECTION_FACTOR_1}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="65fe9347-5e78-487b-b355-9ed6b0feb135" x="218" y="145" width="85" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{FATIGUE_CORRECTION_FACTOR_1}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="eae596f2-7cb6-4573-a4e2-73ed3dfe3050" x="218" y="183" width="85" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{SWEEP_WIDTH_FACTOR_1}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="9088c2b2-a505-455b-8a75-4d91ff790a6c" x="218" y="203" width="85" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PRACTICAL_TRACK_SPACING_1}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="6d44b857-7632-44ac-bf56-793230dfd42f" x="218" y="223" width="85" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{COVERAGE_FACTOR_1}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="921d7e88-821e-4d6a-8483-aa4298bfff15" x="218" y="243" width="85" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{POD_1}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="8e4902f5-030a-47b4-aad3-c33758f40628" x="218" y="263" width="85" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{SEARCH_AREA_1}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="301e0628-a55a-4822-81f6-b44c95a08d90" x="218" y="296" width="85" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{SEARCH_HOURS_1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="5922b7cd-7fc6-43d2-a94d-119bd2c20783" x="293" y="29" width="79" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Vegetation]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="5bfe9ecb-0bc2-42c3-aa9e-2f1a2c657f8f" x="374" y="29" width="86" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{VEGETATION}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement uuid="26113d2d-f11e-4907-9562-149b3127c7b6" x="302" y="91" width="85" height="34"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="ffa461d2-f02a-4512-8fd6-474fe8f54e9e" x="302" y="283" width="85" height="46"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="32c4e9da-ac33-49f1-8477-031690dd605d" x="302" y="51" width="85" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="4dbee440-0f41-402e-bb2b-829e979e0598" x="302" y="125" width="85" height="58"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="7058e8ad-dc56-464b-aef5-dea37004b343" x="302" y="223" width="85" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="eff580ef-6aaf-48f7-9f58-8b7d7391a262" x="302" y="203" width="85" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="3a1681a0-0410-42c7-9d6d-c830e04ca7ca" x="302" y="71" width="85" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="bc002013-cbd0-4769-b69c-c84abda21d53" x="302" y="243" width="85" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="adae14b8-190c-4562-bc2e-5de50af5055a" x="302" y="263" width="85" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="b1eaf540-1cf3-4522-ad22-ba675dfdbe91" x="302" y="183" width="85" height="20"/>
+			</rectangle>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="3c65397b-98b0-42a6-80eb-23b406c0c01e" x="302" y="243" width="85" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{POD_2}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="d95da73d-50d2-4ea0-9acd-3febafc7ccd2" x="302" y="145" width="85" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{FATIGUE_CORRECTION_FACTOR_2}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="da7a5202-3373-4735-952a-2be8da44d2c6" x="302" y="263" width="85" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{SEARCH_AREA_2}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="f2ce2a96-0f8e-46a0-b27a-236c8f1f2847" x="302" y="98" width="85" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{TERRAIN_CORRECTION_FACTOR_2}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="ba81fca7-ea4b-45e5-822b-199934e391a0" x="302" y="296" width="85" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{SEARCH_HOURS_2}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="f5157dc7-38b1-41e6-b977-447efc42dc83" x="302" y="51" width="85" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{SEARCH_HEIGHT_2}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="607352f8-a712-43c9-9f8d-bdc0c38e514b" x="302" y="203" width="85" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PRACTICAL_TRACK_SPACING_2}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="d8d3e593-97cd-425f-914f-75a2e535cf55" x="302" y="183" width="85" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{SWEEP_WIDTH_FACTOR_2}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="ba2792c8-e14c-420e-bb69-85937eead1ec" x="302" y="223" width="85" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{COVERAGE_FACTOR_2}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="05313a81-e5df-44e1-82d6-39332fe99cf9" x="302" y="71" width="85" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{UNCORRECTED_SWEEP_WIDTH_2}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement uuid="39934ba3-45bf-482f-a011-50f3d1fddabd" x="387" y="91" width="85" height="34"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="c5e9cec5-2a64-44d7-8d74-3d7081e2ece2" x="387" y="283" width="85" height="46"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="3ff55bae-c3b7-474d-b575-d6847efea57c" x="387" y="51" width="85" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="8c6ea4f3-1f3f-41c3-9aa1-04b453549cc8" x="387" y="125" width="85" height="58"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="cacb87b1-7407-4b2d-ab93-062bb894c643" x="387" y="223" width="85" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="55f0f153-6c01-4788-bc83-16f0278ff05d" x="387" y="203" width="85" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="1939f5a4-5665-4b80-bede-f8332164a542" x="387" y="71" width="85" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="183c6c1e-732d-4bcd-b878-1eeafa68d38c" x="387" y="243" width="85" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="757312ed-2c4c-4d1c-9459-b0067d8d8b74" x="387" y="263" width="85" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="ae2a7c15-1f13-4f2e-a4a1-003a0a584cc3" x="387" y="183" width="85" height="20"/>
+			</rectangle>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="d97d4c0f-e2c4-4e32-be1e-70af6fa781d2" x="387" y="243" width="85" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{POD_3}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="bebcae62-a824-425d-85d2-29c2d5297723" x="387" y="145" width="85" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{FATIGUE_CORRECTION_FACTOR_3}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="9a3c0e9a-7abc-4839-9ba1-dd77759154ca" x="387" y="263" width="85" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{SEARCH_AREA_3}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="8af1fe83-1351-4c9f-a179-f7f3f9f7d9b4" x="387" y="98" width="85" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{TERRAIN_CORRECTION_FACTOR_3}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="3644619c-9280-47e8-bc6c-2b06224870a2" x="387" y="296" width="85" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{SEARCH_HOURS_3}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="e6c15a24-1f0b-4df0-b3d4-bdba97d6a95d" x="387" y="51" width="85" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{SEARCH_HEIGHT_3}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="0b2765c9-bcf7-4fab-8172-7f8c6a716307" x="387" y="203" width="85" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PRACTICAL_TRACK_SPACING_3}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="3ab212cf-2461-40fe-a171-da6fd13a7159" x="387" y="183" width="85" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{SWEEP_WIDTH_FACTOR_3}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="3c924a81-e0ac-4343-bd87-7ec4a8edda17" x="387" y="223" width="85" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{COVERAGE_FACTOR_3}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="e3b05c7e-88cf-40be-8d6c-ed06954f327c" x="387" y="71" width="85" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{UNCORRECTED_SWEEP_WIDTH_3}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement uuid="b4517b99-8bdd-4cc4-ab3f-21bff147baf7" x="470" y="263" width="85" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="1d2d68ae-08ef-452e-9a5d-3002a03f6ce1" x="470" y="243" width="85" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="fd45bb95-66d7-4706-954e-f16142ed4562" x="470" y="125" width="85" height="58"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="afab71fd-18a6-497a-af11-96b846e86381" x="470" y="223" width="85" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="88af008a-81c4-4cf6-8777-a6de4955d2b6" x="470" y="71" width="85" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="faeb2036-407d-465f-9a33-4fe43d346616" x="470" y="51" width="85" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="47d82ea5-ea7c-4719-96d8-d13ff7e0486c" x="470" y="283" width="85" height="46"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="a4958973-45d5-49f5-9a44-cf753b30565e" x="470" y="91" width="85" height="34"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="d5819410-7a24-4ec9-a6c0-bd92907f4561" x="470" y="203" width="85" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="2799a730-e678-4bb1-ab2e-1aa8a5f7dcf4" x="470" y="183" width="85" height="20"/>
+			</rectangle>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="0b8db103-3669-4602-9480-17845f8d2983" x="470" y="71" width="85" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{UNCORRECTED_SWEEP_WIDTH_4}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="ce70e72b-b9c1-4cb9-846b-f53d551c8c83" x="470" y="145" width="85" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{FATIGUE_CORRECTION_FACTOR_4}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="a0dabe01-3601-404e-9a4c-3299ee60d2b5" x="470" y="51" width="85" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{SEARCH_HEIGHT_4}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="4abf142d-26cf-4321-beb3-ed798fff580b" x="470" y="98" width="85" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{TERRAIN_CORRECTION_FACTOR_4}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="6e7dd606-6224-415c-9cc3-22fa7c024c4c" x="470" y="223" width="85" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{COVERAGE_FACTOR_4}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="b24afd5b-8443-4e11-bc04-07bd6d460b35" x="470" y="203" width="85" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PRACTICAL_TRACK_SPACING_4}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="ab4221d5-35e1-4a7d-920d-793a2c967dfd" x="470" y="243" width="85" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{POD_4}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="09aa7b09-81ed-4974-bcdd-befe9a7ddbb2" x="470" y="183" width="85" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{SWEEP_WIDTH_FACTOR_4}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="e93a8b78-5aaa-4102-a5c6-e2a1af3d5fcb" x="470" y="296" width="85" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{SEARCH_HOURS_4}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="400b66f3-6b62-4465-802e-181d0e05ef82" x="470" y="263" width="85" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{SEARCH_AREA_4}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

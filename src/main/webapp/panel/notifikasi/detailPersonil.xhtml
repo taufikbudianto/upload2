@@ -1,0 +1,19 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <p:tabView id="personel-tabs" class="no-padding no-border content-tabs"
+               dynamic="true" cache="true" activeIndex="#{notifikasiMBean.activeTabIndex}">
+        <p:tab title="Profil">
+            <ui:include src="detailPersonilTab/profil.xhtml"/>
+        </p:tab>
+        <p:tab title="Profil2">
+            <ui:include src="detailPersonilTab/profil2.xhtml"/>
+        </p:tab>
+    </p:tabView>
+    <p:panel class="control-button no-border no-padding" >
+        <p:commandButton value="Kembali" icon="fa fa-backward"
+                         class="red-btn" style="width: 100px;"
+                         global="false" update="@form"
+                         actionListener="#{notifikasiMBean.hidePersonil}"/>
+    </p:panel>
+</ui:composition>

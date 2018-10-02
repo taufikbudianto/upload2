@@ -1,0 +1,104 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="personel-sertifikasi-sar">
+
+        <p:dataTable id="data-profil" var="listTraining" value="#{resPersonnelMBean.listPersonnelTraining}" 
+                     reflow="true" rowKey="#{listTraining.personnelTrainingID}" 
+                     lazy="true" paginator="true" paginatorPosition="bottom" rows="10"
+                     rowsPerPageTemplate="5,10,15" emptyMessage="Data tidak ditemukan" tableStyle="table-layout:auto"
+                     rowIndexVar="index">
+            <f:facet name="header">
+                Daftar Sertifikasi Personil
+            </f:facet>  
+            <p:column headerText="No" style="width: 20px">
+                <p:outputLabel value="#{index + 1}"/>
+            </p:column>
+            <p:column headerText="Kualifikasi" sortBy="#{listTraining.skill.skillname}">
+                <p:outputLabel value="#{listTraining.skill.skillname}" />
+            </p:column>
+            <!--            <p:column headerText="No Sertifikasi">
+                            <p:outputLabel value="#{listTraining.certificateNumber}" />
+                        </p:column>-->
+
+            <p:column headerText="Lokasi" sortBy="#{listTraining.trainingLocation}">
+                <p:outputLabel value="#{listTraining.trainingLocation}" />
+            </p:column>
+
+            <p:column headerText="Tanggal Mulai" sortBy="#{listTraining.trainingDate}">
+                <p:outputLabel value="#{listTraining.trainingDate}"  >
+                    <f:convertDateTime locale="de" />
+                </p:outputLabel>
+            </p:column>
+            <p:column headerText="Tanggal Selesai" sortBy="#{listTraining.trainingDate}">
+                <p:outputLabel value="#{listTraining.trainingDate}"  >
+                    <f:convertDateTime locale="de" />
+                </p:outputLabel>
+            </p:column>
+
+            <p:column headerText="Penyelengaraan" sortBy="#{listTraining.organizedBy}">
+                <p:outputLabel value="#{listTraining.organizedBy}" />
+            </p:column>
+            <p:column headerText="Aksi">
+
+                <p:commandButton label="Edit" title="Edit"
+                                 actionListener="#{resPersonnelMBean.editPersonelTraining}"
+                                 process="personel-content:personel-detail:personel-tabs:personel-sertifikasi-sar:data-profil"
+                                 icon="fa fa-edit">
+                    <f:attribute name="rowIndex" value="#{rowIndex}"/>
+                </p:commandButton>
+                <p:spacer width="10"/>
+                <p:commandButton label="hapus" title="Hapus"
+                                 actionListener="#{resPersonnelMBean.removePersonelTraining}"
+                                 process="personel-content:personel-detail:personel-tabs:personel-sertifikasi-sar:data-profil"
+                                 icon="fa fa-trash">
+                    <f:attribute name="rowIndex" value="#{rowIndex}"/>
+                    <p:confirm header="Konfirmasi" 
+                               message="Apakah anda ingin menghapus #{listTraining.skill.skillname} ?" 
+                               icon="ui-icon-alert" />
+                </p:commandButton>
+            </p:column>
+        </p:dataTable>
+        <br/>
+        <p:panel class="no-border card card-w-title ui-fluid" header="Detail" style=" max-width: 500px" rendered="#{resPersonnelMBean.isShowDetailOnTab}" >
+            <p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-7"
+                         style="width: 100%" layout="grid"
+                         styleClass="ui-panelgrid-blank form-group">
+                <p:outputLabel value="Nama Kualifikasi" />
+                <p:selectOneMenu value="#{resPersonnelMBean.personnelTraining.skill}" 
+                                 disabled="#{resPersonnelMBean.isPotencyDisabled}" converter="objectListConverter"  >
+                    <f:selectItem itemLabel="--- PILIH ---" itemValue=""/>
+                    <f:selectItems value="#{resPersonnelMBean.listSkill}" 
+                                   var="skill" itemLabel="#{skill.skillname}"
+                                   itemValue="#{skill}"/>
+                </p:selectOneMenu>
+
+                <p:outputLabel value="Lokasi" />
+                <p:inputText value="#{resPersonnelMBean.personnelTraining.trainingLocation}" 
+                             disabled="#{resPersonnelMBean.isPotencyDisabled}"/>
+                <p:outputLabel value="Tanggal Mulai"/>
+                <p:calendar value="#{resPersonnelMBean.personnelTraining.trainingDate}"
+                            disabled="#{resPersonnelMBean.isPotencyDisabled}" navigator="true" pattern="dd-MM-yyyy"
+                            />
+                <p:outputLabel value="Tanggal Selesai"/>
+                <p:calendar value="#{resPersonnelMBean.personnelTraining.trainingDate}"
+                            disabled="#{resPersonnelMBean.isPotencyDisabled}" navigator="true" pattern="dd-MM-yyyy"
+                            />
+                <p:outputLabel value="Penyelengaraan"/>
+                <p:inputText value="#{resPersonnelMBean.personnelTraining.organizedBy}" 
+                             disabled="#{resPersonnelMBean.isPotencyDisabled}"  />
+
+
+                <p:commandButton value="Add" style="width:130px"
+                                 actionListener="#{resPersonnelMBean.addPersonelTraining}"
+                                 process="personel-content:personel-detail:personel-tabs:personel-sertifikasi-sar"/>
+
+            </p:panelGrid>
+        </p:panel>
+
+
+    </h:form>
+</ui:composition>

@@ -1,0 +1,53 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <div class="ui-g ui-fluid">
+        <div class="ui-g-12 ui-lg-10">
+            <h:form id="open-routing">
+                <p:panelGrid>
+                    <table cellpadding="10">
+                        <tr>
+                            <td style="width: 100px"><p:outputLabel value="ID" style="width: 100px"/></td>
+                            <td style="width: 300px"><p:inputText style="width: 300px" value="#{searchAreaPropertiesDialogMBean.ID}"/></td>
+                            <td style="width: 100px"><p:outputLabel value="Incident ID" style="width: 100px"/></td>
+                            <td style="width: 300px"><p:inputText style="width: 300px" value="#{searchAreaPropertiesDialogMBean.incident.incidentnumber}"/></td>
+                        </tr>
+                        <tr>
+                            <td style="width: 100px"><p:outputLabel value="Name" style="width: 100px"/></td>
+                            <td style="width: 300px"><p:inputText style="width: 300px" value="#{searchAreaPropertiesDialogMBean.nama}"/></td>
+                            <td style="width: 100px"><p:outputLabel value="Start" style="width: 100px"/></td>
+                            <td style="width: 300px"><p:inputText style="width: 300px" value="#{searchAreaPropertiesDialogMBean.start}"/></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><p:outputLabel value="Deskripsi" style="width: 200px"/></td>
+                            <td colspan="2"><p:outputLabel value="Vertex" style="width: 100px"/></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><p:inputTextarea style="width: 300px" value="#{searchAreaPropertiesDialogMBean.deskripsi}"/></td>
+                            <td colspan="2">
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                    <p:dataTable var="calculation" value="#{searchAreaPropertiesDialogMBean.listGLatLng}" 
+                                                 reflow="true" paginator="true" rows="10" 
+                                                 paginatorPosition="bottom" tableStyle="table-layout:auto">
+                                        <p:column headerText="Sequence">
+                                            <h:outputText value="#{calculation.pointLabel}" />
+                                        </p:column>
+                                        <p:column headerText="Latitude">
+                                            <h:outputText value="#{calculation.latitudeVertex}" />
+                                        </p:column>
+                                        <p:column headerText="Longitude">
+                                            <h:outputText value="#{calculation.longitudeVertex}" />
+                                        </p:column>
+                                    </p:dataTable>
+                                </p:panelGrid>
+                            </td>
+                        </tr>
+                    </table>
+                </p:panelGrid>    
+            </h:form>
+        </div>
+    </div>    
+</ui:composition>

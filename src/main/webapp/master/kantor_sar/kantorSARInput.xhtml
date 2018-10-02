@@ -1,0 +1,150 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="form-kantorSARInput">
+        <p:panel class="ui-fluid no-border no-padding">
+            <p:panelGrid columns="2" class="no-border" layout="grid">
+                <p:panel>
+                    <p:messages closable="true"/>
+                    <p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" 
+                                 layout="grid" styleClass="ui-panelgrid-blank form-group">
+                        <p:outputLabel value="Kode KanSAR" styleClass="asterix"/>
+                        <p:panel style="border-style: none" >
+                            <p:inputText value="#{mstKantorSarMBean.kantorSar.kantorsarid}" maxlength="3" required="true" requiredMessage="Kode KANSAR harus diisi"
+                                         disabled="#{mstKantorSarMBean.disabled1}" style="text-transform: uppercase"/>
+                        </p:panel>
+
+                        <p:outputLabel value="Nama KanSAR" styleClass="asterix"/>
+                        <p:panel style="border-style: none" >
+                            <p:inputText value="#{mstKantorSarMBean.kantorSar.kantorsarname}" maxlength="50" required="true" requiredMessage="Nama KANSAR harus diisi"
+                                         disabled="#{mstKantorSarMBean.disabled}"/>
+                        </p:panel>
+
+                        <p:outputLabel value="Alamat"/>
+                        <p:panel style="border-style: none" >
+                            <p:inputTextarea value="#{mstKantorSarMBean.kantorSar.address}" maxlength="255"
+                                             disabled="#{mstKantorSarMBean.disabled}"/>
+                        </p:panel>
+
+                        <p:outputLabel value="Latitude" />
+                        <p:panelGrid id="latitude" columns="3" style="width: 100%;" 
+                                     columnClasses ="ui-grid-col-2,ui-grid-col-8,ui-grid-col-2"
+                                     class="no-border no-padding-table ui-fluid">
+                            <ui:include src="coordinate/latitude.xhtml"/>
+                        </p:panelGrid>
+                        <p:outputLabel value="Longitude" />
+                        <p:panelGrid id="longitude" columns="3" style="width: 100%"
+                                     columnClasses ="ui-grid-col-2,ui-grid-col-8,ui-grid-col-2"
+                                     class="no-border no-padding-table ui-fluid">
+                            <ui:include src="coordinate/longitude.xhtml"/>
+                        </p:panelGrid>
+
+                    </p:panelGrid>
+                </p:panel>
+
+                <p:panel>
+                    <p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" 
+                                 layout="grid" styleClass="ui-panelgrid-blank form-group">
+                        <p:outputLabel value="No. Telepon 1"/>
+                        <p:panel style="border-style: none" >
+                            <p:inputText value="#{mstKantorSarMBean.kantorSar.phonenumber1}" maxlength="50"
+                                         disabled="#{mstKantorSarMBean.disabled}" onkeypress="return validatePhone(event)"
+                                         validatorMessage="Nomor telepon 1 harus berupa angka">
+                                <f:validateRegex pattern="^[0-9]*$" />
+                            </p:inputText>                            
+                        </p:panel>
+
+                        <p:outputLabel value="No. Telepon 2"/>
+                        <p:panel style="border-style: none" >
+                            <p:inputText value="#{mstKantorSarMBean.kantorSar.phonenumber2}" maxlength="50"
+                                         disabled="#{mstKantorSarMBean.disabled}" onkeypress="return validatePhone(event)"
+                                         validatorMessage="Nomor telepon 2 harus berupa angka">
+                                <f:validateRegex pattern="^[0-9]*$" />
+                            </p:inputText>                            
+                        </p:panel>
+
+                        <p:outputLabel value="No. Telepon 3"/>
+                        <p:panel style="border-style: none" >
+                            <p:inputText value="#{mstKantorSarMBean.kantorSar.phonenumber3}" maxlength="50"
+                                         disabled="#{mstKantorSarMBean.disabled}" onkeypress="return validatePhone(event)"
+                                         validatorMessage="Nomor telepon 3 harus berupa angka">
+                                <f:validateRegex pattern="^[0-9]*$" />
+                            </p:inputText>
+                        </p:panel>
+
+                        <p:outputLabel value="No. Fax"/>
+                        <p:panel style="border-style: none" >
+                            <p:inputText value="#{mstKantorSarMBean.kantorSar.faxnumber}" maxlength="50" 
+                                         disabled="#{mstKantorSarMBean.disabled}" onkeypress="return validatePhone(event)"/>
+                        </p:panel>
+                        
+                        <p:outputLabel value="Email"/>
+                        <p:panel style="border-style: none" >
+                            <p:inputText value="#{mstKantorSarMBean.kantorSar.email}" maxlength="50" 
+                                         disabled="#{mstKantorSarMBean.disabled}"/>
+                        </p:panel>
+
+                        <p:outputLabel value="Freq Radio"/>
+                        <p:panel style="border-style: none" >
+                            <p:inputText value="#{mstKantorSarMBean.kantorSar.radiofrequency}" maxlength="50"
+                                         disabled="#{mstKantorSarMBean.disabled}"/>
+                        </p:panel>
+
+                        <p:outputLabel value="Foto" />
+                            <p:fileUpload id="fileImportKanSar" mode="advanced" auto="true"
+                                          dragDropSupport="false" sizeLimit="10000000" multiple="true"
+                                          fileUploadListener="#{mstKantorSarMBean.uploadImage}"
+                                          process="@this" update="kantorsar-content:form-kantorSARInput:imgKanSar"
+                                          accept="image/*" disabled="#{mstKantorSarMBean.disabled}"/>
+                        <p:spacer />
+                        <p:panel class="control-button">
+                            <p:dataTable id="imgKanSar" widgetVar="widImgKanSar" var="imageKanSar"
+                                         value="#{mstKantorSarMBean.listKanSarImages}" reflow="true"
+                                         rows="1" emptyMessage="No records found" paginator="true"
+                                         paginatorPosition="bottom" tableStyle="table-layout:auto"
+                                         style="text-align: center">
+                                <p:column headerText="Image">
+                                    <h:form>
+                                        <h:panelGroup style="display: block; text-align: center">
+                                            <p:lightBox id="lightBoxKanSar" widgetVar="dlgKanSar">
+                                                <h:outputLink value="/document/temp/#{imageKanSar.pathname != null ? imageKanSar.pathname.replace('\\','/'): ''}"
+                                                              title="Image">
+                                                    <p:graphicImage url="/document/temp/#{imageKanSar.pathname != null ? imageKanSar.pathname.replace('\\','/'): ''}"
+                                                              width="200" height="200" cache="false"/>
+                                                </h:outputLink>
+                                            </p:lightBox>
+                                            <p:commandLink value="Hapus" actionListener="#{mstKantorSarMBean.hapusImage(imageKanSar)}"
+                                                           disabled="#{mstKantorSarMBean.disabled}" process="@this"
+                                                           update="kantorsar-content:form-kantorSARInput:imgKanSar">
+                                                <p:confirm header="Konfirmasi" message="Apakah Anda yakin ingin menghapus image ini?"
+                                                           icon="ui-icon-alert"/>
+                                            </p:commandLink>
+                                        </h:panelGroup>
+                                    </h:form>                                
+                                </p:column>
+                            </p:dataTable>
+                        </p:panel>                        
+                    </p:panelGrid>
+                </p:panel>
+            </p:panelGrid>
+
+
+            <!--            <p:panel class="control-button no-border no-padding" >
+                            <p:commandButton value="Simpan" icon="fa fa-save" styleClass="green-btn" actionListener="{mstKantorSarMBean.simpan()}" 
+                                             update=":kantorsar-content:kantorsar_datatable @form" 
+                                             process=":kantorsar-content:kantorsar_datatable @form" style="width:130px" 
+                                             rendered="{mstKantorSarMBean.showButton}">
+                                <p:confirm header="Konfirmasi" message="Apakah anda yakin ingin menyimpan kantor SAR ini?" icon="ui-icon-alert" />
+                            </p:commandButton>
+                            <p:commandButton value="{mstKantorSarMBean.showButtonInput ? 'Batal' : 'Kembali'}" style="width:130px" 
+                                             icon="ui-icon-cancel" styleClass="red-btn" immediate="true">
+                                <p:ajax event="click" update="@form" oncomplete="if(!args.validationFailed) PF('widgetKantorSARInput').hide()"/>
+                            </p:commandButton>
+                        </p:panel>    -->
+        </p:panel>        
+
+    </h:form>
+</ui:composition>

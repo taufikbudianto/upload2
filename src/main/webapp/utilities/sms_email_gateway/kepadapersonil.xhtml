@@ -1,0 +1,75 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">      
+    <h:form prependId="false">
+        <p:panelGrid id="panelSearch-kepadapersonil" columns="7" 
+                     columnClasses="ui-grid-col-1,ui-grid-col-2,ui-grid-col-1,ui-grid-col-2,ui-grid-col-1,ui-grid-col-2,ui-grid-col-3"
+                     class="no-border no-padding" style="width: 100%;height: 100%;">
+            <p:outputLabel value="Kolom Pencarian:" style="font-weight:bold"/>
+
+            <p:selectOneMenu id="kolompencarian-kepadapersonil" value="#{pencarianPersonelMBean.kolompencarian}">
+                <p:ajax listener="#{pencarianPersonelMBean.onKolomPencarianKepadaPersonel()}" update="panelSearch-kepadapersonil"/>
+                <f:selectItems value="#{pencarianPersonelMBean.listKolomPencarian}" />
+            </p:selectOneMenu>
+
+            <p:outputLabel id = "katakuncikepadapersonel" value="Kata Kunci:" style="font-weight:bold"/>
+
+            <p:inputText id="textfieldkepadapersonel" value ="#{pencarianPersonelMBean.textfield}"/>
+
+            <p:commandButton id="cari-btn-kepadapersonil" type="button" value="Cari">
+                <p:ajax event="click" update="accId:datakepadapersonel" process="@form"/>
+            </p:commandButton>
+            
+            <p:commandButton value="Reset" actionListener="#{pencarianPersonelMBean.reset()}"
+                             process="@form" update="@form, accId:formtambahsmsout:panelNamaGroup-outboxsms" icon="ui-icon-replay"/>  
+
+            <p:commandButton value="Tambah" icon="fa fa-plus-circle" styleClass="green-btn"  id="tambah-kepadapersonil" 
+                             actionListener="#{pencarianPersonelMBean.sendSelected()}" style="float:right" 
+                             process="@form" update="@form, accId:formtambahsmsout:panelNamaGroup-outboxsms"/>
+        </p:panelGrid>        
+
+
+        <p:dataTable var="kepadapersonel" value="#{pencarianPersonelMBean.lazyDataModelJPAPersonel}"
+                     reflow="true" paginator="true" rows="10" lazy="true" rowsPerPageTemplate="5,10,15"
+                     rowKey="#{kepadapersonel.personnelID}" paginatorPosition="bottom" id="datakepadapersonel" 
+                     selection="#{pencarianPersonelMBean.checkboxpersonnel}" tableStyle="table-layout:auto"
+                     rowIndexVar="index" widgetVar="listWidget1" emptyMessage="Data tidak ditemukan">
+            <p:column selectionMode="multiple" style="width: 15px; text-align: center"></p:column>
+            <p:column headerText="No" style="width: 20px">
+                <p:outputLabel value="#{index + 1}"/>
+            </p:column>
+            <p:column headerText="NIP/NRP">
+                <h:outputText value="#{kepadapersonel.personnelCode}" />
+            </p:column>
+            <p:column headerText="Nama Lengkap">
+                <h:outputText value="#{kepadapersonel.personnelName}"/>
+            </p:column>
+            <p:column headerText="Nama Potensi">
+                <h:outputText value="#{kepadapersonel.potency.potencyname}" />
+            </p:column>
+            <p:column headerText="Nama KanSAR">
+                <h:outputText value="#{kepadapersonel.officeSar.kantorsarname}" />
+            </p:column>
+            <p:column headerText="No. Hp" style="text-align: center">
+                <h:outputText value="#{kepadapersonel.mobilePhoneNumber}" />
+            </p:column>
+            <p:column headerText="Email" style="text-align: center">
+                <h:outputText value="#{kepadapersonel.email}" />
+            </p:column>
+            <p:column headerText="Jabatan Struktural">
+                <h:outputText value="#{kepadapersonel.structuralPosition.employmentpositionname}" />
+            </p:column>
+            <p:column headerText="Jabatan Fungsional">
+                <h:outputText value="#{kepadapersonel.functionalPosition.employmentpositionname}" />
+            </p:column>
+            <p:column headerText="Jabatan Siaga">
+                <h:outputText value="#{kepadapersonel.standByPosition.employmentpositionname}" />
+            </p:column>
+            <p:column headerText="Golongan">
+                <h:outputText value="#{kepadapersonel.employmentClass.employmentclassname}" />
+            </p:column>
+        </p:dataTable>
+    </h:form>
+</ui:composition>

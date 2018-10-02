@@ -1,0 +1,62 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="form-ViewChecklist">
+        <p:panel class="ui-fluid no-padding no-border">
+            <p:messages closable="true"/>
+            <p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-9" 
+                         layout="grid" styleClass="ui-panelgrid-blank form-group">
+                <p:outputLabel value="Check List"/>
+                <p:inputTextarea value="#{incidentChecklistMBean.incidentChecklist.checklistName}" 
+                             required="true" requiredMessage="Deskripsi tidak boleh kosong" 
+                             disabled="#{incidentChecklistMBean.disabledInput}"/>
+
+                <p:outputLabel value="Kategori"/>
+                <p:selectOneMenu id="cboKategori" 
+                                 value="#{incidentChecklistMBean.incidentChecklist.category}" 
+                                 disabled="#{incidentChecklistMBean.disabledInput}">
+                    <f:selectItem itemLabel="" itemValue="" />
+                    <f:selectItem itemLabel="Awareness" itemValue="Awareness" />
+                    <f:selectItem itemLabel="Initial Action" itemValue="Initial Action" />
+                    <f:selectItem itemLabel="Planning" itemValue="Planning" />
+                    <f:selectItem itemLabel="Operation" itemValue="Operation" />
+                    <f:selectItem itemLabel="Conclusion" itemValue="Conclusion" />
+                </p:selectOneMenu>
+
+                <p:outputLabel value="Status"/>
+                <p:selectOneMenu id="cboStatus" 
+                                 value="#{incidentChecklistMBean.incidentChecklist.status}" 
+                                 disabled="#{incidentChecklistMBean.disabledInput}">
+                    <f:selectItem itemLabel="" itemValue="" />
+                    <f:selectItem itemLabel="Pending" itemValue="Pending" />
+                    <f:selectItem itemLabel="Selesai" itemValue="Selesai" />
+                </p:selectOneMenu>
+
+                <p:outputLabel value="Keterangan"/>
+                <p:inputText value="#{incidentChecklistMBean.incidentChecklist.remarks}" 
+                             disabled="#{incidentChecklistMBean.disabledInput}"/>
+            </p:panelGrid>
+
+            <p:panel class="control-button no-border no-padding" >
+                <p:commandButton value="Simpan" icon="fa fa-save" styleClass="green-btn" 
+                                 actionListener="#{incidentChecklistMBean.simpanIncidentChecklist()}" 
+                                 update="incidentdetail:Inc_checklist_datatable @form" 
+                                 process="incidentdetail:Inc_checklist_datatable @form" style="width:130px" 
+                                 rendered="#{incidentChecklistMBean.showButton}">
+                    <p:confirm header="Konfirmasi" 
+                               message="Apakah anda yakin ingin menyimpan insiden checklist ini?" 
+                               icon="ui-icon-alert" />
+                </p:commandButton>
+
+                <p:commandButton type="button" value="Batal" styleClass="red-btn" icon="ui-icon-cancel" 
+                                 style="width:130px" actionListener="#{incidentChecklistMBean.batal()}">
+                    <p:ajax event="click" update="@this" process="@form" 
+                            oncomplete="PF('widgetViewInsidenChecklist').hide()"/>
+                </p:commandButton>
+            </p:panel>
+        </p:panel>
+    </h:form>
+</ui:composition>

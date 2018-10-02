@@ -1,0 +1,208 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:messages closable="true"/>
+    <p:panelGrid columns="2"
+                 columnClasses="ui-grid-col-6,ui-grid-col-6" style="width: 100%" >
+        <p:panelGrid columns="2" 
+                     style="width: 100%"
+                     columnClasses="ui-grid-col-4 label,ui-grid-col-8 value-readonly">
+
+            <p:outputLabel value="Nama Potensi" />
+            <p:inputText value="#{potensiMBean.resPotency.potencyname}"
+                         required="true" 
+                         requiredMessage="Nama Wajib Di Isi" 
+                         disabled="#{potensiMBean.disabled}"
+                         maxlength="100">
+                <p:ajax event="blur" process="@this"/>
+            </p:inputText>
+
+
+
+            <p:outputLabel value="Alamat"/>
+            <p:inputTextarea value="#{potensiMBean.resPotency.address}" 
+                             required="true" requiredMessage="Alamat Wajib Di Isi"
+                             maxlength="255" disabled="#{potensiMBean.disabled}">
+                <p:ajax event="blur" process="@this"/>
+            </p:inputTextarea>
+
+
+            <p:outputLabel value="Nama KanSAR" />
+            <p:inputText  value="#{potensiMBean.resPotency.kantorsarid.kantorsarname}"
+                          disabled="#{potensiMBean.disabled}"/>
+
+            <p:outputLabel value="Latitude" style="width: 100px" />
+            <p:panelGrid id="latitude" columns="3" style="width: 100%;"
+                         columnClasses ="ui-grid-col-2,ui-grid-col-7,ui-grid-col-3"                         
+                         class="no-border no-padding-table ui-fluid">
+                <ui:include src="coordinate/profil/profil-latitude.xhtml"/>
+            </p:panelGrid>
+
+            <p:outputLabel value="Longitude" />
+            <p:panelGrid id="longitude" columns="3" style="width: 100%;"
+                         columnClasses ="ui-grid-col-2,ui-grid-col-7,ui-grid-col-3"                         
+                         class="no-border no-padding-table ui-fluid">
+                <ui:include src="coordinate/profil/profil-longitude.xhtml"/>
+            </p:panelGrid>
+
+            <!--            <p:outputLabel value="Propinsi" />
+                        <p:selectOneMenu id="resPotensiPropinsi" 
+                                         required="true" requiredMessage="Propinsi Wajib Di Isi" 
+                                         filter="true" converter="objectListConverter"
+                                         filterMatchMode="contains"  value="#{potensiMBean.resPotency.regionid}">
+                            <f:selectItem itemLabel="Pilih" itemValue=""/>
+                            <f:selectItems value="#{potensiMBean.listPropinsi}" 
+                                           var="prop" itemLabel="#{prop.name}" itemValue="#{prop}"/>
+                            <p:ajax listener="#{potensiMBean.onChangeCity()}" 
+                                    process="@this" update="kota"  />
+                        </p:selectOneMenu>
+            
+                        <p:outputLabel value="Kota/Kabupaten" />
+                        <p:selectOneMenu id="kota" style="max-width: 60vw" 
+                                         value="#{potensiMBean.resPotency.areacodeid}"
+                                         disabled="#{potensiMBean.disabled}" converter="objectListConverter"
+                                         filter="true"
+                                         filterMatchMode="contains"
+                                         required="true" requiredMessage="Kota Harus Di Pilih">
+                            <f:selectItem itemLabel=" Pilih" itemValue="" />
+                            <f:selectItems value="#{potensiMBean.listKota}" var="kota" 
+                                           itemValue="#{kota}" itemLabel="#{kota.area}"/>
+                            <p:ajax process="@this"/>
+                        </p:selectOneMenu>
+                         <p:outputLabel value="Matra"/>
+                        <p:selectOneMenu id="matrapotensidetail" required="true" requiredMessage="Matra Wajib Di Isi" value="#{potensiMBean.resPotency.potencytype}" >
+                            <f:selectItem itemLabel="Darat" itemValue="0" />
+                            <f:selectItem itemLabel="Udara" itemValue="1" />
+                            <f:selectItem itemLabel="Laut" itemValue="2" />
+                        </p:selectOneMenu>-->
+
+            <!--            <p:outputLabel value="Keterangan" />
+                        <p:inputTextarea value="#{potensiMBean.resPotency.remarks}" 
+                                         maxlength="500" disabled="#{potensiMBean.disabled}"/>-->
+
+
+        </p:panelGrid>
+
+        <p:panelGrid columns="2"
+                     style="width: 100%"
+                     columnClasses="ui-grid-col-4 label,ui-grid-col-8 value-readonly">
+
+            <p:outputLabel value="No. Telepon"/>
+            <p:inputText  value="#{potensiMBean.resPotency.phonenumber1}"
+                          onkeypress="return validatePhone(event)" disabled="#{potensiMBean.disabled}"/>
+
+
+            <p:outputLabel value="No. Fax" />
+            <p:inputText value="#{potensiMBean.resPotency.faxnumber}" 
+                         onkeypress="return validatePhone(event)" disabled="#{potensiMBean.disabled}"/>
+
+
+
+            <p:outputLabel value="Email" />
+            <p:inputText id="email" value="#{potensiMBean.resPotency.email}" disabled="#{potensiMBean.disabled}">
+                <f:validator validatorId="custom.emailValidator" />
+            </p:inputText>
+
+            
+            <p:outputLabel value="Foto" />
+            <p:fileUpload id="fileImportPotProfil" mode="advanced" auto="true"
+                          dragDropSupport="false" sizeLimit="10000000"
+                          fileUploadListener="#{potensiMBean.upload}"
+                          process="@this" update="respotensi-content:potensi-tabs:img"
+                          accept="image/*" required="true" disabled="#{potensiMBean.disabled}"
+                          requiredMessage="Image belum dipilih"/>
+            <p:spacer></p:spacer>
+            <p:panel class="control-button">
+            <p:dataTable id="img" widgetVar="widImg" var="image"
+                         value="#{potensiMBean.listImage}" reflow="true"
+                         rows="1" emptyMessage="No records found" tableStyle="table-layout:auto"
+                         style="text-align: center">
+                <p:column id="header" headerText="Image" >
+                    <h:form>
+                        <h:panelGroup style="display:block; text-align:center">
+                            <p:lightBox id="lightboxPotProfil" widgetVar="dlg">
+                                <h:outputLink value="/document/temp/#{image.pathname !=null ? image.pathname.replace('\\','/') : ''}"
+                                              title="Image">
+                                    <p:graphicImage url="/document/temp/#{image.pathname !=null ? image.pathname.replace('\\', '/') : ''}"
+                                                    width="200" height="200" cache="false" />
+                                </h:outputLink>
+                            </p:lightBox>
+                            <p:commandLink  value="Hapus" actionListener="#{potensiMBean.hapusImage(image)}" 
+                                            update="respotensi-content:potensi-tabs:img @form" process="respotensi-content:potensi-tabs:img @form" disabled="#{potensiMBean.disabled}">
+                                <p:confirm header="Konfirmasi" message="Apakah Anda yakin ingin menghapus image ini?" icon="ui-icon-alert"/>
+                            </p:commandLink>
+                        </h:panelGroup>
+                    </h:form>
+                </p:column>
+            </p:dataTable>
+            </p:panel>
+        </p:panelGrid>
+    </p:panelGrid>
+    <p:panel>
+        <p:dataTable id="data-kontak2" var="list" 
+                     value="#{potensiMBean.listkontak}"  
+                     reflow="true"  lazy="true" paginator="true" paginatorPosition="bottom" rows="10"
+                     rowsPerPageTemplate="5,10,15" emptyMessage="Data tidak ditemukan" tableStyle="table-layout:auto"
+                     rowIndexVar="index">
+            <f:facet name="header">
+                List Kontak Potensi
+            </f:facet>
+            <p:column headerText="No" style="width: 20px">
+                <p:outputLabel value="#{index + 1}"/>
+            </p:column>
+
+            <!--        <p:column headerText="Title">
+                        <p:outputLabel value="#{list.contacttitle}"/>
+                    </p:column>-->
+
+            <p:column headerText="Nama (1)" sortBy="#{list.contactname}">
+                <p:outputLabel value="#{list.contactname}"/>
+            </p:column>
+
+            <!--        <p:column headerText="Sufix">
+                        <p:outputLabel value="#{list.contactsuffix}"/>
+                    </p:column>-->
+
+            <!--        <p:column headerText="Jabatan">
+                        <p:outputLabel value="#{list.contactposition}"/>
+                    </p:column>-->
+            <p:column headerText="No Telepon (1)" sortBy="#{list.phonenumber1}">
+                <p:outputLabel value="#{list.phonenumber1}"/>
+            </p:column>
+            <p:column headerText="Nama(2)" sortBy="#{list.contactname}">
+                <p:outputLabel value="#{list.contactname}"/>
+            </p:column>
+
+
+            <p:column headerText="No Telepon (2)" sortBy="#{list.phonenumber2}">
+                <p:outputLabel value="#{list.phonenumber2}"/>
+            </p:column>
+
+
+            <!--        <p:column headerText="Action">
+                        <p:commandButton label="Edit" style="max-width: 80px" 
+                                         actionListener="#{potensiMBean.loadkontak}"
+                                         process="respotensi-content:potensi-tabs:data-kontak"
+                                         styleClass="blue-grey-btn" 
+                                         icon="fa fa-edit">
+                            <f:attribute name="listRow" value="#{list}" />
+                        </p:commandButton>
+                        <p:spacer width="10"/>
+                        <p:commandButton label="Hapus" style="max-width: 80px" 
+                                         actionListener="#{potensiMBean.hpsKontak}"
+                                         process="respotensi-content:potensi-tabs:data-kontak"
+                                         styleClass="red-btn" 
+                                         icon="fa fa-trash">
+                            <f:attribute name="listRow" value="#{list}" />
+                            <p:confirm header="Konfirmasi" 
+                                       message="Apakah anda ingin menghapus data ?" 
+                                       icon="ui-icon-alert" />
+                        </p:commandButton>
+                    </p:column>-->
+        </p:dataTable>
+    </p:panel>
+
+</ui:composition>

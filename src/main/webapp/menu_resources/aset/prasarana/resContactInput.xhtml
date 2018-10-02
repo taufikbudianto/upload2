@@ -1,0 +1,52 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="form-resContactInput">
+        <p:panel class="card ui-fluid value-readonly">
+            <p:panelGrid columns="2" layout="grid" 
+                         styleClass="ui-panelgrid-blank form-group" 
+                         columnClasses="ui-grid-col-3,ui-grid-col-9" 
+                         class="no-border no-padding no-padding-table ui-fluid" style="max-width: 700px">
+                <p:outputLabel value="Gelar Depan"/>
+                <p:inputText value="#{resPrasaranaMBean.resAssetContact.contacttitle}" maxlength="5" disabled="#{resPrasaranaMBean.disabledContact}"/>
+
+                <p:outputLabel value="Nama"/>
+                <p:inputText value="#{resPrasaranaMBean.resAssetContact.contactname}" maxlength="50" required="true" requiredMessage="Nama harus diisi" disabled="#{resPrasaranaMBean.disabledContact}"/>
+
+                <p:outputLabel value="Gelar Belakang"/>
+                <p:inputText value="#{resPrasaranaMBean.resAssetContact.contactsuffix}" maxlength="15" disabled="#{resPrasaranaMBean.disabledContact}"/>
+
+                <p:outputLabel value="Jabatan" />
+                <p:inputText value="#{resPrasaranaMBean.resAssetContact.contactposition}" maxlength="15" disabled="#{resPrasaranaMBean.disabledContact}" />
+
+                <p:outputLabel value="No. Telepon" />
+                <p:inputText value="#{resPrasaranaMBean.resAssetContact.phonenumber1}" maxlength="15" disabled="#{resPrasaranaMBean.disabledContact}"
+                             onkeypress="return validatePhone(event)"/>
+
+                <p:outputLabel value="No. Handphone" />
+                <p:inputText value="#{resPrasaranaMBean.resAssetContact.phonenumber2}" maxlength="15" disabled="#{resPrasaranaMBean.disabledContact}"
+                             onkeypress="return validatePhone(event)"/>
+
+                <p:outputLabel value="Email" />
+                <p:inputText value="#{resPrasaranaMBean.resAssetContact.email}" disabled="#{resPrasaranaMBean.disabledContact}">
+                    <f:validator validatorId="custom.emailValidator" />
+                </p:inputText>
+            </p:panelGrid>
+            <p:panelGrid columns="3" layout="grid" styleClass="ui-panelgrid-blank form-group" style="width: 500px;">
+                <p:commandButton value="Simpan" styleClass="green-btn" actionListener="#{resPrasaranaMBean.add()}" 
+                                 update=":prasarana-content:form-resPrasaranaInput:contact_datatable_res_prasarana_input @form,:prasarana-content:form-resPrasarana:contact_datatable_res_prasarana @form" 
+                                 process=":prasarana-content:form-resPrasaranaInput:contact_datatable_res_prasarana_input @form,:prasarana-content:form-resPrasarana:contact_datatable_res_prasarana @form" 
+                                 style="width:130px" rendered="#{resPrasaranaMBean.showButtonContact}">
+                    <p:confirm header="Konfirmasi" message="Apakah anda yakin ingin menyimpan kontak resources ini?" icon="ui-icon-alert" />
+                </p:commandButton>
+                <p:commandButton value="#{resPrasaranaMBean.showButtonContact ? 'Batal' : 'Kembali'}" 
+                                 styleClass="red-btn" style="width:130px" immediate="true">
+                    <p:ajax event="click" update="@form" oncomplete="if(!args.validationFailed) PF('widgetResContactInputPrasarana').hide()"/>
+                </p:commandButton>
+            </p:panelGrid>
+        </p:panel>
+    </h:form>
+</ui:composition>

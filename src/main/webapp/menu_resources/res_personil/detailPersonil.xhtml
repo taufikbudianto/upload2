@@ -1,0 +1,40 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="personel-detail">
+
+        <p:tabView id="personel-tabs" class="no-padding no-border content-tabs" dynamic="true">
+            <p:tab title="Profil">
+                <ui:include src="./personil_detail_tab/profil.xhtml"/>
+            </p:tab>
+            <p:tab title="Profil2">
+                <ui:include src="./personil_detail_tab/profil2.xhtml"/>
+            </p:tab>
+            <p:tab title="Training/Sertifikasi">
+                <ui:include src="./personil_detail_tab/sertifikasi.xhtml"/>
+            </p:tab>
+            <p:tab title="Riwayat Tugas">
+                <ui:include src="./personil_detail_tab/riwayat_tugas.xhtml"/>
+            </p:tab>
+        </p:tabView>
+
+
+        <p:panel class="control-button no-border no-padding" >
+            <!--                        <p:commandButton type="button" value="{msg.btn_cancel}" icon="fa fa-times" styleClass="secondary">
+                                        <p:ajax event="click" listener="{resPersonnelMBean.batal()}" process="@this" update="@form :personel-content" />
+                                    </p:commandButton>-->
+            <p:button value="Kembali" icon="ui-icon-cancel" class="red-btn" styleClass="secondary"/>
+            <p:spacer width="10"/>
+
+<!--            <p:commandButton value="Simpan" class="green-btn" icon="fa fa-save" style="width:130px">
+                <p:confirm header="Konfirmasi" message="Apakah anda yakin ingin menyimpan data ini ?" icon="ui-icon-alert" />
+                <p:ajax event="click" listener="{resPersonnelMBean.simpan()}" process="@form" update="@form :personel-content" />
+            </p:commandButton>-->
+
+        </p:panel> 
+
+    </h:form>
+</ui:composition>

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="incidentchecklist" pageWidth="595" pageHeight="842" whenNoDataType="BlankPage" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="48a9803a-9ba7-4c7e-82dc-2f4ca42b4cd5">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="INCIDENTNUMBER" class="java.lang.String"/>
+	<parameter name="user" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT A.INCIDENTCHECKLISTID,A.CHECKLISTNAME AS CHECKLIST,A.STATUS,A.REMARKS AS KETERANGAN,B.INCIDENTNUMBER
+FROM
+(
+SELECT * FROM inc_checklist
+)A
+LEFT JOIN
+(SELECT * FROM INCIDENT)B
+ON A.INCIDENTID=B.INCIDENTID
+WHERE INCIDENTNUMBER= $P{INCIDENTNUMBER}
+ORDER BY A.INCIDENTCHECKLISTID]]>
+	</queryString>
+	<field name="INCIDENTCHECKLISTID" class="java.lang.String"/>
+	<field name="CHECKLIST" class="java.lang.String"/>
+	<field name="STATUS" class="java.lang.String"/>
+	<field name="KETERANGAN" class="java.lang.String"/>
+	<field name="INCIDENTNUMBER" class="java.lang.String"/>
+	<title>
+		<band height="79" splitType="Stretch">
+			<textField>
+				<reportElement uuid="101a5d59-de86-4d86-9a3f-de60d4b038b2" x="0" y="19" width="555" height="49"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Checklist Insiden : " + $F{INCIDENTNUMBER}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement uuid="25346206-a688-421a-b3cb-690c6e56a763" x="0" y="0" width="90" height="68"/>
+				<imageExpression><![CDATA["sar_image.jpg"]]></imageExpression>
+			</image>
+			<textField pattern="dd-MM-yyyy HH:mm">
+				<reportElement uuid="7402473f-017d-4b5f-a73c-8baa1cf23a60" x="454" y="0" width="101" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="8bbb30c8-de84-49c1-8ba1-bcc5de182f3f" x="378" y="19" width="177" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["User : " +$P{user}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="64818897-1130-488b-8d56-20c8e65359cd" x="378" y="0" width="76" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tanggal Cetak : ]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="20">
+			<rectangle>
+				<reportElement uuid="e65c40c8-d338-48a8-bb1a-17495dbeeaec" x="0" y="0" width="308" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="5c8f01c7-5866-48b3-becc-547eadecbda9" x="308" y="0" width="80" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="777b3f3b-f767-46c8-9033-43d53c6a18cb" x="388" y="0" width="167" height="20"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="9dd35a9a-af4c-4c3f-9a69-c955ded2502f" x="0" y="0" width="297" height="20"/>
+				<box topPadding="4" leftPadding="0"/>
+				<textElement textAlignment="Center" markup="none"/>
+				<text><![CDATA[Checklist]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="3dbcf3dd-2964-4aea-bd16-d1e11e2877b9" x="308" y="0" width="72" height="20"/>
+				<box topPadding="4" leftPadding="0"/>
+				<textElement textAlignment="Center" markup="none"/>
+				<text><![CDATA[Status]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="1e85affa-7061-4bae-aa2a-111d1ddf5fb9" x="388" y="0" width="157" height="20"/>
+				<box topPadding="4" leftPadding="0"/>
+				<textElement textAlignment="Center" markup="none"/>
+				<text><![CDATA[Keterangan]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<rectangle>
+				<reportElement uuid="b94e528e-956a-43a2-84c2-b3b810788eab" stretchType="RelativeToBandHeight" x="0" y="0" width="308" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="40e77a58-d755-465c-942e-0c263c43d458" stretchType="RelativeToBandHeight" x="308" y="0" width="80" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="da4cb283-b689-48cd-a535-df54963f6789" stretchType="RelativeToBandHeight" x="388" y="0" width="167" height="20"/>
+			</rectangle>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="d4e796a9-d187-43fe-b968-281f50bfdeef" x="0" y="0" width="297" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$F{CHECKLIST}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="be76f9b1-3bd8-422c-b5fb-f507f4458c67" x="308" y="0" width="72" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$F{STATUS}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="d95dd566-0ab9-4249-9107-3abd05100871" x="388" y="0" width="157" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$F{KETERANGAN}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="20">
+			<textField evaluationTime="Report">
+				<reportElement uuid="da18ac54-c426-44d6-bcdd-167c1ecb2383" x="505" y="0" width="40" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="d408bba5-4ba4-4299-a30d-080d561633f5" x="425" y="0" width="80" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

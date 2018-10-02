@@ -1,0 +1,103 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:panel class="ui-g-12 no-border no-padding" >
+        <p:panelGrid class="ui-g-12 no-padding no-border" columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group"
+                     columnClasses="ui-grid-col-6,ui-grid-col-6">
+            <p:panelGrid class="ui-g-12 no-padding no-border" columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group"
+                         columnClasses="ui-grid-col-4 label,ui-grid-col-8 value value-readonly">
+                         
+                <p:outputLabel value="No Paspor" />
+                <p:inputText value="#{potensiMBean.resPersonnel.passportnumber}" disabled="#{potensiMBean.potencyDisabled}"/>
+
+                <p:outputLabel value="Toefl" />
+                <p:inputText value="#{potensiMBean.resPersonnel.toeflscore}" disabled="#{potensiMBean.potencyDisabled}"/>
+                
+                <p:outputLabel value="Tinggi Badan"/>
+                <p:inputText value="#{potensiMBean.resPersonnel.personheight}" disabled="#{potensiMBean.potencyDisabled}"/>
+                
+                <p:outputLabel value="Berat Badan"/>
+                <p:inputText  value="#{potensiMBean.resPersonnel.personweight}" disabled="#{potensiMBean.potencyDisabled}"/>
+                
+                <p:outputLabel value="Gologan Darah"/>
+                <p:selectOneMenu id="golDarah" value="#{potensiMBean.resPersonnel.bloodtype}" disabled="#{potensiMBean.potencyDisabled}">
+                    <f:selectItem itemLabel="--- PILIH ---" itemValue=""/>
+                    <f:selectItem itemLabel="A" itemValue="A" />
+                    <f:selectItem itemLabel="B" itemValue="B" />
+                    <f:selectItem itemLabel="O" itemValue="O" />
+                    <f:selectItem itemLabel="AB" itemValue="AB" />
+                </p:selectOneMenu>
+                
+                <p:outputLabel value="Riwayat Kesehatan" />
+                <p:inputTextarea value="#{potensiMBean.resPersonnel.medicalhistory}"  disabled="#{potensiMBean.potencyDisabled}"/>
+                
+            </p:panelGrid>
+            
+            <p:panelGrid class="ui-g-12 no-border no-padding" columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group"
+                         columnClasses="ui-grid-col-4 label,ui-grid-col-8 value value-readonly">
+                
+                <p:outputLabel value="Status Pegawai"/>
+                <p:selectOneMenu disabled="#{potensiMBean.potencyDisabled}" >
+                    <f:selectItem itemLabel="--- PILIH ---" itemValue="" />
+                    <f:selectItem itemLabel="PNS" itemValue="0" />
+                    <f:selectItem itemLabel="CPNS" itemValue="1" />
+                </p:selectOneMenu>
+                
+                <p:outputLabel value="Tgl Tmt"/>
+                <p:calendar value="#{potensiMBean.resPersonnel.tmtDate}" navigator="true" pattern="dd-mm-yyyy" disabled="#{potensiMBean.potencyDisabled}" />
+                
+                <p:outputLabel value="Golongan"/>
+                <p:selectOneMenu value="#{potensiMBean.resPersonnel.employmentClass}" disabled="#{potensiMBean.potencyDisabled}"  converter="objectListConverter" >
+                    <f:selectItem itemLabel="--- PILIH ---" itemValue=""/>
+                    <f:selectItems value="#{potensiMBean.listGolongan}" var="gol" 
+                                   itemLabel="#{gol.employmentclassname}"
+                                   itemValue="#{gol}"/>
+                </p:selectOneMenu>
+                
+                <p:outputLabel value="Unit Kerja"/>
+                <p:selectOneMenu value="#{potensiMBean.resPersonnel.unit}" disabled="#{potensiMBean.potencyDisabled}"  converter="objectListConverter">
+                     <f:selectItem itemLabel="--- PILIH ---" itemValue=""/>
+                     <f:selectItems value="#{potensiMBean.listUnitKerja}" var="unit"
+                                    itemLabel="#{unit.employmentunitname}"
+                                    itemValue="#{unit}"/>
+                </p:selectOneMenu>
+                
+                <p:outputLabel value="Jabatan Struktural"/>
+                <p:selectOneMenu value="#{potensiMBean.resPersonnel.structuralPosition}" 
+                                 disabled="#{potensiMBean.potencyDisabled}"  converter="objectListConverter">
+                     <f:selectItem itemLabel="--- PILIH ---" itemValue=""/>
+                     <f:selectItems value="#{potensiMBean.listJabatanStruktural}" var="struktural"
+                                    itemLabel="#{struktural.employmentpositionname}"
+                                    itemValue="#{struktural}"/>
+                </p:selectOneMenu>
+                
+                <p:outputLabel value="Jabatan Fungsional"/>
+                <p:selectOneMenu disabled="#{potensiMBean.potencyDisabled}" 
+                                 value="#{potensiMBean.resPersonnel.functionalPosition}"
+                                 converter="objectListConverter">
+                     <f:selectItem itemLabel="--- PILIH ---" itemValue=""/>
+                     <f:selectItems value="#{potensiMBean.listJabatanFungsional}" var="fungsional"
+                                    itemLabel="#{fungsional.employmentpositionname}"
+                                    itemValue="#{fungsional}"/>
+                </p:selectOneMenu>
+                
+                <p:outputLabel value="Jabatan Siaga"/>
+                <p:selectOneMenu value="#{potensiMBean.resPersonnel.standByPosition}" disabled="#{potensiMBean.potencyDisabled}"  converter="objectListConverter">
+                     <f:selectItem itemLabel="--- PILIH ---" itemValue=""/>
+                     <f:selectItems value="#{potensiMBean.listJabatanSiaga}" var="siaga"
+                                    itemLabel="#{siaga.employmentpositionname}"
+                                    itemValue="#{siaga}"/>
+                </p:selectOneMenu>
+                
+                <p:outputLabel value="Keterangan"/>
+                <p:inputTextarea value="#{potensiMBean.resPersonnel.remarks}"/>
+                
+            </p:panelGrid>            
+        </p:panelGrid>
+
+      
+    </p:panel>
+</ui:composition>

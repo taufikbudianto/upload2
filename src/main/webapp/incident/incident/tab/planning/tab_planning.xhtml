@@ -1,0 +1,310 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <div class="ui-g ui-fluid">
+        <div class="ui-g-12">
+            <h:form id="tabplanning-content">
+                <p:panel id="list-tabplanning" styleClass="penelHeaderGreen ui-shadow-content" 
+                         rendered="#{!incidentPlanningMBean.isDriftCalculation and !incidentPlanningMBean.isTrapesium
+                                     and !incidentPlanningMBean.isMonteCarlo}">
+                    <p:dataTable id="datatableplanning" var="plan" value="#{incidentPlanningMBean.lazyDataModelJPAallData}" 
+                                 reflow="true" lazy="true" paginator="true" 
+                                 paginatorPosition="bottom" rows="10"
+                                 rowsPerPageTemplate="5,10,15" emptyMessage="Data tidak ditemukan" 
+                                 tableStyle="table-layout:auto" rowIndexVar="index" 
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} 
+                                 {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" >
+                        <p:column headerText="No" width="2%">
+                            <p:outputLabel value="#{index + 1}"/>
+                        </p:column>
+
+                        <p:column headerText="Nama" style="width: 70px">
+                            <h:outputText value="#{plan[1]}"  />
+                        </p:column>
+
+                        <p:column headerText="Deskripsi" style="width: 70px">
+                            <h:outputText value="#{plan[2]}"  />
+                        </p:column>
+
+                        <p:column headerText="Tanggal Operasi" style="width: 70px">
+                            <h:outputText value="#{plan[3]}"  />
+                        </p:column>
+
+                        <p:column headerText="Metode" style="width: 70px">
+                            <h:outputText value="#{plan[4]}" />
+                        </p:column>
+                        <p:column headerText="Dibuat Oleh" style="width: 180px">
+                            <h:outputText value="#{plan[5]}" />
+                        </p:column>
+                        <p:column headerText="Tanggal Modifikasi" style="width: 80px">
+                            <h:outputText value="#{plan[6]}" />
+                        </p:column>
+                        <p:column headerText="Aksi" width="7%">
+                            <p:commandButton label="Lihat1" id="lihat1" icon="ui-icon-map" 
+                                             onclick="PF('tTipLihat1').hide();"
+                                             action="#{driftCalcWorksheet1MBean.viewMapPlanDriftCalcWorksheet1(plan[0],true)}" 
+                                             process="@form" class="blue-grey-btn" 
+                                             disabled="#{incidentPlanningMBean.disabled}" 
+                                             rendered="#{plan[4]=='Drift Calculation'}">
+                                <p:tooltip value="Lihat Peta" for="lihat1"
+                                           trackMouse="true" widgetVar="tTipLihat1"/>
+                            </p:commandButton> 
+
+                            <p:commandButton label="Lihat2" id="lihat2" icon="ui-icon-map" 
+                                             onclick="PF('tTipLihat2').hide();"
+                                             actionListener="#{trapeziumAreaMBean.viewMapPlanTrapezium}"
+                                             process="@form" class="blue-grey-btn" 
+                                             disabled="#{incidentPlanningMBean.disabled}" 
+                                             rendered="#{plan[4]=='Trapesium Search Area'}">
+                                <f:attribute name="trapezId" value="#{plan[0]}"/>
+                                <f:attribute name="isViewMapPlanTrapezium" value="#{true}"/>
+                                <p:tooltip value="Lihat Peta" for="lihat2"
+                                           trackMouse="true" widgetVar="tTipLihat2"/>
+                            </p:commandButton> 
+
+                            <p:commandButton label="Lihat3" id="lihat3" icon="ui-icon-map" 
+                                             onclick="PF('tTipLihat3').hide();"
+                                             actionListener="#{incidentPlanningMBean.viewMapPlanCustom}"
+                                             process="@form" class="blue-grey-btn" 
+                                             disabled="#{incidentPlanningMBean.disabled}" 
+                                             rendered="#{plan[4]=='Custom'}">
+                                <f:attribute name="searchAreaId" value="#{plan[0]}"/>
+                                <p:tooltip value="Lihat Peta" for="lihat3"
+                                           trackMouse="true" widgetVar="tTipLihat3"/>
+                            </p:commandButton> 
+
+                            <p:outputLabel value="   "/>
+
+                            <p:commandButton label="Ubah" icon="fa fa-edit" class="blue-grey-btn" 
+                                             id="ubah1" onclick="PF('tTipUbah1').hide();"
+                                             disabled="#{incidentPlanningMBean.disabled}" 
+                                             rendered="#{plan[4]=='Drift Calculation'}">
+                                <p:ajax event="click" 
+                                        listener="#{driftCalcWorksheet1MBean.viewPlanDriftCalcWorksheet1(plan[0])}" 
+                                        update="@form"/>
+                                <p:tooltip value="Ubah" for="ubah1"
+                                           trackMouse="true" widgetVar="tTipUbah1"/>
+                            </p:commandButton> 
+
+                            <p:commandButton label="Ubah" icon="fa fa-edit" class="blue-grey-btn" 
+                                             id="ubah2" onclick="PF('tTipUbah2').hide();"
+                                             disabled="#{incidentPlanningMBean.disabled}" 
+                                             rendered="#{plan[4]=='Trapesium Search Area'}">
+                                <p:ajax event="click" 
+                                        listener="#{trapeziumAreaMBean.viewPlanTrapezium(plan[0])}" 
+                                        update="@form"/>
+                                <p:tooltip value="Ubah" for="ubah2"
+                                           trackMouse="true" widgetVar="tTipUbah2"/>
+                            </p:commandButton>
+                        </p:column>
+                    </p:dataTable>
+                    <p:panelGrid id="planning-panel-grid" 
+                                 columns="4" layout="grid" 
+                                 styleClass="ui-panelgrid-blank form-group" 
+                                 columnClasses="ui-grid-col-3,ui-grid-col-3,ui-grid-col-3,ui-grid-col-3" 
+                                 class="no-border no-padding no-padding-table ui-fluid">
+                        <p:commandButton value="Drift Calculation" styleClass="blue-btn" icon="ui-icon-extension" update="@form" 
+                                         process="@this" 
+                                         disabled="#{incidentMBean.incident.status == 'Close' or incidentMBean.disableTab}">
+                            <p:ajax event="click" listener="#{incidentPlanningMBean.showDriftCalculation}"/>
+                        </p:commandButton>
+                        <p:commandButton value="Trapesium Search Area" styleClass="blue-btn" 
+                                         icon="ui-icon-location-searching" update="@form" 
+                                         process="@this"
+                                         disabled="#{incidentMBean.incident.status == 'Close' or incidentMBean.disableTab}">
+                            <p:ajax event="click" 
+                                    listener="#{incidentPlanningMBean.prepareShowIncidentDetail(incidentMBean.incident)}" />
+                        </p:commandButton>
+                        <p:commandButton value="Monte Carlo" styleClass="blue-btn" icon="ui-icon-star" update="@form" 
+                                         process="@this" 
+                                         disabled="#{incidentMBean.incident.status == 'Close' or incidentMBean.disableTab}">
+                                <p:ajax event="click" listener="#{incidentPlanningMBean.showMonteCarlo}"/>
+                        </p:commandButton>
+                        <p:commandButton value="Custom" styleClass="blue-btn" 
+                                         icon="fa fa-plus-circle" update="@form" 
+                                         process="@this" actionListener="#{incidentPlanningMBean.viewMapPlanButtonCustom}"
+                                         disabled="#{incidentMBean.incident.status == 'Close' 
+                                                     or incidentMBean.disableTab}"/>
+                    </p:panelGrid>
+                </p:panel>
+
+                <p:panel styleClass="panelHeaderGreen ui-shadow-content" id="detail-drift" 
+                         rendered="#{incidentPlanningMBean.isDriftCalculation or incidentPlanningMBean.isMonteCarlo}">
+                    <ui:include src="../../drift_calculation/drift_calculation.xhtml" />
+                    <p:dialog id="idLeeway" widgetVar="widgetLeeway"
+                              header="Index Leeway" dynamic="true"
+                              width="50%" height="50%"
+                              appendTo="@(body)"
+                              responsive="true" modal="true"
+                              maximizable="true" style="overflow-y: auto;max-height: 100%"
+                              resizable="false">
+                        <ui:include src="../../drift_calculation/indexLeeway.xhtml"/>
+                    </p:dialog>
+                    <p:dialog id="idSearchArea" widgetVar="widgetOpenSearchArea"
+                              header="Kalkulasi Worksheet" dynamic="true"
+                              width="50%" height="50%"
+                              appendTo="@(body)"
+                              responsive="true" modal="true"
+                              maximizable="false" style="overflow-y: auto;max-height: 100%"
+                              resizable="false">
+                        <ui:include src="../../drift_calculation/searchAreaDatum.xhtml"/>
+                    </p:dialog>
+                    <p:dialog id="idOpenWs1" widgetVar="widgetOpenWs1"
+                              header="Open WorkSheet" dynamic="true"
+                              width="50%" height="50%"
+                              appendTo="@(body)"
+                              responsive="true" modal="true"
+                              maximizable="false" style="overflow-y: auto;max-height: 100%"
+                              resizable="false">
+                        <ui:include src="../../drift_calculation/open_worksheet1.xhtml"/>
+                    </p:dialog>
+                    <p:dialog id="idOpenWs2" widgetVar="widgetOpenWs2"
+                              header="Open WorkSheet" dynamic="true"
+                              width="50%" height="50%"
+                              appendTo="@(body)"
+                              responsive="true" modal="true"
+                              maximizable="false" style="overflow-y: auto;max-height: 100%"
+                              resizable="false">
+                        <ui:include src="../../drift_calculation/open_worksheet2.xhtml"/>
+                    </p:dialog>
+                    <p:dialog id="idOpenWs3" widgetVar="widgetOpenWs3"
+                              header="Open WorkSheet" dynamic="true"
+                              width="50%" height="50%"
+                              appendTo="@(body)"
+                              responsive="true" modal="true"
+                              maximizable="false" style="overflow-y: auto;max-height: 100%"
+                              resizable="false">
+                        <ui:include src="../../drift_calculation/open_worksheet3.xhtml"/>
+                    </p:dialog>
+                    <p:dialog id="idOpenWs8" widgetVar="widgetOpenWs8"
+                              header="Open WorkSheet" dynamic="true"
+                              width="50%" height="50%"
+                              appendTo="@(body)"
+                              responsive="true" modal="true"
+                              maximizable="false" style="overflow-y: auto;max-height: 100%"
+                              resizable="false">
+                        <ui:include src="../../drift_calculation/open_worksheet8.xhtml"/>
+                    </p:dialog>
+                    <p:dialog id="idSaveWs1" widgetVar="widgetSaveWs1"
+                              header="Save WorkSheet" dynamic="true"
+                              width="50%" height="50%"
+                              appendTo="@(body)"
+                              responsive="true" modal="true"
+                              maximizable="false" style="overflow-y: auto;max-height: 100%"
+                              resizable="false">
+                        <ui:include src="../../drift_calculation/save_dialog_ws1.xhtml"/>
+                    </p:dialog>
+                    <p:dialog id="idSaveWs2" widgetVar="widgetSaveWs2"
+                              header="Save WorkSheet" dynamic="true"
+                              width="50%" height="50%"
+                              appendTo="@(body)"
+                              responsive="true" modal="true"
+                              maximizable="false" style="overflow-y: auto;max-height: 100%"
+                              resizable="false">
+                        <ui:include src="../../drift_calculation/save_dialog_ws2.xhtml"/>
+                    </p:dialog>
+                    <p:dialog id="idSaveWs3" widgetVar="widgetSaveWs3"
+                              header="Save WorkSheet" dynamic="true"
+                              width="50%" height="50%"
+                              appendTo="@(body)"
+                              responsive="true" modal="true"
+                              maximizable="false" style="overflow-y: auto;max-height: 100%"
+                              resizable="false">
+                        <ui:include src="../../drift_calculation/save_dialog_ws3.xhtml"/>
+                    </p:dialog>
+                    <p:dialog id="idOpenTaskSearchArea" widgetVar="widgetTaskSearchArea"
+                              header="Task Search Area Parameter" dynamic="true"
+                              width="50%" height="50%"
+                              appendTo="@(body)"
+                              responsive="true" modal="true"
+                              maximizable="false" style="overflow-y: auto;max-height: 100%"
+                              resizable="false">
+                        <ui:include src="../../drift_calculation/TaskSearchAreaParamDialog.xhtml"/>
+                    </p:dialog>
+                    <p:dialog id="idOpenTaskSearchAreaWs8" widgetVar="widgetTaskSearchAreaWs8"
+                              header="Task Search Area Parameter" dynamic="true"
+                              width="50%" height="50%"
+                              appendTo="@(body)"
+                              responsive="true" modal="true"
+                              maximizable="false" style="overflow-y: auto;max-height: 100%"
+                              resizable="false">
+                        <ui:include src="../../drift_calculation/TaskSearchAreaWs8Dialog.xhtml"/>
+                    </p:dialog>
+                    <p:dialog id="idSaveWs8" widgetVar="widgetSaveWs8"
+                              header="Save WorkSheet" dynamic="true"
+                              width="50%" height="50%"
+                              appendTo="@(body)"
+                              responsive="true" modal="true"
+                              maximizable="false" style="overflow-y: auto;max-height: 100%"
+                              resizable="false">
+                        <ui:include src="../../drift_calculation/save_dialog_ws8.xhtml"/>  
+                    </p:dialog>
+
+                    <p:dialog id="idOpenBMKG" widgetVar="widgetOpenBMKG"
+                              header="BMKG" dynamic="true"
+                              width="60%" height="=60%"
+                              appendTo="@(body)" 
+                              responsive="true" modal="true"
+                              maximizable="false" style="overflow-y: auto;max-height: 100%"
+                              resizable="false">
+                        <ui:include src="../../drift_calculation/BMKG.xhtml"/>  
+                    </p:dialog>
+
+                </p:panel>
+
+                <p:panel styleClass="panelHeaderGreen ui-shadow-content" id="detail-trapesium" 
+                         rendered="#{incidentPlanningMBean.isTrapesium}">
+                    <ui:include src="../../trapesium_search_area/trapesium.xhtml" />
+                    <p:dialog id="idOpenSA1" widgetVar="widgetOpenSearchAreaTrapesium"
+                              header="Open Search Area" dynamic="true"
+                              width="50%" height="50%"
+                              appendTo="@(body)"
+                              responsive="true" modal="true"
+                              maximizable="false" style="overflow-y: auto;max-height: 100%"
+                              resizable="false">
+                        <ui:include src="../../trapesium_search_area/open_searchArea.xhtml"/>
+                    </p:dialog>
+                    <p:dialog id="idOpenTA1" widgetVar="widgetOpenTaskArea"
+                              header="Open Task Area" dynamic="true"
+                              width="50%" height="50%"
+                              appendTo="@(body)"
+                              responsive="true" modal="true"
+                              maximizable="false" style="overflow-y: auto;max-height: 100%"
+                              resizable="false">
+                        <ui:include src="../../trapesium_search_area/open_taskArea.xhtml"/>
+                    </p:dialog>
+                    <p:dialog id="idSaveSA1" widgetVar="widgetSaveSearchAreaTrapesium"
+                              header="Save Search Area" dynamic="true"
+                              width="50%" height="50%"
+                              appendTo="@(body)"
+                              responsive="true" modal="true"
+                              maximizable="false" style="overflow-y: auto;max-height: 100%"
+                              resizable="false">
+                        <ui:include src="../../trapesium_search_area/save_dialog_search.xhtml"/>
+                    </p:dialog>
+                    <p:dialog id="idSaveTA1" widgetVar="widgetSaveTaskArea"
+                              header="Save Task Area" dynamic="true"
+                              width="50%" height="50%"
+                              appendTo="@(body)"
+                              responsive="true" modal="true"
+                              maximizable="false" style="overflow-y: auto;max-height: 100%"
+                              resizable="false">
+                        <ui:include src="../../trapesium_search_area/save_dialog_task.xhtml"/>
+                    </p:dialog>
+                    <p:dialog id="idConfirmTA" widgetVar="widgetConfirmTA"
+                              header="Confirmation" dynamic="true"
+                              width="20%" height="50%"
+                              appendTo="@(body)"
+                              responsive="true" modal="true"
+                              maximizable="false" style="overflow-y: auto;max-height: 100%"
+                              resizable="false">
+                        <ui:include src="../../trapesium_search_area/confirmDialogTaskArea.xhtml"/>
+                    </p:dialog>
+                </p:panel>
+            </h:form>
+        </div>
+    </div>  
+</ui:composition>

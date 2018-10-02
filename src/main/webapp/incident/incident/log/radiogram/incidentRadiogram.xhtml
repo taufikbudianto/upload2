@@ -1,0 +1,35 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+                
+
+    <h:form id="form-insidenRadiogram">
+        <div class="ui-g ui-fluid">
+            <div class="ui-g-12 ui-lg-6 ">
+                <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group" style="width: 500px">
+                    <p:outputLabel value="Format" style="width: 50px"/>
+                   
+                    <p:selectOneRadio id="formatId" value="#{incidentRadiogramMBean.nasionalformat}" style="width: 350px">
+                        <f:selectItem itemLabel="Nasional" itemValue="0" />
+                        <f:selectItem itemLabel="Internasional" itemValue="1" />
+                    </p:selectOneRadio>
+                    
+                </p:panelGrid>
+                
+                <h:form prependId="false" style="width: 1000px">
+                    <p:tabView class="card" style="width: 1000px">
+                        <p:tab title="Umum">
+                            <ui:include src="./umum.xhtml"/>
+                        </p:tab>
+                        <p:tab title="Detail">
+                            <ui:include src="./detail.xhtml"/>
+                        </p:tab>
+                    </p:tabView>
+                </h:form>
+                
+            </div>
+        </div>
+    </h:form>    
+</ui:composition>

@@ -1,0 +1,171 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <p:panelGrid columns="3" layout="grid" styleClass="ui-panelgrid-blank form-group" class="no-padding no-border">
+        <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group" class="no-padding no-border">
+            <p:commandButton id="check-pilih-incident-sru-tab-laut" 
+                             value="Check All" actionListener="#{incidentSruMBean.checkallpilih}" 
+                             process="incidentdetail:lautsruinc" 
+                             update="incidentdetail:lautsruinc" styleClass="green-btn" 
+                             disabled="#{incidentSruMBean.disabled}">
+                <f:attribute name="sruCheckAllPilih" value="Laut"/>
+            </p:commandButton>
+
+            <p:commandButton id="uncheck-pilih-incident-sru-tab-laut" 
+                             value="Uncheck All" 
+                             actionListener="#{incidentSruMBean.uncheckallpilih}" 
+                             process="incidentdetail:lautsruinc" 
+                             update="incidentdetail:lautsruinc" styleClass="red-btn"
+                             disabled="#{incidentSruMBean.disabled}">
+                <f:attribute name="sruUncheckAllPilih" value="Laut"/>
+            </p:commandButton>
+        </p:panelGrid>
+
+        <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group" class="no-padding no-border">
+            <p:commandButton id="kirim-notif-incident-sru-tab-laut"  
+                             value="Kirim Notifikasi"
+                             actionListener="#{incidentSruMBean.showDialogNotif}"
+                             update="incidentdetail:lautsruinc" 
+                             process="incidentdetail:lautsruinc"
+                             disabled="#{incidentSruMBean.disabled}">            
+                <f:attribute name="sruActionKirim" value="Laut"/>
+            </p:commandButton>
+        </p:panelGrid>
+
+        <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group" class="no-padding no-border">
+            <p:commandButton id="check-kirim-incident-sru-tab-laut" 
+                             value="Check All" 
+                             actionListener="#{incidentSruMBean.checkallkirim}" 
+                             process="incidentdetail:lautsruinc" 
+                             update="incidentdetail:lautsruinc" styleClass="green-btn"
+                             disabled="#{incidentSruMBean.disabled}">
+                <f:attribute name="sruCheckAllKirim" value="Laut"/>
+            </p:commandButton>
+
+            <p:commandButton id="uncheck-kirim-incident-sru-tab-laut" 
+                             value="Uncheck All" 
+
+                             actionListener="#{incidentSruMBean.uncheckallkirim}" 
+                             process="incidentdetail:lautsruinc" 
+                             update="incidentdetail:lautsruinc" styleClass="red-btn"
+                             disabled="#{incidentSruMBean.disabled}">
+                <f:attribute name="sruUncheckAllKirim" value="Laut"/>
+            </p:commandButton>
+        </p:panelGrid>
+    </p:panelGrid>
+
+    <p:dataTable var="lautsruinc" value="#{incidentSruMBean.listAssetLaut}"
+                 reflow="true"  paginator="true" paginatorPosition="bottom" 
+                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} 
+                 {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                 emptyMessage="Data tidak ditemukan" 
+                 rows="10" rowsPerPageTemplate="5,10,15" lazy="true"
+                 id="lautsruinc" tableStyle="table-layout:auto" 
+                 style="font-size: smaller" rowIndexVar="index">                
+        <p:column headerText="No" style="width: 20px">
+            <p:outputLabel value="#{index + 1}"/>
+        </p:column>
+        <p:column style="width: 5%; text-align: center;" headerText="Pilih" >
+            <p:selectBooleanCheckbox value="#{incidentSruMBean.checkedPilihLaut[lautsruinc]}" 
+                                     disabled="#{incidentSruMBean.disabled}">
+                <p:ajax process="@this"/>
+            </p:selectBooleanCheckbox>
+        </p:column>
+        <p:column style="width: 5%; text-align: center;" headerText="Kirim">
+            <p:selectBooleanCheckbox value="#{incidentSruMBean.checkedKirimLaut[lautsruinc]}"
+                                     disabled="#{incidentSruMBean.disabled}">
+                <p:ajax process="@this"/>
+            </p:selectBooleanCheckbox>
+        </p:column>
+        <p:column headerText="Nama SRU" sortBy="#{lautsruinc.name}">
+            <h:outputText value="#{lautsruinc.name}" />
+        </p:column>
+        <p:column headerText="Kansar/Potensi" sortBy="#{lautsruinc.potencyid.potencyname}">
+            <h:outputText value="#{lautsruinc.potencyid.potencyname}" />
+        </p:column>
+        <p:column headerText="Jarak(NM)" >
+            <p:outputLabel value="#{incidentSruMBean.distance(lautsruinc.longitude, lautsruinc.latitude)}" />
+        </p:column>
+        <p:column headerText="Arah(Derajat)">
+            <p:outputLabel value="#{incidentSruMBean.angle(lautsruinc.longitude, lautsruinc.latitude)}" />
+        </p:column>
+        <p:column headerText="Kecepatan(Knots)" sortBy="#{lautsruinc.speed}">
+            <h:outputText value="#{lautsruinc.speed}" />
+        </p:column>
+        <p:column headerText="Endurance(Jam)" sortBy="#{lautsruinc.endurance}">
+            <h:outputText value="#{lautsruinc.endurance}" />
+        </p:column>
+        <p:column headerText="Fungsi" sortBy="#{lautsruinc.functional}">
+            <h:outputText value="#{lautsruinc.functional}" />
+        </p:column>
+        <p:column headerText="Kapasitas" sortBy="#{lautsruinc.cargo}">
+            <h:outputText value="#{lautsruinc.cargo}" />
+        </p:column>
+        <p:column headerText="Keterangan" sortBy="#{lautsruinc.remarks}">
+            <h:outputText value="#{lautsruinc.remarks}" />
+        </p:column>
+
+        <p:column headerText="Aksi">
+            <p:commandButton id="ubahLaut"
+                             label="Ubah"
+                             onclick="PF('tTipUbah').hide();"
+                             icon="fa fa-edit" 
+                             class="blue-grey-btn" actionListener="#{incidentSruMBean.showDetail}" 
+                             process="@form" disabled="#{incidentSruMBean.disabled}">
+                <f:attribute name="resAsset" value="#{lautsruinc}"/>
+                <f:attribute name="sruAction" value="Laut"/>
+            </p:commandButton>
+            <p:tooltip value="Ubah" for="ubahLaut"
+                       trackMouse="true" widgetVar="tTipUbah"/>
+        </p:column>
+    </p:dataTable>
+    <p:spacer width="10" />
+    <p:panel class="control-button no-border no-padding" >
+        <p:commandButton value="Simpan SRU Laut" icon="fa fa-save" 
+                         styleClass="green-btn"  style="width:200px"
+                         actionListener="#{incidentSruMBean.action}" 
+                         process="incidentdetail:lautsruinc"
+                         update="incidentdetail:lautsruinc"
+                         disabled="#{incidentSruMBean.disabled}">
+            <f:attribute name="sruAction" value="Laut"/>
+        </p:commandButton>
+    </p:panel>
+    <p:dialog id="kirim-notif-sru-laut" widgetVar="kirim-notif-sru-laut" modal="true"
+              showEffect="fade" hideEffect="fade" resizable="false" responsive="true"
+              width="40%" height="50%" dynamic="true">
+        <h:form>
+            <p:panel id="panel" class="ui-fluid no-border card-w-title card" header="Kirim Notifikasi Email/SMS"> 
+                <p:panelGrid columns="2" columnClasses="ui-grid-col-6, ui-grid-col-6" class="ui-fluid">
+                    <p:outputLabel value="Via"/>
+                    <p:panelGrid columns="4" columnClasses="">
+                        <p:outputLabel value="SMS"/>
+                        <p:selectBooleanCheckbox value="#{incidentSruMBean.kirimSms}">
+                            <p:ajax event="change" update="isiSMS"/>
+                        </p:selectBooleanCheckbox>
+                        <p:outputLabel value="Email"/>
+                        <p:selectBooleanCheckbox value="#{incidentSruMBean.kirimEmail}">
+                            <p:ajax event="change" update="emailnotif"/>
+                            <p:ajax event="change" update="subyekemail"/>
+                        </p:selectBooleanCheckbox>
+                    </p:panelGrid>
+                    <p:outputLabel value="Isi Pesan SMS"/>
+                    <p:inputTextarea id="isiSMS" value="#{incidentSruMBean.isisms}" 
+                                     disabled="#{!incidentSruMBean.kirimSms}" required="true"
+                                     requiredMessage="Pesan SMS Wajib Di Isi"/>
+                    <p:outputLabel value="Subyek Email"/>
+                    <p:inputText id="subyekemail" value="#{incidentSruMBean.subyekEmail}" disabled="#{!incidentSruMBean.kirimEmail}" required="true" 
+                                 requiredMessage="Subyek Email Wajib Di Isi"/>
+                    <p:outputLabel value="Isi Pesan Email"/>
+                    <p:inputTextarea id="emailnotif" value="#{incidentSruMBean.isiEmail}" disabled="#{!incidentSruMBean.kirimEmail}"
+                                     required="true" requiredMessage="Pesan Email Wajib Di Isi"/>                        
+                    <p:commandButton value="Kirim" icon="fa fa-send" actionListener="#{incidentSruMBean.actionKirimNotif}" process="@this">
+                        <f:attribute name="sruActionKirim" value="Laut"/>
+                    </p:commandButton>                                
+                    <p:commandButton value="tutup" class="red-btn" icon="fa fa-close" actionListener="#{incidentSruMBean.refresh()}" onclick="PF('kirim-notif-coba').hide();"/>                            
+                </p:panelGrid>
+            </p:panel>
+        </h:form>
+    </p:dialog>
+</ui:composition>

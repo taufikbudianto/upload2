@@ -1,0 +1,76 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="inc-sru-view-laut">
+        <div class="ui-g ui-fluid">
+            <div class="ui-g-12 ui-lg-6">
+                <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group"  columnClasses="ui-grid-col-4,ui-grid-col-4" 
+                             class="no-border no-padding no-padding-table">
+                    <p:outputLabel value="SRU" style="width: 50px"/>
+                    <p:inputText value="#{incidentSRULautMBean.resAsset.code}" style="width: 200px"/>
+
+                    <p:outputLabel value="Nama SRU" style="width: 50px"/>
+                    <p:inputText value="#{incidentSRULautMBean.resAsset.name}" style="width: 200px"/>
+
+                    <p:outputLabel value="Tipe" style="width: 50px"/>
+                    <p:inputText value="#{incidentSRULautMBean.resAsset.assettypeid.assetname}" style="width: 200px"/>
+
+                    <p:outputLabel value="Kondisi" style="width: 50px"/>
+                    <p:inputText value="#{incidentSRULautMBean.resAsset.assetcondition}" style="width: 200px"/>
+
+                    <p:outputLabel value="Kargo" style="width: 50px"/>
+                    <p:inputText value="#{incidentSRULautMBean.resAsset.cargo}" style="width: 200px"/>
+
+                    <p:outputLabel value="Fungsi" style="width: 50px"/>
+                    <p:inputText value="#{incidentSRULautMBean.resAsset.functional}" style="width: 200px"/>
+
+                    <p:outputLabel value="Keterangan" style="width: 50px" />
+                    <p:inputTextarea value="#{incidentSRULautMBean.resAsset.remarks}" style="width: 200px"/>
+                </p:panelGrid>
+            </div>
+            <div class="ui-g-12 ui-lg-6">
+                <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group" columnClasses="ui-grid-col-4,ui-grid-col-6" class="no-border no-padding no-padding-table"> 
+                    <p:outputLabel for="tglPenugasanLautSruInc" value="Tanggal Penugasan" />
+                    <p:calendar id="tglPenugasanLautSruInc" mask="true" navigator="true" pattern="dd/MM/yyyy" value="#{incidentSRULautMBean.incidentAsset.assignmentDate}" 
+                                showOn="button"/>
+
+                    <p:outputLabel for="tglAkhirPenugasanLautSruInc" value="Tanggal Akhir Penugasan" />
+                    <p:calendar id="tglAkhirPenugasanLautSruInc" mask="true" navigator="true" pattern="dd/MM/yyyy" value="#{incidentSRULautMBean.incidentAsset.assignmentEndDate}" 
+                                showOn="button"/>
+
+                    <p:outputLabel value="Latitude" />
+                    <p:panelGrid id="latitude" columns="3" style="width: 100%;" 
+                                 columnClasses ="ui-grid-col-2,ui-grid-col-7,ui-grid-col-3"
+                                 class="no-border no-padding-table ui-fluid">
+                        <ui:include src="coordinate/laut/latitude.xhtml"/>
+                    </p:panelGrid>
+                    <p:outputLabel value="Longitude" />
+                    <p:panelGrid id="longitude" columns="3" style="width: 100%"
+                                 columnClasses ="ui-grid-col-2,ui-grid-col-7,ui-grid-col-3"
+                                 class="no-border no-padding-table ui-fluid">
+                        <ui:include src="coordinate/laut/longitude.xhtml"/>
+                    </p:panelGrid>
+
+                </p:panelGrid>
+                <p:spacer width="50"/>
+                <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group" columnClasses="ui-grid-col-4,ui-grid-col-4" 
+                             class="no-border no-padding no-padding-table">
+                    <p:commandButton value="Simpan" styleClass="green-btn" actionListener="#{incidentSRULautMBean.simpan(incidentSRULautMBean.resAsset)}"
+                                     update="incidentdetail:incident-sru-tab:laut-content-tab:lautsruinc @form"
+                                     process="incidentdetail:incident-sru-tab:laut-content-tab:lautsruinc @form">
+                        <p:confirm header="Konfirmasi" message="Apakah anda yakin ingin menyimpan incident SRU ini?" icon="ui-icon-alert" />
+                    </p:commandButton>
+                    <p:commandButton value='Batal'
+                                     styleClass="red-btn" style="width:130px" immediate="true">
+                        <p:ajax event="click" update="@form" oncomplete="if(!args.validationFailed) PF('widgetViewSruLaut').hide()"/>
+                    </p:commandButton>
+                </p:panelGrid>
+
+            </div>
+        </div>
+    </h:form>
+
+</ui:composition>

@@ -1,0 +1,73 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <p:tree id="idTreeRouting" value="#{mapMBean.treeRouting}" var="doc" animate="true"
+            selectionMode="single" selection="#{mapMBean.selectedTreeRouting}"
+            class="no-border" style="font-size: xx-small"
+            rendered="#{mapMBean.treeRouting != null}">
+        <p:ajax event="select" listener="#{mapMBean.showTreeRoutingProperties}" />
+        <p:ajax event="contextMenu" listener="#{mapMBean.showTreeRoutingProperties}" />
+        <p:treeNode icon="ui-icon-custom ui-icon-custom-treerouting">
+            <h:outputText value="#{doc.name}"/>
+        </p:treeNode>
+        <p:treeNode type="searcharea" icon="ui-icon-custom ui-icon-custom-searcharea">
+            <h:outputText value="#{doc.name}" />
+        </p:treeNode>
+        <p:treeNode type="tasksearcharea" icon="ui-icon-custom ui-icon-custom-tasksearcharea">
+            <h:outputText value="#{doc.name}" />
+        </p:treeNode>
+        <p:treeNode type="pattern" 
+                    icon="ui-icon-custom #{doc.type == 'free_define'?'ui-icon-custom-freedefine':
+                                           doc.type == 'pararel'?'ui-icon-custom-pararel':
+                                           doc.type == 'sector'?'ui-icon-custom-sector':
+                                           doc.type == 'square'?'ui-icon-custom-square':
+                                           doc.type == 'tsn'?'ui-icon-custom-tsn':
+                                           doc.type == 'tsr'?'ui-icon-custom-tsr':
+                                           doc.type == 'trapezium'?'ui-icon-custom-trapezium':''} ">
+            <h:outputText value="#{doc.name}" />
+        </p:treeNode>
+    </p:tree>
+    <p:commandButton value="Save Search Area" style="margin-bottom: 5px"
+                     actionListener="#{searchAreaMBean.showDialogSave}"/>
+    <p:commandButton value="Clear Search Area" style="margin-bottom: 5px"
+                     actionListener="#{searchAreaMBean.clearSearchArea}">
+        <p:confirm header="Konfirmasi" 
+                   message="Apakah anda yakin akan menghapus Search Area pada peta ?" 
+                   icon="ui-icon-alert" />
+    </p:commandButton>
+    <p:commandButton value="Save Task Search Area" style="margin-bottom: 5px"
+                     actionListener="#{taskSearchAreaMBean.showAllTaskArea}"/>
+    <p:commandButton value="Save Search Pattern" 
+                     actionListener="#{searchPatternMBean.showAllSearchPattern}"
+                     style="margin-bottom: 5px"/>
+
+    <p:contextMenu nodeType="searcharea" 
+                   for="idTreeRouting" style="font-size: small" >
+        <p:menuitem value="View on Map" icon="ui-icon-search" 
+                    actionListener="#{searchAreaMBean.viewOnMap}"/>
+        <p:menuitem value="Delete Data" icon="fa fa-trash" 
+                    actionListener="#{searchAreaMBean.removeSearchArea}">
+            <p:confirm header="Konfirmasi" 
+                       message="Apakah anda yakin akan menghapus Search Area ?" 
+                       icon="ui-icon-alert" />
+        </p:menuitem>
+        <p:menuitem value="Properties" icon="fa fa-edit" 
+                    actionListener="#{searchAreaMBean.showDialogEdit}"/>
+    </p:contextMenu>
+    <p:contextMenu nodeType="pattern" 
+                   for="idTreeRouting" style="font-size: small" 
+                   >
+        <p:menuitem value="View on Map" icon="ui-icon-search" 
+                    actionListener="#{searchPatternMBean.viewOnMap}"/>
+        <p:menuitem value="Delete Data" icon="fa fa-trash" 
+                    actionListener="#{searchPatternMBean.removeSearchPattern}">
+            <p:confirm header="Konfirmasi" 
+                       message="Apakah anda yakin akan menghapus Search Pattern ?" 
+                       icon="ui-icon-alert" />
+        </p:menuitem>
+        <p:menuitem value="Properties" icon="fa fa-edit" 
+                    actionListener="#{searchPatternMBean.showDialogEdit}"/>
+    </p:contextMenu>
+</ui:composition>

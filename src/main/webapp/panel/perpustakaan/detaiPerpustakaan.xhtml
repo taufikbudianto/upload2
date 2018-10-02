@@ -1,0 +1,96 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <p:panelGrid layout="grid" columns="1"
+                 styleClass="ui-panelgrid-blank form-group" 
+                 style="width: 100%" columnClasses ="ui-grid-col-4"
+                 class="no-padding no-border">
+        <p:messages closable="true"/>
+    </p:panelGrid> 
+    <p:panelGrid columns="2" layout="grid" 
+                 styleClass="ui-panelgrid-blank form-group" 
+                 columnClasses ="ui-grid-col-2,ui-grid-col-2"
+                 style="width: 100%" class="no-padding no-border">
+        <p:outputLabel value="Judul" styleClass="asterix"/>
+        <p:inputText value="#{perpustakaanMBean.perpus.libJudul}" 
+                     maxlength="20" disabled="#{perpustakaanMBean.isView}"
+                     required="true" requiredMessage="Judul harus diisi"/>
+        <p:outputLabel value="Personil"/>
+        <p:commandButton value="Pilih" style="width: 100px;"
+                         icon="fa fa-globe" type="button"
+                         disabled="#{perpustakaanMBean.isView}">
+            <p:ajax event="click" update="@form" global="false"
+                    listener="#{perpustakaanMBean.showPersonil}"/>
+        </p:commandButton>        
+    </p:panelGrid>    
+    <p:panel class="control-button no-border no-padding" rendered="#{!perpustakaanMBean.isView}">
+        <p:commandButton value="Hapus" icon="fa fa-trash" global="false"
+                         class="cyan-btn" style="width: 100px;" update="@form"
+                         disabled="#{empty perpustakaanMBean.listPersonilTemp}"
+                         actionListener="#{perpustakaanMBean.removePersonilTempChecked}"/>
+    </p:panel>
+    <p:dataTable var="temp" value="#{perpustakaanMBean.listPersonilTemp}"
+                 reflow="true" paginator="true" rows="5" lazy="true"
+                 rowsPerPageTemplate="#{viewBean.rowsPerPageTemplate}"
+                 rowKey="#{temp.personnelID}" paginatorPosition="bottom"
+                 tableStyle="table-layout:auto" rowIndexVar="index"
+                 selection="#{perpustakaanMBean.listPersonilTempChecked}"
+                 emptyMessage="Data tidak ditemukan">
+        <p:column selectionMode="multiple" style="width: 15px; text-align: center"
+                  rendered="#{!perpustakaanMBean.isView}"/>
+        <p:column headerText="No" style="width: 20px">
+            <p:outputLabel value="#{index + 1}"/>
+        </p:column>
+        <p:column headerText="Nama" sortBy="#{temp.personnelName}">
+            <p:outputLabel value="#{temp.personnelName}"/>
+        </p:column>
+        <p:column headerText="KanSAR" sortBy="#{temp.officeSar.kantorsarname}">
+            <p:outputLabel value="#{temp.officeSar.kantorsarname}"/>
+        </p:column>
+        <p:column headerText="No. Telepon" sortBy="#{temp.phoneNumber}">
+            <p:outputLabel value="#{temp.phoneNumber}"/>
+        </p:column>
+        <p:column headerText="Aksi" style="width: 5%;">
+            <p:commandButton id="lihatDtlPerpus" global="false" update="@form"
+                             actionListener="#{perpustakaanMBean.loadPersonil}"                             
+                             onclick="PF('tTipDtlPerpus').hide();"
+                             styleClass="blue-grey-btn" icon="fa fa-search">
+                <f:attribute name="rowPersonil" value="#{temp}" />
+            </p:commandButton>
+            <p:tooltip value="Lihat" for="lihatDtlPerpus"
+                       trackMouse="true" widgetVar="tTipDtlPerpus"/>
+        </p:column>        
+    </p:dataTable>
+    <p:panelGrid columns="2" layout="grid" id="gdLib"
+                 styleClass="ui-panelgrid-blank form-group" 
+                 columnClasses ="ui-grid-col-2,ui-grid-col-2"
+                 style="margin-top: 20px;margin-bottom: 20px; width: 100%"
+                 class="no-padding no-border">
+        <p:outputLabel value="Deskripsi"/>
+        <p:inputTextarea value="#{perpustakaanMBean.perpus.libKonten}"
+                         maxlength="100" disabled="#{perpustakaanMBean.isView}">
+            <p:ajax event="blur" update="@this" global="false"/>            
+        </p:inputTextarea>
+        <p:outputLabel value="Attachment"/>
+        <p:fileUpload value="#{perpustakaanMBean.attachmentFile}" 
+                      disabled="#{perpustakaanMBean.isView}"
+                      dragDropSupport="false" invalidSizeMessage="Maximal File 1 MB"
+                      fileUploadListener="#{perpustakaanMBean.attachment}"
+                      auto="true" sizeLimit="1000000" update="gdLib"/>
+        <p:outputLabel/>
+        <p:outputLabel value="#{perpustakaanMBean.perpus.libAttachment}"/>
+    </p:panelGrid>    
+    <p:panel class="control-button no-border no-padding" >
+        <p:commandButton value="Simpan"  icon="fa fa-save" style="width:130px" styleClass="green-btn" 
+                         actionListener="#{perpustakaanMBean.savePerpustakaan}" 
+                         rendered="#{!perpustakaanMBean.isView}"
+                         update="@form" global="false">
+            <p:confirm header="Konfirmasi" message="Apakah anda yakin ingin menyimpan data ini ?" icon="ui-icon-alert" />
+        </p:commandButton>
+        <p:spacer width="10"/>
+        <p:button value="#{perpustakaanMBean.isView ? 'Kembali' : 'Batal'}" 
+                  icon="ui-icon-cancel" 
+                  class="red-btn" style="width: 130px;"/>
+    </p:panel>
+</ui:composition>

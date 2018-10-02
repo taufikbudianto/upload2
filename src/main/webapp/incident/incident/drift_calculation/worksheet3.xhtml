@@ -1,0 +1,177 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"> 
+    
+    <div class="ui-g ui-fluid">
+        <h:form id="form-ws3" prependId="false">
+        <div class="ui-g-12 ui-lg-12 ">
+            <table cellpadding="10">
+            <tr>
+                <td style="width: 150px"><p:commandButton value="NEW" actionListener="#{driftCalcWorksheet3MBean.newWS3()}" process="@form" styleClass="green-btn" update="@form"/></td>
+                <td style="width: 150px">
+                    <p:commandButton value="OPEN" styleClass="green-btn">
+                        <p:ajax event="click" process="@form" listener="#{driftCalcWorksheet3MBean.openWS3()}"/>
+                    </p:commandButton>
+                </td>
+                <td style="width: 150px">
+                    <p:commandButton value="SAVE" process="@form" update="@form" actionListener="#{driftCalcWorksheet3MBean.openSaveDialog()}" styleClass="green-btn"/>
+                     
+                </td>
+                <td style="width: 150px">
+                    <p:commandButton value="DELETE" actionListener="#{driftCalcWorksheet3MBean.deleteWS3()}" process="@form" update="@form" styleClass="green-btn">
+                        <p:confirm header="Konfirmasi" message="Apakah anda yakin ingin menghapus data Worksheet ini?" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                </td>
+                <td style="width: 150px">
+                    <p:commandButton value="CALCULATE" process="@form" update="incidentdetail:tabplanning-content:ws3-calculation,incidentdetail:tabplanning-content:form-ws3-panel1" actionListener="#{driftCalcWorksheet3MBean.calculateWS3}" styleClass="green-btn"/>
+                    
+                </td>
+                <td style="width: 150px"><p:commandButton value="PRINT" styleClass="green-btn">
+                        <p:ajax event="click" listener="#{driftCalcWorksheet3MBean.doPrint()}"  process="@this"/>
+                    </p:commandButton></td>
+            </tr>
+            </table>
+            <p:panel id="form-ws3-panel1" >
+                <table cellpadding="10">
+                    <tr>
+                        <td style="width: 150px"><p:outputLabel style="width: 150px" value="Search Object" /></td>
+                        <td style="width:150px">
+                            <p:selectOneMenu id="cboSOW3" value="#{driftCalcWorksheet3MBean.searchObject}" style="width:150px" required="false" requiredMessage="Search Object harus di isi !">
+                                <p:ajax event="change" listener="#{driftCalcWorksheet3MBean.changeSearchObject}" update="@form"/> 
+                                <f:selectItems value="#{driftCalcWorksheet3MBean.listSearchObject}"/>
+                            </p:selectOneMenu>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td style="width: 150px"><p:outputLabel style="width: 150px" value="Satuan" /></td>
+                        <td style="width:70px">
+                            <p:selectOneMenu id="cboSatuanW3" value="#{driftCalcWorksheet3MBean.unit}" style="width:70px">
+                                <f:selectItem itemLabel="NM" itemValue="0" />
+                                <f:selectItem itemLabel="KM" itemValue="1" />
+                            </p:selectOneMenu>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:150px"><p:outputLabel style="width:150px" value="Meteorological Visibility" /></td>
+                        <td style="width:100px">
+                            <p:selectOneMenu id="cboMVW3" value="#{driftCalcWorksheet3MBean.meteorological}" style="width:100px" required="false" requiredMessage="Meteorological Visibility harus di isi !">
+                                <p:ajax listener="#{driftCalcWorksheet3MBean.changeMeteorogical}"/>
+                                <f:selectItems value="#{driftCalcWorksheet3MBean.listMeteorogical}"/>
+                            </p:selectOneMenu>
+                            
+                        </td>
+                        <td style="width:70px"><p:outputLabel style="width:70px" value="KM" /></td>
+                        <td style="width:150px">
+                            <p:outputLabel style="width:150px" value="Vegetation" /></td>
+                        <td style="width:70px">
+                            <p:selectOneMenu id="cboVW3" value="#{driftCalcWorksheet3MBean.vegetation}" style="width:70px" required="false" requiredMessage="Vegetation harus di isi !">
+                                <f:selectItems value="#{driftCalcWorksheet3MBean.listVegetation}"/>
+                            </p:selectOneMenu>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td style="width:150px"><p:outputLabel style="width:150px" value="Search Height" /></td>
+                        <td style="width:100px">
+                            <p:selectOneMenu id="cboSHW3" value="#{driftCalcWorksheet3MBean.searchHeight}" style="width:100px" required="false" requiredMessage="Search Height harus di isi !">
+                                <f:selectItems value="#{driftCalcWorksheet3MBean.listHeight}"/>
+                            </p:selectOneMenu>
+                            
+                        </td>
+                        <td style="width:70px"><p:outputLabel style="width:70px" value="feet" /></td>
+                        <td style="width:150px"><p:outputLabel style="width:150px" value="Search Area" /></td>
+                        <td style="width:150px">
+                            <p:inputNumber style="width:150px" id="idSearchArea-t-w3" value="#{driftCalcWorksheet3MBean.searchArea}" decimalPlaces="6" decimalSeparator="," thousandSeparator="." required="true" requiredMessage="Search Area harus di isi !" />
+                        </td>
+                        <td style="width:70px"><p:outputLabel style="width:70px" value="SQ NM" /></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td style="width:150px"><p:outputLabel style="width:150px" value="Search Repeat" /></td>
+                        <td style="width:150px">
+                            <p:selectOneMenu id="cboSRW3" style="width:150px" value="#{driftCalcWorksheet3MBean.repeat}">
+                                <f:selectItem itemLabel="First" itemValue="First" />
+                                <f:selectItem itemLabel="Second" itemValue="Second" />
+                                <f:selectItem itemLabel="Third" itemValue="Third" />
+                                <f:selectItem itemLabel="Fourth" itemValue="Fourth" />
+                                <f:selectItem itemLabel="Fifth" itemValue="Fifth" />
+                            </p:selectOneMenu> 
+                        </td>
+                        <td></td>
+                        <td><p:outputLabel style="width:100px" value="Fatigue Factor" /></td>
+                        <td style="width:150px">
+                            <p:selectBooleanCheckbox id="basic-w3" value="#{driftCalcWorksheet3MBean.fatigueFactor}" style="width:150px" />
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </table>
+                
+                
+                
+            </p:panel>  
+        </div>
+        <div class="ui-g-12">
+            <p:panel id="ws3-calculation" header="CALCULATION RESULT" styleClass="penelHeaderGreen ui-shadow-content" 
+                 collapsed="false"
+                 toggleable="true" toggleSpeed="500" closeSpeed="500">
+                <table cellpadding="10">
+                    <tr>
+                        <td style="width:150px"><p:outputLabel style="width:150px" value="Uncorrected Sweep Width" /></td>
+                        <td style="width:150px"><p:inputText disabled="true" style="width:150px" value="#{driftCalcWorksheet3MBean.uncorrectedSweepWidth}" id="idUSWW3-nm"/></td>
+                        <td style="width:70px"><p:outputLabel style="width:70px" value="NM" /></td>
+                    </tr>
+                    <tr>
+                        <td style="width:150px"><p:outputLabel style="width:150px" value="Practical Space Spasing (S)" /></td>
+                        <td style="width:150px"><p:inputNumber style="width:150px" id="idPSSW3-nm" decimalPlaces="6" decimalSeparator="," thousandSeparator="." value="#{driftCalcWorksheet3MBean.practicalTrackSpacing}" required="true" requiredMessage="Practical Space Spasing (S) harus di isi"/> </td>
+                        <td style="width:70px">
+                            <p:outputLabel style="width:70px" value="NM" />
+                            
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:150px"><p:outputLabel style="width:150px" value="Terrain Correction Factor" /></td>
+                        <td style="width:150px"><p:inputText disabled="true" style="width:150px" id="idTCFW3-nm" value="#{driftCalcWorksheet3MBean.terrainCorrectionFactor}"/></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td style="width:150px"><p:outputLabel style="width:150px" value="Fatigue Correction Factor" /></td>
+                        <td style="width:150px"><p:inputText disabled="true" style="width:150px" id="idFCFW3-nm" value="#{driftCalcWorksheet3MBean.fatigueCorrectionFactor}"/></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td style="width:150px"><p:outputLabel style="width:150px" value="Sweep Width Factor" /></td>
+                        <td style="width:150px"><p:inputText disabled="true" style="width:150px" id="idSWFW3-nm" value="#{driftCalcWorksheet3MBean.sweepWidthFactor}"/></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td style="width:150px"><p:outputLabel style="width:150px" value="Coverage Factor" /></td>
+                        <td style="width:150px"><p:inputText disabled="true" style="width:150px" id="idCFW3-nm" value="#{driftCalcWorksheet3MBean.coverageFactor}"/></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td style="width:150px"><p:outputLabel style="width:150px" value="Probability of Detection (POD)" /></td>
+                        <td style="width:150px"><p:inputText disabled="true" style="width:150px" id="idPODW3-nm" value="#{driftCalcWorksheet3MBean.probabilityOfDetection}"/></td>
+                        <td style="width:70px"><p:outputLabel style="width:70px" value="%" /></td>
+                    </tr>
+                    <tr>
+                        <td style="width:150px"><p:outputLabel style="width:150px" value="Search Hours" /></td>
+                        <td style="width:150px"><p:inputText disabled="true" style="width:150px" id="idSHW3-nm" value="#{driftCalcWorksheet3MBean.searchhours}"/></td>
+                        <td style="width:70px"><p:outputLabel style="width:70px" value="hours" /></td>
+                    </tr>
+                </table>
+                     
+            </p:panel>
+            
+        </div>
+        </h:form>
+    </div>
+</ui:composition>

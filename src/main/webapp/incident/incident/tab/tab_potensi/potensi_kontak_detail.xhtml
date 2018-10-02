@@ -1,0 +1,59 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="form-kontak-potensi">
+        <p:panel style="overflow: auto;width: 100%;max-height: 55vh" class="no-border card card-w-title ui-fluid">
+            <p:messages closable="true"/>
+            <p:panelGrid class="ui-g-12 no-padding no-border" columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group"
+                         columnClasses="ui-grid-col-6,ui-grid-col-6">
+                <p:panelGrid class="ui-g-12 no-padding no-border" columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group"
+                             columnClasses="ui-grid-col-4 label,ui-grid-col-8 value value-readonly">
+
+                    <p:outputLabel value="Gelar Depan" />
+                    <p:inputText value="#{potensiMBean.resPotencyContact.contacttitle}"/>
+
+                    <p:outputLabel value="Nama"/>
+                    <p:inputText value="#{potensiMBean.resPotencyContact.contactname}" 
+                                 required="true" requiredMessage="Nama Tidak Boleh Kosong"/>
+
+                    <p:outputLabel value="Gelar belakang"/>
+                    <p:inputText value="#{potensiMBean.resPotencyContact.contactsuffix}" />
+
+                    <p:outputLabel value="Jabatan"/>
+                    <p:inputText value="#{potensiMBean.resPotencyContact.contactposition}" />
+
+                    <p:outputLabel value="No. Telepon"/>
+                    <p:inputMask id="phone" value="#{potensiMBean.resPotencyContact.phonenumber1}"
+                                 mask="(999)999-9999" />
+                   
+                    <p:outputLabel value="No. Handphone"/>
+                    <p:inputMask id="hp" value="#{potensiMBean.resPotencyContact.phonenumber2}"
+                                 mask="(9999)999-9999" />
+                   
+                    <p:outputLabel value="Email"/>
+                    <p:inputText id="email" value="#{potensiMBean.resPotencyContact.email}">
+                        <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                    </p:inputText>
+                    <p:watermark for="email" value="Email Address *" />
+                    <p:message for="email" />
+
+                </p:panelGrid>
+            </p:panelGrid>
+        </p:panel>
+
+        <p:panel class="no-border no-padding control-button" style="text-align: right;">
+            <p:commandButton value="#{potensiMBean.showButton ? 'Batal' : 'Kembali'}" styleClass="red-btn" style="width:130px">
+                <p:ajax event="click"  oncomplete="PF('dlgkontak').hide();"/>
+            </p:commandButton> 
+            
+            <p:commandButton value="Simpan" style="width:130px" styleClass="green-btn" >
+                <p:ajax event="click" listener="#{potensiMBean.kontak()}" oncomplete="PF('dlgkontak').hide();"
+                        process="@form" update="@form :respotensi-content:potensi-detail:potensi-tabs:respotensi-kontak-sar:data-kontak" />
+            </p:commandButton> 
+        </p:panel>
+
+    </h:form>
+</ui:composition>

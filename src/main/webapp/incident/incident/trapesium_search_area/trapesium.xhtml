@@ -1,0 +1,25 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+                
+        <p:panelGrid columns="5" layout="grid" styleClass="ui-panelgrid-blank grid-pad" >
+<!--        <p:commandButton style="width: 150px" value="CLOSE" styleClass="purple-btn">
+            <p:ajax event="click" listener="{incidentMBean.prepareShowIncidentDetail(2, driftCalcTrapeziumMBean.incident)}" update="@form"/>
+        </p:commandButton>-->
+
+        <p:commandButton style="width: 150px" value="CLOSE" styleClass="purple-btn">
+            <p:ajax event="click" listener="#{incidentPlanningMBean.hideTrapesium}" update="@form"/>
+        </p:commandButton>
+    </p:panelGrid>
+    <p:tabView class="card" prependId="false">
+        <!--<p:ajax event="tabChange" update=":form-tra-task-area" /> -->
+        <p:tab title="Search Area Trapesium">
+            <ui:include src="./search_area.xhtml"/>
+        </p:tab>
+        <p:tab title="Task Area Trapesium">
+            <ui:include src="./task_area.xhtml"/>
+        </p:tab>
+    </p:tabView>
+</ui:composition>

@@ -1,0 +1,103 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <h:form id="beacon-content-elemental">                  
+        <p:panel id="list-beacon-msg-elemental" header="Daftar Beacon Composites" 
+                 styleClass="penelHeaderGreen ui-shadow-content" class="no-border card card-w-title ui-fluid" rendered="#{!distressElementalMBean.isShowDetailElemental}">
+            <p:panelGrid id="search" columns="5" layout="grid" 
+                         styleClass="ui-panelgrid-blank form-group" 
+                         columnClasses ="ui-grid-col-3,ui-grid-col-5,ui-grid-col-2,ui-grid-col-2,ui-grid-col-3"
+                         style="margin-top: 20px;margin-bottom: 20px"
+                         class="no-padding no-border">
+                <p:selectOneMenu id="field" value="#{distressElementalMBean.field}">
+                    <p:ajax event="change" update="search" listener="#{distressElementalMBean.changeValueSearch}"/>
+                    <f:selectItem itemLabel="Message Number" itemValue="msgNumber" />
+                    <f:selectItem itemLabel="Transmit DTG" itemValue="transmitDtg" />
+                    <f:selectItem itemLabel="Beacon ID" itemValue="beaconID" />
+                    <f:selectItem itemLabel="Satellite ID" itemValue="satID" />
+                    <f:selectItem itemLabel="Reporting MCC" itemValue="repMcc" />
+                    <f:selectItem itemLabel="Destination MCC" itemValue="destMcc" />
+                </p:selectOneMenu>                    
+                <p:inputText id="value" value="#{distressElementalMBean.value}" rendered="#{distressElementalMBean.valueInput==2}" />
+                <p:calendar id="valueDate" showOn="button" value="#{distressElementalMBean.valueDate}" mask="true" pattern="dd/MM/yyyy" readonlyInput="true" navigator="true" rendered="#{distressElementalMBean.valueInput==1}"/>
+                <p:commandButton id="search-btn" type="button"  value="Cari" icon="ui-icon-search" onclick="PF('listWidget2').getPaginator().setPage(0);">
+                    <p:ajax event="click" process="@form" update=":beacon-content-elemental:list-beacon-msg-elemental"/>
+                </p:commandButton>
+                <p:commandButton id="clear-btn" type="button"  value="Reset" icon="ui-icon-replay">
+                    <p:ajax event="click" update=":beacon-content-elemental:list-beacon-msg-elemental" process="@form" listener="#{distressElementalMBean.reset}"/>
+                </p:commandButton>
+            </p:panelGrid>
+            <p:dataTable var="elementals" value="#{distressElementalMBean.lazyDataModelJPA}" reflow="true" rowKey="#{elementals.transmitDtg}"
+                         lazy="true" paginator="true" paginatorPosition="bottom" rows="#{viewBean.rowsPageDefault}"
+                         rowsPerPageTemplate="#{viewBean.rowsPerPageTemplate}" emptyMessage="Data tidak ditemukan" tableStyle="table-layout:auto"
+                         rowIndexVar="index" widgetVar="listWidget2"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                <p:column headerText="No" style="width: 20px">
+                    <p:outputLabel value="#{index + 1}"/>
+                </p:column>
+                <p:column  headerText="Message Number" style="width: 10%; text-align: center;" sortBy="#{elementals.msgNumber}">
+                    <h:outputText  value="#{elementals.msgNumber}" />
+                </p:column>
+                <p:column headerText="Transmit DTG" style="width: 15%; text-align: center;" sortBy="#{elementals.transmitDtg}">
+                    <h:outputText style="text-align: center;" value="#{distressElementalMBean.transmitDtgFormat(elementals)}" />
+                </p:column>
+                <p:column  headerText="Beacon ID" style="width: 50%; text-align: center;" sortBy="#{elementals.beaconID}">
+                    <h:outputText  value="#{elementals.beaconID}" />
+                </p:column>
+                <p:column  headerText="Freq" style="width: 5%; text-align: center;" sortBy="#{elementals.flagFreq}">
+                    <h:outputText  value="#{elementals.flagFreq}" />
+                </p:column>
+                <p:column  headerText="Latitude" style="width: 50%; text-align: center;" sortBy="#{elementals.latitude}">
+                    <h:outputText  value="#{distressElementalMBean.latitude.getConvertDdToDms(elementals.latitude, true)}" />
+                </p:column>
+                <p:column  headerText="Longitude" style="width: 50%; text-align: center;" sortBy="#{elementals.longitude}">
+                    <h:outputText  value="#{distressElementalMBean.longitude.getConvertDdToDms(elementals.longitude, false)}" />
+                </p:column>
+                <p:column  headerText="Satellite ID" style="width: 20%; text-align: center;" sortBy="#{elementals.spacecraftID}">
+                    <h:outputText  value="#{elementals.spacecraftID}" />
+                </p:column>
+                <p:column  headerText="Reporting MCC" style="width: 20%; text-align: center;" sortBy="#{elementals.reportMcc}">
+                    <h:outputText  value="#{elementals.reportMcc}" />
+                </p:column>
+                <p:column  headerText="Destination MCC" style="width: 20%; text-align: center;" sortBy="#{elementals.destMcc}">
+                    <h:outputText  value="#{elementals.destMcc}" />
+                </p:column>
+                <p:column  headerText="SIT" style="width: 10%; text-align: center;" sortBy="#{elementals.sit}">
+                    <h:outputText  value="#{elementals.sit}" />
+                </p:column>
+                <p:column  headerText="SOL" style="width: 10%; text-align: center;" sortBy="#{elementals.sol}">
+                    <h:outputText  value="#{elementals.sol}" />
+                </p:column>
+                <p:column  headerText="406 Message" style="width: 30%; text-align: center;" sortBy="#{elementals.longMsg}">
+                    <h:outputText  value="#{elementals.longMsg}" />
+                </p:column>                          
+                <p:column  headerText="Probability" style="width: 5%; text-align: center;" sortBy="#{elementals.probability}">
+                    <h:outputText  value="#{elementals.probability}" />
+                </p:column>
+                <p:column headerText="Aksi" width="10%" style="text-align: center; ">
+                    <p:commandButton id="lihat" onclick="PF('tTipLihat').hide();" label="lihat" icon="fa fa-search" class="blue-grey-btn">
+                        <p:ajax listener="#{distressElementalMBean.viewDetailElemental(elementals, true)}" update="@form"/>
+                    </p:commandButton>
+                    <p:tooltip id="toolTipTrack" for="lihat" value="Lihat" trackMouse="true" widgetVar="tTipLihat"/>
+                </p:column>
+            </p:dataTable>
+        </p:panel>
+
+        <p:panel id="elementaldetail" rendered="#{distressElementalMBean.isShowDetailElemental}">
+            <ui:include src="DetailElementals.xhtml" />
+        </p:panel>
+    </h:form>
+<!--
+    <p:dialog id="idDetailElementals" widgetVar="widgetDetailElementals"
+              header="Detail"
+              width="80%" height="100%"
+              appendTo="@(body)"
+              responsive="true" modal="true"
+              maximizable="true"
+              position="center" 
+              resizable="false">
+        <ui:include src="./DetailElementals.xhtml"/>
+    </p:dialog>-->
+</ui:composition>

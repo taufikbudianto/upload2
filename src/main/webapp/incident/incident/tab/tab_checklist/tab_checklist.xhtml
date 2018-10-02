@@ -1,0 +1,107 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <h:form prependId="false">
+        <div class="ui-g ui-fluid">
+            <div class="ui-g-12">
+                <p:panelGrid id="search-incident-checklist" columns="3" layout="grid" styleClass="ui-panelgrid-blank form-group" class="no-padding no-border">
+                    <p:commandButton value="Tambah Daftar Checklist" icon="fa fa-plus-circle" styleClass="green-btn" 
+                                     disabled="#{incidentChecklistMBean.disabled}">
+                        <p:ajax event="click" listener="#{incidentChecklistMBean.add()}"/>
+                    </p:commandButton>
+                    <p:commandButton value="Tambah Custom" icon="fa fa-plus-circle" 
+                                     styleClass="green-btn" disabled="#{incidentChecklistMBean.disabled}">
+                        <p:ajax event="click" listener="#{incidentChecklistMBean.resetView()}"/>
+                    </p:commandButton> 
+                    <p:button value="Print Checklist" outcome="/tools/open-report.xhtml" target="_blank" disabled="#{incidentChecklistMBean.disabled}" 
+                              styleClass="green-btn" icon="fa fa-print"> 
+                        <f:param name="params" value="{INCIDENTNUMBER=${incidentChecklistMBean.currIncident.incidentnumber}}" />
+                        <f:param name="params1" value="{user=#{incidentChecklistMBean.userFromReport}}" />
+                        <f:param name="path" value="/report/report_jasper/incident_checklist.jrxml" />
+                    </p:button>
+                </p:panelGrid>
+
+                <p:dataTable id="Inc_checklist_datatable" var="Inc_checklist" 
+                             value="#{incidentChecklistMBean.lazyDataModelIncidentJPA}" 
+                             reflow="true" rowKey="#{Inc_checklist.incidentChecklistID}"
+                             lazy="true" paginator="true" paginatorPosition="bottom" rows="#{viewBean.rowsPageDefault}"
+                             rowsPerPageTemplate="#{viewBean.rowsPerPageTemplate}" emptyMessage="Data tidak ditemukan" tableStyle="table-layout:auto"
+                             rowIndexVar="index">
+
+                    <p:column headerText="No" style="width: 20px">
+                        <p:outputLabel value="#{index + 1}"/>
+                    </p:column>
+                    <p:column headerText="Checklist" sortBy="#{Inc_checklist.checklistName}">
+                        <h:outputText value="#{Inc_checklist.checklistName}" />
+                    </p:column>
+                    <p:column headerText="Kategori" sortBy="#{Inc_checklist.category}">
+                        <h:outputText value="#{Inc_checklist.category}" />
+                    </p:column>
+                    <p:column headerText="Status" sortBy="#{Inc_checklist.status}">
+                        <h:outputText value="#{Inc_checklist.status}" />
+                    </p:column>
+                    <p:column headerText="Keterangan" sortBy="#{Inc_checklist.remarks}">
+                        <h:outputText value="#{Inc_checklist.remarks}"/>
+                    </p:column>
+                    <p:column headerText="Aksi" width="10%">
+                        <p:commandButton id="lihatCheck" 
+                                         label="Lihat"
+                                         onclick="PF('tTipLihat').hide();"
+                                         icon="fa fa-search" 
+                                         class="blue-grey-btn" disabled="#{incidentChecklistMBean.disabled}">
+                            <p:ajax event="click" listener="#{incidentChecklistMBean.viewIncChecklist(Inc_checklist.incidentChecklistID, true)}"/>
+                        </p:commandButton>
+                        <p:tooltip value="Lihat" for="lihatCheck"
+                                   trackMouse="true" widgetVar="tTipLihat"/>
+                        <p:outputLabel value="   "/>
+                        <p:commandButton id="ubahCheck"
+                                         label="Ubah"
+                                         onclick="PF('tTipUbah').hide();"
+                                         icon="fa fa-edit" 
+                                         class="blue-grey-btn" disabled="#{incidentChecklistMBean.disabled}">
+                            <p:ajax event="click" listener="#{incidentChecklistMBean.viewIncChecklist(Inc_checklist.incidentChecklistID, false)}"/>
+                        </p:commandButton>
+                        <p:tooltip value="Ubah" for="ubahCheck"
+                                   trackMouse="true" widgetVar="tTipUbah"/>
+                        <p:outputLabel value="   "/>
+                        <p:commandButton id="hapusCheck"
+                                         label="Hapus"
+                                         onclick="PF('tTipHapus').hide();"
+                                         icon="fa fa-trash" 
+                                         class="red-btn" disabled="#{incidentChecklistMBean.disabled}">
+                            <p:ajax event="click" 
+                                    listener="#{incidentChecklistMBean.hapus(Inc_checklist.incidentChecklistID)}" 
+                                    update="incidentdetail:Inc_checklist_datatable"/>
+                            <p:confirm header="Konfirmasi" 
+                                       message="Apakah anda yakin ingin menghapus insiden checklist ini?" 
+                                       icon="ui-icon-alert"/>
+                        </p:commandButton>
+                        <p:tooltip value="Hapus" for="hapusCheck"
+                                   trackMouse="true" widgetVar="tTipHapus"/>
+                    </p:column>
+                </p:dataTable>
+            </div>
+        </div>
+    </h:form>
+    <p:dialog id="idInsidenChecklist" widgetVar="widgetInsidenChecklist"
+              header="Data "
+              width="55%" height="50%"
+              appendTo="@(body)"
+              responsive="true" modal="true"
+              maximizable="false" closable="true"
+              resizable="false">
+        <ui:include src="./FormChecklist.xhtml"/>
+    </p:dialog>
+
+    <p:dialog id="idViewInsidenChecklist" widgetVar="widgetViewInsidenChecklist"
+              header="Data "
+              width="45%" height="50%"
+              appendTo="@(body)"
+              responsive="true" modal="true"
+              maximizable="false" style="overflow-y: hidden;max-height: 100%"
+              resizable="false" closable = "true">
+        <ui:include src="./ViewChecklist.xhtml"/>
+    </p:dialog>
+</ui:composition>

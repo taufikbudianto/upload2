@@ -1,0 +1,95 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="formBiayaPersonil">
+        <p:messages/>
+<!--        <p:panel class="control-button no-border no-padding" >
+            <p:commandButton  value="Tambah Data Baru" icon="fa fa-plus-circle" class="green-btn" 
+                              style="width:200px"
+                              actionListener="{incidentBudgetPersonilMBean.tambah()}" 
+                              process="@form"
+                              disabled="#{incidentBudgetPersonilMBean.disabled}" update="incidentdetail:budgetdetail">
+            </p:commandButton>
+        </p:panel>-->
+        <p:spacer width="10" />
+        <p:dataTable id ="tableBudgetPersonil" var="budgetPersonel" 
+                     value="#{incidentBudgetPersonilMBean.listBudgetPersonil}" paginator="true" 
+                     paginatorPosition="bottom" 
+                     sortBy="#{incidentBudgetPersonilMBean.currIncident.incidentid}"
+                     paginatorTemplate=" {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                     rows="10" rowsPerPageTemplate="5,10,15" rowIndexVar="index">
+            <p:column headerText="No" style="width: 20px">
+                <p:outputLabel value="#{index + 1}"/>
+            </p:column>
+            <p:column headerText="Deskripsi">
+                <p:outputLabel value="#{budgetPersonel.deskripsi}"/>
+            </p:column>
+            <p:column headerText="Kansar">
+                <p:outputLabel value="#{budgetPersonel.kansar}"/>
+            </p:column>
+            <p:column headerText="Tanggal Mulai">
+                <p:calendar id="dtMulai" pattern="dd-MM-yyyy HH:mm:ss" value="#{budgetPersonel.tglMulai}"
+                            readonlyInput="true" showOn="button" mask="true" navigator="true"
+                            disabled="#{incidentBudgetPersonilMBean.disabled}">
+                    <p:ajax listener="#{incidentBudgetPersonilMBean.changeDate(budgetPersonel)}" 
+                            update="tableBudgetPersonil" event="change"/>
+                </p:calendar>
+            </p:column>
+            <p:column headerText="Tanggal Akhir">
+                <p:calendar id="dtAkhir" pattern="dd-MM-yyyy HH:mm:ss" value="#{budgetPersonel.tglAkhir}" 
+                            mindate="#{incidentBudgetPersonilMBean.addDays(budgetPersonel.tglAkhir, 1)}"
+                            readonlyInput="true" showOn="button" mask="true" navigator="true" 
+                            disabled="#{incidentBudgetPersonilMBean.disabled}">
+                    <p:ajax listener="#{incidentBudgetPersonilMBean.changeDate(budgetPersonel)}" 
+                            update="tableBudgetPersonil" event="change"/>
+                </p:calendar>
+            </p:column>
+            <p:column headerText="Biaya Makan">
+                <p:outputLabel value="#{budgetPersonel.mstBiayaPersonnel.biayaMakan}">
+                    <f:convertNumber currencySymbol="Rp. " type="currency" />
+                </p:outputLabel>
+            </p:column>
+            <p:column headerText="Biaya Suplemen">
+                <p:outputLabel value="#{budgetPersonel.mstBiayaPersonnel.biayaSuplemen}">
+                    <f:convertNumber currencySymbol="Rp. " type="currency" />
+                </p:outputLabel>
+            </p:column>
+            <p:column headerText="Total">
+                <p:outputLabel value="#{budgetPersonel.total}">
+                    <f:convertNumber currencySymbol="Rp. " type="currency" />
+                </p:outputLabel>
+            </p:column>
+<!--            <p:column headerText="Action">
+                <p:outputLabel value="   "/>
+                <p:commandButton label="Hapus" icon="fa fa-trash" class="red-btn" 
+                                 actionListener="{incidentBudgetPersonilMBean.hapusBudget(budgetPersonel)}"  
+                                 disabled="#{incidentBudgetPersonilMBean.disabled}"
+                                 update="tableBudgetPersonil" process="@this">
+                    <p:confirm header="Konfirmasi" message="Apakah anda yakin ingin Menghapus Biaya Asset ini?" icon="ui-icon-alert"/>
+                </p:commandButton>
+            </p:column>-->
+            <p:summaryRow>
+                <p:column colspan="7" style="text-align:right">
+                    Total : 
+                </p:column>
+                <p:column colspan="1">
+                    <h:outputText value="#{incidentBudgetPersonilMBean.totalAll}">
+                        <f:convertNumber currencySymbol="Rp. " type="currency" />
+                    </h:outputText>
+                </p:column>
+            </p:summaryRow>
+        </p:dataTable>
+        <p:spacer width="10" />
+        <p:panel class="control-button no-border no-padding" >
+            <p:commandButton value="Simpan Budget BBM" icon="fa fa-save" 
+                             style="width:200px" styleClass="green-btn"   
+                             actionListener="#{incidentBudgetPersonilMBean.save}" 
+                             process="@form"
+                             disabled="#{incidentBudgetPersonilMBean.disabled}">
+            </p:commandButton>
+        </p:panel>
+    </h:form>
+</ui:composition>

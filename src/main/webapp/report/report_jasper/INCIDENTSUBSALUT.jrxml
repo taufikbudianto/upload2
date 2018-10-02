@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="INCIDENTSUBSALUT" printOrder="Horizontal" pageWidth="100" pageHeight="50" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="100" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="5dfda01d-2fd3-460c-b360-f2204c6a081c">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="INCIDENTID" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT (NAME||'('||GOODQTY||')') ALUT
+FROM INC_ASSET B
+where B.INCIDENTID = $P{INCIDENTID}]]>
+	</queryString>
+	<field name="ALUT" class="java.lang.String"/>
+	<detail>
+		<band height="50" splitType="Prevent">
+			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+				<reportElement uuid="f1817972-1e42-4243-8004-5a724737be53" positionType="Float" stretchType="RelativeToTallestObject" x="0" y="0" width="100" height="50" isPrintWhenDetailOverflows="true"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{ALUT}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

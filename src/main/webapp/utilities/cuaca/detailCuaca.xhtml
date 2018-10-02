@@ -1,0 +1,84 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <h:form id="cuaca-detail">
+        <p:panel class="ui-fluid no-border no-padding card-w-title card" header="Detail Cuaca">
+            <p:panelGrid columns="4" layout="grid" 
+                         columnClasses="ui-grid-col-1,ui-grid-col-3,ui-grid-col-1,ui-grid-col-3">
+                <p:outputLabel value="Latitude" />
+                <p:panelGrid id="latitude" columns="3" style="width: 100%;"
+                             columnClasses ="ui-grid-col-2,ui-grid-col-7,ui-grid-col-3"                                     
+                             class="no-border no-padding-table ui-fluid">
+                    <ui:include src="coordinate/latitude.xhtml"/>
+
+                </p:panelGrid>
+                <p:spacer/>
+                <p:spacer/>
+
+                <p:outputLabel value="Longitude" />
+                <p:panelGrid id="longitude" columns="3" style="width: 100%;"
+                             columnClasses ="ui-grid-col-2,ui-grid-col-7,ui-grid-col-3"                                    
+                             class="no-border no-padding-table ui-fluid">
+                    <ui:include src="coordinate/longitude.xhtml"/>
+                </p:panelGrid>
+                <p:spacer/>
+                <p:spacer/>
+                <p:outputLabel value="Wind Dir"/>
+                <p:inputText disabled="true" value="#{utiWeatherBmkgMBean.cuaca.windDir}"/> 
+                <p:outputLabel value="Wind Speed"/>
+                <p:inputText disabled="true" value="#{utiWeatherBmkgMBean.cuaca.windSpd}"/> 
+                <p:outputLabel value="WSC"/>
+                <p:inputText disabled="true" value="#{utiWeatherBmkgMBean.cuaca.wsc}"/>   
+                <p:spacer/>
+                <p:spacer/>
+                <p:outputLabel value="Cu Dir"/>
+                <p:inputText disabled="true" value="#{utiWeatherBmkgMBean.cuaca.cuDir}"/> 
+                <p:outputLabel value="Cu Speed"/>
+                <p:inputText disabled="true" value="#{utiWeatherBmkgMBean.cuaca.cuSpd}"/> 
+                <p:outputLabel value="EKP"/>
+                <p:inputText disabled="true" value="#{utiWeatherBmkgMBean.cuaca.ekp}"/> 
+                <p:spacer/>
+                <p:spacer/>
+                <p:outputLabel value="Wave Dir"/>
+                <p:inputText disabled="true" value="#{utiWeatherBmkgMBean.cuaca.waveDir}"/>
+                <p:spacer/>
+                <p:spacer/>
+                <p:outputLabel value="P Tot"/>
+                <p:inputText disabled="true" value="#{utiWeatherBmkgMBean.cuaca.PTot}"/>  
+                <p:outputLabel value="H Tot"/>
+                <p:inputText disabled="true" value="#{utiWeatherBmkgMBean.cuaca.HTot}"/>     
+                <p:outputLabel value="H (1/10)"/>
+                <p:inputText disabled="true" value="#{utiWeatherBmkgMBean.cuaca.h1Per10}"/> 
+                <p:outputLabel value="H (1/100)"/>
+                <p:inputText disabled="true" value="#{utiWeatherBmkgMBean.cuaca.h1Per100}"/>
+                <p:outputLabel value="Sea Dir"/>
+                <p:inputText disabled="true" value="#{utiWeatherBmkgMBean.cuaca.seaDir}"/> 
+                <p:spacer/>
+                <p:spacer/>
+                <p:outputLabel value="P Sea"/>
+                <p:inputText disabled="true" value="#{utiWeatherBmkgMBean.cuaca.PSea}"/>
+                <p:outputLabel value="H Sea"/>
+                <p:inputText disabled="true" value="#{utiWeatherBmkgMBean.cuaca.HSea}"/>
+                <p:outputLabel value="Swell Dir"/>
+                <p:inputText disabled="true" value="#{utiWeatherBmkgMBean.cuaca.swellDir}"/> 
+                <p:spacer/>
+                <p:spacer/>
+                <p:outputLabel value="P Swell"/>
+                <p:inputText disabled="true" value="#{utiWeatherBmkgMBean.cuaca.PSwell}"/>
+                <p:outputLabel value="H Swell"/>
+                <p:inputText disabled="true" value="#{utiWeatherBmkgMBean.cuaca.HSwell}"/> 
+            </p:panelGrid>
+            <p:panel class="control-button no-border no-padding" >
+                
+                <p:commandButton type="button" icon="ui-icon-cancel" 
+                                 value="Kembali" 
+                                 styleClass="red-btn" style="width:130px">
+                    <p:ajax event="click" update="j_id_x" listener="#{utiWeatherBmkgMBean.hideForm}"/>
+                </p:commandButton>
+            </p:panel> 
+        </p:panel>    
+    </h:form>        
+
+</ui:composition>

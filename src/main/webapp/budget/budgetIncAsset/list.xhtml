@@ -1,0 +1,38 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+    <ui:define name="title">Budget Incident Asset</ui:define>
+    <ui:define name="content">
+        <h:form>
+            <p:panel>
+                <p:dataTable var="budgetAsset" value="#{incidentBudgetAssetMBean.lazyDataModelJPA}" reflow="true" rowKey="#{budgetAsset.incBudgetAssetId}"
+                             lazy="true" paginator="true" paginatorPosition="bottom" rows="#{viewBean.rowsPageDefault}"
+                             rowsPerPageTemplate="#{viewBean.rowsPerPageTemplate}" emptyMessage="Data tidak ditemukan" tableStyle="table-layout:auto"
+                             rowIndexVar="index" widgetVar="listWidget"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                    <p:column headerText="No" style="width: 20px">
+                        <p:outputLabel value="#{index + 1}"/>
+                    </p:column>
+                    <p:column headerText="Deskripsi">
+                        <p:outputLabel value="#{budgetAsset.incidentAsset.name}"/>
+                    </p:column>
+                    <p:column headerText="Durasi">
+                        <p:inputText value="#{budgetAsset.budgetAssetDur}"/>
+                    </p:column>
+                    <p:column headerText="Standard pemakaian/BBM perjam">
+                        <p:outputLabel value="#{budgetAsset.bbbAssetPemakaian}"/>
+                    </p:column>
+                    <p:column headerText="Jenis BBM">
+                        <p:selectOneMenu value="#{budgetAsset.bbm}">
+                            <f:selectItems value="#{incidentBudgetAssetMBean.listBbm}"/>
+                        </p:selectOneMenu>
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
+        </h:form>
+    </ui:define>
+</ui:composition>
+

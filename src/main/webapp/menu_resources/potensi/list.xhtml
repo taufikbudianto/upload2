@@ -1,0 +1,142 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="content">
+        <ui:include src="tab/dialog/aset_potensi.xhtml" />
+        <ui:include src="tab/dialog/potensi_kontak_detail.xhtml" />
+
+        <h:form id="respotensi-content" enctype="multipart/form-data">
+            <p:panel id="list" class="no-border card card-w-title ui-fluid" 
+                     header="Resource Potensi"
+                     rendered="#{potensiMBean.isShowListPotensi}" >
+
+                <p:panelGrid id="search" columns="7" layout="grid" 
+                             styleClass="ui-panelgrid-blank form-group" 
+                             columnClasses ="ui-grid-col-2,ui-grid-col-3,ui-grid-col-2,ui-grid-col-2,ui-grid-col-2,ui-grid-col-2,ui-grid-col-3"
+                             style="margin-top: 20px;margin-bottom: 20px; width: 100%"
+                             class="no-padding no-border">
+                    <p:selectOneMenu value="#{potensiMBean.kolompencarian}" 
+                                     autoWidth="false">
+                        <f:selectItems value="#{potensiMBean.listKolomPencarian.entrySet()}" 
+                                       var="v" itemLabel="#{v.value}"
+                                       itemValue="#{v.key}">
+                        </f:selectItems>
+                        <p:ajax update="respotensi-content:search"
+                                process="@this"
+                                listener="#{potensiMBean.onKolomPencarianChange}"/>
+                    </p:selectOneMenu>
+                    <p:inputText id="value-respotensi" value="#{potensiMBean.value}"
+                                 rendered="#{potensiMBean.isText}"/>
+
+                    <p:selectOneMenu  value="#{potensiMBean.dropdown}"  
+                                      autoWidth="false"
+                                      rendered="#{potensiMBean.isDropDown}">
+                        <f:selectItems value="#{potensiMBean.listDropDown}" var="dropdownrespotensi"  />
+                    </p:selectOneMenu>
+
+                    <p:commandButton id="search-btn-respotensi" value="Cari"
+                                     onclick="PF('listWidget').getPaginator().setPage(0);"
+                                     icon="ui-icon-search"
+                                     process="@form"
+                                     update="@form"/>
+                    <p:button value="Reset" icon="ui-icon-replay"/>
+<!--                    <p:commandButton value="Export" icon="ui-icon-file-upload"/>
+                    <p:commandButton value="Import" icon="ui-icon-file-download"/>-->
+<!--                                        <p:commandButton value="Tambah Data Baru" 
+                                                         class="green-btn"
+                                                         icon="fa fa-plus-circle" 
+                                                         actionListener="{potensiMBean.loadDetail}"
+                                                         update="@form">
+                                            <p:resetInput target="@form" />
+                                            <p:ajax event="click" update="@form" process="@this"
+                                                    listener="{potensiMBean.loadDetail}"/>
+                                        </p:commandButton>                         -->
+                </p:panelGrid>
+
+                <p:dataTable id="respotensidata" var="list" 
+                             value="#{potensiMBean.listResPotency}"
+                             reflow="true" rowKey="#{respotensidata.potencyid}" 
+                             lazy="true" paginator="true" paginatorPosition="bottom" rows="10"
+                             rowsPerPageTemplate="5,10,15" emptyMessage="Data tidak ditemukan" tableStyle="table-layout:auto"
+                             rowIndexVar="index">
+
+                    <p:column headerText="No" style="width: 20px">
+                        <p:outputLabel value="#{index + 1}"/>
+                    </p:column>
+                    <p:column headerText="Nama Potensi" sortBy="#{list.potencyname}">
+                        <h:outputText value="#{list.potencyname}" />
+                    </p:column>
+                    <p:column headerText="Alamat" sortBy="#{list.address}">
+                        <h:outputText value="#{list.address}" />
+                    </p:column>
+                    <p:column headerText="Nama KanSAR" sortBy="#{list.kantorsarid.kantorsarname}">
+                        <h:outputText value="#{list.kantorsarid.kantorsarname}" />
+                    </p:column>
+                    <p:column headerText="Latitude" sortBy="#{list.latitude}">
+                        <h:outputText value="#{potensiMBean.latitudePotensi.getConvertDdToDms(list.latitude, true)}" />
+                    </p:column>
+                    <p:column headerText="Longitude" sortBy="#{list.longitude}">
+                        <h:outputText value="#{potensiMBean.longitudePotensi.getConvertDdToDms(list.longitude, false)}" />
+                    </p:column>
+<!--                    <p:column headerText="Matra" sortBy="#{list.potencytype}">
+                        <h:outputText value="#{list.potencytype == '0' ?'Darat':
+                                               (list.potencytype == '1' ? 'Udara' : 'Laut')}" />
+                    </p:column>-->
+                    <p:column headerText="No. Telepon" sortBy="#{list.phonenumber1}">
+                        <h:outputText value="#{list.phonenumber1}" />
+                    </p:column>
+                    <p:column headerText="No. Fax" sortBy="#{list.faxnumber}">
+                        <h:outputText value="#{list.faxnumber}" />
+                    </p:column>
+<!--                    <p:column headerText="Freq. Radio" sortBy="#{list.radiofrequency}">
+                        <h:outputText value="#{list.radiofrequency}" />
+                    </p:column>-->
+
+                    <p:column headerText="Action">
+                        <p:commandButton id="lihatPotensi"
+                                         label="Show"
+                                         onclick="PF('tTipLihat').hide();"
+                                         style="max-width: 80px" 
+                                         actionListener="#{potensiMBean.loadDetail}"
+                                         update="@form"
+                                         styleClass="blue-grey-btn" 
+                                         icon="fa fa-search">
+                            <f:attribute name="listRow" value="#{list}" />
+                        </p:commandButton>
+                        <p:tooltip value="Lihat" for="lihatPotensi"
+                                   trackMouse="true" widgetVar="tTipLihat"/>
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
+
+            <p:panel id="detail-item" 
+                     class="no-border no-padding card card-w-title ui-fluid form-group" 
+                     header="#{potensiMBean.headerDetail}"
+                     rendered="#{potensiMBean.isShowEditPotensi}">
+                <ui:include src="detailpotensi.xhtml" />
+            </p:panel>
+
+            <p:panel id="personel-item"  
+                     header="#{potensiMBean.headerDetail}"
+                     class="no-border no-padding card card-w-title ui-fluid form-group" 
+                     rendered="#{potensiMBean.isShowEditPersonil}">
+                <ui:include src="tab/dialog/personil_detail.xhtml" />
+            </p:panel>
+        </h:form>
+        <p:dialog id="saveNotification" widgetVar="saveNotification" 
+                  header="#{msg.header_information}" showHeader="true" appendTo="@(body)"
+                  showEffect="fade" hideEffect="fade" draggable="false" resizable="false" 
+                  closable="false" modal="true" width="500">
+            <h:form>
+                <p:outputLabel value="#{msg.data_success_save}" />
+                <p:panel class="control-button">
+                    <p:button value="#{msg.btn_ok}"/>
+                </p:panel>
+            </h:form>
+        </p:dialog>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,77 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+<!--    <p:panel class="no-border no-padding control-button" style="text-align: right;">
+        <p:commandButton value="Tambah" style="width:130px" styleClass="green-btn" 
+                         actionListener="{potensiMBean.loadkontak}"
+                         process="@this"
+                         icon="fa fa-plus-circle"/>
+    </p:panel>-->
+
+    <p:dataTable id="data-kontak" var="list" 
+                 value="#{potensiMBean.listkontak}"  
+                 reflow="true"  paginator="true" paginatorPosition="bottom" rows="5"
+                 rowsPerPageTemplate="5" rowIndexVar="index">
+        <f:facet name="header">
+            List Kontak SAR
+        </f:facet>
+        <p:column headerText="No" style="width: 20px">
+            <p:outputLabel value="#{index + 1}"/>
+        </p:column>
+
+<!--        <p:column headerText="Title">
+            <p:outputLabel value="#{list.contacttitle}"/>
+        </p:column>-->
+
+        <p:column headerText="Nama (1)">
+            <p:outputLabel value="#{list.contactname}"/>
+        </p:column>
+
+<!--        <p:column headerText="Sufix">
+            <p:outputLabel value="#{list.contactsuffix}"/>
+        </p:column>-->
+
+<!--        <p:column headerText="Jabatan">
+            <p:outputLabel value="#{list.contactposition}"/>
+        </p:column>-->
+        <p:column headerText="No Telepon (1)">
+            <p:outputLabel value="#{list.phonenumber1}"/>
+        </p:column>
+        <p:column headerText="Nama(2)">
+            <p:outputLabel value="#{list.contactname}"/>
+        </p:column>
+
+
+        <p:column headerText="No Telepon (2)">
+            <p:outputLabel value="#{list.phonenumber2}"/>
+        </p:column>
+
+
+<!--        <p:column headerText="Action">
+            <p:commandButton label="Edit" style="max-width: 80px" 
+                             actionListener="#{potensiMBean.loadkontak}"
+                             process="respotensi-content:potensi-tabs:data-kontak"
+                             styleClass="blue-grey-btn" 
+                             icon="fa fa-edit">
+                <f:attribute name="listRow" value="#{list}" />
+            </p:commandButton>
+            <p:spacer width="10"/>
+            <p:commandButton label="Hapus" style="max-width: 80px" 
+                             actionListener="#{potensiMBean.hpsKontak}"
+                             process="respotensi-content:potensi-tabs:data-kontak"
+                             styleClass="red-btn" 
+                             icon="fa fa-trash">
+                <f:attribute name="listRow" value="#{list}" />
+                <p:confirm header="Konfirmasi" 
+                           message="Apakah anda ingin menghapus data ?" 
+                           icon="ui-icon-alert" />
+            </p:commandButton>
+        </p:column>-->
+    </p:dataTable>
+
+   
+
+</ui:composition>

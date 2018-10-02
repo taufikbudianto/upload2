@@ -1,0 +1,86 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <p:panel id="idPanelMapSearch" class="no-border no-padding">
+        <p:importEnum type="prosia.basarnas.enumeration.MapSearch" var="mapSearch" allSuffix="ALL_ENUM_VALUES" />
+        <p:selectOneMenu value="#{mapMBean.mapSearch}" autoWidth="false">
+            <p:ajax event="change" update="idPanelMapSearch"/>
+            <f:selectItems value="#{mapSearch.ALL_ENUM_VALUES}" 
+                           var="s" itemValue="#{s}" itemLabel="#{s.name}" />
+        </p:selectOneMenu>
+        <p:panel rendered="#{mapMBean.mapSearch eq 'SEARCH_PATTERN'}" class="no-border no-padding">
+            <ui:include src="search/pattern.xhtml"/>
+        </p:panel>
+        <p:panel rendered="#{mapMBean.mapSearch eq 'ROUTING'}" class="no-border no-padding">
+            <ui:include src="search/routing.xhtml"/>
+        </p:panel>
+        <p:panel rendered="#{mapMBean.mapSearch eq 'MAPPING'}" class="no-border no-padding">
+            <ui:include src="mapping.xhtml"/>
+        </p:panel>
+        <p:panel rendered="#{mapMBean.mapSearch eq 'TASK_AREA'}" class="no-border no-padding">
+            <ui:include src="search/taskArea.xhtml"/>
+        </p:panel>
+        <p:panel rendered="#{mapMBean.mapSearch eq 'LAYER'}" class="no-border no-padding">
+            <ui:include src="layer.xhtml"/>
+        </p:panel>
+        <p:panel rendered="#{mapMBean.mapSearch eq 'PLACEMARK'}" class="no-border no-padding">
+            <p:tree id="idTreePlacemark" value="#{placemarkMBean.treePlacemark}" 
+                    var="doc" animate="true" selectionMode="checkbox"
+                    selection="#{placemarkMBean.selectedTreePlacemark}"
+                    class="no-border" style="font-size: xx-small">
+                <p:ajax event="select" update="@form" listener="#{placemarkMBean.onNodeSelect}"/>
+                <p:ajax event="unselect" update="@form" listener="#{placemarkMBean.onNodeUnselect}"/>
+                <p:ajax event="contextMenu" listener="#{placemarkMBean.onContextMenu}" global="false"/>
+                <f:attribute name="obj" value="#{doc}"/>
+                <p:treeNode>
+                    <h:outputText value="#{doc.name}"/>
+                </p:treeNode>
+            </p:tree>
+            <p:contextMenu for="idTreePlacemark">
+                <p:menuitem value="Save Placemark" icon="fa fa-save" global="false"
+                            actionListener="#{placemarkMBean.savePlacemark}">
+                    <p:confirm header="Konfirmasi" 
+                               message="Apakah anda yakin akan simpan placemark ini ?" 
+                               icon="ui-icon-alert" />
+                </p:menuitem>
+                <p:menuitem value="Remove Placemark" icon="fa fa-trash" update="@form"
+                            actionListener="#{placemarkMBean.removePlacemark}">
+                    <p:confirm header="Konfirmasi" 
+                               message="Apakah anda yakin akan menghapus placemark ini ?" 
+                               icon="ui-icon-alert" />
+                </p:menuitem>
+                <p:menuitem value="Properties" icon="fa fa-edit" global="false" process="@form"
+                            actionListener="#{placemarkMBean.editPlacemark(false)}"/>  
+            </p:contextMenu>
+            <p:commandButton value="Save Placemark to Incident" update="@form"
+                             disabled="#{mapMBean.incident.incidentid == null}"
+                             actionListener="#{placemarkMBean.savePlacemarkToIncident}"/>
+            <p:tree id="idTreePlacemarkInc" value="#{placemarkMBean.treePlacemarkInc}" 
+                    var="doc" animate="true" selectionMode="checkbox"
+                    selection="#{placemarkMBean.selectedTreePlacemarkInc}"
+                    class="no-border" style="font-size: xx-small">
+                <f:attribute name="obj" value="#{doc}"/>
+                <p:ajax event="select" listener="#{placemarkMBean.onNodeSelect}" update="@form"/>
+                <p:ajax event="unselect" listener="#{placemarkMBean.onNodeUnselect}" update="@form"/>
+                <p:ajax event="contextMenu" listener="#{placemarkMBean.onContextMenu}" global="false"/>                
+                <p:treeNode>
+                    <h:outputText value="#{doc.name}"/>
+                </p:treeNode>
+            </p:tree>
+            <p:contextMenu for="idTreePlacemarkInc">
+                <p:menuitem value="Update Placemark" icon="fa fa-save"
+                            actionListener="#{placemarkMBean.updatePlacemark}"/>
+                <p:menuitem value="Remove Placemark" icon="fa fa-trash" update="@form"
+                            actionListener="#{placemarkMBean.removePlacemarkFromIncident}">
+                    <p:confirm header="Konfirmasi" 
+                               message="Apakah anda yakin akan menghapus placemark ini ?" 
+                               icon="ui-icon-alert" />
+                </p:menuitem>
+                <p:menuitem value="Properties" icon="fa fa-edit" global="false"
+                            actionListener="#{placemarkMBean.editPlacemark(true)}"/>  
+            </p:contextMenu>
+        </p:panel>
+    </p:panel>
+</ui:composition>    

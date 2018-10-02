@@ -1,0 +1,274 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:p="http://primefaces.org/ui"> 
+
+    <div class="ui-g ui-fluid">
+        <h:form id="form-ws2" prependId="false">
+            <div class="ui-g-12 ui-lg-12 ">
+                <table cellpadding="10">
+                    <tr>
+                        <td style="width: 150px"><p:commandButton value="NEW" actionListener="#{driftCalcWorksheet2MBean.newWS2()}" process="@form" update="@form" styleClass="green-btn"/></td>
+                        <td style="width: 150px"><p:commandButton value="OPEN" actionListener="#{driftCalcWorksheet2MBean.openWS2()}" process="@form" styleClass="green-btn"/></td>
+                        <td style="width: 150px"><p:commandButton value="SAVE" actionListener="#{driftCalcWorksheet2MBean.openSaveDialog()}" process="@form" update="@form" styleClass="green-btn"/></td>
+                        <td style="width: 150px">
+                            <p:commandButton value="DELETE" actionListener="#{driftCalcWorksheet2MBean.deleteWS2()}" process="@form" update="@form" styleClass="green-btn">
+                                <p:confirm header="Konfirmasi" message="Apakah anda yakin ingin menghapus data Worksheet ini?" icon="ui-icon-alert"/>
+                            </p:commandButton>
+                        </td>
+                        <td style="width: 150px">
+                            <p:commandButton value="CALCULATE" process="@form" update="incidentdetail:tabplanning-content:ws2-calculation,incidentdetail:tabplanning-content:form-ws2-panel1" actionListener="#{driftCalcWorksheet2MBean.calculateWS2}" styleClass="green-btn"/>
+
+                        </td>
+                        <td style="width: 150px">
+                            <p:commandButton value="PRINT" styleClass="green-btn">
+                                <p:ajax event="click" listener="#{driftCalcWorksheet2MBean.doPrint()}"  process="@this"/>
+                            </p:commandButton></td>
+                    </tr>
+                </table>
+                <p:panel id="form-ws2-panel1">
+                    <table cellpadding="10">
+                        <tr>
+                            <td style="width: 150px"><p:outputLabel style="width: 150px" value="SRU" /></td>
+                            <td style="width:150px">
+                                <p:selectOneMenu id="cboSRUW2" value="#{driftCalcWorksheet2MBean.rescuer}" style="width:150px">
+                                    <p:ajax listener="#{driftCalcWorksheet2MBean.changeSRUName}" process="@this" update="@form"/>
+                                    <f:selectItems value="#{driftCalcWorksheet2MBean.listItemSRU}"/>
+                                </p:selectOneMenu>
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td style="width: 150px"><p:outputLabel style="width: 150px" value="Satuan" /></td>
+                            <td style="width:70px">
+                                <p:selectOneMenu id="cboSatuanW2" value="#{driftCalcWorksheet2MBean.unit}" style="width:70px">
+                                    <f:selectItem itemLabel="NM" itemValue="0" />
+                                    <f:selectItem itemLabel="KM" itemValue="1" />
+                                </p:selectOneMenu>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 150px"><p:outputLabel style="width: 150px" value="Search Object" /></td>
+                            <td style="width:150px">
+                                <p:selectOneMenu id="cboSOW2" value="#{driftCalcWorksheet2MBean.searchObject}" style="width:150px">
+                                    <p:ajax listener="#{driftCalcWorksheet2MBean.changeSearchObject}" update="cboSPTASW2"/> 
+                                    <f:selectItems value="#{driftCalcWorksheet2MBean.listSearchObject}"/>
+                                </p:selectOneMenu>
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><p:outputLabel style="width: 150px" value="Search Platform True Air Speed" /></td>
+                            <td>
+                                <p:selectOneMenu id="cboSPTASW2" value="#{driftCalcWorksheet2MBean.searchPlatform}" style="width:100px">
+                                    <p:ajax listener="#{driftCalcWorksheet2MBean.changeSearchPlatform}" update="cboMVW2"/> 
+                                    <f:selectItems value="#{driftCalcWorksheet2MBean.listSearchPlatform}"/>
+                                </p:selectOneMenu>
+                            </td>
+                            <td style="width:70px"><p:outputLabel style="width:70px"  value="knot" /></td>
+                            <td style="width:150px"><p:outputLabel style="width:150px"  value="Wind Speed" /></td>
+                            <td style="width:150px"><p:inputNumber decimalPlaces="6" decimalSeparator="," thousandSeparator="." style="width:150px" id="idWind-t-w2" value="#{driftCalcWorksheet2MBean.windSpeed}" required="true" requiredMessage="Wind Speed harus di isi !"/></td>
+                            <td style="width:70px"><p:outputLabel style="width:70px"  value="knot" /></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td style="width:150px"><p:outputLabel style="width:150px" value="Meteorological Visibility" /></td>
+                            <td style="width:100px">
+                                <p:selectOneMenu id="cboMVW2" value="#{driftCalcWorksheet2MBean.meteorological}" style="width:100px">
+                                    <p:ajax listener="#{driftCalcWorksheet2MBean.changeMeteorogical}" update="cboSHW2"/>
+                                    <f:selectItems value="#{driftCalcWorksheet2MBean.listMeteorogical}"/>
+                                </p:selectOneMenu>
+                            </td>
+                            <td style="width:100px"><p:outputLabel style="width:100px" value="KM" /></td>
+                            <td style="width:150px"><p:outputLabel style="width:150px" value="search Area" /></td>
+                            <td style="width:150px"><p:inputNumber decimalPlaces="6" decimalSeparator="," thousandSeparator="." style="width:150px" id="idSearchArea-t-w2" value="#{driftCalcWorksheet2MBean.searchArea}" required="true" requiredMessage="search Area harus di isi !"/></td>
+                            <td style="width:100px"><p:outputLabel style="width:100px" value="SQ NM" /></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td style="width:150px"><p:outputLabel style="width:150px" value="Search Height" /></td>
+                            <td style="width:100px">
+                                <p:selectOneMenu id="cboSHW2" value="#{driftCalcWorksheet2MBean.searchHeight}" style="width:100px">
+                                    <f:selectItems value="#{driftCalcWorksheet2MBean.listHeight}"/>
+                                </p:selectOneMenu>
+                            </td>
+                            <td style="width:100px"><p:outputLabel style="width:100px" value="feet" /></td>
+
+                            <td><p:outputLabel style="width:100px" value="Fatigue Factor" /></td>
+                            <td style="width:150px">
+                                <p:selectBooleanCheckbox id="basic-w2" value="#{driftCalcWorksheet2MBean.fatigueFactor}" style="width:150px"/>
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td style="width:150px"><p:outputLabel style="width:150px" value="Search Repeat" /></td>
+                            <td style="width:150px">
+                                <p:selectOneMenu id="cboSRW2" value="#{driftCalcWorksheet2MBean.repeat}" style="width:150px">
+                                    <f:selectItem itemLabel="First" itemValue="First" />
+                                    <f:selectItem itemLabel="Second" itemValue="Second" />
+                                    <f:selectItem itemLabel="Third" itemValue="Third" />
+                                    <f:selectItem itemLabel="Fourth" itemValue="Fourth" />
+                                    <f:selectItem itemLabel="Fifth" itemValue="Fifth" />
+                                </p:selectOneMenu>
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </table>
+
+                </p:panel>  
+            </div>
+            <div class="ui-g-12">
+                <p:panel id="ws2-calculation" header="CALCULATION RESULT" styleClass="penelHeaderGreen ui-shadow-content" 
+                         collapsed="false"
+                         toggleable="true" toggleSpeed="500" closeSpeed="500">
+
+                    <table cellpadding="10">
+                        <tr>
+                            <td style="width:150px"><p:outputLabel style="width:150px" value="Uncorrected Sweep Width" /></td>
+                            <td style="width:150px"><p:inputText disabled="true" style="width:150px" value="#{driftCalcWorksheet2MBean.uncorrectedSweepWidth}" id="idUSWW2-nm"/></td>
+                            <td style="width:100px"><p:outputLabel style="width:100px" value="NM" /></td>
+                            <td style="vertical-align: top;" colspan="5" rowspan="9">
+                                <table cellpadding="10" style="vertical-align: top;" >
+                                    <tr>
+                                        <td><p:outputLabel value="Titik Datum" /></td>
+                                        <td><p:outputLabel value="Latitude"/></td>
+                                        <td colspan="3">
+                                            <p:panelGrid id="latitude2" columns="3" style="width: 100%;"
+                                                         columnClasses ="ui-grid-col-2,ui-grid-col-7,ui-grid-col-3"                                                                                                      
+                                                         class="no-border no-padding-table ui-fluid">
+                                                <ui:include src="coordinate-ws2/ws2-latitude.xhtml"/>
+                                            </p:panelGrid>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td><p:outputLabel value="Longitude"/></td>
+                                        <td colspan="3">
+                                            <p:panelGrid id="longitude2" columns="3" style="width: 100%;"
+                                                         columnClasses ="ui-grid-col-2,ui-grid-col-7,ui-grid-col-3"                                                         
+                                                         class="no-border no-padding-table ui-fluid">
+                                                <ui:include src="coordinate-ws2/ws2-longitude.xhtml"/>
+                                            </p:panelGrid>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4"></td>
+                                        <td><p:commandButton value="REFRESH" actionListener="#{driftCalcWorksheet2MBean.resetGridSruSearchArea()}" process="@form" update="@form" styleClass="green-btn"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="5">
+                                            <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                                <p:dataTable id="idDtWorksheet2ListSru"
+                                                             var="calculation" value="#{driftCalcWorksheet2MBean.listAssetSearchAreaBean}" 
+                                                             reflow="true" paginator="true" rows="10" 
+                                                             paginatorPosition="bottom" tableStyle="table-layout:auto">
+                                                    <p:column headerText="SRU">
+                                                        <h:outputText value="#{calculation.incidentAsset.name}" />
+                                                    </p:column>
+                                                    <p:column headerText="Speed">
+                                                        <h:outputText value="#{calculation.speed}" />
+                                                    </p:column>
+                                                    <p:column headerText="Track Spacing">
+                                                        <h:outputText value="#{calculation.practicalTrackSpacing}" />
+                                                    </p:column>
+                                                    <p:column headerText="Duration">
+                                                        <h:outputText value="#{calculation.searchHours}" />
+                                                    </p:column>
+                                                    <p:column headerText="Search Area">
+                                                        <h:outputText value="#{calculation.searchArea}" />
+                                                    </p:column>
+                                                    <p:column headerText="Aksi">
+                                                        <p:commandLink value="Create Task Search Area" 
+                                                                       update="idDtWorksheet2ListSru">
+                                                            <f:ajax event="click" listener="#{driftCalcWorksheet2MBean.doShowTaskSearchAreaOnMap(calculation)}"/>
+                                                        </p:commandLink>
+                                                        <p:outputLabel value=" | "/>
+                                                        <p:commandLink value="Hapus" 
+                                                                       update="idDtWorksheet2ListSru">
+                                                            <f:ajax event="click" listener="#{driftCalcWorksheet2MBean.deleteRowList(calculation)}"/>
+                                                            <p:confirm header="Konfirmasi" message="Apakah anda yakin menghapus data ini?" icon="ui-icon-alert" />
+                                                        </p:commandLink>
+                                                    </p:column>
+                                                </p:dataTable>
+                                            </p:panelGrid>
+                                        </td>
+
+                                    </tr>
+                                </table>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td style="width:150px"><p:outputLabel style="width:150px" value="Practical Track Spasing (S)" /></td>
+                            <td style="width:150px"><p:inputNumber id="idPSSW2-nm" decimalPlaces="6" decimalSeparator="," thousandSeparator="." value="#{driftCalcWorksheet2MBean.practicalTrackSpacing}" required="true" requiredMessage="Practical Track Spasing (S) harus di isi !"/></td>
+                            <td style="width:100px"><p:outputLabel style="width:100px" value="NM" /></td>
+
+                        </tr>
+                        <tr>
+                            <td style="width:150px;"><p:outputLabel style="width:150px" value="Weather Correction Factor" /></td>
+                            <td style="width:150px;"><p:inputText disabled="true" style="width:150px" id="idWCFW2-nm" value="#{driftCalcWorksheet2MBean.weatherCorrectionFactor}" /></td>
+                            <td style="width:100px;"><p:outputLabel style="width:100px" value="NM" /></td>
+
+                        </tr>
+                        <tr>
+                            <td style="width:150px"><p:outputLabel style="width:150px" value="Speed Correction Factor" /></td>
+                            <td style="width:150px"><p:inputText disabled="true" style="width:150px" id="idSCFW2-nm" value="#{driftCalcWorksheet2MBean.speedCorrectionFactor}"/></td>
+                            <td style="width:100px"><p:outputLabel style="width:100px" value="NM" /></td>
+
+                        </tr>
+                        <tr>
+                            <td style="width:150px"><p:outputLabel style="width:150px" value="Fatigue Correction Factor" /></td>
+                            <td style="width:150px"><p:inputText disabled="true" style="width:150px" id="idFCFW2-nm" value="#{driftCalcWorksheet2MBean.fatigueCorrectionFactor}"/></td>
+                            <td style="width:100px"><p:outputLabel style="width:100px" value="NM" /></td>
+
+                        </tr>
+                        <tr>
+                            <td style="width:150px"><p:outputLabel style="width:150px" value="Sweep Width Factor" /></td>
+                            <td style="width:150px"><p:inputText disabled="true" style="width:150px" id="idSWFW2-nm" value="#{driftCalcWorksheet2MBean.sweepWidthFactor}"/></td>
+                            <td style="width:100px"><p:outputLabel style="width:100px" value="NM" /></td>
+
+                        </tr>
+                        <tr>
+                            <td style="width:150px"><p:outputLabel style="width:150px" value="Coverage Factor" /></td>
+                            <td style="width:150px"><p:inputText disabled="true" style="width:150px" id="idCFW2-nm" value="#{driftCalcWorksheet2MBean.coverageFactor}"/></td>
+                            <td style="width:100px"><p:outputLabel style="width:100px" value="NM" /></td>
+
+                        </tr>
+                        <tr>
+                            <td style="width:150px"><p:outputLabel style="width:150px" value="Probability of Detection (POD)" /></td>
+                            <td style="width:150px"><p:inputText disabled="true" style="width:150px" id="idPODW2-nm" value="#{driftCalcWorksheet2MBean.probabilityOfDetection}"/></td>
+                            <td style="width:100px"><p:outputLabel style="width:100px" value="%" /></td>
+
+                        </tr>
+                        <tr>
+                            <td style="width:150px"><p:outputLabel style="width:150px" value="Search Hours" /></td>
+                            <td style="width:150px"><p:inputText disabled="true" style="width:150px" id="idSHW2-nm" value="#{driftCalcWorksheet2MBean.searchHours}"/></td>
+                            <td style="width:100px"><p:outputLabel style="width:100px" value="hours" /></td>
+
+                        </tr>
+                    </table>
+
+
+                </p:panel>
+
+            </div>
+        </h:form>
+    </div>
+</ui:composition>

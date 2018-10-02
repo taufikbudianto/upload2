@@ -1,0 +1,113 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+    <ui:define name="title">Perpustakaan</ui:define>
+    <ui:define name="content">
+        <h:form id="perpus-content" enctype="multipart/form-data">
+            <p:panel id="list-perpus" class="no-border card card-w-title ui-fluid" 
+                     rendered="#{perpustakaanMBean.showListPerpus}"
+                     header="Daftar Perpustakaan">
+                <p:panelGrid id="search-perpus" columns="5" layout="grid" 
+                             styleClass="ui-panelgrid-blank form-group" 
+                             columnClasses ="ui-grid-col-2,ui-grid-col-3,ui-grid-col-2,
+                             ui-grid-col-2,ui-grid-col-3"
+                             style="margin-top: 20px;margin-bottom: 20px; width: 100%"
+                             class="no-padding no-border">
+                    <p:selectOneMenu value="#{perpustakaanMBean.fieldPerpus}" 
+                                     autoWidth="false">
+                        <p:ajax update="perpus-content:search-perpus"
+                                process="@this" global="false"
+                                listener="#{perpustakaanMBean.onFilterChange}"/>
+                        <f:selectItem itemLabel="Tanggal Upload" itemValue="createdDate"/>
+                        <f:selectItem itemLabel="Judul" itemValue="libJudul"/>
+                        <f:selectItem itemLabel="Dibuat Oleh" itemValue="createdBy"/>
+                    </p:selectOneMenu>
+                    <p:inputText value="#{perpustakaanMBean.valuePerpus}"
+                                 rendered="#{!perpustakaanMBean.isDate}"/>
+                    <p:calendar value="#{perpustakaanMBean.valueDate}" mask="true" navigator="true" pattern="dd/MM/yyyy" 
+                                showOn="button" readonlyInput="true"
+                                rendered="#{perpustakaanMBean.isDate}"/>
+                    <p:commandButton value="Cari" global="false"
+                                     onclick="PF('listPerpus').getPaginator().setPage(0);"
+                                     icon="ui-icon-search" process="@form" update="@form"/>
+                    <p:button value="Reset" icon="ui-icon-replay"/>
+                    <p:commandButton value="Tambah Data Baru" global="false"
+                                     class="green-btn" icon="fa fa-plus-circle" 
+                                     actionListener="#{perpustakaanMBean.loadForm}"
+                                     update="@form">
+                        <p:resetInput target="@form" />
+                    </p:commandButton>
+                </p:panelGrid>
+                <p:dataTable var="data" value="#{perpustakaanMBean.listPerpus}"
+                             reflow="true" rowKey="#{data.libId}" 
+                             lazy="true" paginator="true" paginatorPosition="bottom" 
+                             rows="10" tableStyle="table-layout:auto"
+                             emptyMessage="Data tidak ditemukan" 
+                             widgetVar="listPerpus" rowIndexVar="index">
+
+                    <p:column headerText="No" style="width: 20px">
+                        <p:outputLabel value="#{index + 1}"/>
+                    </p:column>
+                    <p:column headerText="Tanggal Upload" sortBy="#{data.createdDate}">
+                        <h:outputText value="#{perpustakaanMBean.timestampConvert(data.createdDate)}" />
+                    </p:column>
+                    <p:column headerText="Judul" sortBy="#{data.libJudul}">
+                        <h:outputText value="#{data.libJudul}" />
+                    </p:column>
+                    <p:column headerText="Dibuat Oleh" sortBy="#{data.createdBy}">
+                        <h:outputText value="#{data.createdBy}" />
+                    </p:column>
+                    <p:column headerText="Aksi" style="width: 10%;">
+                        <p:commandButton id="lihatPerpus"  
+                                         actionListener="#{perpustakaanMBean.loadForm}"
+                                         update="@form" onclick="PF('tTipLihat').hide();"
+                                         styleClass="blue-grey-btn" 
+                                         icon="fa fa-search">
+                            <f:attribute name="listRow" value="#{data}" />
+                            <f:attribute name="flag" value="1" />
+                        </p:commandButton>                        
+                        <p:tooltip value="Lihat" for="lihatPerpus"
+                                   trackMouse="true" widgetVar="tTipLihat"/>
+                        <p:commandButton id="ubahPerpus"  
+                                         actionListener="#{perpustakaanMBean.loadForm}"
+                                         update="@form" onclick="PF('tTipUbah').hide();"
+                                         styleClass="blue-grey-btn"
+                                         icon="fa fa-edit">
+                            <f:attribute name="listRow" value="#{data}" />
+                            <f:attribute name="flag" value="0" />
+                        </p:commandButton>
+                        <p:tooltip value="Ubah" for="ubahPerpus"
+                                   trackMouse="true" widgetVar="tTipUbah"/>
+                        <p:commandButton id="hapusPerpus" icon="fa fa-trash" global="false"
+                                         class="red-btn" update="@form" onclick="PF('tTipHapus').hide();"
+                                         actionListener="#{perpustakaanMBean.removePerpus}">
+                            <f:attribute name="listRow" value="#{data}"/>
+                            <p:confirm header="Konfirmasi" icon="ui-icon-alert"
+                                       message="Apakah anda yakin akan menghapus data ini ?"/>                            
+                        </p:commandButton>
+                        <p:tooltip value="Hapus" for="hapusPerpus"
+                                   trackMouse="true" widgetVar="tTipHapus"/>
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
+            <p:panel id="notif-item" class="no-border card card-w-title ui-fluid" 
+                     header="#{perpustakaanMBean.headerItem}"
+                     rendered="#{perpustakaanMBean.showItemPerpus}">
+                <ui:include src="perpustakaan/detaiPerpustakaan.xhtml"/>     
+            </p:panel>
+            <p:panel class="no-border card card-w-title ui-fluid" 
+                     header="Daftar Personil"
+                     rendered="#{perpustakaanMBean.showListPersonil}">
+                <ui:include src="perpustakaan/listPersonil.xhtml"/>
+            </p:panel>
+            <p:panel class="no-border card card-w-title ui-fluid" 
+                     header="Detail Personil"
+                     rendered="#{perpustakaanMBean.showDetailPersonil}">
+                <ui:include src="perpustakaan/detailPersonil.xhtml"/>
+            </p:panel>            
+        </h:form>
+    </ui:define>
+</ui:composition>

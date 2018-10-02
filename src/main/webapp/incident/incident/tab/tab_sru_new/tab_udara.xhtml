@@ -1,0 +1,139 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <p:panelGrid columns="3" layout="grid" styleClass="ui-panelgrid-blank form-group" class="no-padding no-border">
+        <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group" class="no-padding no-border">
+            <p:commandButton id="check-pilih-incident-sru-tab-udara" 
+                             value="Check All" actionListener="#{incidentSruMBean.checkallpilih}" 
+                             process="incidentdetail:udarasruinc" 
+                             update="incidentdetail:udarasruinc" styleClass="green-btn"
+                             disabled="#{incidentSruMBean.disabled}">
+                <f:attribute name="sruCheckAllPilih" value="Udara"/>
+            </p:commandButton>
+
+            <p:commandButton id="uncheck-pilih-incident-sru-tab-udara" 
+                             value="Uncheck All" 
+                             actionListener="#{incidentSruMBean.uncheckallpilih}" 
+                             process="incidentdetail:udarasruinc" 
+                             update="incidentdetail:udarasruinc" styleClass="red-btn"
+                             disabled="#{incidentSruMBean.disabled}">
+                <f:attribute name="sruUncheckAllPilih" value="Udara"/>
+            </p:commandButton>
+        </p:panelGrid>
+
+        <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group" class="no-padding no-border">
+            <p:commandButton id="kirim-notif-incident-sru-tab-udara" 
+                             value="Kirim Notifikasi"
+                             update="incidentdetail:udarasruinc" 
+                             process="incidentdetail:udarasruinc"
+                             disabled="#{incidentSruMBean.disabled}"
+                             actionListener="#{incidentSruMBean.showDialogNotif}"
+                             >
+                <f:attribute name="sruActionKirim" value="Udara"/>
+            </p:commandButton>
+
+        </p:panelGrid>
+
+        <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group" class="no-padding no-border">
+            <p:commandButton id="check-kirim-incident-sru-tab-udara" 
+                             value="Check All" 
+                             actionListener="#{incidentSruMBean.checkallkirim}"
+
+                             process="incidentdetail:udarasruinc" 
+                             update="incidentdetail:udarasruinc" styleClass="green-btn"
+                             disabled="#{incidentSruMBean.disabled}">
+                <f:attribute name="sruCheckAllKirim" value="Udara"/>
+            </p:commandButton>
+
+            <p:commandButton id="uncheck-kirim-incident-sru-tab-udara" 
+                             value="Uncheck All" 
+                             actionListener="#{incidentSruMBean.uncheckallkirim}" 
+                             process="incidentdetail:udarasruinc" 
+                             update="incidentdetail:udarasruinc" styleClass="red-btn"
+                             disabled="#{incidentSruMBean.disabled}">
+                <f:attribute name="sruUncheckAllKirim" value="Udara"/>
+            </p:commandButton>
+        </p:panelGrid>
+    </p:panelGrid>
+
+    <p:dataTable var="udarasruinc" value="#{incidentSruMBean.listAssetUdara}"
+                 reflow="true"  paginator="true" paginatorPosition="bottom" 
+                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} 
+                 {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                 emptyMessage="Data tidak ditemukan" 
+                 rows="10" rowsPerPageTemplate="5,10,15" lazy="true"
+                 id="udarasruinc" tableStyle="table-layout:auto" 
+                 style="font-size: smaller" rowIndexVar="index">                
+        <p:column headerText="No" style="width: 20px">
+            <p:outputLabel value="#{index + 1}"/>
+        </p:column>
+        <p:column style="width: 5%; text-align: center;" headerText="Pilih" >
+            <p:selectBooleanCheckbox value="#{incidentSruMBean.checkedPilihUdara[udarasruinc]}"
+                                     disabled="#{incidentSruMBean.disabled}">
+                <p:ajax process="@this"/>
+            </p:selectBooleanCheckbox>
+        </p:column>
+        <p:column style="width: 5%; text-align: center;" headerText="Kirim">
+            <p:selectBooleanCheckbox value="#{incidentSruMBean.checkedKirimUdara[udarasruinc]}"
+                                     disabled="#{incidentSruMBean.disabled}">
+                <p:ajax process="@this"/>
+            </p:selectBooleanCheckbox>
+        </p:column>
+        <p:column headerText="Nama SRU" sortBy="#{udarasruinc.name}">
+            <h:outputText value="#{udarasruinc.name}" />
+        </p:column>
+        <p:column headerText="Kansar/Potensi" sortBy="#{udarasruinc.potencyid.potencyname}">
+            <h:outputText value="#{udarasruinc.potencyid.potencyname}" />
+        </p:column>
+        <p:column headerText="Jarak(NM)" >
+            <p:outputLabel value="#{incidentSruMBean.distance(udarasruinc.longitude, udarasruinc.latitude)}" />
+        </p:column>
+        <p:column headerText="Arah(Derajat)">
+            <p:outputLabel value="#{incidentSruMBean.angle(udarasruinc.longitude, udarasruinc.latitude)}" />
+        </p:column>
+        <p:column headerText="Kecepatan(Knots)" sortBy="#{udarasruinc.speed}">
+            <h:outputText value="#{udarasruinc.speed}" />
+        </p:column>
+        <p:column headerText="Endurance(Jam)" sortBy="#{udarasruinc.endurance}">
+            <h:outputText value="#{udarasruinc.endurance}" />
+        </p:column>
+        <p:column headerText="Fungsi" sortBy="#{udarasruinc.functional}">
+            <h:outputText value="#{udarasruinc.functional}" />
+        </p:column>
+        <p:column headerText="Kapasitas" sortBy="#{udarasruinc.cargo}">
+            <h:outputText value="#{udarasruinc.cargo}" />
+        </p:column>
+        <p:column headerText="Keterangan" sortBy="#{udarasruinc.remarks}">
+            <h:outputText value="#{udarasruinc.remarks}" />
+        </p:column>
+
+        <p:column headerText="Aksi">
+            <p:commandButton id="ubahUdara"
+                             label="Ubah"
+                             onclick="PF('tTipUbah').hide();"
+                             icon="fa fa-edit" 
+                             class="blue-grey-btn" 
+                             actionListener="#{incidentSruMBean.showDetail}" 
+                             process="@form"
+                             disabled="#{incidentSruMBean.disabled}">
+                <f:attribute name="resAsset" value="#{udarasruinc}"/>
+                <f:attribute name="sruAction" value="Udara"/>
+            </p:commandButton>
+            <p:tooltip value="Ubah" for="ubahUdara"
+                       trackMouse="true" widgetVar="tTipUbah"/>
+        </p:column>
+    </p:dataTable>
+    <p:spacer width="10" />
+    <p:panel class="control-button no-border no-padding" >
+        <p:commandButton value="Simpan SRU Udara" icon="fa fa-save" 
+                         style="width:200px" styleClass="green-btn"   
+                         actionListener="#{incidentSruMBean.action}" 
+                         process="incidentdetail:udarasruinc"
+                         update="incidentdetail:udarasruinc"
+                         disabled="#{incidentSruMBean.disabled}">
+            <f:attribute name="sruAction" value="Udara"/>
+        </p:commandButton>
+    </p:panel>
+</ui:composition>

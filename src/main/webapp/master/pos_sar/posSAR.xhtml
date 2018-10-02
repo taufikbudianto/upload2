@@ -1,0 +1,164 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="form-posSAR">
+        <p:panel class="ui-fluid no-border no-padding">
+            <p:panelGrid columns="2" layout="grid" class="no-border">
+                <p:panel>
+                    <p:messages closable="true"/>
+                    <p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" 
+                                 layout="grid" styleClass="ui-panelgrid-blank form-group">
+                        <p:outputLabel value="Kode Pos SAR" styleClass="asterix"/>
+                        <p:panel style="border-style: none" >
+                            <p:inputText value="#{mstPosSarMBean.mstPosSar.possarid}" maxlength="15"
+                                         required="true" requiredMessage="Kode Pos SAR harus diisi"
+                                         disabled="#{mstPosSarMBean.disabled1}"/>
+                        </p:panel>
+
+                        <p:outputLabel value="Nama Pos SAR" styleClass="asterix"/>
+                        <p:panel style="border-style: none" >
+                            <p:inputText value="#{mstPosSarMBean.mstPosSar.possarname}" maxlength="50"
+                                         required="true" requiredMessage="Nama Pos SAR harus diisi"
+                                         disabled="#{mstPosSarMBean.disabled}"/>
+                        </p:panel>
+
+                        <p:outputLabel value="Alamat"/>
+                        <p:panel style="border-style: none" >
+                            <p:inputTextarea value="#{mstPosSarMBean.mstPosSar.address}" maxlength="255"
+                                             disabled="#{mstPosSarMBean.disabled}"/>
+                        </p:panel>
+
+                        <p:outputLabel value="Latitude" />
+                        <p:panelGrid id="latitude" columns="3" style="width: 100%;" 
+                                     columnClasses ="ui-grid-col-2,ui-grid-col-8,ui-grid-col-2"
+                                     class="no-border no-padding-table ui-fluid">
+                            <ui:include src="coordinate/latitude.xhtml"/>
+                        </p:panelGrid>
+
+                        <p:outputLabel value="Longitude" />
+                        <p:panelGrid id="longitude" columns="3" style="width: 100%"
+                                     columnClasses ="ui-grid-col-2,ui-grid-col-8,ui-grid-col-2"
+                                     class="no-border no-padding-table ui-fluid">
+                            <ui:include src="coordinate/longitude.xhtml"/>
+                        </p:panelGrid>
+
+                    </p:panelGrid>
+                </p:panel>
+
+                <p:panel>
+                    <p:panelGrid columns="2" columnClasses="ui-grid-col-4,ui-grid-col-8" 
+                                 layout="grid" styleClass="ui-panelgrid-blank form-group">
+                        <p:outputLabel value="Nama KanSAR" styleClass="asterix"/>
+                        <p:panel style="border-style: none" >
+                            <p:selectOneMenu id="idKansar" value="#{mstPosSarMBean.kantorsarname}"
+                                             disabled="#{mstPosSarMBean.disabled}"
+                                             required="true" requiredMessage="Nama Kansar harus dipilih">
+                                <f:selectItem itemLabel="--- Pilih ---" itemValue="" />
+                                <f:selectItems value="#{mstPosSarMBean.listKantorSar}"/>
+                            </p:selectOneMenu>
+                        </p:panel>
+
+                        <p:outputLabel value="No. Telepon 1"/>
+                        <p:panel style="border-style: none" >
+                            <p:inputText value="#{mstPosSarMBean.mstPosSar.phonenumber1}" maxlength="50"
+                                         disabled="#{mstPosSarMBean.disabled}" onkeypress="return validatePhone(event)"
+                                         validatorMessage="Nomor telepon 1 harus berupa angka">
+                                <f:validateRegex pattern="^[0-9]*$" />
+                            </p:inputText>
+                        </p:panel>
+
+                        <p:outputLabel value="No. Telepon 2"/>
+                        <p:panel style="border-style: none" >
+                            <p:inputText value="#{mstPosSarMBean.mstPosSar.phonenumber2}" maxlength="50"
+                                         disabled="#{mstPosSarMBean.disabled}" onkeypress="return validatePhone(event)"
+                                         validatorMessage="Nomor telepon 2 harus berupa angka">
+                                <f:validateRegex pattern="^[0-9]*$" />
+                            </p:inputText>
+                        </p:panel>
+
+                        <p:outputLabel value="No. Telepon 3"/>
+                        <p:panel style="border-style: none" >
+                            <p:inputText value="#{mstPosSarMBean.mstPosSar.phonenumber3}" maxlength="50"
+                                         disabled="#{mstPosSarMBean.disabled}" onkeypress="return validatePhone(event)"
+                                         validatorMessage="Nomor telepon 1 harus berupa angka">
+                                <f:validateRegex pattern="^[0-9]*$" />
+                            </p:inputText>
+                        </p:panel>
+
+                        <p:outputLabel value="No. Fax"/>
+                        <p:panel style="border-style: none" >
+                            <p:inputText value="#{mstPosSarMBean.mstPosSar.faxnumber}" maxlength="50"
+                                         disabled="#{mstPosSarMBean.disabled}" onkeypress="return validatePhone(event)"/>
+                        </p:panel>
+
+                        <p:outputLabel value="Email"/>
+                        <p:panel style="border-style: none" >
+                            <p:inputText value="#{mstPosSarMBean.mstPosSar.email}" maxlength="50"/>
+                        </p:panel>
+
+                        <p:outputLabel value="Freq Radio"/>
+                        <p:panel style="border-style: none" >
+                            <p:inputText value="#{mstPosSarMBean.mstPosSar.radiofrequency}" maxlength="50"
+                                         disabled="#{mstPosSarMBean.disabled}"/>
+                        </p:panel>
+
+                        <p:outputLabel value="Foto" />
+                        <p:panel style="border-style: none">
+                            <p:fileUpload id="fileImportPosSar" mode="advanced" auto="true"
+                                          dragDropSupport="false" sizeLimit="10000000" multiple="true"
+                                          fileUploadListener="#{mstPosSarMBean.uploadImage}"
+                                          process="@this" update="possar-content:form-posSAR:imgPosSar"
+                                          accept="image/*" disabled="#{mstPosSarMBean.disabled}"/>
+                        </p:panel>
+                        <p:spacer />
+                        <p:dataTable id="imgPosSar" widgetVar="widImgPosSar" var="imagePosSar"
+                                     value="#{mstPosSarMBean.listPosSarImages}" reflow="true"
+                                     rows="1" emptyMessage="No records found" paginator="true"
+                                     paginatorPosition="bottom" tableStyle="table-layout:auto"
+                                     style="text-align: center">
+                            <p:column headerText="Image">
+                                <h:form>
+                                    <h:panelGroup style="display: block; text-align: center">
+                                        <p:lightBox id="lightBoxPosSar" widgetVar="dlgPosSar">
+                                            <h:outputLink value="/document/temp/#{imagePosSar.pathname != null ? imagePosSar.pathname.replace('\\','/'): ''}"
+                                                          title="Image">
+                                                <p:graphicImage url="/document/temp/#{imagePosSar.pathname != null ? imagePosSar.pathname.replace('\\','/'): ''}"
+                                                                width="200" height="200" cache="false"/>
+                                            </h:outputLink>
+                                        </p:lightBox>
+                                        <p:commandLink value="Hapus" actionListener="#{mstPosSarMBean.hapusImage(imagePosSar)}"
+                                                       disabled="#{mstPosSarMBean.disabled}" process="@this"
+                                                       update="possar-content:form-posSAR:imgPosSar">
+                                            <p:confirm header="Konfirmasi" message="Apakah Anda yakin ingin menghapus image ini?"
+                                                       icon="ui-icon-alert"/>
+                                        </p:commandLink>
+                                    </h:panelGroup>
+                                </h:form>                                
+                            </p:column>
+                        </p:dataTable>
+                    </p:panelGrid>
+                </p:panel>    
+            </p:panelGrid>
+
+            <!--            <p:panel class="control-button no-border no-padding" >
+                            <p:commandButton value="Simpan" icon="fa fa-save" styleClass="green-btn" 
+                                             actionListener="{mstPosSarMBean.simpan()}" update=":possar-content:possar_datatable @form"  
+                                             process=":possar-content:possar_datatable @form" style="width:130px" 
+                                             rendered="{mstPosSarMBean.showButton}">
+                                <p:confirm header="Konfirmasi" message="Apakah anda yakin ingin menyimpan pos SAR ini?" 
+                                           icon="ui-icon-alert" />
+                            </p:commandButton>
+                            <p:commandButton value="{mstPosSarMBean.showButton ? 'Batal' : 'Kembali'}" 
+                                             icon="ui-icon-cancel" actionListener="{mstPosSarMBean.batal()}" 
+                                             styleClass="red-btn" style="width:130px" immediate="true">
+                                <p:ajax event="click" update="@form" 
+                                        oncomplete="if(!args.validationFailed) PF('widgetPosSAR').hide()"/>
+                            </p:commandButton>
+                        </p:panel>    -->
+        </p:panel>        
+
+    </h:form>
+</ui:composition>

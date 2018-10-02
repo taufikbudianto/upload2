@@ -1,0 +1,155 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+    <ui:define name="title">Prasarana</ui:define>
+    <ui:define name="content">
+        <h:form id="prasarana-content">
+            <h:outputScript library="js" name="javascript.js" />     
+            <p:panel id="list-prasarana" header="Resource Asset Prasarana" styleClass="penelHeaderGreen ui-shadow-content" 
+                     class="ui-fluid card-w-title no-padding no-border content-title" rendered="#{!resPrasaranaMBean.isShowDetailInput and !resPrasaranaMBean.isShowDetail}">                           
+                <p:panelGrid id="search" columns="7" layout="grid" 
+                             styleClass="ui-panelgrid-blank form-group" 
+                             columnClasses ="ui-grid-col-2,ui-grid-col-3,ui-grid-col-2,ui-grid-col-2,ui-grid-col-3"
+                             style="margin-top: 20px;margin-bottom: 20px"
+                             class="no-padding no-border">
+                    <p:selectOneMenu id="fieldresprasarana" value="#{resPrasaranaMBean.field}">
+                        <p:ajax event="change" update="search" listener="#{resPrasaranaMBean.chengeToCombo()}"/>
+                        <f:selectItem itemLabel="Kode" itemValue="code" />
+                        <f:selectItem itemLabel="Nama" itemValue="name" />
+                        <f:selectItem itemLabel="Tipe" itemValue="assettypeid" />
+                        <f:selectItem itemLabel="Nama KanSAR" itemValue="kantorsarid" /> 
+                        <f:selectItem itemLabel="Nama Potensi" itemValue="potencyid" />
+                        <f:selectItem itemLabel="Fungsi" itemValue="functional" />
+                        <f:selectItem itemLabel="Status" itemValue="status" />
+                    </p:selectOneMenu>
+                    <p:inputText id="value" value="#{resPrasaranaMBean.value}" rendered="#{resPrasaranaMBean.showCombo == 0}"/>
+                    <p:selectOneMenu id="resprasarana" value="#{resPrasaranaMBean.value}" rendered="#{resPrasaranaMBean.showCombo==1}">
+                        <f:selectItem itemLabel="Tidak Beroperasi" itemValue="0"/>
+                        <f:selectItem itemLabel="Beroperasi" itemValue="1"/>
+                    </p:selectOneMenu>
+                    <p:selectOneMenu id="idKansar" value="#{resPrasaranaMBean.value}" rendered="#{resPrasaranaMBean.showCombo==2}">
+                        <f:selectItems value="#{resPrasaranaMBean.listKantorSar}"/>
+                    </p:selectOneMenu>
+                    <p:commandButton id="search-btn" type="button"  value="Cari" icon="ui-icon-search" onclick="PF('listWidget').getPaginator().setPage(0);">
+                        <p:ajax event="click" update=":prasarana-content:list-prasarana" process="@form"/>
+                    </p:commandButton>
+                    <p:button value="Reset" icon="ui-icon-replay"/>
+                    <!--<p:commandButton id="clear-btn" type="button"  value="Export" icon="ui-icon-file-upload"> 
+                        <p:ajax event="click" update=":prasarana-content:list-prasarana" process="@form"/>
+                    </p:commandButton>
+                    <p:commandButton id="clear-btn2" type="button"  value="Import" icon="ui-icon-file-download"> 
+                        <p:ajax event="click" update=":prasarana-content:list-prasarana" process="@form"/>
+                    </p:commandButton>-->
+                    <p:commandButton id="add-btn" type="button"  value="Tambah Data Baru" rendered="false"
+                                     icon="fa fa-plus-circle" class="green-btn" style="float: right">
+                        <p:ajax event="click" update="@form" process="@this" listener="#{resPrasaranaMBean.reset(null, false)}"/>
+                    </p:commandButton>
+                </p:panelGrid>
+                <p:panelGrid id="panelStatus" columns="4">
+                    <p:selectBooleanCheckbox value="#{resPrasaranaMBean.basarnas}" id="idBoolPotensi">
+                        <p:ajax listener="#{resPrasaranaMBean.checkPotensi()}" event="change" update="@form"/>
+                    </p:selectBooleanCheckbox>
+                    <p:outputLabel value="Basarnas" id="lblBasarnas"/>
+
+                    <p:selectBooleanCheckbox value="#{resPrasaranaMBean.potensi}" id="idBoolBasarnas">
+                        <p:ajax listener="#{resPrasaranaMBean.checkBasarnas()}" event="change" update="@form"/>
+                    </p:selectBooleanCheckbox>
+                    <p:outputLabel value="Potensi" id="lblPotensi"/>
+                </p:panelGrid>
+
+
+
+
+                <p:dataTable id="prasarana_datatable" var="prasarana" value="#{resPrasaranaMBean.lazyDataModelJPA}" reflow="true" rowKey="#{prasarana.assetid}"
+                             lazy="true" paginator="true" paginatorPosition="bottom" 
+                             style="width: fit-content;" rowIndexVar="index"
+                             rows="10" rowsPerPageTemplate="5,10,15" widgetVar="listWidget" 
+                             emptyMessage="Data tidak ditemukan" 
+                             tableStyle="table-layout:auto" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                    <p:column headerText="No" style="width: 20px">
+                        <p:outputLabel value="#{index + 1}"/>
+                    </p:column>
+                    <p:column headerText="Kode" sortBy="#{prasarana.code}">
+                        <h:outputText value="#{prasarana.code}" />
+                    </p:column>
+                    <p:column headerText="Nama" sortBy="#{prasarana.name}">
+                        <h:outputText value="#{prasarana.name}" />
+                    </p:column>
+                    <p:column headerText="Tipe" sortBy="#{prasarana.assettypeid.assetname}">
+                        <h:outputText value="#{prasarana.assettypeid.assetname}" />
+                    </p:column>
+                    <p:column headerText="Nama KanSAR" sortBy="#{prasarana.kantorsarid.kantorsarname}">
+                        <h:outputText value="#{prasarana.kantorsarid.kantorsarname}" />
+                    </p:column>
+                    <p:column headerText="Nama Potensi" sortBy="#{prasarana.potencyid.potencyname}">
+                        <h:outputText value="#{prasarana.potencyid.potencyname}" />
+                    </p:column>
+                    <p:column headerText="Fungsi" sortBy="#{prasarana.functional}">
+                        <h:outputText value="#{prasarana.functional}" />
+                    </p:column>
+                    <p:column headerText="Status" sortBy="#{prasarana.status}">
+                        <h:outputText value="#{prasarana.status eq '0'?'Tidak Beroperasi': 
+                                               (prasarana.status eq '1'?'Beroperasi' : '')}" />
+                    </p:column>
+                    <p:column headerText="Aksi">
+                        <p:commandButton id="lihat"
+                                         label="lihat"
+                                         onclick="PF('tTipLihat').hide();"
+                                         icon="fa fa-search" 
+                                         class="blue-grey-btn">
+                            <p:ajax event="click" listener="#{resPrasaranaMBean.viewCheck(prasarana, true)}" update="@form" />
+                        </p:commandButton>
+                        <p:tooltip value="Lihat" for="lihat"
+                                   trackMouse="true" widgetVar="tTipLihat"/>
+                        <p:outputLabel value=" | " rendered="false"/>
+                        <p:commandButton label="hapus" icon="fa fa-trash" rendered="false" class="red-btn"
+                                       actionListener="#{resPrasaranaMBean.hapus(prasarana)}"
+                                       update="prasarana-content:prasarana_datatable @form" >
+                            <p:confirm header="Konfirmasi" message="Apakah anda yakin ingin menghapus Prasarana ini?" icon="ui-icon-alert"/>
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
+
+            <p:panel id="detail-res-prasarana-input" class="no-border no-padding" rendered="#{resPrasaranaMBean.isShowDetailInput}">
+                <ui:include src="resPrasaranaInput.xhtml" />
+            </p:panel>
+
+            <p:panel id="detail-res-prasarana" class="no-border no-padding" rendered="#{resPrasaranaMBean.isShowDetail}">
+                <ui:include src="resPrasarana.xhtml" />
+            </p:panel>
+        </h:form>
+
+        <p:dialog id="idResContactInputPrasarana" widgetVar="widgetResContactInputPrasarana"
+                  header="Data "
+                  width="50%" height="50%"
+                  appendTo="@(body)"
+                  responsive="true" modal="true"
+                  maximizable="true" style="overflow-y: auto;max-height: 100%"
+                  resizable="false" closable="false" visible="#{facesContext.validationFailed}">
+            <ui:include src="./resContactInput.xhtml"/>
+        </p:dialog>
+
+        <p:dialog id="idResContactPrasarana" widgetVar="widgetResContactPrasarana"
+                  header="Data "
+                  width="50%" height="50%"
+                  appendTo="@(body)"
+                  responsive="true" modal="true"
+                  maximizable="true" closable="false" style="overflow-y: auto;max-height: 100%"
+                  resizable="false">
+            <ui:include src="./resContact.xhtml"/>
+        </p:dialog>
+        <p:dialog id="idCariPotensi" widgetVar="widgetCariPotensi"
+                  header="Data "
+                  width="100%" height="50%"
+                  appendTo="@(body)"
+                  responsive="true" modal="true"
+                  maximizable="true" style="overflow-y: auto;max-height: 80%;font-size: x-small"
+                  resizable="false">
+            <ui:include src="./PencarianPotensi.xhtml"/>
+        </p:dialog>
+    </ui:define>
+</ui:composition>

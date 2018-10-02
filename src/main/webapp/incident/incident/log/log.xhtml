@@ -1,0 +1,71 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+    
+    <ui:define name="title">LOG</ui:define>
+    <ui:define name="content">
+    <div class="ui-g ui-fluid">
+        <div class="ui-g-12">
+            <h:form id="IncidentLog-content">
+                <p:panel header="LOG" styleClass="penelHeaderGreen ui-shadow-content">
+                    <p:panelGrid columns="7" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                        <p:commandButton value="Tambah Data Baru" styleClass="green-btn" onclick="PF('widgetIncidentLog').show()"/>
+                    </p:panelGrid>
+                    <p:dataTable var="incidentLog" value="#{incidentLogMBean.dataModel}" reflow="true" rowKey="#{incidentLog.logID}"
+                                 lazy="true" paginator="true" paginatorPosition="bottom" rows="#{viewBean.rowsPageDefault}"
+                                 rowsPerPageTemplate="#{viewBean.rowsPerPageTemplate}" emptyMessage="Data tidak ditemukan" tableStyle="table-layout:auto">
+                        <p:column headerText="Tanggal">
+                            <h:outputText value="#{incidentLog.logDate}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="Deskripsi">
+                            <h:outputText value="#{incidentLog.remarks}" />
+                        </p:column>
+                        <p:column headerText="Latitute">
+                            <h:outputText value="#{incidentLog.latitude}" />
+                        </p:column>
+                        <p:column headerText="Longitude">
+                            <h:outputText value="#{incidentLog.longitude}" />
+                        </p:column>
+                        <p:column headerText="SRU">
+                            <h:outputText value="#{incidentLog.sruID}" />
+                        </p:column>
+                        <p:column headerText="No RadioGram">
+                            <h:outputText value="#{incidentLog.radiogram.nomor}" />
+                        </p:column>
+                        <p:column headerText="Aksi">
+                            <p:commandLink value="Lihat">
+                                <p:ajax event="click" listener="#{incidentLogMBean.viewIncidentLog(incidentLog.logID, true)}" update=":form-insidenLog" />
+                            </p:commandLink> 
+                            <p:outputLabel value=" | " rendered="#{incidentLog.status == 'Open'}"/>
+                            <p:commandLink value="Edit" rendered="#{incidentLog.status == 'Open'}">
+                                <p:ajax event="click" listener="#{incidentLogMBean.viewIncidentLog(incidentLog.logID, false)}" update=":form-insidenLog" />                            
+                            </p:commandLink>
+                            <p:outputLabel value=" | " rendered="#{incidentLog.status == 'Open'}"/>
+                            <p:commandLink value="Hapus" rendered="#{incidentLog.status == 'Open'}" 
+                                           actionListener="#{incidentLogMBean.hapusInsidenLog(incidentLog)}"
+                                           update="@this" oncomplete="location.reload();">
+                                <p:confirm header="Konfirmasi" message="Apakah anda yakin ingin menghapus insiden ini?" icon="ui-icon-alert"/>
+                            </p:commandLink>
+                        </p:column>
+                    </p:dataTable>
+                </p:panel>
+            </h:form>
+        </div>
+    </div>  
+        
+     <p:dialog id="idIncidentLog" widgetVar="widgetIncidentLog"
+                  header="Data Log"
+                  width="50%" height="50%"
+                  appendTo="@(body)"
+                  responsive="true" modal="true"
+                  maximizable="true" style="overflow-y: auto;max-height: 90%"
+                  resizable="false">
+            <ui:include src="./incidentLog.xhtml"/>
+        </p:dialog>
+    </ui:define>
+</ui:composition>

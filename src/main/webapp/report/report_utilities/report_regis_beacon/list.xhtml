@@ -1,0 +1,58 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+    <ui:define name="title">Laporan Registrasi Beacon</ui:define>
+    <ui:define name="content">
+        <div class="ui-g ui-fluid">
+            <div class="ui-g-12">
+                <h:form id="regis_beacon" target="_blank">
+                    <p:panel id="list_regis" header="Laporan Registrasi Beacon" styleClass="penelHeaderGreen ui-shadow-content">
+                        <label>Tanggal Registrasi </label>
+                        <p:panelGrid id="tanggalan" columns="10" layout="grid" styleClass="ui-panelgrid-blank form-group" class="no-padding no-border">
+                            <p:outputLabel for="tanggal1" value="" />
+                            <p:calendar id="tanggal1" showOn="button" value="#{report_regis_beaconMBean.startdate}" readonlyInput="true" mask="true"
+                                        navigator="true" pattern="dd-MM-yyyy" maxdate="#{report_regis_beaconMBean.enddate}">
+                                <p:ajax event="dateSelect" update="regis_beacon:tanggal2"/>
+                            </p:calendar>
+                            <label>s.d </label>
+                            <p:outputLabel for="tanggal2" value="" />
+                            <p:calendar id="tanggal2"  showOn="button" value="#{report_regis_beaconMBean.enddate}" readonlyInput="true" mask="true" 
+                                        navigator="true" pattern="dd-MM-yyyy" mindate="#{report_regis_beaconMBean.startdate}" maxdate="#{currentDate}"/>                            
+                        </p:panelGrid>
+                        <label>Tipe Beacon</label>
+                        <p:panelGrid id="search" columns="10" layout="grid" styleClass="ui-panelgrid-blank form-group" class="no-padding no-border">
+                            <p:selectOneMenu id="field" value="#{report_regis_beaconMBean.field}">
+                                <f:selectItem itemLabel="Semua" itemValue="ALL" />
+                                <f:selectItem itemLabel="ELT" itemValue="ELT" />
+                                <f:selectItem itemLabel="PLB" itemValue="PLB" />
+                                <f:selectItem itemLabel="EPIRB" itemValue="EPIRB" />
+                            </p:selectOneMenu>
+                        </p:panelGrid>
+                        <p:panelGrid id="perintah" columns="10" layout="grid" styleClass="ui-panelgrid-blank form-group" class="no-padding no-border">
+                            <p:commandButton value="Cetak" actionListener="#{report_regis_beaconMBean.openPrintDialog()}" process="@form" icon="fa fa-print"/>
+                            <p:commandButton value="Reset" update="list_regis" process="@this" actionListener="#{report_regis_beaconMBean.reset}" icon="ui-icon-replay"/>
+                        </p:panelGrid>
+                        <p:dialog id="idPrintDialog" widgetVar="dialogPrint" header="Print Data">
+                            <p:outputLabel value="Apakah anda yakin? (Proses akan memakan waktu bergantung pada jumlah data)"/>
+                            <p:panel class="no-border no-padding ui-fluid control-button">
+                                <p:panelGrid columns="2" class="control-button" columnClasses="ui-g-7, ui-g-2">
+                                    <p:spacer/>
+                                    <p:panelGrid columns="2" class="control-button">
+                                        <p:commandButton value="YA" class="green-btn" onclick="PF('dialogPrint').hide()" ajax="false" 
+                                                         actionListener="#{report_regis_beaconMBean.reportPrint}"/>
+                                        <p:commandButton value="Batal" class="red-btn" onclick="PF('dialogPrint').hide()">
+                                        </p:commandButton>  
+                                    </p:panelGrid>    
+                                </p:panelGrid>
+
+                            </p:panel>
+                        </p:dialog>
+                    </p:panel>
+                </h:form>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>

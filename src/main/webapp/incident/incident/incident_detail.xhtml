@@ -1,0 +1,55 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <h:form id="incidentdetail">
+        <p:tabView class="card" prependId="false" dynamic="true" cache="true" 
+                   activeIndex="#{incidentMBean.activeIndex}">
+            <p:tab title="General">
+                <ui:include src="./general_information/view_insiden.xhtml"/>
+            </p:tab>
+            <p:tab title="Perencanaan" disabled="#{incidentMBean.disableTab}">
+                <ui:include src="tab/planning/tab_planning.xhtml"/>
+            </p:tab>
+            <p:tab title="Sighting And Hearing" disabled="#{incidentMBean.disableTab}">
+                <ui:include src="tab/tab_sightingandhearing.xhtml"/>
+            </p:tab>
+            <p:tab title="Beacon" disabled="#{incidentMBean.disableTab}">
+                <ui:include src="tab/tab_beacon.xhtml"/>
+            </p:tab>
+            <p:tab title="SRU" disabled="#{incidentMBean.disableTab}">
+                <ui:include src="tab/tab_sru_new/tab_sru.xhtml"/>
+            </p:tab>
+            <p:tab title="Personil" disabled="#{incidentMBean.disableTab}">
+                <ui:include src="tab/tab_personil/tab_personil.xhtml"/>
+            </p:tab>
+            <p:tab title="Peralatan" disabled="#{incidentMBean.disableTab}">
+                <ui:include src="tab/tab_peralatan.xhtml"/>
+            </p:tab>
+            <p:tab title="Potensi" disabled="#{incidentMBean.disableTab}">
+                <ui:include src="tab/tab_potensi/tab_potensi.xhtml"/>
+            </p:tab>
+<!--            <p:tab title="Routing" disabled="{incidentMBean.disableTab}">
+                <ui:include src="tab/tab_routing.xhtml"/>
+            </p:tab>-->
+            <p:tab title="Log" disabled="#{incidentMBean.disableTab}">
+                <ui:include src="tab/tab_log/tab_log/tab_log.xhtml"/>
+            </p:tab>
+            <p:tab title="POB" disabled="#{incidentMBean.disableTab}">
+                <ui:include src="tab/tab_pob/tab_pob.xhtml"/>
+            </p:tab>
+            <p:tab title="Checklist" disabled="#{incidentMBean.disableTab}">
+                <ui:include src="tab/tab_checklist/tab_checklist.xhtml"/>
+            </p:tab>
+            <p:tab title="History" disabled="#{incidentMBean.disableTab}">
+                <ui:include src="tab/tab_history.xhtml"/>
+            </p:tab>
+            <p:tab title="ASW" disabled="#{incidentMBean.disableTab}">
+                <ui:include src="tab/tab_asw.xhtml"/>
+            </p:tab>
+            <p:tab title="Budget" disabled="#{incidentMBean.disableTab}">
+                <ui:include src="tab/tab_budget.xhtml"/>
+            </p:tab>
+        </p:tabView>
+    </h:form>
+</ui:composition>

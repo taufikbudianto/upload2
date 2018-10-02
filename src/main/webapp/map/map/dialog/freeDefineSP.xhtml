@@ -1,0 +1,31 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <p:dialog showEffect="fade" hideEffect="fade" dynamic="true"
+              position="center" id="idDialogSPPFreeDefine"
+              header="Search Pattern Parameter"  
+              widgetVar="showDialogSPPFreeDefine"  
+              modal="true" height="95%" 
+              responsive="true" resizable="false" >
+        <h:form prependId="false" id="formFreeDefine">
+            <p:messages closable="true"/>
+            <p:panelGrid columns="2" columnClasses="ui-grid-col-3,ui-grid-col-8"
+                         style="width: 100%" layout="grid" id="grid"
+                         styleClass="ui-panelgrid-blank form-group">
+                <p:outputLabel value="Name"/>
+                <p:inputText value="#{searchPatternMBean.namePatternFreeDefine}" 
+                             required="#{searchPatternMBean.addOrCancel}" requiredMessage="Nama belum diisi"/>
+            </p:panelGrid>
+            <p:separator/>
+            <p:panel class="control-button">
+                <p:commandButton value="OK" actionListener="#{searchPatternMBean.addMarkerFreeDefine()}"
+                                 update="@form" process="grid"/>
+                <p:commandButton value="Cancel" actionListener="#{searchPatternMBean.cancelMarkerFreeDefine()}"
+                                 process="@form" update="grid"/>
+                <!--                <p:commandButton value="Cancelsss" onclick="middlePoint(0.252, 113.019, 1.119, 113.2323)"/>-->
+            </p:panel>
+        </h:form>
+    </p:dialog>
+</ui:composition>

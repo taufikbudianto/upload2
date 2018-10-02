@@ -1,0 +1,96 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <p:outputLabel value="Pelapor" style="font-weight: bold;font-size: 16px"/>
+    <p:panel>
+        <p:messages closable="true"/>
+        <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank grid-pad" columnClasses="ui-grid-col-3,ui-grid-col-9">
+            <p:outputLabel value="Nama" styleClass="asterix"/>
+            <p:inputText value="#{incidentSightingMBean.sighting.observerName}" maxlength="30" size="30" style="width: 50%"
+                         required="true" requiredMessage="Nama harus diisi"/>
+            <p:outputLabel value="Telepon" styleClass="asterix"/>
+            <p:inputText value="#{incidentSightingMBean.sighting.observerPhone}" size="30" maxlength="13" style="width: 50%"
+                         required="true" requiredMessage="Telepon harus diisi"
+                         validatorMessage="Format nomor telepon salah" onkeypress="return validatePhone(event)">
+                <f:validateLength minimum="5"/>
+            </p:inputText>
+            <p:outputLabel value="Lokasi" />
+            <p:inputText value="#{incidentSightingMBean.sighting.observerLocation}" size="30" maxlength="30" style="width: 50%"/>
+            <p:outputLabel value="Latitude" />
+            <p:panelGrid id="latitude-pelapor" columns="3" style="width: 50%;" 
+                         columnClasses ="ui-grid-col-2, ui-grid-col-8, ui-grid-col-2"
+                         class="no-border no-padding-table ui-fluid">
+                <ui:include src="coordinate/observer-latitude.xhtml"/>
+            </p:panelGrid>
+            <p:outputLabel value="Longitude" />
+            <p:panelGrid id="longitude-pelapor" columns="3" style="width: 50%"
+                         columnClasses ="ui-grid-col-2,ui-grid-col-8,ui-grid-col-2"
+                         class="no-border no-padding-table ui-fluid">
+                <ui:include src="coordinate/observer-longitude.xhtml"/>
+            </p:panelGrid>
+        </p:panelGrid>
+    </p:panel>
+    <br />
+    <p:outputLabel value="Posisi Objek" style="font-weight: bold;font-size: 16px"/>
+    <p:panel>
+        <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank grid-pad" columnClasses="ui-grid-col-3,ui-grid-col-9">
+            <p:outputLabel value="Posisi" />
+            <p:inputText value="#{incidentSightingMBean.sighting.objectPosition}" size="30" maxlength="30" style="width: 50%;"/>
+            <p:outputLabel value="Tanggal Waktu" />
+            <p:panelGrid columns="2" class="no-border no-padding no-padding-table" columnClasses="ui-grid-col-10, ui-grid-col-2">
+                <p:calendar pattern="dd-MM-yyyy HH:mm:ss" value="#{incidentSightingMBean.sighting.objectDtg}"
+                            showOn="button" mask="true" navigator="true" inputStyle="width: 225px; vertical-align: middle"/>
+                <p:selectOneMenu value="#{incidentSightingMBean.sighting.objectDtgTimezone}" style="width: 100%; margin-left: 18px">
+                    <f:selectItems value="#{timezone.ALL_ENUM_VALUES}" var="tz" 
+                                   itemValue="#{tz.timezone}" itemLabel="#{tz.shorttimezone}" />
+                </p:selectOneMenu>
+            </p:panelGrid>
+            <p:outputLabel value="Latitude" />
+            <p:panelGrid columns="2" styleClass="ui-panelgrid-blank grid-pad" columnClasses="ui-grid-col-10, ui-grid-col-2">
+                <p:panelGrid id="latitude-object" columns="4" style="width: 386px; margin-left: -15px" 
+                             columnClasses ="ui-grid-col-2,ui-grid-col-6,ui-grid-col-2, ui-grid-col-2"
+                             class="no-border no-padding-table ui-fluid">
+                    <ui:include src="coordinate/object-latitude.xhtml"/>
+                </p:panelGrid>
+                <p:commandButton icon="ui-icon-map" style="width: content-box; margin-left: -20px" title="Map">
+                       <p:ajax event="click" update="@form" process="@this" listener="#{incidentSightingMBean.viewInMap()}"/>
+                </p:commandButton>            
+            </p:panelGrid>
+            <p:outputLabel value="Longitude" />
+            <p:panelGrid id="longitude-object" columns="4" style="width: 50%"
+                         columnClasses ="ui-grid-col-2,ui-grid-col-6,ui-grid-col-2, ui-grid-col-2"
+                         class="no-border no-padding-table ui-fluid">
+                <ui:include src="coordinate/object-longitude.xhtml"/>
+            </p:panelGrid>
+        </p:panelGrid>
+    </p:panel>
+    <br />
+    <p:outputLabel value="Deskripsi" style="font-weight: bold;font-size: 16px"/>
+    <p:panel>
+        <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank grid-pad" columnClasses="ui-grid-col-3,ui-grid-col-9">
+            <p:outputLabel value="Tipe Laporan" />
+            <p:selectOneRadio value="#{incidentSightingMBean.sighting.reportType}" style="width: 40%">
+                <f:selectItem itemLabel="Lihat" itemValue="1" />
+                <f:selectItem itemLabel="Dengar" itemValue="2" />
+            </p:selectOneRadio>
+            <p:outputLabel value="Tipe Objek" />
+            <p:selectOneMenu value="#{incidentSightingMBean.sighting.objectType}" style="width: 30%">
+                <p:ajax event="change" update="description" listener="#{incidentSightingMBean.changeObjectType}" global="false"/>
+                <f:selectItems value="#{oType.ALL_ENUM_VALUES}" var="ot" 
+                               itemValue="#{ot.itemValue}" itemLabel="#{ot.itemLabel}" />
+            </p:selectOneMenu>
+            <p:outputLabel value="" />
+            <p:inputText id="description" value="#{incidentSightingMBean.sighting.objectTypeOther}"
+                         disabled="#{incidentSightingMBean.disableOtherObjectType}"
+                         size="30" maxlength="30" style="width: 50%"/>
+            <p:outputLabel value="Deskripsi" />
+            <p:inputTextarea value="#{incidentSightingMBean.sighting.remarks}" cols="30" maxlength="100"
+                             style="width: 50%"/>
+            <p:outputLabel value="Cuaca" />
+            <p:inputText value="#{incidentSightingMBean.sighting.weatherDescription}" size="30"
+                         maxlength="30" style="width: 50%"/>
+        </p:panelGrid>
+    </p:panel>
+</ui:composition>

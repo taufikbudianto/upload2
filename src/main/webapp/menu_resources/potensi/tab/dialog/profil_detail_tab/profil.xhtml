@@ -1,0 +1,157 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <p:panelGrid id="idProfil" columns="2" layout="grid" class="no-border"
+                 columnClasses="ui-grid-col-6,ui-grid-col-6" style="width: 100%">
+        <p:panelGrid class="no-border" columns="2" 
+                     layout="grid" styleClass="form-group"
+                     columnClasses="ui-grid-col-4 label,ui-grid-col-8 value-readonly">
+
+            <p:outputLabel value="NIP/NRP" />
+            <p:inputText id="nip" value="#{potensiMBean.resPersonnel.personnelCode}" 
+                         required="true" requiredMessage="NIP tidak boleh kosong" disabled="#{potensiMBean.disabled}" >
+                <p:ajax event="blur"
+                        process="@this"
+                        update="@form"
+                        listener="#{potensiMBean.onKeyUp}" />
+            </p:inputText>
+
+
+            <p:outputLabel value="Nama Lengkap"/>
+            <p:inputText value="#{potensiMBean.resPersonnel.personnelName}" 
+                         required="true" requiredMessage="Nama tidak boleh kosong" 
+                         disabled="#{potensiMBean.potencyDisabled}" />
+
+            <p:outputLabel value="KTP"/>
+            <p:inputText value="#{potensiMBean.resPersonnel.IKtp}" 
+                         disabled="#{potensiMBean.potencyDisabled}" 
+                         label="KTP"/>
+
+            <p:outputLabel value="Jenis Kelamin" />
+            <p:selectOneRadio value="#{potensiMBean.resPersonnel.gender}" 
+                              required="true" requiredMessage="Kelamin tidak boleh kosong" 
+                              disabled="#{potensiMBean.potencyDisabled}">
+                <f:selectItem itemLabel="Pria" itemValue="M" />
+                <f:selectItem itemLabel="Wanita" itemValue="F" />
+            </p:selectOneRadio>
+
+            <p:outputLabel value="Tempat Lahir"/>
+            <p:inputText value="#{potensiMBean.resPersonnel.birthPlace}" 
+                         disabled="#{potensiMBean.potencyDisabled}"/>
+
+            <p:outputLabel value="Tanggal Lahir"/>
+            <p:calendar value="#{potensiMBean.resPersonnel.birthDate}" mask="true"
+                        navigator="true" pattern="dd-mm-yyyy" 
+                        disabled="#{potensiMBean.potencyDisabled}"/>
+
+            <p:outputLabel value="Agama" />
+            <p:inputText value="#{potensiMBean.resPersonnel.religion}" 
+                         disabled="#{potensiMBean.potencyDisabled}"/>
+
+
+
+            <p:outputLabel value="Pendidikan Terakhir"/>
+            <p:inputText id="pendidikan" 
+                         value="#{potensiMBean.resPersonnel.lastEducation}" 
+                         disabled="#{potensiMBean.potencyDisabled}"/>
+
+            <p:outputLabel value="Alamat"/>
+            <p:inputTextarea id="almt" 
+                             value="#{potensiMBean.resPersonnel.homeAddress}" 
+                             disabled="#{potensiMBean.potencyDisabled}"/>
+            <p:outputLabel value="Provinsi"/>
+            <p:inputText value="#{potensiMBean.resPersonnel.idProvinsi}" 
+                         disabled="#{potensiMBean.potencyDisabled}"/>
+            <p:outputLabel value="Kota"/>
+            <p:inputText value="#{potensiMBean.resPersonnel.idKota}" 
+                         disabled="#{potensiMBean.potencyDisabled}"/>
+            <p:outputLabel value="Kode Pos"/>
+            <p:inputText value="#{potensiMBean.resPersonnel.idKota}" 
+                         disabled="#{potensiMBean.potencyDisabled}"/>
+            <!--            
+                        <p:outputLabel value="Status Penikahan" />
+                        <p:selectOneMenu id="stsPernikahan" 
+                                         value="#{potensiMBean.resPersonnel.maritalStatus}" 
+                                         disabled="#{potensiMBean.potencyDisabled}">
+                            <f:selectItem itemLabel="PILIH" itemValue=""/>
+                            <f:selectItem itemLabel="Menikah" itemValue="0"/>
+                            <f:selectItem itemLabel="Belum Menikah" itemValue="1"/>
+                        </p:selectOneMenu>-->
+            <!--            <p:outputLabel value="Gelar Depan" />
+                        <p:selectOneMenu value="#{potensiMBean.resPersonnel.title}" 
+                                         disabled="#{potensiMBean.potencyDisabled}">
+                            <f:selectItem itemValue="Ibu." itemLabel="Ibu."/>
+                            <f:selectItem itemValue="Bpk." itemLabel="Bpk."/>
+                        </p:selectOneMenu>-->
+
+        </p:panelGrid>
+
+        <p:panelGrid columns="2" layout="grid" class="no-border" styleClass="form-group"
+                     columnClasses="ui-grid-col-4 label,ui-grid-col-8 value-readonly">
+
+            <p:outputLabel value="No. Handphone (1)"/>
+            <p:inputText id="phone" value="#{potensiMBean.resPersonnel.phoneNumber}"
+                         onkeypress="return validatePhone(event)" 
+                         disabled="#{potensiMBean.potencyDisabled}" />
+
+            <p:outputLabel value="No. Handphone (2)"/>
+            <p:inputText id="hp" value="#{potensiMBean.resPersonnel.mobilePhoneNumber}"
+                         onkeypress="return validatePhone(event)" 
+                         disabled="#{potensiMBean.potencyDisabled}" />
+
+            <p:outputLabel value="Email"/>
+            <p:inputText id="email" value="#{potensiMBean.resPersonnel.email}"
+                         disabled="#{potensiMBean.potencyDisabled}" >
+                <f:validator validatorId="custom.emailValidator" />
+            </p:inputText>
+            <p:outputLabel value="Nama KanSAR" />
+            <p:inputText id="kantorsar" value="#{potensiMBean.resPersonnel.officeSar.kantorsarname}"
+                         disabled="#{potensiMBean.potencyDisabled}" />
+
+
+
+            <p:outputLabel value="Nama Potensi"/>
+            <p:inputText value="#{potensiMBean.resPotency.potencyname}" disabled="#{potensiMBean.potencyDisabled}"/>
+
+            <p:outputLabel value="Status" />
+            <p:inputText value="#{potensiMBean.resPersonnel.status}" 
+                         disabled="#{potensiMBean.potencyDisabled}"/>
+
+
+            <p:outputLabel value="Foto" />
+            <p:fileUpload id="fileImportPotPersonil" mode="advanced" dragDropSupport="false" auto="true"
+                          process="@this" update="respotensi-content:profil-tabs:imgResPers"
+                          sizeLimit="10000000" accept="image/*" required="true"
+                          requiredMessage="Image belum dipilih"
+                          fileUploadListener="#{potensiMBean.uploadImgPersonil}"
+                          disabled="#{potensiMBean.potencyDisabled}"/>
+            <p:spacer></p:spacer>                
+            <p:dataTable id="imgResPers" widgetVar="widImgResPers" emptyMessage="No records found"
+                         var="imagePotPers" value="#{potensiMBean.listImagePersonil}" rows="1"
+                         tableStyle="table-layout:auto" style="text-align: center">
+                <p:column headerText="Image">                    
+                    <h:form>
+                        <h:panelGroup style="display: block; text-align: center">
+                            <p:lightBox id="lightboxPotPersonil" widgetVar="dlg">
+                                <h:outputLink value="/document/temp/#{imagePotPers.pathname !=null ? imagePotPers.pathname.replace('\\','/') : ''}"
+                                              title="Image">
+                                    <p:graphicImage url="/document/temp/#{imagePotPers.pathname !=null ? imagePotPers.pathname.replace('\\','/') : ''}"
+                                                    width="175" height="175" cache="false" />
+                                </h:outputLink>
+                            </p:lightBox>
+                            <p:commandLink value="Hapus" actionListener="#{potensiMBean.hapusImagePersonil(image)}"
+                                           update="respotensi-content:profil-tabs:imgResPers @form"
+                                           process="respotensi-content:profil-tabs:imgResPers @form">
+                                <p:confirm header="Konfirmasi" message="Apakah Anda yakin ingin menghapus image ini?"
+                                           icon="ui-icon-alert"/>                            
+                            </p:commandLink>
+                        </h:panelGroup>
+                    </h:form>
+                </p:column>
+            </p:dataTable>
+        </p:panelGrid>            
+    </p:panelGrid>
+
+</ui:composition>

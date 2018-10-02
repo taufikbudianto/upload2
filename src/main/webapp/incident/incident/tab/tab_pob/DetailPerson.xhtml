@@ -1,0 +1,148 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <p:importEnum type="prosia.basarnas.enumeration.Timezone" var="timezone" allSuffix="ALL_ENUM_VALUES" />
+    <div class="ui-g-12 ui-lg-6 ">
+        <p:panel>
+            <p:messages closable="true" />
+            <p:panelGrid columns="3" layout="grid" 
+                         styleClass="ui-panelgrid-blank form-group" 
+                         columnClasses="ui-grid-col-4,ui-grid-col-8,ui-grid-col-3" 
+                         class="no-border no-padding no-padding-table ui-fluid" style="max-width: 700px">
+                <p:outputLabel value="Nama" styleClass="asterix"/>
+                <p:inputText required="true" requiredMessage="Nama harus diisi" 
+                             value="#{incidentTabPOBMBean.incidentPOB.name}" 
+                             maxlength="50" disabled="#{incidentTabPOBMBean.disabled}"/>
+                <br/>
+
+                <p:outputLabel value="Usia" styleClass="asterix"/>
+                <p:inputText required="true" requiredMessage="Usia harus dipilih" 
+                             value="#{incidentTabPOBMBean.incidentPOB.age}"
+                             maxlength="50" disabled="#{incidentTabPOBMBean.disabled}" 
+                             onkeypress="return isNumber(event);"/>
+                <p:selectOneMenu id="label" value="#{incidentTabPOBMBean.usia}"
+                                 disabled="#{incidentTabPOBMBean.disabled}">
+                    <f:selectItem itemLabel="Tahun" itemValue="Tahun" />
+                    <f:selectItem itemLabel="Bulan" itemValue="Bulan" />
+                    <f:selectItem itemLabel="Minggu" itemValue="Minggu" />
+                    <f:selectItem itemLabel="Hari" itemValue="Hari" />
+                </p:selectOneMenu>
+                
+                <p:outputLabel value="Jenis Kelamin" styleClass="asterix"/>
+                <p:selectOneRadio id="radiogender" value="#{incidentTabPOBMBean.radiogender}" 
+                                  required="true" requiredMessage="Gender harus dipilih" 
+                                  disabled="#{incidentTabPOBMBean.disabled}">
+                    <f:selectItem itemLabel="Pria" itemValue="P" id="pria-radio"/>
+                    <f:selectItem itemLabel="Wanita" itemValue="W" id="wanita-radio"/>
+                    <p:ajax event="change" process="@this" listener="#{incidentTabPOBMBean.changeRadioGender()}"/>
+                </p:selectOneRadio>    
+               <br/>
+
+                <p:outputLabel value="Kewarganegaraan" for="idNegara"/>
+                <p:selectOneMenu id="idNegara"
+                                 value="#{incidentTabPOBMBean.negara}"
+                                 disabled="#{incidentTabPOBMBean.disabled}">
+                    <f:selectItem itemLabel="--- Pilih ---" itemValue="" />
+                    <f:selectItems value="#{incidentTabPOBMBean.listCountry}"/>
+                </p:selectOneMenu>
+                <br/>
+
+                <p:outputLabel value="Alamat"/>
+                <p:inputText value="#{incidentTabPOBMBean.incidentPOB.address}" 
+                             maxlength="250" 
+                             disabled="#{incidentTabPOBMBean.disabled}"/>
+                <br/>
+
+                <p:outputLabel for="dtPOB" value="TW Ditemukan" styleClass="asterix"/>
+                <p:calendar id="dtPOB" mask="true" navigator="true" pattern="dd/MM/yyyy HH:mm:ss" 
+                            value="#{incidentTabPOBMBean.twPOB}" 
+                            disabled="#{incidentTabPOBMBean.disabled}"/>
+                <p:selectOneMenu id="idInsidenTimezone"
+                                 value = "#{incidentTabPOBMBean.incidentPOB.timefoundtimezone}"
+                                 disabled="#{incidentTabPOBMBean.disabled}"
+                                 required="true" requiredMessage="Alert Timezone harus dipilih">
+                    <f:selectItem itemLabel="--- Pilih ---" itemValue="" />
+                    <f:selectItems value="#{timezone.ALL_ENUM_VALUES}" var="tz" 
+                                   itemValue="#{tz.timezone}" itemLabel="#{tz.shorttimezone}" />
+                </p:selectOneMenu>
+
+                <p:outputLabel value="Koordinat Latitude"/>
+                <p:panelGrid id="latitude" columns="3" style="width: 100%;" 
+                             columnClasses ="ui-grid-col-2,ui-grid-col-7,ui-grid-col-3"
+                             class="no-border no-padding-table ui-fluid">
+                    <ui:include src="coordinate/latitude.xhtml"/>
+                </p:panelGrid>
+                <br/>
+
+                <p:outputLabel value="Longitude" />
+                <p:panelGrid id="longitude" columns="3" style="width: 100%"
+                             columnClasses ="ui-grid-col-2,ui-grid-col-7,ui-grid-col-3"
+                             class="no-border no-padding-table ui-fluid">
+                    <ui:include src="coordinate/longitude.xhtml"/>
+                </p:panelGrid>
+                <br/>
+            </p:panelGrid>
+        </p:panel>
+    </div>
+
+    <div class="ui-g-12 ui-lg-6 ">
+        <!--Right Side--> 
+        <p:panel>
+            <p:panelGrid columns="2" layout="grid" 
+                         styleClass="ui-panelgrid-blank form-group" 
+                         columnClasses="ui-grid-col-4,ui-grid-col-10" 
+                         class="no-border no-padding no-padding-table ui-fluid" style="max-width: 500px">
+
+                <p:outputLabel value="Kondisi" for="kondisi"/>
+
+                <p:selectOneMenu id="kondisi" value="#{incidentTabPOBMBean.kondisi}"
+                                 disabled="#{incidentTabPOBMBean.disabled}">
+                    <f:selectItem itemLabel="Selamat" itemValue="Selamat" />
+                    <f:selectItem itemLabel="Luka Ringan" itemValue="Luka Ringan" />
+                    <f:selectItem itemLabel="Luka Berat" itemValue="Luka Berat" />
+                    <f:selectItem itemLabel="Belum Ditemukan" itemValue="Belum Ditemukan" />
+                    <f:selectItem itemLabel="Meninggal" itemValue="Meninggal" />
+                </p:selectOneMenu>
+
+                <p:outputLabel value="Keterangan Medis"/>
+                <p:inputText value="#{incidentTabPOBMBean.incidentPOB.diagnosis}"
+                             maxlength="50" disabled="#{incidentTabPOBMBean.disabled}"/>
+
+                <p:outputLabel value="Lokasi Evakuasi"/>
+                <p:selectOneMenu id="evakuasi" value="#{incidentTabPOBMBean.destination}" 
+                                 disabled="#{incidentTabPOBMBean.disabled}">
+                    <f:selectItem itemLabel="Lain-lain" itemValue="#{incidentTabPOBMBean.textbox}" />
+                </p:selectOneMenu>
+
+                <p:outputLabel value="Telepon Tujuan"/>
+                <p:inputText value="#{incidentTabPOBMBean.incidentPOB.destPhone}"
+                             maxlength="25" disabled="#{incidentTabPOBMBean.disabled}" 
+                             onkeypress="return validatePhone(event);"
+                             onchange="this.value = trim(this.value);"/>
+
+                <p:outputLabel value="Nopol Kendaraan"/>
+                <p:inputText value="#{incidentTabPOBMBean.incidentPOB.vehicle}"
+                             maxlength="50" disabled="#{incidentTabPOBMBean.disabled}"/>
+
+            </p:panelGrid>
+        </p:panel>
+    </div>
+
+    <p:panel class="control-button no-border no-padding">
+        <p:commandButton value="Simpan" styleClass="green-btn"
+                         icon="fa fa-save" actionListener="#{incidentTabPOBMBean.simpan()}" 
+                         update="incidentdetail:tabpob-content:datatablepob @form" 
+                         process="incidentdetail:tabpob-content:datatablepob @form" style="width:130px" 
+                         rendered="#{incidentTabPOBMBean.showButton}">
+            <p:confirm header="Konfirmasi" message="Apakah anda yakin ingin menyimpan pos SAR ini?" 
+                       icon="ui-icon-alert" />
+        </p:commandButton>
+        
+        <p:commandButton type="button" value="#{incidentTabPOBMBean.showButton ? 'Batal' : 'Kembali'}" 
+                         styleClass="red-btn" style="width:130px" icon="ui-icon-cancel">
+            <p:ajax event="click" update="incidentdetail:tabpob-content" listener="#{incidentTabPOBMBean.hideForm}"/>
+        </p:commandButton>
+    </p:panel>
+</ui:composition>

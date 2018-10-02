@@ -1,0 +1,92 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+    <ui:define name="title">Grafik Response Time</ui:define>
+    <ui:define name="content">
+        <div class="ui-g ui-fluid">
+            <div class="ui-g-12 ui-lg-12">
+                <h:form id="beacon-content">
+                    <p:panel id="list-aset" header="Grafik Response Time" styleClass="penelHeaderGreen ui-shadow-content">
+
+                        <p:panelGrid id="pilihan" columns="18" layout="grid" styleClass="ui-panelgrid-blank form-group" class="no-padding no-border">
+                            <p:outputLabel value="Kantor SAR" styleClass="asterix"/> 
+                            <p:selectOneMenu id="idKansar" style="margin-bottom:10px;"  value="#{reportResponseTimeMBean.KANTORSARNAME}"
+                                             disabled="#{reportResponseTimeMBean.disabled}"
+                                             required="true" requiredMessage="Kantor SAR harus dipilih">
+                                <f:selectItems value="#{reportResponseTimeMBean.listKantorSar}"/>
+                            </p:selectOneMenu>
+                        </p:panelGrid>
+                        <p:panelGrid id="tipeinsident" columns="18" layout="grid" styleClass="ui-panelgrid-blank form-group" class="no-padding no-border">
+                            <p:outputLabel value="Tipe Insiden" styleClass="asterix"/> 
+                            <p:selectOneMenu id="field" value="#{reportResponseTimeMBean.INCIDENTTYPES}">
+                                <f:selectItem itemLabel="SEMUA" itemValue="Semua" />
+                                <f:selectItem itemLabel="Musibah Pelayaran" itemValue="Musibah Pelayaran" />
+                                <f:selectItem itemLabel="Musibah Penerbangan" itemValue="Musibah Penerbangan" />
+                                <f:selectItem itemLabel="Musibah[Lain-Lain]" itemValue="Musibah[Lain-Lain]" />
+                                <f:selectItem itemLabel="Bencana" itemValue="Bencana" />
+                            </p:selectOneMenu>
+                        </p:panelGrid>
+                        <p:panelGrid id="periodetanggal" columns="18" layout="grid" styleClass="ui-panelgrid-blank form-group" class="no-padding no-border">
+                            <p:outputLabel value="Periode Tanggal"/> 
+                        </p:panelGrid>
+                        <p:panelGrid id="periodebulan1" columns="5" layout="grid" styleClass="ui-panelgrid-blank form-group" class="no-padding no-border">
+                            <p:selectOneMenu id="bulan1" value="#{reportResponseTimeMBean.bulan1}">
+                                <f:selectItem itemLabel="Januari" itemValue="01" />
+                                <f:selectItem itemLabel="Februari" itemValue="02" />
+                                <f:selectItem itemLabel="Maret" itemValue="03" />
+                                <f:selectItem itemLabel="April" itemValue="04" />
+                                <f:selectItem itemLabel="Mei" itemValue="05" />
+                                <f:selectItem itemLabel="Juni" itemValue="06" />
+                                <f:selectItem itemLabel="Juli" itemValue="07" />
+                                <f:selectItem itemLabel="Agustus" itemValue="08" />
+                                <f:selectItem itemLabel="September" itemValue="09" />
+                                <f:selectItem itemLabel="Oktober" itemValue="10" />
+                                <f:selectItem itemLabel="November" itemValue="11" />
+                                <f:selectItem itemLabel="Desember" itemValue="12" />
+                            </p:selectOneMenu>
+                            <p:spinner id="thn1" value="#{reportResponseTimeMBean.thn1}" maxlength="4"/>
+                            <label>s.d </label>
+                            <p:selectOneMenu id="bulan2" value="#{reportResponseTimeMBean.bulan2}">
+                                <f:selectItem itemLabel="Januari" itemValue="01" />
+                                <f:selectItem itemLabel="Februari" itemValue="02" />
+                                <f:selectItem itemLabel="Maret" itemValue="03" />
+                                <f:selectItem itemLabel="April" itemValue="04" />
+                                <f:selectItem itemLabel="Mei" itemValue="05" />
+                                <f:selectItem itemLabel="Juni" itemValue="06" />
+                                <f:selectItem itemLabel="Juli" itemValue="07" />
+                                <f:selectItem itemLabel="Agustus" itemValue="08" />
+                                <f:selectItem itemLabel="September" itemValue="09" />
+                                <f:selectItem itemLabel="Oktober" itemValue="10" />
+                                <f:selectItem itemLabel="November" itemValue="11" />
+                                <f:selectItem itemLabel="Desember" itemValue="12" />
+                            </p:selectOneMenu>
+                            <p:spinner id="thn2" value="#{reportResponseTimeMBean.thn2}" maxlength="4"/>
+                        </p:panelGrid>
+                        <p:panelGrid id="perintah" columns="10" layout="grid" styleClass="ui-panelgrid-blank form-group" class="no-padding no-border">
+                            <p:commandButton value="Cetak" actionListener="#{reportResponseTimeMBean.openPrintDialog()}" process="@form" icon="fa fa-print"/>
+                            <p:commandButton value="Reset" update="list-aset" process="@this" actionListener="#{reportResponseTimeMBean.reset}" style="margin-right:20px;" icon="ui-icon-replay"/>
+                        </p:panelGrid>
+                        <p:dialog id="idPrintDialog" widgetVar="dialogPrint" header="Print Data">
+                            <p:outputLabel value="Apakah anda yakin? (Proses akan memakan waktu bergantung pada jumlah data)"/>
+                            <p:panel class="no-border no-padding ui-fluid control-button">
+                                <p:panelGrid columns="2" class="control-button" columnClasses="ui-g-7, ui-g-2">
+                                    <p:spacer/>
+                                    <p:panelGrid columns="2" class="control-button">
+                                        <p:commandButton value="YA" class="green-btn" ajax="false" onclick="form.target = '_blank', PF('dialogPrint').hide()" 
+                                                         actionListener="#{reportResponseTimeMBean.reportPrint}"/>
+                                        <p:commandButton value="Batal" class="red-btn" onclick="PF('dialogPrint').hide()">
+                                        </p:commandButton>  
+                                    </p:panelGrid>    
+                                </p:panelGrid>
+                            </p:panel>
+                        </p:dialog>
+                    </p:panel>
+                </h:form>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>
+<!--</ui:composition><?xml version="1.0" encoding="UTF-8"?>-->

@@ -1,0 +1,86 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <h:outputScript library="js" name="javascript.js" />
+    <div class="ui-g ui-fluid">
+        <div class="ui-g-12 ui-lg-12 ">
+            <h:form id="tabpob-content">
+                <p:panel id="list-tabpob" styleClass="penelHeaderGreen ui-shadow-content" 
+                         rendered="#{!incidentTabPOBMBean.isShowIncPob}">
+                    <p:panel class="control-button no-border no-padding" >
+                        <p:commandButton value="Tambah Data Baru" icon="fa fa-plus-circle"
+                                         styleClass="green-btn" update="@form" 
+                                         process="@this" disabled="#{incidentTabPOBMBean.disabled}" 
+                                         style="width:200px">
+                            <p:ajax event="click" listener="#{incidentTabPOBMBean.add}"/>
+                        </p:commandButton>
+                    </p:panel>
+                    <p:dataTable id="datatablepob" var="pob" value="#{incidentTabPOBMBean.dataModel}" reflow="true" rowKey="#{pob.pobID}"
+                                 lazy="true" paginator="true" paginatorPosition="bottom" rows="#{viewBean.rowsPageDefault}"
+                                 rowsPerPageTemplate="#{viewBean.rowsPerPageTemplate}" emptyMessage="Data tidak ditemukan" tableStyle="table-layout:fixed"
+                                 rowIndexVar="index">
+                        <p:column headerText="No" style="width: 20px">
+                            <p:outputLabel value="#{index + 1}"/>
+                        </p:column>
+                        <p:column headerText="Nama" sortBy="#{pob.name}">
+                            <h:outputText value="#{pob.name}" />
+                        </p:column>
+                        <p:column headerText="Usia" sortBy="#{pob.age}">
+                            <h:outputText value="#{pob.age}" />
+                        </p:column>
+                        <p:column headerText="P/W" sortBy="#{pob.gender}">
+                            <h:outputText value="#{pob.gender}" />
+                        </p:column>
+                        <p:column headerText="Kewarganegaraan" sortBy="#{pob.country.countryName}">
+                            <h:outputText value="#{pob.country.countryName}" />
+                        </p:column>
+                        <p:column headerText="Kondisi" sortBy="#{pob.condition}">
+                            <h:outputText value="#{pob.condition}" />
+                        </p:column>
+                        <p:column headerText="Aksi" width="8%">
+                            <p:commandButton id="lihatPob"
+                                             label="Lihat"
+                                             onclick="PF('tTipLihat').hide();"
+                                             icon="fa fa-search" 
+                                            class="blue-grey-btn" disabled="#{incidentTabPOBMBean.disabled}">
+                                <p:ajax event="click" listener="#{incidentTabPOBMBean.viewPOB(pob.pobID, true)}" 
+                                        update="@form" />
+                            </p:commandButton>
+                            <p:tooltip value="Lihat" for="lihatPob"
+                                       trackMouse="true" widgetVar="tTipLihat"/>
+                            <p:outputLabel value="   "/>
+                            <p:commandButton id="ubahpPob"
+                                             label="Ubah"
+                                             onclick="PF('tTipUbah').hide();"
+                                             icon="fa fa-edit" 
+                                             class="blue-grey-btn" disabled="#{incidentTabPOBMBean.disabled}">
+                                <p:ajax event="click" listener="#{incidentTabPOBMBean.viewPOB(pob.pobID, false)}" 
+                                        update="@form"/>
+                            </p:commandButton>
+                            <p:tooltip value="Ubah" for="ubahpPob"
+                                       trackMouse="true" widgetVar="tTipUbah"/>
+                            <p:outputLabel value="   "/>
+                            <p:commandButton id="hapusPob"
+                                             label="Hapus"
+                                             onclick="PF('tTipHapus').hide();"
+                                             icon="fa fa-trash" 
+                                             class="red-btn" disabled="#{incidentTabPOBMBean.disabled}">
+                                <p:ajax event="click" listener="#{incidentTabPOBMBean.hapusPOB(pob)}" 
+                                        update="incidentdetail:tabpob-content:datatablepob @form"/>
+                                <p:confirm header="Konfirmasi" message="Apakah anda yakin ingin menghapus incident pob ini?" 
+                                           icon="ui-icon-alert"/>
+                            </p:commandButton>
+                            <p:tooltip value="Hapus" for="hapusPob"
+                                       trackMouse="true" widgetVar="tTipHapus"/>
+                        </p:column>
+                    </p:dataTable>
+                </p:panel>
+                <p:panel id="IncLog" rendered="#{incidentTabPOBMBean.isShowIncPob}">
+                    <ui:include src="DetailPerson.xhtml" />
+                </p:panel>
+            </h:form>
+        </div>
+    </div>
+</ui:composition>

@@ -1,0 +1,44 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <p:outputLabel value="Status" style="font-weight: bold;font-size: 16px"/>
+    <p:panel>
+        <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank grid-pad" columnClasses="ui-grid-col-3,ui-grid-col-5">
+            <p:outputLabel value="No Sighting" />
+            <p:inputText value="#{incidentSightingMBean.sighting.sightingNumber}" style="width: 100%;" disabled="true"/>
+            <p:outputLabel value="Dicatat Oleh" />
+            <p:inputText value="#{incidentSightingMBean.sighting.createdBy}" readonly="true"/>
+            <p:outputLabel value="TW Pencatatan" />
+            <p:calendar pattern="yyyy-MM-dd HH:mm" mask="true" navigator="true" value="#{incidentSightingMBean.sighting.dateCreated}" showOn="button" disabled="true"/>
+            <p:outputLabel value="TW Respon Pertama" />
+            <p:calendar pattern="yyyy-MM-dd HH:mm" mask="true" navigator="true" value="#{incidentSightingMBean.responPertama}" showOn="button" disabled="true"/>
+            <p:outputLabel value="Waktu Respon" />
+            <p:inputText value="#{incidentSightingMBean.waktuRespon}" readonly="true"/>
+            <p:outputLabel value="Status" />
+            <p:selectOneMenu value="#{incidentSightingMBean.sighting.status}"
+                             disabled="#{incidentSightingMBean.disableForm}">
+                <f:selectItem itemLabel="Belum Diproses" itemValue="1"/>
+                <f:selectItem itemLabel="Sedang Diproses" itemValue="2"/>
+                <f:selectItem itemLabel="Selesai Diproses" itemValue="3"/>
+            </p:selectOneMenu>
+            <p:outputLabel value="No Insiden" />
+            <p:panelGrid columns="3" class="no-border no-padding no-padding-table">
+                <p:inputText value="#{incidentSightingMBean.sighting.incident != null ? incidentSightingMBean.sighting.incident.incidentnumber : null}" readonly="true"/>
+                <p:spacer width="20"/>
+                <p:commandButton id="lihatStatus"
+                                 onclick="PF('tTipLihat').hide();"
+                                 icon="ui-icon-search" 
+                                 disabled="#{incidentSightingMBean.disableForm}">
+                    <p:ajax event="click"/>
+                </p:commandButton>
+                <p:tooltip value="Lihat" for="lihatStatus"
+                           trackMouse="true" widgetVar="tTipLihat"/>
+            </p:panelGrid>
+            <p:outputLabel value="Catatan" />
+            <p:inputTextarea value="#{incidentSightingMBean.sighting.assesmentNotes}"
+                             disabled="#{incidentSightingMBean.disableForm}"/>
+        </p:panelGrid>
+    </p:panel>
+</ui:composition>

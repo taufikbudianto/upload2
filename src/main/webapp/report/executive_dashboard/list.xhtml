@@ -1,0 +1,98 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+    <ui:define name="title">Grafik Response Time</ui:define>
+    <ui:define name="content">
+        <h:form id="sighting-content">
+            <div class="ui-g ui-fluid">
+                <div class="ui-g-12 ui-lg-6">
+                    <p:panel  header="Response Time" styleClass="penelHeaderGreen ui-shadow-content" >
+                        <p:panelGrid id="pilihan" columns="18" layout="grid" styleClass="ui-panelgrid-blank form-group" class="no-padding no-border">
+                            <p:outputLabel value="Kantor SAR" for="idKansar"/> 
+                            <p:selectOneMenu id="idKansar" style="margin-bottom:5px;"  value="#{dashboardReportMBean.idKansar}"
+                                             disabled="#{dashboardReportMBean.disabled}"
+                                             required="true" requiredMessage="Kantor SAR harus dipilih">
+                                <p:ajax listener="#{dashboardReportMBean.generateData}" update="sighting-content:grafikRespond"/>
+                                <f:selectItems value="#{dashboardReportMBean.listKantorSar}"/>
+                            </p:selectOneMenu>
+                            <p:outputLabel value="Tipe Insiden" for="idKansar"/> 
+                            <p:selectOneMenu id="dashresponinsidentype" value="#{dashboardReportMBean.dashresponinsidentype}">
+                                <p:ajax listener="#{dashboardReportMBean.generateData}" update="sighting-content:grafikRespond"/>
+                                <f:selectItem itemLabel="SEMUA" itemValue="ALL" />
+                                <f:selectItem itemLabel="Musibah Pelayaran" itemValue="Musibah Pelayaran" />
+                                <f:selectItem itemLabel="Musibah Penerbangan" itemValue="Musibah Penerbangan" />
+                                <f:selectItem itemLabel="Musibah[Lain-Lain]" itemValue="Musibah[Lain-Lain]" />
+                                <f:selectItem itemLabel="Bencana" itemValue="Bencana" />
+                            </p:selectOneMenu>
+                        </p:panelGrid>
+                        <p:panelGrid id="responperiod" columns="18" layout="grid" styleClass="ui-panelgrid-blank form-group" class="no-padding no-border">
+                            <p:outputLabel value="Periode Tanggal"/>   
+                            <p:calendar id="responawal" showOn="button" value="#{dashboardReportMBean.responawal}" readonlyInput="true" mask="true" navigator="true" 
+                                        pattern="yyyy-MM-dd"
+                                        maxdate="#{dashboardReportMBean.responahir}">
+                                <p:ajax event="dateSelect" listener="#{dashboardReportMBean.generateData}" 
+                                        update="sighting-content:grafikRespond,sighting-content:responahir"/>
+                            </p:calendar>
+                            <label>  s.d  </label>
+                            <p:calendar id="responahir" showOn="button" value="#{dashboardReportMBean.responahir}" readonlyInput="true" mask="true" navigator="true" 
+                                        pattern="yyyy-MM-dd"
+                                        mindate="#{dashboardReportMBean.responawal}"
+                                        maxdate="#{currentDate}"                                        >
+                                <p:ajax event="dateSelect" listener="#{dashboardReportMBean.generateData}" update="sighting-content:grafikRespond"/>
+                            </p:calendar>
+                        </p:panelGrid>
+                    </p:panel>
+                    <p:panel id="grafikRespond" styleClass="penelHeaderGreen ui-shadow-content" style ="margin-top: 2px;">
+                        <p:media style="margin-top: 20px;" id="idMedia" value="#{dashboardReportMBean.streamedContentPdf}" width="100%" height="370px"
+                                 player="pdf" cache="false"/>
+                    </p:panel>
+                </div>
+
+
+                <div class="ui-g-12 ui-lg-6">
+                    <p:panel  header="Jumlah Insiden" styleClass="penelHeaderGreen ui-shadow-content" >
+                        <p:panelGrid id="pilihian2" columns="18" layout="grid" styleClass="ui-panelgrid-blank form-group" class="no-padding no-border">
+                            <p:outputLabel value="Kantor SAR" for="idKansar"/> 
+                            <p:selectOneMenu id="kansarinsiden" style="margin-bottom:5px;"  value="#{dashboardIncidentMBean.kansarinsiden}"
+                                             disabled="#{dashboardIncidentMBean.disabled}"
+                                             required="true" requiredMessage="Kantor SAR harus dipilih">
+                                <p:ajax listener="#{dashboardIncidentMBean.generateDataInsiden()}" update="sighting-content:grafikInsiden"/>
+                                <f:selectItems value="#{dashboardIncidentMBean.listKantorSar}"/>
+                            </p:selectOneMenu>
+                            <p:outputLabel value="Tipe Insiden" for="idKansar"/> 
+                            <p:selectOneMenu id="dashincinsidentype" value="#{dashboardIncidentMBean.dashinsidentype}">
+                                <p:ajax listener="#{dashboardIncidentMBean.generateDataInsiden()}" update="sighting-content:grafikInsiden"/>
+                                <f:selectItem itemLabel="SEMUA" itemValue="0" />
+                                <f:selectItem itemLabel="Musibah Pelayaran" itemValue="1" />
+                                <f:selectItem itemLabel="Musibah Penerbangan" itemValue="2" />
+                                <f:selectItem itemLabel="Musibah[Lain-Lain]" itemValue="3" />
+                                <f:selectItem itemLabel="Bencana" itemValue="4" />
+                            </p:selectOneMenu>
+                        </p:panelGrid>
+                        <p:panelGrid id="insidenperiod" columns="18" layout="grid" styleClass="ui-panelgrid-blank form-group" class="no-padding no-border">
+                            <p:outputLabel value="Periode Tanggal"/>  
+                            <p:calendar id="insidenawal" showOn="button" value="#{dashboardIncidentMBean.insidenawal}" readonlyInput="true" mask="true" navigator="true" 
+                                        pattern="yyyy-MM-dd" maxdate="#{dashboardIncidentMBean.insidenahir}">
+                                <p:ajax event="dateSelect" listener="#{dashboardIncidentMBean.generateDataInsiden()}" 
+                                        update="sighting-content:grafikInsiden,sighting-content:insidenahir"/>
+                            </p:calendar>
+                            <label>s.d </label>
+                            <p:calendar id="insidenahir" showOn="button" value="#{dashboardIncidentMBean.insidenahir}" readonlyInput="true" mask="true" navigator="true" 
+                                        pattern="yyyy-MM-dd" mindate="#{dashboardIncidentMBean.insidenawal}" maxdate="#{currentDate}" >
+                                <p:ajax event="dateSelect" listener="#{dashboardIncidentMBean.generateDataInsiden()}" update="sighting-content:grafikInsiden"/>
+                            </p:calendar>
+                        </p:panelGrid>
+                    </p:panel>
+                    <p:panel id="grafikInsiden" styleClass="penelHeaderGreen ui-shadow-content" style ="margin-top: 2px;">
+                        <p:media style="margin-top: 20px;" id="idMediainsiden" value="#{dashboardIncidentMBean.streamedContentPdfInsiden}" width="100%" height="370px" 
+                                 player="pdf" cache="false"/>
+                    </p:panel>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>
+

@@ -1,0 +1,132 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <div class="ui-g ui-fluid">
+        <div class="ui-g-12 ui-lg-2">
+            <p:dataList value="" var="">
+                <f:facet name="header">
+
+                </f:facet>
+
+            </p:dataList>
+        </div>
+
+        <div class="ui-g-12 ui-lg-10">   
+            <p:panel header="Search Area">
+                <div class="ui-g">
+                    <div class="ui-md-5">
+                        <p:panelGrid columns="2" layout="grid" columnClasses="ui-grid-col-3,ui-grid-col-8" class="no-border no-padding no-padding-table">
+                            <p:outputLabel value="Nama"/>
+                            <p:inputText disabled="true"/>
+                            <p:outputLabel value="Deskripsi"/>
+                            <p:inputTextarea disabled="true"/>
+                        </p:panelGrid>    
+
+                    </div>
+                    <div class="ui-md-5">
+                        <p:outputLabel value="Koordinat"/>
+                        <p:dataTable emptyMessage="Data tidak ditemukan">
+                            <p:column headerText="Sequence">
+                                <h:outputText/>
+                            </p:column>
+
+                            <p:column headerText="Latitude">
+                                <h:outputText/>
+                            </p:column>
+
+                            <p:column headerText="Longitude">
+                                <h:outputText/>
+                            </p:column>
+                        </p:dataTable>    
+                    </div>
+                </div> 
+                <p:panel header="Task Search Area">
+                    <div class="ui-g">
+                        <div class="ui-md-5">
+                            <p:panelGrid columns="3" layout="grid" columnClasses="ui-grid-col-3,ui-grid-col-8" class="no-border no-padding no-padding-table">
+                                <p:outputLabel value="Nama"/>
+                                <p:inputText disabled="true"/>
+                                <p:outputLabel value=""/>
+                                <p:outputLabel value="Panjang"/>
+                                <p:inputText disabled="true"/>
+                                <p:outputLabel value="Nm"/>
+                                <p:outputLabel value="Lebar"/>
+                                <p:inputText disabled="true"/>
+                                <p:outputLabel value="Nm"/>
+                                <p:outputLabel value="Luas"/>
+                                <p:inputText disabled="true"/>
+                                <p:outputLabel value="Nm"/>
+                            </p:panelGrid>    
+
+                        </div>
+                        <div class="ui-md-5">
+                            <p:outputLabel value="Koordinat"/>
+                            <p:dataTable emptyMessage="Data tidak ditemukan">
+                                <p:column headerText="Point Number">
+                                    <h:outputText/>
+                                </p:column>
+
+                                <p:column headerText="Latitude">
+                                    <h:outputText/>
+                                </p:column>
+
+                                <p:column headerText="Longitude">
+                                    <h:outputText/>
+                                </p:column>
+                            </p:dataTable>    
+                        </div>
+                    </div> 
+                    <p:panel header="Search Pattern">
+                        <div class="ui-g">
+                            <div class="ui-md-5">
+                                <p:panelGrid columns="2" layout="grid" columnClasses="ui-grid-col-3,ui-grid-col-8" class="no-border no-padding no-padding-table">
+                                    <p:outputLabel value="Nama"/>
+                                    <p:inputText disabled="true"/>
+                                    <p:outputLabel value="Nama SRU"/>
+                                    <p:inputText disabled="true"/>
+
+                                </p:panelGrid>    
+
+                            </div>
+                            <div class="ui-md-5">
+                                <p:outputLabel value="Deskripsi"/>
+                                <p:inputTextarea/>
+                            </div>
+                        </div>
+                        <p:dataTable emptyMessage="Data tidak ditemukan">
+                            <p:column headerText="ID">
+                                <h:outputText/>
+                            </p:column>
+
+                            <p:column headerText="Waypoint Name">
+                                <h:outputText/>
+                            </p:column>
+
+                            <p:column headerText="Sequence">
+                                <h:outputText/>
+                            </p:column>
+
+                            <p:column headerText="Latitude">
+                                <h:outputText/>
+                            </p:column>
+
+                            <p:column headerText="Longitude">
+                                <h:outputText/>
+                            </p:column>
+
+                            <p:column headerText="Distance">
+                                <h:outputText/>
+                            </p:column>
+                        </p:dataTable>
+
+                    </p:panel>
+                </p:panel>    
+            </p:panel> 
+            <div class="ui-g-2">
+                <p:commandButton value="Print" styleClass="green-btn" icon="ui-icon-print" />
+            </div>
+        </div>
+    </div>
+</ui:composition>

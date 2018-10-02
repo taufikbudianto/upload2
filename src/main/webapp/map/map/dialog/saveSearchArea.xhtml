@@ -1,0 +1,70 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <p:dialog showEffect="fade" hideEffect="fade" dynamic="true"
+              position="center" id="idDialogSaveSearchArea"
+              header="Search Area Properties" appendTo="@(body)"  
+              widgetVar="showDialogSaveSearchArea"  
+              modal="true" width="750"
+              responsive="true" resizable="false">
+        <h:form prependId="false" >
+            <p:panel id="idPanelSA" style="overflow: auto; width: 100% ; max-height: 55vh" 
+                     class="no-border no-padding card ui-fluid">
+                <p:messages closable="true"/>
+                <p:panelGrid layout="grid"
+                             columns="4" columnClasses="ui-grid-col-2,ui-grid-col-4,
+                             ui-grid-col-2,ui-grid-col-4"
+                             style="width: 100%"
+                             styleClass="ui-panelgrid-blank no-padding">
+                    <p:outputLabel value="ID"/>
+                    <p:outputLabel value="#{mapMBean.searchArea.searchAreaID}"/>
+                    <p:outputLabel value="IncidentID"/>
+                    <p:outputLabel value="#{mapMBean.searchArea.incident.incidentid}"/>
+                    <p:outputLabel value="Nama"/>
+                    <p:inputText value="#{mapMBean.searchArea.name}"
+                                 required="true" requiredMessage="Nama belum diisi"/>
+                    <p:outputLabel value="Start"/>
+                    <p:outputLabel value="#{searchAreaMBean.start}" />
+                    <p:outputLabel value="Waypoint" 
+                                   rendered="#{searchAreaMBean.listWaypoint.size() != 0 
+                                               and searchAreaMBean.isNewTrapezium}"/>
+                    <p:selectOneMenu value="#{searchAreaMBean.waypointIndex}" autoWidth="false" appendTo="@(this)"
+                                     rendered="#{searchAreaMBean.listWaypoint.size() != 0 
+                                                 and searchAreaMBean.isNewTrapezium}">
+                        <p:ajax listener="#{searchAreaMBean.onWaypointChange}"/>
+                        <f:selectItems value="#{searchAreaMBean.listWaypoint}" 
+                                       var="i" itemLabel="#{i}" itemValue="#{i}"/>
+                    </p:selectOneMenu>
+                </p:panelGrid>
+                <p:panelGrid layout="grid"
+                             columns="2" columnClasses="ui-grid-col-6,ui-grid-col-6"
+                             style="width: 100%"
+                             styleClass="ui-panelgrid-blank no-padding">
+                    <p:outputLabel value="Deskripsi"/>
+                    <p:outputLabel value="Vertexs"/>
+                    <p:inputTextarea value="#{mapMBean.searchArea.description}" />
+                    <p:dataTable value="#{searchAreaMBean.listVertexs}" var="list">
+                        <p:column headerText="Sequence" width="60">
+                            <p:outputLabel value="#{list.sequence}"/>
+                        </p:column>
+                        <p:column headerText="Latitude">
+                            <p:outputLabel value="#{list.latitude}" escape="false"/>
+                        </p:column>
+                        <p:column headerText="Longitude">
+                            <p:outputLabel value="#{list.longitude}" escape="false"/>
+                        </p:column>
+                    </p:dataTable>
+                </p:panelGrid>
+            </p:panel>
+            <p:panel class="control-button">
+                <p:commandButton value="Save" 
+                                 actionListener="#{searchAreaMBean.saveSearchArea}"
+                                 update="@form" process="@form"/>
+                <p:commandButton value="Batal" 
+                                 onclick="PF('showDialogSaveSearchArea').hide()"/>
+            </p:panel>
+        </h:form>
+    </p:dialog>
+</ui:composition>

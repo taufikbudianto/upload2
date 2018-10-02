@@ -1,0 +1,58 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:form id="list-sightings">
+        <p:panel id="list-sightingss" header="Sighting" styleClass="penelHeaderGreen ui-shadow-content"
+                 style="overflow:auto;width:100%;max-height:80vh" class="no-border card ui-fluid no-padding">
+            <p:panelGrid id="search-sighting" columns="5" layout="grid" styleClass="ui-panelgrid-blank form-group" class="no-padding no-border">
+                <p:panelGrid columns="3">
+                    <p:panelGrid columns="2" class="no-border no-padding">
+                        <p:selectOneMenu id="field" value="#{incidentSightingBrowseMBean.field}">
+                            <p:ajax event="change" listener="#{incidentSightingBrowseMBean.chengeToCombo()}" update="list-sightings"/>
+                            <f:selectItem itemLabel="Lokasi" itemValue="observerLocation" />
+                            <f:selectItem itemLabel="Objek" itemValue="objectType" />
+                            <f:selectItem itemLabel="Deskripsi" itemValue="objectRemarks" />
+                            <f:selectItem itemLabel="Assesment" itemValue="assesmentNotes" />
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:panelGrid columns="3" class="no-border no-padding">
+                        <p:inputText id="value" value="#{incidentSightingBrowseMBean.value}" rendered="#{!incidentSightingBrowseMBean.showCombo}"/>
+                        <p:selectOneMenu id="oType" value="#{incidentSightingBrowseMBean.value}" rendered="#{incidentSightingBrowseMBean.showCombo}">
+                            <f:selectItems value="#{oType.ALL_ENUM_VALUES}" var="o" itemValue="#{o.itemValue}" itemLabel="#{o.itemLabel}"/>
+                        </p:selectOneMenu>
+                        <p:commandButton id="search-btn" type="button" value="Cari" icon="ui-icon-search">
+                            <p:ajax event="click" update="list-sightings" process="@form"/>
+                        </p:commandButton>
+                        <p:commandButton id="clear-btn" type="button" value="Reset" icon="ui-icon-clear">
+                            <p:ajax event="click" update="list-sightings" process="@form" listener="#{incidentSightingBrowseMBean.reset}"/>
+                        </p:commandButton>
+                    </p:panelGrid>
+                </p:panelGrid>
+            </p:panelGrid>
+            <p:dataTable var="sighting" tableStyle="table-layout:auto" value="#{incidentSightingBrowseMBean.dataModel}" reflow="true" rowKey="#{sighting.sightingId}"
+                         lazy="true" paginator="true" paginatorPosition="bottom" rows="5"
+                         rowsPerPageTemplate="5,10,15" emptyMessage="Data tidak ditemukan">
+                <p:column headerText="Tanggal">
+                    <h:outputText value="#{incidentSightingBrowseMBean.dateTimeStringConvert(sighting.objectDtg)}" />
+                </p:column>
+                <p:column headerText="Lokasi">
+                    <h:outputText value="#{sighting.observerLocation}" />
+                </p:column>
+                <p:column headerText="Objek">
+                    <h:outputText value="#{incidentSightingBrowseMBean.objectTypeToString(sighting.objectType)}" />
+                </p:column>
+                <p:column headerText="Deskripsi">
+                    <h:outputText value="#{sighting.objectRemarks}" />
+                </p:column>
+                <p:column headerText="Aksi">
+                    <p:commandButton value="Pilih" icon="ui-icon-local-grocery-store" >
+                        <p:confirm header="Tambah Sighting" message="Tambahkan sighting pada insiden ?" icon="ui-icon-alert"/>
+                        <p:ajax event="click" listener="#{incidentSightingMBean.addSightingToIncident(sighting)}" update=":incidentdetail:sighting-content-tab,@form"/> 
+                    </p:commandButton> 
+                </p:column>
+            </p:dataTable>
+        </p:panel>
+    </h:form>
+</ui:composition>

@@ -1,0 +1,135 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+    <ui:define name="title">Registrasi Beacon</ui:define>
+    <ui:define name="content">
+        <p:panel class="ui-fluid no-border no-padding card">
+            <h:form id="beacon-content">                       
+                <p:importEnum type="prosia.basarnas.enumeration.BeaconType" var="bType" allSuffix="ALL_ENUM_VALUES" />
+                <p:importEnum type="prosia.basarnas.enumeration.RegistrationType" var="rType" allSuffix="ALL_ENUM_VALUES" />                    
+                <p:panel id="list-beacon" header="Daftar Registrasi Beacon" styleClass="penelHeaderGreen ui-shadow-content" rendered="#{!registrasiBeaconMBean.isDetailProses}">
+                    <p:panelGrid id="search" columns="5" layout="grid" 
+                                 styleClass="ui-panelgrid-blank form-group" 
+                                 columnClasses ="ui-grid-col-4,ui-grid-col-5,ui-grid-col-2,ui-grid-col-2,ui-grid-col-3"
+                                 style="margin-top: 20px;margin-bottom: 20px"
+                                 class="no-padding no-border">
+                        <p:selectOneMenu id="field" value="#{registrasiBeaconMBean.field}">
+                            <p:ajax event="change" update="search" listener="#{registrasiBeaconMBean.chengeToCombo()}"/>
+                            <f:selectItem itemLabel="Pemilik" itemValue="ownerName" />
+                            <f:selectItem itemLabel="ID Beacon" itemValue="beaconId" />
+                            <f:selectItem itemLabel="Tipe Beacon" itemValue="beaconType" />
+                            <f:selectItem itemLabel="Tipe Registrasi" itemValue="registrationType" />
+                            <f:selectItem itemLabel="ID Lama" itemValue="oldBeaconId" />
+                            <f:selectItem itemLabel="Pembuat" itemValue="pembuat" />
+                            <f:selectItem itemLabel="Model" itemValue="model" />
+                        </p:selectOneMenu>
+
+                        <p:inputText id="value" value="#{registrasiBeaconMBean.value}" rendered="#{!registrasiBeaconMBean.showCombo}"/>
+                        <p:selectOneMenu id="bType" value="#{registrasiBeaconMBean.value}" rendered="#{registrasiBeaconMBean.showCombo and registrasiBeaconMBean.field == 'beaconType'}">
+                            <f:selectItems value="#{bType.ALL_ENUM_VALUES}" var="b" itemValue="#{b}" itemLabel="#{b.item}"/>
+                        </p:selectOneMenu>
+                        <p:selectOneMenu id="rType" value="#{registrasiBeaconMBean.value}" rendered="#{registrasiBeaconMBean.showCombo and registrasiBeaconMBean.field == 'registrationType'}">
+                            <f:selectItems value="#{rType.ALL_ENUM_VALUES}" var="r" itemValue="#{r.itemValue}" itemLabel="#{r.itemLabel}"/>
+                        </p:selectOneMenu>
+                        <p:commandButton id="search-btn" type="button"  value="Cari" icon="ui-icon-search"
+                                         onclick="PF('listWidget').getPaginator().setPage(0);">
+                            <p:ajax event="click" update=":beacon-content:list-beacon" process="@form"/>
+                        </p:commandButton>
+                        <p:commandButton id="clear-btn" type="button"  value="Reset" icon="ui-icon-replay">
+                            <p:ajax event="click" update=":beacon-content:list-beacon" process="@form" listener="#{registrasiBeaconMBean.reset}"/>
+                        </p:commandButton>
+                        <p:commandButton id="add-btn" type="button"  value="Tambah" icon="ui-icon-add" rendered="false" class="green-btn">
+                            <p:ajax event="click" update="@form" listener="#{registrasiBeaconMBean.showForm(null, false)}"/>
+                        </p:commandButton>                                    
+
+
+                    </p:panelGrid>
+                    <p:dataTable var="beacon" value="#{registrasiBeaconMBean.lazyDataModelJPA}" reflow="true" rowKey="#{beacon.beaconId}"
+                                 lazy="true" paginator="true" paginatorPosition="bottom" rows="#{viewBean.rowsPageDefault}" style="width: fit-content;"
+                                 rowsPerPageTemplate="#{viewBean.rowsPerPageTemplate}" emptyMessage="Data tidak ditemukan" tableStyle="table-layout:auto"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"                                     
+                                 rowIndexVar="index" widgetVar="listWidget">
+                        <f:facet name="header">Registrasi Beacon</f:facet>
+                        <p:column headerText="No" style="width: 20px">
+                            <p:outputLabel value="#{index + 1}"/>
+                        </p:column>
+                        <p:column headerText="ID Beacon" sortBy="#{beacon.beaconId}">
+                            <h:outputText value="#{beacon.beaconId}" />
+                        </p:column>
+                        <p:column headerText="Tipe Beacon" sortBy="#{beacon.beaconType}">
+                            <h:outputText value="#{beacon.beaconType}" />
+                        </p:column>
+                        <p:column headerText="Tipe Registrasi" sortBy="#{beacon.registrationType}">
+                            <h:outputText value="#{registrasiBeaconMBean.getNameRegistrationType(beacon.registrationType)}" />
+                        </p:column>
+                        <p:column headerText="ID Lama" sortBy="#{beacon.oldBeaconId}">
+                            <h:outputText value="#{beacon.oldBeaconId}" />
+                        </p:column>
+                        <p:column headerText="Pembuat" sortBy="#{beacon.manufacturer.manufacturerName}">
+                            <h:outputText value="#{beacon.manufacturer != null ? beacon.manufacturer.manufacturerName : beacon.otherManufacturer}" />
+                        </p:column>
+                        <p:column headerText="Model" sortBy="#{beacon.beaconModel.beaconModelName}">
+                            <h:outputText value="#{beacon.beaconModel != null ? beacon.beaconModel.beaconModelName : beacon.otherBeaconModel}" />
+                        </p:column>
+                        <p:column headerText="Pemilik" sortBy="#{beacon.ownerName}">
+                            <h:outputText value="#{beacon.ownerName}" />
+                        </p:column>
+                        <p:column headerText="Status" sortBy="#{beacon.approved}">
+                            <h:outputText value="#{beacon.approved ? 'Disetujui' : 'Belum Disetujui'}" />
+                        </p:column>
+                        <p:column headerText="Aksi" width="9%">
+                            <p:commandButton id="lihatBeacon"
+                                             label="Lihat"
+                                             onclick="PF('tTipLihat').hide();"
+                                             icon="fa fa-search" 
+                                             class="blue-grey-btn">
+                                <p:ajax event="click" update="@form" listener="#{registrasiBeaconMBean.showForm(beacon, true)}"/>
+                            </p:commandButton>
+                            <p:tooltip value="Lihat" for="lihatBeacon"
+                                       trackMouse="true" widgetVar="tTipLihat"/>
+                            <p:commandButton id="setujui" label="Setujui" icon="fa fa-check" class="blue-grey-btn" rendered="false">
+                                <p:ajax event="click" update="form-approve" listener="#{registrasiBeaconMBean.showFormApprove(beacon.beaconId)}"/>
+                            </p:commandButton>
+                            <p:tooltip for="" value="Setujui"/>
+<!--                            <p:commandButton label="Print" icon="fa fa-print" class="blue-grey-btn" actionListener="{registrasiBeaconMBean.reportPrint(beacon)}"
+                                             ajax="false">
+                            </p:commandButton>-->
+
+                            <p:commandButton label="Print" 
+                                             id="cetak" 
+                                             onclick="form.target = '_blank'" 
+                                             styleClass="ui-priority-primary"
+                                             class="blue-grey-btn" ajax="false" action="#{registrasiBeaconMBean.reportPrint}" icon="fa fa-print">
+                                <f:attribute name="obj" value="#{beacon}" />
+                            </p:commandButton>
+                            <p:tooltip value="Cetak" for="cetak"
+                                       trackMouse="true" widgetVar="_blank"/>
+
+                            <!--                                <p:commandButton label="Hapus" icon="fa fa-trash" class="red-btn" actionListener="{registrasiBeaconMBean.hapusBeacon(beacon)}"
+                                                                           update="@this" oncomplete="location.reload();">
+                                                                <p:confirm header="Konfirmasi" message="Apakah anda yakin?" icon="ui-icon-alert"/>
+                                                            </p:commandButton>-->
+                        </p:column>
+                    </p:dataTable>
+                </p:panel>
+                <p:panel header="Detail" styleClass="penelHeaderGreen ui-shadow-content" id="detail" rendered="#{registrasiBeaconMBean.isDetailProses}">
+                    <ui:include src="./detail/index.xhtml"/>
+                </p:panel>
+            </h:form>           
+        </p:panel>
+
+        <p:dialog id="idIncident" widgetVar="wgApprove"
+                  header="Registrasi Beacon"
+                  width="70%" height="90%"
+                  appendTo="@(body)"
+                  responsive="true" modal="true"
+                  maximizable="true" style="overflow-y: auto;max-height: 90%"
+                  resizable="false">
+            <ui:include src="detail/approve.xhtml"/>
+        </p:dialog>
+
+    </ui:define>
+</ui:composition>

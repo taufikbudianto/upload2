@@ -1,0 +1,86 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <h:form id="beacon-content-narratives">                  
+        <p:panel id="list-beacon-msg-narratives" header="Daftar Beacon Narratives" styleClass="penelHeaderGreen ui-shadow-content" 
+                 class="no-border card card-w-title ui-fluid">
+            <p:panelGrid id="search" columns="5" layout="grid" 
+                         styleClass="ui-panelgrid-blank form-group" 
+                         columnClasses ="ui-grid-col-3,ui-grid-col-5,ui-grid-col-2,ui-grid-col-2,ui-grid-col-3"
+                         style="margin-top: 20px;margin-bottom: 20px"
+                         class="no-padding no-border">
+                <p:selectOneMenu id="field" value="#{distressNarrativesMBean.field}">
+                    <p:ajax event="change" update="search" 
+                            listener="#{distressNarrativesMBean.changeValueSearch}"/>
+                    <f:selectItem itemLabel="Message Number" itemValue="msgNumber" />
+                    <f:selectItem itemLabel="Transmit DTG" itemValue="transmitDtg" />
+                </p:selectOneMenu>
+                <p:inputText id="value" value="#{distressNarrativesMBean.value}" 
+                             rendered="#{distressNarrativesMBean.valueInput==2}" />
+                <p:calendar id="valueDate" showOn="button" value="#{distressNarrativesMBean.valueDate}" 
+                            mask="true" navigator="true" pattern="dd/MM/yyyy" 
+                            readonlyInput="true" rendered="#{distressNarrativesMBean.valueInput==1}"/>
+                <p:commandButton id="search-btn" type="button"  value="Cari" 
+                                 icon="ui-icon-search" onclick="PF('listWidget1').getPaginator().setPage(0);">
+                    <p:ajax event="click" process="@form" 
+                            update=":beacon-content-narratives:list-beacon-msg-narratives"/>
+                </p:commandButton>
+                <p:commandButton id="clear-btn" type="button"  value="Reset" icon="ui-icon-replay">
+                    <p:ajax event="click" update=":beacon-content-narratives:list-beacon-msg-narratives" 
+                            process="@form" listener="#{distressNarrativesMBean.reset}"/>
+                </p:commandButton>
+            </p:panelGrid>
+            <p:dataTable var="narratives" value="#{distressNarrativesMBean.lazyDataModelJPA}" 
+                         reflow="true" rowKey="#{narratives.messageID}"
+                         lazy="true" paginator="true" paginatorPosition="bottom" 
+                         rows="#{viewBean.rowsPageDefault}" style="width: fit-content;"
+                         rowsPerPageTemplate="#{viewBean.rowsPerPageTemplate}" 
+                         emptyMessage="Data tidak ditemukan" tableStyle="table-layout:auto"
+                         rowIndexVar="index" widgetVar="listWidget1"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                <p:column headerText="No" style="width: 2%">
+                    <p:outputLabel value="#{index + 1}"/>
+                </p:column>
+                <p:column headerText="Message Number" style="width: 15%; text-align: center;" 
+                          sortBy="#{narratives.msgNumber}">
+                    <h:outputText style="text-align: center;" value="#{narratives.msgNumber}" />
+                </p:column>
+                <p:column headerText="Transmit DTG" style="width: 15%; text-align: center;" 
+                          sortBy="#{narratives.transmitDtg}">
+                    <h:outputText style="text-align: center;" 
+                                  value="#{distressNarrativesMBean.transmitDtgFormat(narratives)}" />
+                </p:column>
+                <p:column  headerText="Remarks" style="width: 50%; text-align: left;" 
+                           sortBy="#{narratives.remarks}">
+                    <h:outputText  value="#{narratives.remarks}" />
+                </p:column>
+                <p:column headerText="Date Created" sortBy="#{narratives.dateCreated}">
+                    <h:outputText value="#{narratives.dateCreated}"/>
+                </p:column>
+                <p:column headerText="Aksi" style="width: 7%; text-align: center; ">
+                    <p:commandButton id="lihat" label="lihat" icon="fa fa-search" class="blue-grey-btn">
+                        <p:ajax event="click" 
+                                listener="#{distressNarrativesMBean.viewDetailNarratives(narratives, true)}" 
+                                update=":form-detail-narratives"/>
+                    </p:commandButton>
+                    <p:tooltip id="toolTipTrack" for="lihat" value="Lihat" trackMouse="true" />
+                </p:column>
+            </p:dataTable>
+        </p:panel>
+    </h:form>
+
+    <p:dialog id="idDetailNarratives" widgetVar="widgetDetailNarratives"
+              header="Detail"
+              width="50%" height="100%"
+              appendTo="@(body)"
+              responsive="true" modal="true"
+              maximizable="true" closable="false" 
+              position="center" 
+              resizable="false">
+        <ui:include src="./DetailNarratives.xhtml"/>
+    </p:dialog>
+
+
+</ui:composition>

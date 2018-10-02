@@ -1,0 +1,100 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <p:importEnum type="prosia.basarnas.enumeration.AssetKategori" var="categori" allSuffix="ALL_ENUM_VALUES" />
+    <p:importEnum type="prosia.basarnas.enumeration.AssetMatra" var="matra" allSuffix="ALL_ENUM_VALUES" />
+    <h:form id="form-asset" enctype="multipart/form-data">
+        <p:panel class="ui-fluid no-border no-padding">
+            <p:panelGrid columns="2" layout="grid">
+                <p:panel class="ui-fluid no-border no-padding">
+                    <p:messages closable="true"/>
+                    <p:panelGrid columns="2" layout="grid" 
+                                 styleClass="ui-panelgrid-blank form-group" 
+                                 columnClasses="ui-grid-col-4,ui-grid-col-10" 
+                                 class="no-border no-padding no-padding-table ui-fluid" style="max-width: 700px">
+                        <p:outputLabel value="Nama" styleClass="asterix"/>
+                        <p:inputText value="#{mstAssetTypeMBean.assetType.assetname}" maxlength="50" required="true" requiredMessage="Nama Aset harus diisi" disabled="#{mstAssetTypeMBean.disabled}"/>
+
+                        <p:outputLabel value="Kategori" styleClass="asterix"/>
+                        <p:selectOneMenu id="idKategori" style="margin-bottom:10px;" value="#{mstAssetTypeMBean.assetType.issru}"
+                                         disabled="#{mstAssetTypeMBean.disabled}"
+                                         required="true" requiredMessage="Kategori harus dipilih">
+                            <f:selectItem itemLabel="--- Pilih ---" itemValue="" />
+                            <f:selectItems value="#{categori.ALL_ENUM_VALUES}" var="l" 
+                                           itemValue="#{l.itemValue}" itemLabel="#{l.itemLabel}"/>
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="Matra" styleClass="asterix"/>
+                        <p:selectOneMenu id="idMatra" style="margin-bottom:10px;" value="#{mstAssetTypeMBean.assetType.matra}"
+                                         disabled="#{mstAssetTypeMBean.disabled}"
+                                         required="true" requiredMessage="Matra harus dipilih">
+                            <f:selectItem itemLabel="--- Pilih ---" itemValue="" />
+                            <f:selectItems value="#{matra.ALL_ENUM_VALUES}" var="m" 
+                                           itemValue="#{m.itemValue}" itemLabel="#{m.itemLabel}"/>
+                        </p:selectOneMenu>
+                    </p:panelGrid>    
+                </p:panel>
+
+                <p:panel>
+                    <p:panelGrid columns="2" layout="grid" 
+                                 styleClass="ui-panelgrid-blank form-group" 
+                                 columnClasses="ui-grid-col-4,ui-grid-col-8" 
+                                 class="no-border no-padding no-padding-table ui-fluid" style="max-width: 900px">
+                        <p:outputLabel value="Simbol" />
+                        <p:fileUpload id="fileImport" fileUploadListener="#{mstAssetTypeMBean.upload}" 
+                                      mode="advanced" dragDropSupport="false"  multiple="true" 
+                                      auto="true" sizeLimit="10000000" required="true" 
+                                      process="@form" accept="image/*"
+                                      disabled="#{mstAssetTypeMBean.disabled}"/>
+                    </p:panelGrid>
+                </p:panel>
+                <p:spacer></p:spacer>
+                <p:panel class="control-button">
+                    <p:dataTable id="listImg" widgetVar="widListImg"
+                                 value="#{mstAssetTypeMBean.listImage}" var="list"
+                                 reflow="true" paginator="true" paginatorPosition="bottom" 
+                                 rows="1" tableStyle="table-layout:auto"
+                                 emptyMessage="Data Not Found">
+                        <p:column headerText="Images" >
+                            <h:form>
+                                <h:panelGroup style="display:block; text-align:center">
+                                    <p:lightBox id="lighbox1" widgetVar="dlg"> 
+                                        <h:outputLink value="/document/temp/#{list.pathname != null ? list.pathname.replace('\\','/') : ''}" title="#{list.pathname}" >
+                                            <p:graphicImage url="/document/temp/#{list.pathname != null ? list.pathname.replace('\\','/') : ''}" width="300" height="300" cache="false" />
+                                        </h:outputLink>
+                                    </p:lightBox>
+                                    <p:commandLink value="Hapus" actionListener="#{mstAssetTypeMBean.hapusImage(list)}" 
+                                                   update="assettype-content:form-asset:listImg @form" 
+                                                   process="assettype-content:form-asset:listImg @form"
+                                                   disabled="#{mstAssetTypeMBean.disabled}">
+                                        <p:confirm header="Konfirmasi" message="Apakah anda yakin ingin menghapus image ini?" 
+                                                   icon="ui-icon-alert"/>
+                                    </p:commandLink>
+                                </h:panelGroup>
+                            </h:form>
+                        </p:column>
+                    </p:dataTable>
+                </p:panel>
+
+            </p:panelGrid>
+            <br/>
+
+            <p:panel class="control-button no-border no-padding" >
+                <p:commandButton value="Simpan" icon="fa fa-save" styleClass="green-btn" 
+                                 actionListener="#{mstAssetTypeMBean.simpan()}"
+                                 update="assettype-content" process="@form"
+                                 style="width:130px" rendered="#{mstAssetTypeMBean.showButton}">
+                    <p:confirm header="Konfirmasi" 
+                               message="Apakah anda yakin ingin menyimpan tipe asset ini?" icon="ui-icon-alert" />
+                </p:commandButton>
+                <p:commandButton type="button" icon="ui-icon-cancel" 
+                                 value="#{mstAssetTypeMBean.showButton ? 'Batal' : 'Kembali'}" 
+                                 styleClass="red-btn" style="width:130px">
+                    <p:ajax event="click" update="assettype-content" listener="#{mstAssetTypeMBean.hideForm}"/>
+                </p:commandButton>
+            </p:panel>
+        </p:panel>
+    </h:form>
+</ui:composition>

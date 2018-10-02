@@ -1,0 +1,49 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <p:dialog id="idDialogLayer" position="center" 
+              header="Layer Dialog" dynamic="true"
+              showEffect="fade" hideEffect="fade"
+              widgetVar="showDialogLayer" modal="true"
+              height="50%" responsive="true" width="30%"
+              appendTo="@(body)" closable="true">
+        <h:form prependId="false">
+            <p:messages closable="true"/>
+            <p:panelGrid columns="2" layout="grid" style="width: 100%"
+                         columnClasses="ui-grid-col-3,ui-grid-col-10"
+                         styleClass="ui-panelgrid-blank form-group no-padding ui-fluid">
+                <p:outputLabel value="Nama" styleClass="asterix"/>
+                <p:inputText value="#{layerMBean.layer.name}" maxlength="50"
+                             required="true" requiredMessage="Nama layer harus diisi"/>
+                <p:outputLabel value="Path"/>
+                <p:inputText value="#{layerMBean.layer.path}" maxlength="250" 
+                             validatorMessage="Format URL Salah">
+                    <!--<f:validateRegex pattern="(http(s)?://)?([\w-]+\.)+[\w-]+(/[\w- ;,./?%&amp;=]*)?"/>-->
+                </p:inputText>
+                <p:outputLabel value="Type"/>                
+                <p:selectOneMenu value="#{layerMBean.layer.type}" effect="fade" autoWidth="true">
+                    <f:selectItem itemLabel="Google Layer" itemValue="K"/>
+                    <f:selectItem itemLabel="ESRI Layer" itemValue="E"/>
+                </p:selectOneMenu>
+                <p:outputLabel value="Opacity"/>
+                <h:panelGroup styleClass="no-padding">
+                    <h:inputHidden id="txtOpa" value="#{layerMBean.valueOpacity}"/>
+                    <p:slider for="txtOpa" minValue="0.0" maxValue="1.0" step="0.01"/>
+                </h:panelGroup>
+            </p:panelGrid>
+            <p:panel class="control-button">
+                <p:commandButton value="Simpan" 
+                                 actionListener="#{layerMBean.saveLayer}"
+                                 process="@form" update="@form">
+                    <p:confirm header="Konfirmasi" 
+                               message="Apakah anda yakin akan menyimpan layer ini?" 
+                               icon="ui-icon-alert" />
+                </p:commandButton>
+                <p:commandButton value="Batal" 
+                                 onclick="PF('showDialogLayer').hide()"/>
+            </p:panel>
+        </h:form>
+    </p:dialog>
+</ui:composition>

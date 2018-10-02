@@ -1,0 +1,62 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">      
+    <ui:define name="title">Incident</ui:define>
+    <ui:define name="content">
+        <p:importEnum type="prosia.basarnas.enumeration.IncidentType" var="type" allSuffix="ALL_ENUM_VALUES" />
+        <p:importEnum type="prosia.basarnas.enumeration.IncidentStatus" var="status" allSuffix="ALL_ENUM_VALUES" />
+        <p:importEnum type="prosia.basarnas.enumeration.Timezone" var="timezone" allSuffix="ALL_ENUM_VALUES" />        
+        <p:importEnum type="prosia.basarnas.enumeration.ObjectType" var="oType" allSuffix="ALL_ENUM_VALUES" />        
+        <p:importEnum type="prosia.basarnas.enumeration.BeaconType" var="beaconType" allSuffix="ALL_ENUM_VALUES" />
+        <p:importEnum type="prosia.basarnas.enumeration.RegistrationType" var="registrationType" allSuffix="ALL_ENUM_VALUES" />
+        <p:importEnum type="prosia.basarnas.enumeration.Usage" var="usage" allSuffix="ALL_ENUM_VALUES" />    
+        <p:importEnum type="prosia.basarnas.enumeration.DetailUsage" var="detailUsage" allSuffix="ALL_ENUM_VALUES" />    
+        <p:importEnum type="prosia.basarnas.enumeration.UsageTypePLB" var="usageType" allSuffix="ALL_ENUM_VALUES" />    
+        <p:importEnum type="prosia.basarnas.enumeration.UsageTypeELT" var="usageTypeELT" allSuffix="ALL_ENUM_VALUES" />        
+        <p:importEnum type="prosia.basarnas.enumeration.CategoryEPIRB" var="categoryEPIRB" allSuffix="ALL_ENUM_VALUES" />        
+        <p:importEnum type="prosia.basarnas.enumeration.Mesin" var="mesin" allSuffix="ALL_ENUM_VALUES" />        
+        <p:importEnum type="prosia.basarnas.enumeration.Sail" var="sail" allSuffix="ALL_ENUM_VALUES" />        
+        <p:importEnum type="prosia.basarnas.enumeration.ComequipmentELT" var="elt" allSuffix="ALL_ENUM_VALUES" />        
+        <p:importEnum type="prosia.basarnas.enumeration.ComequipmentEPIRB" var="epirb" allSuffix="ALL_ENUM_VALUES" />                    
+        <h:form id="insiden-content" prependId="false">
+            <ui:include src="./general_information.xhtml"/>
+        </h:form>
+        <!--        <p:dialog id="idDriftCal" widgetVar="widgetDriftCal" 
+                          header="Drif Calculation" 
+                          width="90%" height="90%" 
+                          responsive="true" modal="true"
+                          maximizable="true" style="overflow-y: auto;max-height: 90%"
+                          resizable="false">
+        
+                    <ui:include src="./drift_calculation/drift_calculation.xhtml"/>
+        
+                </p:dialog-->
+        <p:dialog id="idIncident" widgetVar="widgetIncident"
+                  header="Data Insiden" dynamic="true"
+                  width="100%" height="100%"
+                  appendTo="@(body)"
+                  responsive="true" modal="true"
+                  maximizable="true" style="overflow-y: auto;max-height: 90%"
+                  resizable="false">
+            <!--<ui:include src="./general_information/view_insiden.xhtml"/>-->
+            <!--<ui:include src="./incident_detail.xhtml"/>-->
+        </p:dialog>
+        <!--p:dialog id="idmp4" widgetVar="widgetMp4" 
+                  fitViewport="true" positionType="fixed"
+                  responsive="true" modal="true"
+                  maximizable="true" 
+                  resizable="false">
+
+            <p:media value="/resources/basarnas/video/SARCORE.mp4" player="quicktime" width="1100px" height="600px">
+                <f:param name="autoPlay" value="false" />
+            </p:media>
+
+        </p:dialog>
+        -->
+      
+        
+    </ui:define>
+</ui:composition>

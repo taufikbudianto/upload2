@@ -1,0 +1,28 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="sighting-detail">                    
+        <p:tabView class="card" prependId="false" activeIndex="#{incidentSightingMBean.activeTabIndex}">
+            <p:tab title="Info">
+                <ui:include src="sighting-info.xhtml"/>
+            </p:tab>
+            <p:tab title="Status" disabled="#{incidentSightingMBean.disableTab}">
+                <ui:include src="sighting-status.xhtml"/>
+            </p:tab>
+        </p:tabView>
+<!--        <p:panelGrid columns="3" style="float: right;" class="no-border no-padding no-padding-table">
+            <p:commandButton value="Simpan" icon="fa fa-save" class="green-btn" style="width: 130px">
+                <p:confirm header="Tambah Sighting" message="Simpan data ini?" icon="ui-icon-alert"/>
+                <p:ajax event="click" listener="{incidentSightingMBean.addSighting}" 
+                        update="@form,:sighting-content" process="@form"/>
+            </p:commandButton>
+            <p:spacer width="10"/>
+            <p:commandButton type="button" value="Batal" icon="ui-icon-cancel" class="red-btn" style="width: 130px">
+                <p:ajax event="click" update="@form,:sighting-content" process="@this" listener="{incidentSightingMBean.hideDetailSighting(false)}"/>
+            </p:commandButton>
+        </p:panelGrid>-->
+    </h:form>
+
+</ui:composition>

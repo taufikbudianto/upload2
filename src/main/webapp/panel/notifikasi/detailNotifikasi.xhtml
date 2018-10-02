@@ -1,0 +1,160 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <p:panelGrid layout="grid" columns="1"
+                 styleClass="ui-panelgrid-blank form-group" 
+                 style="width: 100%" columnClasses ="ui-grid-col-4"
+                 class="no-padding no-border">
+        <p:messages closable="true"/>
+    </p:panelGrid>
+    <p:panelGrid columns="3" layout="grid" 
+                 styleClass="ui-panelgrid-blank form-group" 
+                 columnClasses ="ui-grid-col-2,ui-grid-col-2,ui-grid-col-2"
+                 style="width: 100%" class="no-padding no-border">
+        <p:outputLabel value="Judul Notifikasi" styleClass="asterix"/>
+        <p:inputText value="#{notifikasiMBean.notifikasi.notifJudul}" 
+                     required="true" requiredMessage="Judul notifikasi harus diisi"
+                     maxlength="20" disabled="#{notifikasiMBean.isView}"/>
+        <h:panelGroup>
+            <p:selectBooleanCheckbox value="#{notifikasiMBean.notifikasi.tanggapi}"
+                                     disabled="#{notifikasiMBean.isView}"/>
+            <p:outputLabel value="Boleh Ditanggapi"/>                            
+        </h:panelGroup>
+        <p:outputLabel value="Personil"/>
+        <p:commandButton value="Pilih" style="width: 100px;"
+                         icon="fa fa-globe" type="button"
+                         disabled="#{notifikasiMBean.isView}">
+            <p:ajax event="click" update="@form" global="false"
+                    listener="#{notifikasiMBean.showPersonil}"/>
+        </p:commandButton>        
+        <p:outputLabel />
+    </p:panelGrid>    
+    <p:panel class="control-button no-border no-padding" rendered="#{!notifikasiMBean.isView}">
+        <p:commandButton value="Hapus" icon="fa fa-trash" global="false"
+                         class="cyan-btn" style="width: 100px;" update="@form"
+                         disabled="#{empty notifikasiMBean.listPersonilTemp}"
+                         actionListener="#{notifikasiMBean.removePersonilTempChecked}"/>
+    </p:panel>
+    <p:dataTable var="temp" value="#{notifikasiMBean.listPersonilTemp}"
+                 reflow="true" paginator="true" rows="5" lazy="true"
+                 rowsPerPageTemplate="#{viewBean.rowsPerPageTemplate}"
+                 rowKey="#{temp.personnelID}" paginatorPosition="bottom"
+                 tableStyle="table-layout:auto" rowIndexVar="index"
+                 selection="#{notifikasiMBean.listPersonilTempChecked}"
+                 emptyMessage="Data tidak ditemukan">
+        <p:column selectionMode="multiple" style="width: 15px; text-align: center"
+                  rendered="#{!notifikasiMBean.isView}"/>
+        <p:column headerText="No" style="width: 20px">
+            <p:outputLabel value="#{index + 1}"/>
+        </p:column>
+        <p:column headerText="Nama" sortBy="#{temp.personnelName}">
+            <p:outputLabel value="#{temp.personnelName}"/>
+        </p:column>
+        <p:column headerText="KanSAR" sortBy="#{temp.officeSar.kantorsarname}">
+            <p:outputLabel value="#{temp.officeSar.kantorsarname}"/>
+        </p:column>
+        <p:column headerText="No. Telepon" sortBy="#{temp.phoneNumber}">
+            <p:outputLabel value="#{temp.phoneNumber}"/>
+        </p:column>
+        <p:column headerText="Aksi" style="width: 5%;">
+            <p:commandButton id="lihatDtlNotif" global="false" update="@form"
+                             actionListener="#{notifikasiMBean.loadPersonil}"                             
+                             onclick="PF('tTipDtlNotif').hide()"
+                             styleClass="blue-grey-btn" icon="fa fa-search">
+                <f:attribute name="rowPersonil" value="#{temp}" />
+            </p:commandButton>
+            <p:tooltip value="Lihat" for="lihatDtlNotif"
+                       trackMouse="true" widgetVar="tTipDtlNotif"/>
+        </p:column>        
+    </p:dataTable>
+    <p:panelGrid columns="2" layout="grid" id="gdNotif"
+                 styleClass="ui-panelgrid-blank form-group" 
+                 columnClasses ="ui-grid-col-2,ui-grid-col-2"
+                 style="margin-top: 20px;margin-bottom: 20px; width: 100%"
+                 class="no-padding no-border">
+        <p:outputLabel value="Tipe Notifikasi"/>
+        <p:selectOneMenu value="#{notifikasiMBean.notifikasi.notifTipe}"
+                         autoWidth="false" disabled="#{notifikasiMBean.isView}">
+            <p:ajax event="itemSelect" update="@this" global="false"/>
+            <f:selectItem itemLabel="Insiden" itemValue="0"/>
+            <f:selectItem itemLabel="Umum" itemValue="1"/>
+        </p:selectOneMenu>
+        <p:outputLabel value="Konten"/>
+        <p:inputTextarea value="#{notifikasiMBean.notifikasi.notifKonten}"
+                         maxlength="100" disabled="#{notifikasiMBean.isView}">
+            <p:ajax event="blur" update="@this" global="false"/>            
+        </p:inputTextarea>
+        <p:outputLabel value="Attachment"/>
+
+        <p:fileUpload value="#{notifikasiMBean.attachmentFile}" 
+                      disabled="#{notifikasiMBean.isView}"
+                      dragDropSupport="false" invalidSizeMessage="Maximal File 1 MB"
+                      fileUploadListener="#{notifikasiMBean.attachment}"
+                      auto="true" sizeLimit="1000000" update="gdNotif"/>
+        <p:outputLabel/>
+        <p:outputLabel value="#{notifikasiMBean.notifikasi.notifAttachment}"/>
+    </p:panelGrid>    
+    <p:panelGrid columns="1" layout="grid" rendered="#{notifikasiMBean.isView}"
+                 styleClass="ui-panelgrid-blank form-group" 
+                 columnClasses ="ui-grid-col-2"
+                 style="margin-top: 20px;width: 100%"
+                 class="no-padding no-border">
+        <p:outputLabel value="Tanggapan"/>
+    </p:panelGrid>
+    <p:dataTable var="tanggap" value="#{notifikasiMBean.listTanggapan}"
+                 rendered="#{notifikasiMBean.isView}"
+                 emptyMessage="Data tidak ditemukan"
+                 reflow="true" paginator="true" rows="5" lazy="true"
+                 rowsPerPageTemplate="#{viewBean.rowsPerPageTemplate}"
+                 rowKey="#{tanggap.notifTanggapanId}" paginatorPosition="bottom"
+                 tableStyle="table-layout:auto" rowIndexVar="index">
+        <p:column headerText="No" style="width: 20px">
+            <p:outputLabel value="#{index + 1}"/>
+        </p:column>
+        <p:column headerText="Tanggal" sortBy="#{notifikasiMBean.timestampConvert(tanggap.createdDate)}">
+            <p:outputLabel value="#{notifikasiMBean.timestampConvert(tanggap.createdDate)}"/>
+        </p:column>
+        <p:column headerText="Nama" sortBy="#{tanggap.personil.personnelName}">
+            <p:outputLabel value="#{tanggap.personil.personnelName}"/>
+        </p:column>
+        <p:column headerText="Tanggapan" sortBy="#{tanggap.tanggapan}">
+            <p:outputLabel value="#{tanggap.tanggapan}"/>
+        </p:column>
+        <p:column headerText="Aksi" style="width: 7%;">
+            <p:commandButton id="lhtDtlTgp" global="false" icon="fa fa-search"
+                             actionListener="#{notifikasiMBean.loadTanggapan}"
+                             onclick="PF('tTipDtlTgp').hide();"
+                             update="form-dtl-tanggapan" styleClass="blue-grey-btn">
+                <f:attribute name="rowTanggap" value="#{tanggap}" />
+            </p:commandButton>
+            <p:tooltip value="Lihat" for="lhtDtlTgp"
+                       trackMouse="true" widgetVar="tTipDtlTgp"/>
+            <p:commandButton id="hpsDtlTgp" update="@form"
+                             actionListener="#{notifikasiMBean.hapusTanggapan}"                             
+                             onclick="PF('tTipHpsTgp').hide();"
+                             styleClass="red-btn" icon="fa fa-trash">
+                <f:attribute name="rowTanggap" value="#{tanggap}"/>
+                <p:confirm header="Konfirmasi" icon="ui-icon-alert"
+                           message="Apakah anda yakin ingin menghapus tanggapan ini?"/>
+            </p:commandButton>
+            <p:tooltip value="Hapus" for="hpsDtlTgp"
+                       trackMouse="true" widgetVar="tTipHpsTgp"/>
+        </p:column>
+    </p:dataTable>
+    <p:panel class="control-button no-border no-padding" >
+        <p:commandButton value="Simpan" icon="fa fa-save" style="width:130px" styleClass="green-btn" 
+                         actionListener="#{notifikasiMBean.saveNotifikasi}" 
+                         rendered="#{!notifikasiMBean.isView}"
+                         update="@form" global="false">
+            <p:confirm header="Konfirmasi" message="Apakah anda yakin ingin menyimpan data ini ?" icon="ui-icon-alert" />
+        </p:commandButton>
+        <p:spacer width="10"/>
+        <p:button value="#{notifikasiMBean.isView ? 'Kembali' : 'Batal'}" 
+                  icon="ui-icon-cancel" 
+                  class="red-btn" style="width: 130px;"/>
+        
+        
+    </p:panel>
+</ui:composition>

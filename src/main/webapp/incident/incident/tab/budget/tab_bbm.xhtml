@@ -1,0 +1,83 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="formBiayaBBM">
+        <p:messages/>
+<!--        <p:panel class="control-button no-border no-padding" >
+            <p:commandButton  value="Tambah Data Baru" icon="fa fa-plus-circle" class="green-btn" 
+                              style="width:200px"
+                              actionListener="{incidentBudgetAssetMBean.tambah()}" 
+                              process="@form"
+                              disabled="#{incidentBudgetAssetMBean.disabled}" update="incidentdetail:budgetdetail">
+            </p:commandButton>
+        </p:panel>-->
+        <p:spacer width="10" />
+        <p:dataTable id ="tableBBM" var="budgetAsset" value="#{incidentBudgetAssetMBean.listAssetBudget}" 
+                     sortBy="#{incidentBudgetAssetMBean.currIncident.incidentid}"
+                     paginator="true" paginatorPosition="bottom" 
+                     paginatorTemplate=" {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                     rows="10" rowsPerPageTemplate="5,10,15" rowIndexVar="index">
+            <p:column headerText="No" style="width: 20px">
+                <p:outputLabel value="#{index + 1}"/>
+            </p:column>
+            <p:column headerText="Deskripsi">
+                <p:outputLabel value="#{budgetAsset.budgetAssetDescr}"/>
+            </p:column>
+            <p:column headerText="Durasi">
+                <p:inputNumber value="#{budgetAsset.budgetAssetDur}" 
+                               disabled="#{incidentBudgetAssetMBean.disabled}">
+                    <p:ajax listener="#{incidentBudgetAssetMBean.changeBBM(budgetAsset)}" update="tableBBM" />
+                </p:inputNumber>
+            </p:column>
+            <p:column headerText="Standard pemakaian/BBM perjam">
+                <p:inputNumber value="#{budgetAsset.bbbAssetPemakaian}" disabled="#{incidentBudgetAssetMBean.disabled}">
+                    <p:ajax listener="#{incidentBudgetAssetMBean.changeBBM(budgetAsset)}" update="tableBBM" />
+                </p:inputNumber>
+            </p:column>
+            <p:column headerText="Jenis BBM">
+                <p:selectOneMenu value="#{budgetAsset.bbm.jenis}" style="width:120px" disabled="#{incidentBudgetAssetMBean.disabled}">
+                    <p:ajax listener="#{incidentBudgetAssetMBean.changeBBM(budgetAsset)}" update="tableBBM"/>
+                    <f:selectItems value="#{incidentBudgetAssetMBean.listBbm}"/>
+                </p:selectOneMenu>
+            </p:column>
+            <p:column headerText="Harga BBM /liter">
+                <p:outputLabel value="#{budgetAsset.bbm.nilai}"/>
+            </p:column>
+            <p:column headerText="Total">
+                <p:outputLabel value="#{budgetAsset.total}">
+                    <f:convertNumber currencySymbol="Rp. " type="currency" />
+                </p:outputLabel>
+            </p:column>
+<!--            <p:column headerText="Action">
+                <p:outputLabel value="   "/>
+                <p:commandButton label="Hapus" icon="fa fa-trash" class="red-btn" 
+                                 actionListener="{incidentBudgetAssetMBean.hapusBudget(budgetAsset)}"
+                                 update="@form" process="@this" disabled="#{incidentBudgetAssetMBean.disabled}">
+                    <p:confirm header="Konfirmasi" message="Apakah anda yakin ingin Menghapus Biaya Asset ini?" icon="ui-icon-alert"/>
+                </p:commandButton>
+            </p:column>-->
+            <p:summaryRow>
+                <p:column colspan="6" style="text-align:right">
+                    Total : 
+                </p:column>
+                <p:column colspan="1">
+                    <h:outputText value="#{incidentBudgetAssetMBean.totalAll}">
+                        <f:convertNumber currencySymbol="Rp. " type="currency" />
+                    </h:outputText>
+                </p:column>
+            </p:summaryRow>
+        </p:dataTable>
+        <p:spacer width="10" />
+        <p:panel class="control-button no-border no-padding" >
+            <p:commandButton value="Simpan Budget BBM" icon="fa fa-save" 
+                             style="width:200px" styleClass="green-btn"   
+                             actionListener="#{incidentBudgetAssetMBean.save}" 
+                             process="@form"
+                             disabled="#{incidentBudgetAssetMBean.disabled}">
+            </p:commandButton>
+        </p:panel>
+    </h:form>
+</ui:composition>

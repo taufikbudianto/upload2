@@ -1,0 +1,110 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <p:dialog showEffect="fade" hideEffect="fade" dynamic="true"
+              position="center" id="idDialogSaveSearchPattern"
+              header="Search Pattern Parameter" appendTo="@(body)"  
+              widgetVar="showDialogSaveSearchPattern"  
+              modal="true" width="750"
+              responsive="true" resizable="false">
+        <h:form prependId="false" >
+            <p:panel id="idPanelSP" style="overflow: auto; width: 100% ; max-height: 55vh" 
+                     class="ui-noborder  no-padding card ui-fluid">
+                <p:messages closable="true"/>
+                <p:panelGrid layout="grid"
+                             columns="2" columnClasses="ui-grid-col-7,ui-grid-col-5"
+                             style="width: 100%" 
+                             styleClass="ui-panelgrid-blank no-padding">
+                    <p:panelGrid layout="grid"
+                                 columns="2" columnClasses="ui-grid-col-4,ui-grid-col-7"
+                                 style="width: 100%"
+                                 styleClass="ui-panelgrid-blank no-padding">
+                        <p:outputLabel value="ID"/>
+                        <p:outputLabel value="#{mapMBean.searchPattern.searchPatternId}"/>
+                        <p:outputLabel value="Name"/>
+                        <p:inputText value="#{mapMBean.searchPattern.name}"/>
+                        <p:outputLabel value="Type"/>
+                        <p:outputLabel value="#{mapMBean.searchPattern.type}"/>
+                        <p:outputLabel value="SRU"/>
+                        <p:selectOneMenu 
+                            value="#{mapMBean.searchPattern.incidentAsset}"
+                            converter="objectListConverter" style="max-width: 40vw"
+                            filter="true" filterMatchMode="startsWith"
+                            disabled="#{searchPatternMBean.isEdit}"
+                            required="true" 
+                            requiredMessage="Mohon alokasikan SRU untuk melakukan proses penyimpanan Search Pattern">
+                            <f:selectItem itemLabel="Pilih" itemValue="#{null}" noSelectionOption="true" />
+                            <f:selectItems value="#{searchPatternMBean.listIncidentAsset}" 
+                                           var="list" 
+                                           itemLabel="#{list.name}"
+                                           itemValue="#{list}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="Search Area"/>
+                        <p:selectOneMenu 
+                            value="#{mapMBean.searchPattern.searchArea}"
+                            converter="objectListConverter" style="max-width: 40vw"
+                            filter="true" filterMatchMode="startsWith"
+                            disabled="#{searchPatternMBean.isEdit}"
+                            required="true" 
+                            requiredMessage="Mohon Pilih Search Area untuk melakukan proses penyimpanan Search Pattern">
+                            <p:ajax listener="#{searchPatternMBean.onChangeSearchArea}" />
+                            <f:selectItem itemLabel="Pilih" itemValue="#{null}" noSelectionOption="true" />
+                            <f:selectItems value="#{searchPatternMBean.listSearchArea}" 
+                                           var="list" 
+                                           itemLabel="#{list.name}"
+                                           itemValue="#{list}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="Task Search Area"/>
+                        <p:selectOneMenu id="idSomTaskSearchArea"
+                                         value="#{mapMBean.searchPattern.taskSearchArea}"
+                                         converter="objectListConverter" style="max-width: 40vw"
+                                         filter="true" filterMatchMode="startsWith"
+                                         disabled="#{searchPatternMBean.isEdit}" >
+                            <f:selectItem itemLabel="Pilih" itemValue="#{null}" noSelectionOption="true" />
+                            <f:selectItems value="#{searchPatternMBean.listTaskSearchArea}" 
+                                           var="list" 
+                                           itemLabel="#{list.name}"
+                                           itemValue="#{list}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="Waypoin"/>
+                    </p:panelGrid>
+                    <p:fieldset legend="Description" >
+                        <p:outputLabel value="#{mapMBean.searchPattern.description}"
+                                       converter="jsonToStrMapConverter"
+                                       style="font-size: x-small"
+                                       escape="false"/>
+                    </p:fieldset>
+                </p:panelGrid>
+
+                <p:dataTable value="#{searchPatternMBean.listIncWaypoint}" var="list" >
+                    <p:column headerText="Waypoin Name" width="60">
+
+                    </p:column>
+                    <p:column headerText="Sequence" width="60">
+                        <p:outputLabel value="#{list.sequence}"/>
+                    </p:column>
+                    <p:column headerText="Latitude" width="100">
+                        <p:outputLabel value="#{list.latitude}" 
+                                       converter="coordinatLatConverter"/>
+                    </p:column>
+                    <p:column headerText="Longtitude" width="100">
+                        <p:outputLabel value="#{list.longitude}"
+                                       converter="coordinatLngConverter"/>                    
+                    </p:column>
+                    <p:column headerText="Distance" width="70">
+                        <p:outputLabel value="#{list.distance}"/>
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
+            <p:panel class="control-button">
+                <p:commandButton value="Save" 
+                                 actionListener="#{searchPatternMBean.saveSearchPattern}"
+                                 update="@form" process="@form"/>
+                <p:commandButton value="Batal" 
+                                 onclick="PF('showDialogSaveSearchPattern').hide()"/>
+            </p:panel>
+        </h:form>
+    </p:dialog>
+</ui:composition>

@@ -1,0 +1,737 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="laporanincident" pageWidth="1684" pageHeight="1190" orientation="Landscape" columnWidth="1644" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7c39281a-064a-4171-84fd-c3f461544735">
+	<property name="ireport.zoom" value="1.2418426461183112"/>
+	<property name="ireport.x" value="1098"/>
+	<property name="ireport.y" value="0"/>
+     <parameter name="dir" class="java.lang.String"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{dir}]]></defaultValueExpression>
+	</parameter>
+	<parameter name="KANTORSARNAME" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+		<parameter name="STARTDATE" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ENDDATE" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="INCIDENTTYPE" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="user" class="java.lang.String"/>
+	<parameter name="currentDate" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT A.incidentid,incidentnumber,incidentname,incidenttype,situation,alertedat,alertedattimezone,A.startopsdatetimezone,A.closedate,A.closedatetimezone,A.alertedby,A.method,
+A.phonenumber,location,DEGREES_TO_DMS(A.latitude,0)latitude,DEGREES_TO_DMS(A.longitude,1)longitude,NVL(DBMS_LOB.SUBSTR(A.remarks, 4000, 1),' ') as remarks
+,A.status,A.deathpeople,startopsdate
+,A.heavyinjuredpeople,A.lightinjuredpeople,A.lostpeople,A.survivedpeople,A.ownername,A.OWNERNAME,A.OWNERADDRESS,A.OWNERPHONE,A.OWNERCELL,A.OWNERFAX,A.OWNEREMAIL
+,A.OBJECTCALLSIGN,A.OBJECTCOLOR,A.OBJECTLENGTH,A.OBJECTCAPACITY,A.OBJECTHOMEBASE,A.SMC,A.SMCPHONE,A.USERSITEID,A.isdeleted,A.datecreated,A.createdby,A.lastmodified
+,A.modifiedby,startdate,A.KANTORSARNAME,E.OBSERVERNAME BERITA,E.OBJECTDTG SUMBER
+,TO_CHAR(STARTDATE,'MMDDHH24MI')||CASE  startdatetimezone WHEN  'GMT+07:00' THEN 'G' WHEN  'GMT+08:00' THEN 'H' WHEN  'GMT+09:00' THEN 'I' WHEN  'GMT+00:00' THEN 'Z' END WKT_KJADIAN
+,TO_CHAR(alertedat,'MMDDHH24MI')||CASE alertedattimezone WHEN  'GMT+07:00' THEN 'G' WHEN  'GMT+08:00' THEN 'H' WHEN  'GMT+09:00' THEN 'I' WHEN  'GMT+00:00' THEN 'Z' END WKT_LAPOR
+,TO_CHAR(startopsdate,'MMDDHH24MI')||CASE startopsdatetimezone WHEN  'GMT+07:00' THEN 'G' WHEN  'GMT+08:00' THEN 'H' WHEN  'GMT+09:00' THEN 'I' WHEN  'GMT+00:00' THEN 'Z' END WKT_MULAI
+,TO_CHAR(closedate,'MMDDHH24MI')||CASE closedatetimezone WHEN  'GMT+07:00' THEN 'G' WHEN  'GMT+08:00' THEN 'H' WHEN  'GMT+09:00' THEN 'I' WHEN  'GMT+00:00' THEN 'Z' ELSE 'G' END WKT_SELESAI
+,SUBSTR(((((STARTOPSDATE-ALERTEDAT)*24*60)/60)/24),1,1) AS HARI
+,MOD(FLOOR(((STARTOPSDATE-ALERTEDAT)*24*60)/60),24)JAM
+,ROUND(MOD(((STARTOPSDATE-ALERTEDAT)*24*60),60),0) AS MENIT
+,CEIL(closedate-STARTDATE) AS LAMA_OPS
+FROM
+(SELECT A.*,KANTORSARNAME FROM INCIDENT A LEFT JOIN MST_KANTORSAR B
+ON A.USERSITEID =B.KANTORSARID
+WHERE B.ISDELETED=0 AND A.ISDELETED=0
+)A
+LEFT JOIN
+(SELECT * FROM mst_checklist)B
+ON A.checklistid=B.checklistid
+LEFT JOIN
+(SELECT * FROM UTI_SIGHTING)E
+ON A.INCIDENTID=E.INCIDENTID
+WHERE ('ALL' = $P{KANTORSARNAME} or KANTORSARNAME = $P{KANTORSARNAME})
+AND TO_CHAR(TO_DATE(A.STARTDATE,'DD-MON-YY'),'yyyy-MM-dd') >=$P{STARTDATE}
+AND TO_CHAR(TO_DATE(A.STARTDATE,'DD-MON-YY'),'yyyy-MM-dd') <=$P{ENDDATE}
+AND (0=$P{INCIDENTTYPE} OR A.INCIDENTTYPE =$P{INCIDENTTYPE})
+ORDER BY A.CLOSEDATE]]>
+	</queryString>
+	<field name="INCIDENTID" class="java.lang.String"/>
+	<field name="INCIDENTNUMBER" class="java.lang.String"/>
+	<field name="INCIDENTNAME" class="java.lang.String"/>
+	<field name="INCIDENTTYPE" class="java.math.BigDecimal"/>
+	<field name="SITUATION" class="java.lang.String"/>
+	<field name="ALERTEDAT" class="java.sql.Timestamp"/>
+	<field name="ALERTEDATTIMEZONE" class="java.lang.String"/>
+	<field name="STARTOPSDATETIMEZONE" class="java.lang.String"/>
+	<field name="CLOSEDATE" class="java.sql.Timestamp"/>
+	<field name="CLOSEDATETIMEZONE" class="java.lang.String"/>
+	<field name="ALERTEDBY" class="java.lang.String"/>
+	<field name="METHOD" class="java.lang.String"/>
+	<field name="PHONENUMBER" class="java.lang.String"/>
+	<field name="LOCATION" class="java.lang.String"/>
+	<field name="LATITUDE" class="java.lang.String"/>
+	<field name="LONGITUDE" class="java.lang.String"/>
+	<field name="REMARKS" class="java.lang.String"/>
+	<field name="STATUS" class="java.lang.String"/>
+	<field name="DEATHPEOPLE" class="java.math.BigDecimal"/>
+	<field name="STARTOPSDATE" class="java.sql.Timestamp"/>
+	<field name="HEAVYINJUREDPEOPLE" class="java.math.BigDecimal"/>
+	<field name="LIGHTINJUREDPEOPLE" class="java.math.BigDecimal"/>
+	<field name="LOSTPEOPLE" class="java.math.BigDecimal"/>
+	<field name="SURVIVEDPEOPLE" class="java.math.BigDecimal"/>
+	<field name="OWNERNAME" class="java.lang.String"/>
+	<field name="OWNERADDRESS" class="java.lang.String"/>
+	<field name="OWNERPHONE" class="java.lang.String"/>
+	<field name="OWNERCELL" class="java.lang.String"/>
+	<field name="OWNERFAX" class="java.lang.String"/>
+	<field name="OWNEREMAIL" class="java.lang.String"/>
+	<field name="OBJECTCALLSIGN" class="java.lang.String"/>
+	<field name="OBJECTCOLOR" class="java.lang.String"/>
+	<field name="OBJECTLENGTH" class="java.lang.String"/>
+	<field name="OBJECTCAPACITY" class="java.lang.String"/>
+	<field name="OBJECTHOMEBASE" class="java.lang.String"/>
+	<field name="SMC" class="java.lang.String"/>
+	<field name="SMCPHONE" class="java.lang.String"/>
+	<field name="USERSITEID" class="java.lang.String"/>
+	<field name="ISDELETED" class="java.math.BigDecimal"/>
+	<field name="DATECREATED" class="java.sql.Timestamp"/>
+	<field name="CREATEDBY" class="java.lang.String"/>
+	<field name="LASTMODIFIED" class="java.sql.Timestamp"/>
+	<field name="MODIFIEDBY" class="java.lang.String"/>
+	<field name="STARTDATE" class="java.sql.Timestamp"/>
+	<field name="KANTORSARNAME" class="java.lang.String"/>
+	<field name="BERITA" class="java.lang.String"/>
+	<field name="SUMBER" class="java.sql.Timestamp"/>
+	<field name="WKT_KJADIAN" class="java.lang.String"/>
+	<field name="WKT_LAPOR" class="java.lang.String"/>
+	<field name="WKT_MULAI" class="java.lang.String"/>
+	<field name="WKT_SELESAI" class="java.lang.String"/>
+	<field name="HARI" class="java.lang.String"/>
+	<field name="JAM" class="java.math.BigDecimal"/>
+	<field name="MENIT" class="java.math.BigDecimal"/>
+	<field name="LAMA_OPS" class="java.math.BigDecimal"/>
+	<group name="KANSARGROUP">
+		<groupExpression><![CDATA[]]></groupExpression>
+		<groupHeader>
+			<band height="20">
+				<rectangle>
+					<reportElement uuid="7976f467-17f0-4aaa-a9ce-12951a08a16a" x="0" y="0" width="1644" height="20" backcolor="#CCCCFF"/>
+				</rectangle>
+				<textField>
+					<reportElement uuid="8a403c11-29d0-4e08-abe6-51b0705791c9" x="107" y="0" width="1537" height="20" backcolor="#9999FF"/>
+					<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement>
+						<font size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{KANTORSARNAME}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="d0e14e09-bc11-434e-96b5-00fabfeb7c77" x="0" y="0" width="107" height="20"/>
+					<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[KANSAR 	         :]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="KANSAR">
+		<groupExpression><![CDATA[$F{INCIDENTID}]]></groupExpression>
+	</group>
+	<title>
+		<band height="71" splitType="Stretch">
+			<image>
+				<reportElement uuid="409982b4-8747-4877-8900-b0df84025e95" x="0" y="0" width="92" height="69"/>
+				<imageExpression><![CDATA["sar_image.jpg"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement uuid="40ed1bb5-7a47-4d80-9c83-b1cfc1fdcc9a" x="112" y="33" width="1532" height="31"/>
+				<textElement textAlignment="Center">
+					<font size="24" isBold="true"/>
+				</textElement>
+				<text><![CDATA[INSIDEN]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="6461cda1-77a8-4b39-8e0a-97abdd21c7ba" x="1467" y="0" width="177" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Tanggal Cetak : " +$P{currentDate}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="8bbb30c8-de84-49c1-8ba1-bcc5de182f3f" x="1467" y="20" width="177" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["User : " +$P{user}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="40" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="2ccaea20-63b8-4f9e-9477-a0bd58321c4c" x="0" y="0" width="19" height="40"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.5" lineStyle="Solid"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement/>
+				<text><![CDATA[NO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="b632ef48-d92b-4b73-a73b-0d57bd4d020d" x="19" y="0" width="88" height="40"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.5" lineStyle="Solid"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[NO INSIDEN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="5b60e061-903c-4b1a-81b5-8ead8cabc84e" x="107" y="0" width="147" height="40"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.5" lineStyle="Solid"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[NAMA INSIDEN ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="98aa946f-479f-4115-aa31-e925e0a2e08f" x="254" y="0" width="84" height="40"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.5" lineStyle="Solid"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[SITUASI ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="44fb7797-95e9-4d74-88d0-500669cd115c" x="462" y="0" width="263" height="20"/>
+				<box topPadding="2" leftPadding="0">
+					<topPen lineWidth="0.5" lineStyle="Solid"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[TANGGAL WAKTU ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="06134525-2fd5-46c0-8b3e-c1422e7d6e3b" x="462" y="20" width="65" height="20"/>
+				<box topPadding="2" leftPadding="0">
+					<topPen lineWidth="0.5" lineStyle="Solid"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[KEJADIAN ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="9460d75d-f941-45f7-b5a1-5f616c80765a" x="527" y="20" width="68" height="20"/>
+				<box topPadding="2" leftPadding="0">
+					<topPen lineWidth="0.5" lineStyle="Solid"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[LAPOR ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="6fe11268-4908-44ce-b266-a1833b2aefd5" x="595" y="20" width="65" height="20"/>
+				<box topPadding="2" leftPadding="0">
+					<topPen lineWidth="0.5" lineStyle="Solid"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[MULAI OPS ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f001fd13-737e-4f60-9ddc-4f4e7d0d8de8" x="660" y="20" width="65" height="20"/>
+				<box topPadding="2" leftPadding="0">
+					<topPen lineWidth="0.5" lineStyle="Solid"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[SELESAI OPS ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="ebb41426-906b-4d67-a041-32fe4df5dbd9" x="725" y="0" width="56" height="40"/>
+				<box topPadding="2" leftPadding="0">
+					<topPen lineWidth="0.5" lineStyle="Solid"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[LAMA OPS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="d7d22583-386d-4f9f-9f35-61e2292b14d3" x="338" y="0" width="124" height="40"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[POSISI
+(KOORDINAT / AREA)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="9e9ea09d-d30d-4cd0-82c6-370b4192596d" x="891" y="0" width="67" height="40"/>
+				<box topPadding="2" leftPadding="0">
+					<topPen lineWidth="0.5" lineStyle="Solid"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[SMC/KOOR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="bb9e70a5-4805-43a1-a345-ef83bbb7ad5d" x="958" y="0" width="48" height="40"/>
+				<box topPadding="2" leftPadding="0">
+					<topPen lineWidth="0.5" lineStyle="Solid"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[POB ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f7557200-de3f-491d-b225-ef0d1bca2963" x="1006" y="0" width="150" height="20"/>
+				<box topPadding="2" leftPadding="2">
+					<topPen lineWidth="0.5" lineStyle="Solid"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[HASIL OPS SAR (ORG)    ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="470838b4-5af2-408e-90cd-9e1245848cfc" x="1006" y="20" width="30" height="20"/>
+				<box topPadding="2" leftPadding="2">
+					<topPen lineWidth="0.5" lineStyle="Solid"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[S ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="6efce965-0675-4cec-abc5-c530a8df65f0" x="1036" y="20" width="30" height="20"/>
+				<box topPadding="2" leftPadding="2">
+					<topPen lineWidth="0.5" lineStyle="Solid"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[LR ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="87ceed63-0e3e-4e5a-99d5-c27d94c4730b" x="1066" y="20" width="30" height="20"/>
+				<box topPadding="2" leftPadding="2">
+					<topPen lineWidth="0.5" lineStyle="Solid"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[LB ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="def8d40d-af11-4b46-b48b-435fca3714fa" x="1096" y="20" width="30" height="20"/>
+				<box topPadding="2" leftPadding="2">
+					<topPen lineWidth="0.5" lineStyle="Solid"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[MD ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="3b3a1c2a-6769-4422-8388-7da20d2ab26d" x="1126" y="20" width="30" height="20"/>
+				<box topPadding="2" leftPadding="2">
+					<topPen lineWidth="0.5" lineStyle="Solid"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[H ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="8cee8fb1-abac-4861-a7b1-6666a82b7ead" x="1156" y="0" width="260" height="20"/>
+				<box topPadding="2" leftPadding="2">
+					<topPen lineWidth="0.5" lineStyle="Solid"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[SRU YANG TERLIBAT ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="176cfa81-d94f-4806-9b41-797a156454a3" x="1156" y="20" width="106" height="20"/>
+				<box topPadding="2" leftPadding="2">
+					<topPen lineWidth="0.5" lineStyle="Solid"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[INSTANSI ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="926034ef-0110-4918-bd14-357069331ff2" x="1262" y="20" width="54" height="20"/>
+				<box topPadding="2" leftPadding="2">
+					<topPen lineWidth="0.5" lineStyle="Solid"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[JML ORG ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="6ffe5242-8a3f-4f84-b8ad-98f85e661f18" x="1316" y="20" width="100" height="20"/>
+				<box topPadding="2" leftPadding="2">
+					<topPen lineWidth="0.5" lineStyle="Solid"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[ALUT ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="9221e08a-3038-45f1-be26-b32b0360ffef" x="1416" y="0" width="102" height="40"/>
+				<box topPadding="2" leftPadding="2">
+					<topPen lineWidth="0.5" lineStyle="Solid"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[SUMBER BERITA ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="d0f8da0b-4895-49e0-8832-e938156a8c05" x="1518" y="0" width="126" height="40"/>
+				<box topPadding="2" leftPadding="2">
+					<topPen lineWidth="0.5" lineStyle="Solid"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[KETERANGAN ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e1e49348-db7c-45ee-8a46-ac792912ea04" x="781" y="0" width="110" height="40"/>
+				<box topPadding="2" leftPadding="0">
+					<topPen lineWidth="0.5" lineStyle="Solid"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[WAKTU RESPON]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="50" splitType="Prevent">
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="b642a2bc-07f2-4b5c-ab9e-67bd0c68251f" stretchType="RelativeToTallestObject" x="0" y="0" width="19" height="50"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.5" lineStyle="Solid"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="4cf797f3-41cf-4119-b498-27004911d3fb" stretchType="RelativeToTallestObject" x="19" y="0" width="88" height="50"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.5" lineStyle="Solid"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement markup="none">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{INCIDENTNUMBER}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="10280022-ca6b-402b-ba28-6103cde3839e" stretchType="RelativeToTallestObject" x="107" y="0" width="147" height="50"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.5" lineStyle="Solid"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$F{INCIDENTNAME}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="d303551c-276c-4e60-8811-e39cbaafe1a7" stretchType="RelativeToTallestObject" x="339" y="0" width="123" height="50"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.5" lineStyle="Solid"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$F{LOCATION}+ "\r\n" +$F{LATITUDE} +"\r\n" + $F{LONGITUDE}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="26f890a4-36eb-49d6-8f3e-33d119c7a7fd" stretchType="RelativeToTallestObject" x="462" y="0" width="65" height="50"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.5" lineStyle="Solid"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$F{WKT_KJADIAN}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="32bdf0f7-62ef-482d-8d4a-521625f6f5ff" stretchType="RelativeToTallestObject" x="527" y="0" width="68" height="50"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.5" lineStyle="Solid"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$F{WKT_LAPOR}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="d3ded238-0dde-4846-9519-202a679d57d0" stretchType="RelativeToTallestObject" x="595" y="0" width="65" height="50"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.5" lineStyle="Solid"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$F{WKT_MULAI}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="f66c7cc3-6d45-4591-a283-d53d56e33a41" stretchType="RelativeToTallestObject" x="660" y="0" width="65" height="50"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.5" lineStyle="Solid"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$F{WKT_SELESAI}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="5fb1726c-2dad-4ebe-a313-d1c73d82d700" stretchType="RelativeToTallestObject" x="725" y="0" width="56" height="50"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.5" lineStyle="Solid"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" markup="none"/>
+				<textFieldExpression><![CDATA[$F{LAMA_OPS}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="a2bba170-83a6-41dc-a4fe-9410e61abb89" stretchType="RelativeToTallestObject" x="891" y="0" width="67" height="50"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.5" lineStyle="Solid"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$F{SMC}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="636e7c9e-79b6-4731-9426-87042fcd55ec" stretchType="RelativeToTallestObject" x="958" y="0" width="48" height="50"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.5" lineStyle="Solid"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" markup="none"/>
+				<textFieldExpression><![CDATA[$F{OBJECTCAPACITY}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="f97f913a-f7e3-4cd2-9340-6f93895cc360" stretchType="RelativeToTallestObject" x="1006" y="0" width="30" height="50"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.5" lineStyle="Solid"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" markup="none"/>
+				<textFieldExpression><![CDATA[$F{SURVIVEDPEOPLE}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="685a82c6-93b2-423f-b6b0-543ca2ff7393" stretchType="RelativeToTallestObject" x="1066" y="0" width="30" height="50"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.5" lineStyle="Solid"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" markup="none"/>
+				<textFieldExpression><![CDATA[$F{HEAVYINJUREDPEOPLE}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="523926e5-634e-4737-b1e5-d3c67e43da8d" stretchType="RelativeToTallestObject" x="1036" y="0" width="30" height="50"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.5" lineStyle="Solid"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" markup="none"/>
+				<textFieldExpression><![CDATA[$F{LIGHTINJUREDPEOPLE}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="c42fad0d-0c14-4637-8920-7d0e735b6406" stretchType="RelativeToTallestObject" x="1096" y="0" width="30" height="50"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.5" lineStyle="Solid"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" markup="none"/>
+				<textFieldExpression><![CDATA[$F{DEATHPEOPLE}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="cf7d44bb-bd6c-4528-b827-a2996b8d92de" stretchType="RelativeToTallestObject" x="1126" y="0" width="30" height="50"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.5" lineStyle="Solid"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" markup="none"/>
+				<textFieldExpression><![CDATA[$F{LOSTPEOPLE}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="329a8443-1038-4f72-be12-b707385a4145" stretchType="RelativeToTallestObject" x="1518" y="0" width="126" height="50"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$F{REMARKS}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="3b9f6ad3-38ef-49d7-8e8c-e0a9440e8012" stretchType="RelativeToTallestObject" x="254" y="0" width="85" height="50"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.5" lineStyle="Solid"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$F{SITUATION}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="41af7bbb-3a76-46bc-bc0a-4393f107a991" stretchType="RelativeToTallestObject" x="781" y="0" width="110" height="50"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.5" lineStyle="Solid"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" markup="none"/>
+				<textFieldExpression><![CDATA[($F{HARI} != null && !$F{HARI}.equals(".")  ? $F{HARI} +" hari ":"")
++($F{JAM}!= null && $F{JAM}.intValue() !=0 ? $F{JAM}+" jam ":"")
++($F{MENIT} != null && $F{MENIT}.intValue() !=0 ? $F{MENIT}+ " menit ":"")]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="71d87a7e-048d-400e-b778-768ffc553625" stretchType="RelativeToTallestObject" x="1416" y="0" width="102" height="50"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{BERITA}]]></textFieldExpression>
+			</textField>
+			<elementGroup/>
+			<subreport>
+				<reportElement uuid="65c7f63b-cb1f-47cb-b70f-98d6dde5d4ee" x="1156" y="0" width="160" height="50"/>
+				<subreportParameter name="INCIDENTID">
+					<subreportParameterExpression><![CDATA[$F{INCIDENTID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "INCIDENTSUBINSTANSI.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement uuid="58102eaa-3c64-4a20-b9dd-d32f8da06986" x="1318" y="0" width="98" height="50"/>
+				<subreportParameter name="INCIDENTID">
+					<subreportParameterExpression><![CDATA[$F{INCIDENTID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "INCIDENTSUBSALUT.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="20">
+			<textField evaluationTime="Report">
+				<reportElement uuid="51de0110-2205-4885-b834-e8c74f7f55e3" x="1611" y="0" width="33" height="20"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[+ $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="adb66797-5bca-4c50-af46-9da50a0bdf6b" x="1523" y="0" width="81" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+ " of"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

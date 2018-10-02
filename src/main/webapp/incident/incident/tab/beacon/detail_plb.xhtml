@@ -1,0 +1,63 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <p:panel header="Penggunaan PLB">
+        <p:panelGrid columns="2" style="ui-panelgrid-blank">
+            <p:panel>
+                <p:panelGrid columns="2">
+                    <p:outputLabel value="Penggunaan" />
+                    <p:selectOneMenu id="penggunaan" style="width: 200px;" value="#{beaconCompositeMBean.airvessel.AUsage}" disabled="true">
+                        <f:selectItem itemLabel="" itemValue=""/>
+                        <f:selectItems value="#{usage.ALL_ENUM_VALUES}" var="u" 
+                                       itemValue="#{u.itemValue}" itemLabel="#{u.itemLabel}"/>
+                    </p:selectOneMenu>                    
+                    <p:outputLabel value="Penggunaan Spesifik" />
+                    <p:selectOneMenu id="penggunaanspesifik" style="width: 200px;" value="#{beaconCompositeMBean.airvessel.detailUsage}" disabled="true">
+                        <f:selectItem itemLabel="" itemValue=""/>
+                        <f:selectItems value="#{detailUsage.ALL_ENUM_VALUES}" var="du" 
+                                       itemValue="#{du.itemValue}" itemLabel="#{du.itemLabel}"/>
+                    </p:selectOneMenu>                    
+                    <p:outputLabel />
+                    <h:panelGrid columns="2" id="other-detail-usage">
+                        <p:outputLabel value="Lain"/>
+                        <h:panelGroup>
+                            <p:inputText id="penggunaanlain" value="#{beaconCompositeMBean.airvessel.otherDetailUsage}" style="width: 165px;"  
+                                         disabled="true" maxlength="50">
+                            </p:inputText>
+                            <p:message for="penggunaanlain" style="float: none; display: block;"/>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:outputLabel value="Tipe"/>
+                    <p:selectOneMenu id="tipe" style="width: 200px;" value="#{beaconCompositeMBean.airvessel.usageType}" disabled="true">
+                        <f:selectItem itemLabel="" itemValue=""/>
+                        <f:selectItems value="#{usageType.ALL_ENUM_VALUES}" var="ut" 
+                                       itemValue="#{ut.itemValue}" itemLabel="#{ut.itemLabel}"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel />
+                    <h:panelGrid columns="2" id="other-usage-type">
+                        <p:outputLabel value="Lain"/>
+                        <h:panelGroup>
+                            <p:inputText id="tipelain" value="#{beaconCompositeMBean.airvessel.otherUsageType}" style="width: 165px;" 
+                                         disabled="true" maxlength="50">
+                            </p:inputText>
+                            <p:message for="tipelain" style="float: none; display: block;"/>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                </p:panelGrid>
+            </p:panel>
+            <p:panel>
+                <p:panelGrid columns="2">
+                    <p:outputLabel value="Data Tambahan"/>
+                    <h:panelGroup>
+                        <p:inputTextarea id="datatambahan" value="#{beaconCompositeMBean.airvessel.additionalDetail}" rows="3" style="width: 300px; resize: none;" 
+                                         disabled="true" autoResize="false" maxlength="100" >
+                        </p:inputTextarea>
+                        <p:message for="datatambahan" style="float: none; display: block;"/>
+                    </h:panelGroup>
+                </p:panelGrid>
+            </p:panel>
+        </p:panelGrid>
+    </p:panel>
+</ui:composition>

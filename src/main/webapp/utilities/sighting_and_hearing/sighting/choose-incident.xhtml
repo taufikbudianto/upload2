@@ -1,0 +1,62 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:form id="incident-content">
+        <p:panel id="list-incident" header="Insiden" styleClass="penelHeaderGreen ui-shadow-content">
+            <p:panelGrid id="search-incident" columns="5" layout="grid" styleClass="ui-panelgrid-blank form-group" class="no-padding no-border">
+                <p:panelGrid columns="3">
+                    <p:panelGrid columns="2" class="no-border no-padding">
+                        <p:selectOneMenu value="#{incidentMBean.field}">
+                            <p:ajax event="change" update="@form" listener="#{incidentMBean.chengeToCombo()}"/>
+                            <f:selectItem itemLabel="Nomor" itemValue="incidentnumber" />
+                            <f:selectItem itemLabel="Tipe" itemValue="incidenttype" />
+                            <f:selectItem itemLabel="Status" itemValue="status" />
+                            <f:selectItem itemLabel="Lokasi" itemValue="location" />
+                        </p:selectOneMenu>
+                    </p:panelGrid>    
+                    <p:panelGrid columns="3" class="no-border no-padding">
+                        <p:inputText value="#{incidentMBean.value}" rendered="#{!incidentMBean.showCombo}"/>
+                        <p:selectOneMenu value="#{incidentMBean.value}" rendered="#{incidentMBean.showCombo and incidentMBean.field == 'incidenttype'}">
+                            <f:selectItems value="#{type.ALL_ENUM_VALUES}" var="t" itemValue="#{t.itemValue}" itemLabel="#{t.itemLabel}"/>
+                        </p:selectOneMenu>                        
+                        <p:selectOneMenu value="#{incidentMBean.value}" rendered="#{incidentMBean.showCombo and incidentMBean.field == 'status'}">
+                            <f:selectItems value="#{status.ALL_ENUM_VALUES}" var="s" itemValue="#{s.item}" itemLabel="#{s.item}"/>
+                        </p:selectOneMenu>                        
+                        <p:commandButton id="search-btn" type="button" value="Cari" icon="ui-icon-search">
+                            <p:ajax event="click" update="@form" process="@form"/>
+                        </p:commandButton>
+                        <p:commandButton id="clear-btn" type="button" value="Reset" icon="ui-icon-clear">
+                            <p:ajax event="click" update="@form" process="@form" listener="#{incidentMBean.reset}"/>
+                        </p:commandButton>
+                    </p:panelGrid>
+                </p:panelGrid>
+            </p:panelGrid>
+            <p:dataTable var="incident" tableStyle="table-layout:auto" value="#{incidentMBean.dataModel}" reflow="true" rowKey="#{incident.incidentid}"
+                         lazy="true" paginator="true" paginatorPosition="bottom" rows="#{viewBean.rowsPageDefault}" style="width: fit-content;"
+                         rowsPerPageTemplate="#{viewBean.rowsPerPageTemplate}" emptyMessage="Data tidak ditemukan">
+
+                <f:facet name="header">Daftar Insiden</f:facet>
+                <p:column headerText="No. Insiden">
+                    <h:outputText value="#{incident.incidentnumber}" />
+                </p:column>
+                <p:column headerText="Jenis">
+                    <h:outputText value="#{incidentMBean.getStringTipeIncident(incident.incidenttype)}" />
+                </p:column>
+                <p:column headerText="Status">
+                    <h:outputText value="#{incident.status}" />
+                </p:column>
+                <p:column headerText="Lokasi">
+                    <h:outputText value="#{incident.location}" />
+                </p:column>
+                <p:column headerText="Aksi">
+                    <p:commandButton value="Pilih" icon="ui-icon-local-grocery-store" >
+                        <p:confirm header="Tautkan Insiden" message="Tautkan insiden #{incident.incidentnumber} pada sighting ?" icon="ui-icon-alert"/>
+                        <p:ajax event="click" listener="#{incidentSightingMBean.getIncident(incident)}" update=":sighting-content:sighting-detail:browse-inc" process="@this"/> 
+                    </p:commandButton> 
+                </p:column>
+            </p:dataTable>
+        </p:panel>
+    </h:form>
+</ui:composition>

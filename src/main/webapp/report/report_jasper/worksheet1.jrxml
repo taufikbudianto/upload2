@@ -1,0 +1,1101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Worksheet1" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="cb3df7ad-9901-4877-8497-70e7c3bec77b">
+	<property name="ireport.zoom" value="1.3310000000000028"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="SEARCH_TARGET" class="java.lang.String"/>
+	<parameter name="LKP" class="java.lang.String"/>
+	<parameter name="TIME" class="java.lang.String"/>
+	<parameter name="HOUR_OF_DRIFT" class="java.lang.String"/>
+	<parameter name="SEA_CURRENT_VECTOR" class="java.lang.String"/>
+	<parameter name="SEA_CURRENT_KNOTS" class="java.lang.String"/>
+	<parameter name="SEA_CURRENT_DISTANCE" class="java.lang.String"/>
+	<parameter name="WIND_VECTOR" class="java.lang.String"/>
+	<parameter name="WIND_KNOTS" class="java.lang.String"/>
+	<parameter name="RECIPROCAL_WIND_VECTOR" class="java.lang.String"/>
+	<parameter name="RECIPROCAL_WIND_KNOTS" class="java.lang.String"/>
+	<parameter name="RECIPROCAL_WIND_VECTOR_30" class="java.lang.String"/>
+	<parameter name="RECIPROCAL_WIND_KNOTS_30" class="java.lang.String"/>
+	<parameter name="CURRENT_WIND_VECTOR" class="java.lang.String"/>
+	<parameter name="CURRENT_WIND_KNOTS" class="java.lang.String"/>
+	<parameter name="CURRENT_WIND_DISTANCE" class="java.lang.String"/>
+	<parameter name="LEEWAY_ANGLES" class="java.lang.String"/>
+	<parameter name="LEEWAY_VECTOR_LEFT" class="java.lang.String"/>
+	<parameter name="LEEWAY_VECTOR_RIGHT" class="java.lang.String"/>
+	<parameter name="LEEWAY_SPEED_BEFORE_MODIFIER" class="java.lang.String"/>
+	<parameter name="LEEWAY_MULTIPLIER" class="java.lang.String"/>
+	<parameter name="LEEWAY_MODIFIER" class="java.lang.String"/>
+	<parameter name="LEEWAY_SPEED" class="java.lang.String"/>
+	<parameter name="LEEWAY_DISTANCE" class="java.lang.String"/>
+	<parameter name="DRIFT_DISTANCE_RIGHT" class="java.lang.String"/>
+	<parameter name="DRIFT_DISTANCE_LEFT" class="java.lang.String"/>
+	<parameter name="DRIFT_DISTANCE_RIGHT_DE" class="java.lang.String"/>
+	<parameter name="DRIFT_DISTANCE_LEFT_DE" class="java.lang.String"/>
+	<parameter name="DRIFT_DISTANCE_LEFT_RIGHT" class="java.lang.String"/>
+	<parameter name="DRIFT_DISTANCE_DE" class="java.lang.String"/>
+	<parameter name="DISTRESS_CRAFT_ERROR" class="java.lang.String"/>
+	<parameter name="SEARCH_CRAFT_ERROR" class="java.lang.String"/>
+	<parameter name="TOTAL_PROBABLE_ERROR" class="java.lang.String"/>
+	<parameter name="SAFETY_FACTOR" class="java.lang.String"/>
+	<parameter name="SEARCH_RADIUS" class="java.lang.String"/>
+	<parameter name="SEARCH_RADIUS_ROUNDED" class="java.lang.String"/>
+	<parameter name="SEARCH_AREA" class="java.lang.String"/>
+	<parameter name="DATUM" class="java.lang.String"/>
+	<parameter name="user" class="java.lang.String"/>
+	<title>
+		<band height="81" splitType="Stretch">
+			<rectangle>
+				<reportElement uuid="44eece01-d12c-46f6-9fac-a03a365e0deb" x="0" y="40" width="555" height="20" backcolor="#B7B7B7"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="ec6f616a-0943-4904-bcf7-3d555e83ed1e" x="0" y="60" width="555" height="20" backcolor="#B7B7B7"/>
+			</rectangle>
+			<textField>
+				<reportElement uuid="2025e33a-4b62-48f4-bc1d-903951b30d3c" x="0" y="40" width="477" height="20"/>
+				<box leftPadding="4"/>
+				<textElement>
+					<font fontName="SansSerif" size="15" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Worksheet 1: Maritime Planning"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="3c417635-bec0-4243-aa60-985b27e50631" x="0" y="62" width="477" height="19"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[INCIDENT]]></text>
+			</staticText>
+			<textField pattern="dd-MM-yyyy HH:mm">
+				<reportElement uuid="7402473f-017d-4b5f-a73c-8baa1cf23a60" x="454" y="0" width="101" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="8bbb30c8-de84-49c1-8ba1-bcc5de182f3f" x="378" y="19" width="177" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["User : " +$P{user}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="64818897-1130-488b-8d56-20c8e65359cd" x="378" y="0" width="76" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tanggal Cetak : ]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageFooter>
+		<band height="20">
+			<textField>
+				<reportElement uuid="e8950624-3fb7-44f8-9214-169d2c571dc1" x="435" y="0" width="80" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="f72886b8-ea3c-40a9-be85-6668e0769563" x="515" y="0" width="40" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="673">
+			<rectangle>
+				<reportElement uuid="15720bf8-33d3-47d0-9f03-e61ec2c2f94c" x="0" y="0" width="186" height="20" backcolor="#D9D9D9"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="e59d9698-fbd5-4e89-b65d-3c508e338b85" x="0" y="1" width="186" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Search Target (description) : ]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="8048a96c-bece-4452-8332-aed115419689" x="0" y="20" width="186" height="20" backcolor="#D9D9D9"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="bf7eb2fc-4b0f-4d39-961b-046e15cec142" x="0" y="20" width="186" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[LKP (lat/long) : ]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="20f3b8b2-d7d7-4836-a545-eea73d4448a0" x="0" y="40" width="186" height="20" backcolor="#D9D9D9"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="c8944fd6-1685-4363-b887-982c4d9435b8" x="0" y="40" width="186" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[@Time (UTC) : ]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="6a6d238f-9ed5-4f55-91d2-3dbabfac1478" x="0" y="60" width="186" height="20" backcolor="#D9D9D9"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="b2372b9c-122b-403f-b8e2-cf30074ba197" x="0" y="60" width="186" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Hours of Drift (a) : ]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="1b4e0921-e2c2-419c-8bed-5a59a270e761" x="185" y="0" width="370" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="a9eb9be6-45ab-416d-97c2-e8b3d5760685" x="185" y="20" width="370" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="7b483c9a-74bf-4dc2-a9ef-9f045ac074e0" x="185" y="40" width="370" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="cc417b6e-25a4-415a-b9fc-74657bd5e46d" x="185" y="60" width="370" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="3b0288d4-e072-4fe0-9278-f6e14651afee" x="0" y="80" width="555" height="20" backcolor="#B7B7B7"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="ea39504a-a01a-415f-9584-87af4e94de00" x="0" y="80" width="477" height="19"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SEA CURRENT]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="19650f86-9182-4a17-8e9a-9ea6c890b646" x="186" y="100" width="369" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="707a6f1a-58b8-4c32-8576-b997edee843a" x="0" y="100" width="186" height="20" backcolor="#D9D9D9"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="b4ed8145-9277-45d3-adbb-175f5e8a8fe0" x="0" y="100" width="186" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Sea / tidal current/knots]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="8ccfbcd6-9d8e-479b-8a42-21f6d7ba2bbd" x="0" y="120" width="186" height="20" backcolor="#D9D9D9"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="550a1f11-4a20-4e69-94b7-7fb9355b7a39" x="0" y="120" width="186" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Sea Current vector/distance:
+]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="edefedfd-02cf-4e6c-b879-af22ce65eb6e" x="186" y="120" width="369" height="20"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="c1c655e0-9459-4e06-a1e8-e483171ff037" x="370" y="120" width="19" height="20"/>
+				<box topPadding="4"/>
+				<textElement/>
+				<text><![CDATA[ x ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="43b67ee0-5c57-4f5c-934a-c6128710cb38" x="426" y="120" width="51" height="20"/>
+				<box topPadding="4"/>
+				<textElement/>
+				<text><![CDATA[(a)hrs =
+]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="d51b590c-33fd-4ca1-a656-d77b0ab41ad7" x="0" y="140" width="555" height="20" backcolor="#B7B7B7"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="ca1ae9de-3f73-4cf9-a954-ea489f49f81e" x="0" y="140" width="477" height="19"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SURFACE WIND and CALCULATION OF WIND CURRENT
+]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="e1a4c29f-fc82-4283-ad48-29bfd57a8b9f" x="0" y="160" width="186" height="28" backcolor="#D9D9D9"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="1999776d-676f-4ec7-9a48-bb3ff989b282" x="0" y="188" width="186" height="20" backcolor="#D9D9D9"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="41ed7c94-0730-442b-a0b3-fd17fa39d3b0" x="0" y="164" width="186" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Surface winds/knots
+]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="70951afe-6af9-4098-b81d-3477310d99f3" x="0" y="208" width="186" height="29" backcolor="#D9D9D9"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="f15eaa39-78bd-449b-bc56-45f4012b7424" x="0" y="188" width="186" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Reciprocal of Surface Winds/Knots (b) ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="8a10cce9-aa44-49be-bfeb-482b6f26d92e" x="0" y="208" width="186" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Wind current vector: (use reciprocal
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="de7fafc5-0af9-433f-b5e9-181bc9b66181" x="0" y="218" width="186" height="19"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[bearing and divergence (Figure I-1)
+]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="8f766fc3-9856-4162-baac-f64af447abf1" x="186" y="160" width="369" height="28"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="df721572-167f-4358-8555-f28b586b610b" x="186" y="188" width="369" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="105394b3-b504-4f01-9fd8-f0232e310e23" x="186" y="208" width="369" height="29"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="b1ea996b-83e5-4394-a12f-1e4be892b5f3" x="0" y="237" width="555" height="20" backcolor="#B7B7B7"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="52a198bc-84f4-4f47-a4ad-fb5c1a8ebdd5" x="0" y="238" width="477" height="19"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TARGET LEEWAY
+]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="9447a6e5-c4e5-4abd-99a3-11a196c3cbb5" x="0" y="257" width="186" height="29" backcolor="#D9D9D9"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="16710a9d-2f84-45dc-b224-60bd035ae8af" x="0" y="257" width="186" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Leeway Angles (divergence)
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="3b36ed44-2e79-4b36-9212-b2102803c61f" x="0" y="267" width="186" height="19"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[(Table I.1 or I.2):
+]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="c134bcb3-1c62-43d8-b2a4-4c9be87c35bd" x="325" y="160" width="230" height="28"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="aea8f4bf-302b-405f-9038-53d1aafe54cc" x="325" y="169" width="230" height="19"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Center" rotation="None">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[- 30 for LKP greater than 10 South Latitude
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="638eb6ef-5407-4d64-99a0-2d48809cbae8" x="325" y="160" width="230" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Wind Current Divergence = Reciprocal Surface Wind
+]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="f351bd28-96b5-4324-a304-12e31dfee2f2" x="186" y="257" width="369" height="29"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="d1557e04-2593-44d6-864b-4b99f99100e3" x="186" y="257" width="217" height="29"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="db2a516b-ee83-473c-b690-f61b6894f25d" x="403" y="257" width="152" height="29"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="b09b8b7c-a3c7-42b5-8230-38b8b7603946" x="186" y="262" width="138" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Reciprocal Surface Wind (b)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="8627be83-a39c-4451-a78f-9744ff6609f4" x="403" y="262" width="19" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement/>
+				<text><![CDATA[±
+]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="d557581e-f8eb-4ce5-9c09-2d20e5cad462" x="0" y="286" width="186" height="20" backcolor="#D9D9D9"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="c9787fc5-2eec-4b4f-b6bb-d436b0da8401" x="0" y="286" width="186" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Leeway vector: (LW)
+]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="997d498b-4f4a-4f00-8297-b6671dd73943" x="186" y="286" width="369" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="2b128e48-a5ef-41e4-a446-a25cf3d8c234" x="186" y="286" width="183" height="20"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="23deea86-e602-4de3-97b9-0924d8f1d674" x="186" y="286" width="49" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement/>
+				<text><![CDATA[L W (L) - ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="67cc3ae2-5a48-4079-81c4-05ab73dc7a01" x="370" y="286" width="51" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement/>
+				<text><![CDATA[L W (R) + ]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="e270b636-9e48-4181-b430-32734c544f7c" x="0" y="306" width="186" height="38" backcolor="#D9D9D9"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="59950668-822f-4dae-8071-2c78fb605acc" x="0" y="306" width="186" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Leeway speed: (knots) = (Multiplier x
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="3032d06a-b9e3-4a9a-b600-b07090ca60d3" x="0" y="315" width="186" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Wind Speed) ± Modifier ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="4a37f380-ef6d-4f55-b098-b692a2fd1c15" x="0" y="326" width="186" height="18"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[(Table I.1 or I.2) ]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="b9b19309-58f1-4b9c-aadd-c85e0dc04c1f" x="186" y="306" width="369" height="38"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="cabee51a-9ece-4a03-8a32-9ee66e4979d9" x="186" y="315" width="9" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="3be43acd-21b3-4488-8f57-b3ceb599e7d3" x="230" y="315" width="52" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Multiplier x]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="49abc381-d5db-4a8a-815c-663ad2dcc130" x="317" y="315" width="72" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Wind Speed =]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="3dd03f0d-1a1e-41ac-ad83-cefb722cfad2" x="420" y="315" width="7" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[]]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="78de89b2-c72c-4c35-806d-39cb6c6e82de" x="426" y="315" width="11" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement/>
+				<text><![CDATA[±
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="794bdcfc-c86d-4546-9496-a950bb52045c" x="465" y="315" width="52" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Modifier =]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="7ba291d9-8a6b-495c-84c6-2fc8db455017" x="0" y="344" width="186" height="20" backcolor="#D9D9D9"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="a3ddb6eb-9b75-4f23-8996-1fde00359b82" x="0" y="344" width="186" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Leeway distance: ]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="92a68e8c-a737-4fa6-9d10-ee00d127c081" x="186" y="344" width="369" height="20"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="07dbf70d-1ecf-44c8-9a16-1c5d7f7c5a40" x="186" y="344" width="72" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Leeway speed]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="72d62838-1893-40e0-9283-3c4412c36a95" x="324" y="344" width="21" height="20"/>
+				<box topPadding="4"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[x(a)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="af9d639f-2589-47e5-aa77-a1d2d5f2f7f1" x="382" y="344" width="51" height="20"/>
+				<box topPadding="4"/>
+				<textElement/>
+				<text><![CDATA[hrs = ]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="938218b3-e510-4891-b335-e4025c746653" x="0" y="364" width="555" height="20" backcolor="#B7B7B7"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="920c085b-d7fd-4dc8-9166-7eb77011fdb6" x="0" y="364" width="477" height="19"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DRIFT ERROR]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="92211989-c298-42ae-9c29-062fe4644bb8" x="0" y="384" width="169" height="20" backcolor="#D9D9D9"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="c2f37e6c-97ed-4810-a4bc-3fcf48b4e8e9" x="0" y="385" width="169" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Distance (L)
+]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="03d830a0-271b-4731-8b67-73bb46278b5e" x="169" y="384" width="97" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="0ba8dbb3-e39b-4c96-92f9-0f421c9f5d1d" x="443" y="384" width="112" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="6879347a-556a-414b-93a8-de6fc7735452" x="266" y="384" width="177" height="20" backcolor="#D9D9D9"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="b4e834ed-9bd3-41ec-8703-03fb8e3851c3" x="267" y="385" width="174" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Distance (R)
+]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="6be931c9-9416-491a-bc47-1c358466638d" x="0" y="404" width="169" height="20" backcolor="#D9D9D9"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="8a8212e4-0101-40f2-9590-124a7242b9db" x="0" y="404" width="169" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[de (L):(12.5 to 33% of Distance L)
+]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="e0d1affa-3e94-4092-9a3e-074f46f44954" x="169" y="404" width="97" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="eaf14686-37de-4519-9725-e3fa3b1cc31d" x="266" y="404" width="177" height="20" backcolor="#D9D9D9"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="2049b135-fc1c-4db2-b151-fba94272518c" x="267" y="404" width="176" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[de (R):(12.5 to 33% of Distance R)
+]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="57669d60-8e2a-4332-b823-5f1e6128be8e" x="443" y="404" width="112" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="8afa6c36-0ccc-435c-9305-ae4de27d1294" x="0" y="424" width="87" height="29" backcolor="#D9D9D9"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="b89415ce-89cf-4168-8907-af5b1c9503bb" x="87" y="424" width="82" height="29"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="c484a1eb-7a1f-4261-a8d5-1c7946451355" x="0" y="424" width="87" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Distance]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f9a621f2-6e04-4926-9afd-8914f8b76b88" x="0" y="433" width="87" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Left/Right =]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="b11236f9-6c48-40db-a786-43839077a487" x="169" y="424" width="196" height="29" backcolor="#D9D9D9"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="4781ddfc-3eda-4999-9f0c-b4a702b1eb77" x="365" y="424" width="190" height="29"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="cefc1fc3-be1b-40fb-913e-00040d769328" x="199" y="424" width="166" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Center">
+					<font size="9" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[[de (L) + de (R) + Distance L/R]
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f952fc69-dd28-4af2-9f67-936123d19c8a" x="169" y="424" width="30" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Center">
+					<font size="9" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[De =]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="3eb874a7-ee12-4214-8c0c-d5db73930422" x="199" y="433" width="166" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Center">
+					<font size="9" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[2]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="3b095a53-8562-42d0-b731-ec7afb1e1efa" x="365" y="428" width="30" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Center">
+					<font size="9" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[De =]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="2460516e-7035-4097-ac78-7f892d8ccfbe" x="0" y="453" width="555" height="20" backcolor="#B7B7B7"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="147654f7-9b22-407f-820b-7a729ded7599" x="0" y="454" width="477" height="19"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FIX ERRORS ]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="86af5006-a214-4f46-add9-a2371f2201e5" x="0" y="473" width="266" height="20" backcolor="#D9D9D9"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="90ac2fe5-cde7-46a2-8993-0c9c3b0ac18f" x="266" y="473" width="289" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="72224579-8eca-4e2d-9afc-2415b0721146" x="0" y="493" width="266" height="20" backcolor="#D9D9D9"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="cb81707b-67f2-467a-8ae3-d2ace61c30b7" x="266" y="493" width="289" height="20"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="f75c6c7c-35b5-4790-8301-69efa92ca300" x="0" y="473" width="266" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Distress craft error (x): (Table J.1, J.2 or J.3) ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="af5f1c0d-58bd-4e50-aca6-46f97b7d30b4" x="0" y="493" width="266" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Search craft error (y): (Table J.1, J.2 or J.3) ]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="59e91083-efeb-42ae-92c3-a0e14fcb262c" x="0" y="513" width="555" height="20" backcolor="#B7B7B7"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="0a88cb64-b853-49b6-ac34-aedab5afd8e1" x="0" y="514" width="477" height="19"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL ERROR (E)
+]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="4e66e0c8-3bb4-4d05-a6c3-661ab3b8593b" x="266" y="533" width="289" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="9b6adc2c-c088-4b3e-afe7-91055dcd302e" x="0" y="533" width="266" height="20" backcolor="#D9D9D9"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="211d9f75-2f85-4e07-8ac5-a4f7f64186e3" x="0" y="533" width="266" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Total probable error (E): E=  (De² + x² + y² ) ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="4b2410a8-e983-480e-b824-f02773167c72" x="266" y="533" width="38" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[E = ]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="fbd919da-3d86-4cfc-95cb-e8c8e2889632" x="0" y="553" width="555" height="20" backcolor="#B7B7B7"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="6a290fa6-36ce-44c4-8fc4-bce819524616" x="0" y="553" width="477" height="19"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SEARCH AREA
+]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="c1bd43b1-3f35-4dbd-b763-4edcfe7f91fd" x="0" y="573" width="215" height="20" backcolor="#D9D9D9"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="5d3c1e3c-ee0d-4bae-b653-4a2047875f7a" x="0" y="593" width="215" height="20" backcolor="#D9D9D9"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="7c5f2dc4-9701-473f-99e7-7bc38f37a6eb" x="0" y="613" width="215" height="20" backcolor="#D9D9D9"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="e6527358-2239-4a99-a840-5e7d604562f6" x="0" y="633" width="215" height="20" backcolor="#D9D9D9"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="7a0abba4-d2e4-4427-b34a-1b9e953a75da" x="215" y="573" width="340" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="a8069cf3-8a2d-4b24-8efa-2043a3a5bf48" x="215" y="593" width="340" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="defa68dd-d539-4d21-b808-09703222eebe" x="215" y="613" width="340" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="e478f31a-58d6-4e89-aa73-92d20adf811a" x="215" y="633" width="340" height="20"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="a249b1d8-2ecf-44b9-84b2-5b4c1147b6a1" x="0" y="593" width="215" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Search radius (E x fs) ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="4b123d95-6693-4576-996e-5b6320bf0d7d" x="0" y="613" width="215" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Search radius rounded up to whole figure: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="4fab0128-a0b6-4949-a1eb-0d185f13e726" x="0" y="633" width="215" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Sea Current vector/distance:
+]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="b2ccce91-41e3-46fe-a54a-997bf7e0a6e0" x="224" y="573" width="195" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Right" markup="none">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{SAFETY_FACTOR}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement uuid="f119c2b0-812e-4e69-9a91-65f1e7ad4706" x="325" y="188" width="78" height="20" backcolor="#D9D9D9"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="d068ee26-ae66-4d8a-ba2c-830b22aa746c" x="328" y="188" width="74" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[- 30 °T = ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="5507dcba-f2c1-4c24-9caf-f0bcc86a76ca" x="237" y="213" width="66" height="20"/>
+				<box topPadding="4"/>
+				<textElement/>
+				<text><![CDATA[(a)hours   x]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="957b1f75-4473-4997-a3f3-cccf37853538" x="340" y="213" width="103" height="20"/>
+				<box topPadding="4"/>
+				<textElement/>
+				<text><![CDATA[knots (Figure I-1) =]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="9c78e8c1-d6b4-4ea6-a776-6f0aaaeb3119" x="186" y="0" width="317" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$P{SEARCH_TARGET}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="d188e6ff-c66c-4c71-b4bb-6794a5e9a717" x="186" y="21" width="317" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$P{LKP}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="fdcf48d2-e755-4d67-8669-51bf696610a0" x="186" y="41" width="317" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$P{TIME}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="14b40856-806f-424a-8bd1-fcd1ab75bbfc" x="186" y="60" width="317" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$P{HOUR_OF_DRIFT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="65a25116-a403-4e5f-863b-ee6ebea14dfe" x="186" y="99" width="131" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$P{SEA_CURRENT_VECTOR} + " °(T) "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="efc6a4d2-4da8-4f47-8dc9-682dd6953e98" x="328" y="100" width="149" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$P{SEA_CURRENT_KNOTS} + " knots "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="ed916ee6-1027-4733-b0e1-f7ee8c07d897" x="193" y="164" width="59" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$P{WIND_VECTOR} + " °(T) "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="365f686a-3541-422f-8faf-9fece07649bc" x="482" y="120" width="65" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$P{SEA_CURRENT_DISTANCE} + " nm "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="9fd8235f-cec9-4773-8967-2a86e286bca6" x="258" y="165" width="59" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$P{WIND_KNOTS} + " knots "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="8f1f1874-0e3e-44f8-972d-65f50fd4e9de" x="258" y="188" width="59" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$P{WIND_KNOTS} + " knots "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="0c6a6b1b-5976-4121-a2f9-6ba176bac928" x="194" y="188" width="58" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$P{RECIPROCAL_WIND_VECTOR} + " °(T) "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="8c2190f0-c60f-4e9d-9368-90dc99fc25e1" x="409" y="188" width="49" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$P{RECIPROCAL_WIND_VECTOR_30} + " °(T) "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="d22e6b15-4dd1-43de-bde9-c61bb2f24de8" x="464" y="188" width="83" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$P{RECIPROCAL_WIND_KNOTS_30} + " knots "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="5531ea1c-48ca-4ac3-aefa-18b1a801a563" x="194" y="213" width="36" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$P{HOUR_OF_DRIFT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="99d94b06-5c5d-4030-9274-0f78891afadd" x="304" y="213" width="28" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$P{CURRENT_WIND_KNOTS}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="e3f690a6-02b4-4fc3-90ea-7d9c9fe55237" x="446" y="213" width="46" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$P{CURRENT_WIND_VECTOR} + " °(T) "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="dfc5f421-cee4-4646-89e0-4cc8186f6c06" x="503" y="213" width="44" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$P{CURRENT_WIND_DISTANCE} + " nm "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="1f445017-e908-4889-9aeb-cde24d339d6f" x="328" y="262" width="67" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$P{RECIPROCAL_WIND_VECTOR} + " °(T) "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="5b55fb74-66f2-4a97-914b-abe705557b38" x="426" y="262" width="121" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$P{LEEWAY_ANGLES} + " °(T) "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="7acc408c-11ec-46d1-ae09-0dcad1794fae" x="246" y="286" width="113" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$P{LEEWAY_VECTOR_LEFT} + " °(T) "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="9fc8ce24-4a4a-4d2a-91b0-efe1e2967f36" x="426" y="286" width="121" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$P{LEEWAY_VECTOR_RIGHT} + " °(T) "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="92dd54da-9b59-4a6d-9d5e-4b664cb40226" x="266" y="344" width="51" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$P{LEEWAY_SPEED}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="399258d5-9283-49b5-a78f-d46098996b7e" x="441" y="344" width="95" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$P{LEEWAY_DISTANCE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="47ef0b87-0158-480f-8b39-2b781e5b2fca" x="173" y="383" width="85" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$P{DRIFT_DISTANCE_LEFT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="d0f2b276-c816-4af2-85f1-3319a4ba37d7" x="173" y="403" width="85" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$P{DRIFT_DISTANCE_LEFT_DE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="930ce6d0-4b83-4954-9049-51b95c6b21d5" x="457" y="385" width="90" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$P{DRIFT_DISTANCE_RIGHT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="d982a1d4-c64a-4e1f-9af5-4023adc229e1" x="457" y="403" width="90" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$P{DRIFT_DISTANCE_RIGHT_DE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="b00b23e2-1851-44d1-823e-bf5c4cff197f" x="87" y="428" width="65" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$P{DRIFT_DISTANCE_LEFT_RIGHT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="dceb4c06-4aa1-4161-a137-0f2cc03e61ea" x="404" y="428" width="132" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$P{DRIFT_DISTANCE_DE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="331cbf6c-bffe-48ce-bb04-ab2da7d7e19e" x="281" y="473" width="196" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$P{DISTRESS_CRAFT_ERROR}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="68f2d67f-7c1a-466e-8425-ea563acff198" x="281" y="494" width="196" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$P{SEARCH_CRAFT_ERROR}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="f921109a-b657-4764-8413-c69f73b25275" x="308" y="533" width="228" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$P{TOTAL_PROBABLE_ERROR}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="0a96bce4-5d6f-4611-9543-e0d3ef28cf03" x="224" y="592" width="195" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$P{SEARCH_RADIUS}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="ba3d8c06-52a6-46cd-b78f-927bc9e64abb" x="224" y="613" width="193" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$P{SEARCH_RADIUS_ROUNDED}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="9ad530b0-db2a-4165-8ad8-a6cf2c043177" x="224" y="633" width="193" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{SEARCH_AREA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="6b36a592-4746-438f-ae78-1dbf1794c3cf" x="186" y="120" width="96" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$P{SEA_CURRENT_VECTOR} + " °(T) "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="912f88c7-7a7c-4446-9f5c-13ef051c6950" x="291" y="119" width="74" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$P{SEA_CURRENT_KNOTS} + " knots "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="b9303081-1ce8-4885-b43e-27805e0648bd" x="389" y="120" width="31" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$P{HOUR_OF_DRIFT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="8647ae13-ff30-46d3-9022-8f7959d1121c" x="195" y="315" width="28" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{LEEWAY_MULTIPLIER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="a6f1573f-202c-4dba-a84f-2143de916cc2" x="282" y="315" width="28" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{RECIPROCAL_WIND_KNOTS}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="e2f9d78d-80ce-48fc-82a2-a97b795df34b" x="389" y="315" width="28" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{LEEWAY_SPEED_BEFORE_MODIFIER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="dbe3dad0-2a96-4d0f-8683-81415d71bc5e" x="436" y="315" width="22" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{LEEWAY_MODIFIER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="91110df3-f171-4f2b-8de8-bb04803e6871" x="519" y="315" width="28" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{LEEWAY_SPEED}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="dc97f81e-ffa6-4a17-98b5-abe3eb09a441" x="348" y="344" width="28" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$P{HOUR_OF_DRIFT}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement uuid="f772150b-654d-49e5-8b56-c659af4cefb0" x="0" y="653" width="215" height="20" backcolor="#D9D9D9"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="96fca90e-e001-46e6-810d-807b4b4e6420" x="215" y="653" width="340" height="20"/>
+			</rectangle>
+			<textField>
+				<reportElement uuid="fae22ebf-47b2-43d6-9d21-b23479569529" x="224" y="653" width="323" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{DATUM}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="d50c1b4e-9435-469c-9a33-293ef61ca96c" x="0" y="653" width="215" height="20"/>
+				<box topPadding="4" leftPadding="4"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Datum (lat/long)]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

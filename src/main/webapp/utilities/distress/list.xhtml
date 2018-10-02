@@ -1,0 +1,26 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">      
+    <ui:define name="title">Distress Beacon</ui:define>
+    <ui:define name="content">
+        <p:panel>
+            <p:tabView class="card" prependId="false">
+                <p:tab title="Message">
+                    <ui:include src="./message.xhtml"/>
+                </p:tab>
+                <p:tab title="Narratives">
+                    <ui:include src="./narratives.xhtml"/>
+                </p:tab>
+                <p:tab title="Elementals">
+                    <ui:include src="./elementals.xhtml"/>
+                </p:tab>
+                <p:tab title="Composites">
+                    <ui:include src="./composites.xhtml"/>
+                </p:tab>
+            </p:tabView> 
+        </p:panel>
+    </ui:define>
+</ui:composition>

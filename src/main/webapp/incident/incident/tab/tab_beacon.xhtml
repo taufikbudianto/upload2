@@ -1,0 +1,88 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <p:panel id="detail-beacon">
+        <p:panelGrid columns="2" styleClass="ui-panelgrid-blank" style="width: 1250px;">
+            <p:panelGrid columns="2" styleClass="ui-panelgrid-blank">
+                <p:outputLabel value="Beacon ID" />
+                <h:panelGrid columns="5">
+                    <p:inputText size="40" style="width: 170px;" value="#{beaconCompositeMBean.composite.beaconid}"
+                                 disabled="true"/>
+                    <p:spacer width="20"/>
+                    <p:commandButton icon="ui-icon-search" title="Lihat" disabled="#{beaconCompositeMBean.disabled}">
+                        <p:ajax event="click" update="@this" listener="#{beaconCompositeMBean.showBeaconComposite}"/>
+                    </p:commandButton>                    
+                    <p:spacer width="20"/>
+                    <p:commandButton icon="ui-icon-do-not-disturb-on" title="Hilangkan" class="red-btn" disabled="#{beaconCompositeMBean.disabled or empty beaconCompositeMBean.composite.compositeid}">
+                        <p:confirm header="Tautan Beacon" message="Hilangkan tautan beacon #{beaconCompositeMBean.composite.beaconid} pada insiden ?" icon="ui-icon-alert"/>
+                        <p:ajax event="click" listener="#{beaconCompositeMBean.deleteComposite(beaconCompositeMBean.composite)}" update=":incidentdetail:detail-beacon"/>
+                    </p:commandButton>                    
+                </h:panelGrid>
+                <p:outputLabel value="Latitude"/>
+                <h:panelGrid columns="7">
+                    <p:inputText size="40" style="width: 30px;" value="#{beaconCompositeMBean.coordinateLat.degree}"
+                                 disabled="true"/>
+                    <p:outputLabel value="°"/>
+                    <p:inputText size="40" style="width: 30px;" value="#{beaconCompositeMBean.coordinateLat.minute}"
+                                 disabled="true"/>
+                    <p:outputLabel value="'"/>
+                    <p:inputText size="40" style="width: 30px;" value="#{beaconCompositeMBean.coordinateLat.second}"
+                                 disabled="true"/>
+                    <p:outputLabel value="&quot;"/>
+                    <p:selectOneMenu id="lu" style="width: 50px;" value="#{beaconCompositeMBean.coordinateLat.garis}" disabled="true">
+                        <f:selectItem itemValue="" itemLabel=""/>
+                        <f:selectItem itemValue="0" itemLabel="LU"/>
+                        <f:selectItem itemValue="1" itemLabel="LS"/>
+                    </p:selectOneMenu>
+                </h:panelGrid>                
+                <p:outputLabel value="Longitude"/>
+                <h:panelGrid columns="7">
+                    <p:inputText size="40" style="width: 30px;" value="#{beaconCompositeMBean.coordinateLong.degree}"
+                                 disabled="true"/>
+                    <p:outputLabel value="°"/>
+                    <p:inputText size="40" style="width: 30px;" value="#{beaconCompositeMBean.coordinateLong.minute}"
+                                 disabled="true"/>
+                    <p:outputLabel value="'"/>
+                    <p:inputText size="40" style="width: 30px;" value="#{beaconCompositeMBean.coordinateLong.second}"
+                                 disabled="true"/>
+                    <p:outputLabel value="&quot;"/>
+                    <p:selectOneMenu id="bt" style="width: 50px;" value="#{beaconCompositeMBean.coordinateLong.garis}" disabled="true">
+                        <f:selectItem itemValue="" itemLabel=""/>
+                        <f:selectItem itemValue="0" itemLabel="BT"/>
+                        <f:selectItem itemValue="1" itemLabel="BB"/>
+                    </p:selectOneMenu>
+                </h:panelGrid>                
+            </p:panelGrid> 
+            <p:panelGrid columns="2" styleClass="ui-panelgrid-blank grid-pad">
+            </p:panelGrid>
+        </p:panelGrid>
+        <p:panelGrid columns="1" style="width: content-box;" styleClass="ui-panelgrid-blank">
+            <p:tabView id="tab-view">
+
+                <!--<p:ajax event="tabChange" listener="{registrasiBeaconMBean.onTabChangeBeacon}" update="tabViewBeacon" process="@this"/>-->
+
+                <p:tab title="Pemilik">
+                    <ui:include src="beacon/pemilik.xhtml"/>
+                </p:tab>
+                <p:tab title="Detail PLB" disabled="#{beaconCompositeMBean.detailPlb}">
+                    <ui:include src="beacon/detail_plb.xhtml"/>
+                </p:tab>
+                <p:tab title="Detail ELT" disabled="#{beaconCompositeMBean.detailElt}">
+                    <ui:include src="beacon/detail_elt.xhtml"/>
+                </p:tab>
+                <p:tab title="Detail EPIRB" disabled="#{beaconCompositeMBean.detailEpirb}">
+                    <ui:include src="beacon/detail_epirb.xhtml"/>
+                </p:tab>
+            </p:tabView>
+        </p:panelGrid>
+    </p:panel>   
+    <p:dialog id="composite-dialog" widgetVar="wgComposite"
+              width="50%" height="90%"
+              appendTo="@(body)" 
+              responsive="true" modal="true"
+              maximizable="true" resizable="false">
+        <ui:include src="beacon/composite.xhtml"/>
+    </p:dialog>
+</ui:composition>

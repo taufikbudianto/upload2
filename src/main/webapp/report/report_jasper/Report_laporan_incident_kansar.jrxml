@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Report_laporan_incident_kansar" pageWidth="1656" pageHeight="1440" whenNoDataType="BlankPage" columnWidth="1656" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="2bbcbf35-b5ef-4c00-9ed9-918bee15327f">
+	<property name="ireport.zoom" value="6.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="KANTORSARNAME" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select * from MST_KANTORSAR
+WHERE ($P{KANTORSARNAME} = 'ALL' or KANTORSARNAME = $P{KANTORSARNAME})]]>
+	</queryString>
+	<field name="KANTORSARID" class="java.lang.String"/>
+	<field name="KANTORSARNAME" class="java.lang.String"/>
+	<field name="ADDRESS" class="java.lang.String"/>
+	<field name="LONGITUDE" class="java.lang.String"/>
+	<field name="LATITUDE" class="java.lang.String"/>
+	<field name="PHONENUMBER1" class="java.lang.String"/>
+	<field name="PHONENUMBER2" class="java.lang.String"/>
+	<field name="PHONENUMBER3" class="java.lang.String"/>
+	<field name="FAXNUMBER" class="java.lang.String"/>
+	<field name="RADIOFREQUENCY" class="java.lang.String"/>
+	<field name="CONTACTNAME" class="java.lang.String"/>
+	<field name="CONTACTPOSITION" class="java.lang.String"/>
+	<field name="CONTACTMOBILEPHONE" class="java.lang.String"/>
+	<field name="SITEID" class="java.lang.String"/>
+	<field name="DATECREATED" class="oracle.sql.TIMESTAMP"/>
+	<field name="CREATEDBY" class="java.lang.String"/>
+	<field name="LASTMODIFIED" class="oracle.sql.TIMESTAMP"/>
+	<field name="MODIFIEDBY" class="java.lang.String"/>
+	<field name="USERSITEID" class="java.lang.String"/>
+	<field name="ISDELETED" class="java.math.BigDecimal"/>
+	<field name="KANTORSARNAME_SIMPEG" class="java.lang.String"/>
+	<group name="KANTORSARNAME">
+		<groupExpression><![CDATA[$F{KANTORSARNAME}]]></groupExpression>
+	</group>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<textField>
+				<reportElement uuid="86748a32-66de-4b24-a4c6-ed8e310cd18d" positionType="Float" x="0" y="0" width="1537" height="20"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{KANTORSARNAME}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

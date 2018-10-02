@@ -1,0 +1,235 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="form-resSaranaInput">
+        <!--        <p:messages/>-->
+        <p:panel class="card" header="Detail Sarana" >
+            <p:messages closable="true"/>
+            <div class="ui-g-12 ui-lg-6 value-readonly">
+                <p:panel>
+                    <p:panelGrid columns="2" layout="grid" 
+                                 styleClass="ui-panelgrid-blank form-group" 
+                                 columnClasses="ui-grid-col-4,ui-grid-col-10" 
+                                 class="no-border no-padding no-padding-table ui-fluid" style="max-width: 500px">
+                        <p:outputLabel value="Kode"/>
+                        <p:inputText value="#{resSaranaMBean.resAsset.code}" maxlength="50" disabled="#{resSaranaMBean.disabled}"/>
+
+                        <p:outputLabel value="Nama"/>
+                        <p:inputText value="#{resSaranaMBean.resAsset.name}" maxlength="300" disabled="#{resSaranaMBean.disabled}" required="true" requiredMessage="Nama harus diisi"/>
+
+                        <p:outputLabel value="Tipe"/>
+                        <p:selectOneMenu style="margin-bottom:10px;" value="#{resSaranaMBean.assetname}"
+                                         required="true" requiredMessage="Tipe harus dipilih" disabled="#{resSaranaMBean.disabled}"> 
+                            <f:selectItems value="#{resSaranaMBean.listAssetType}" />
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="Kondisi"/>
+                        <p:inputText value="#{resSaranaMBean.resAsset.assetcondition}" maxlength="50" disabled="#{resSaranaMBean.disabled}"/>
+
+                        <p:outputLabel value="Jumlah"/>
+                        <p:inputText value="#{resSaranaMBean.resAsset.goodqty}" disabled="#{resSaranaMBean.disabled}" onkeypress="return isNumber(event);"/>
+
+                        <p:outputLabel value="Kapasitas"/>
+                        <p:inputText value="#{resSaranaMBean.resAsset.cargo}" maxlength="250" disabled="#{resSaranaMBean.disabled}" onkeypress="return isNumber(event);"/>
+
+                        <p:outputLabel value="Fungsi"/>
+                        <p:inputTextarea value="#{resSaranaMBean.resAsset.functional}" maxlength="200" disabled="#{resSaranaMBean.disabled}"/>
+
+                        <p:outputLabel value="Status"/>
+                        <p:selectOneMenu id="status" value="#{resSaranaMBean.resAsset.status}" disabled="#{resSaranaMBean.disabled}">
+                            <f:selectItem itemLabel="" itemValue="" />
+                            <f:selectItem itemLabel="Tidak Beroperasi" itemValue="0" />
+                            <f:selectItem itemLabel="Beroperasi" itemValue="1" />
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="Tipe Operasional" />
+                        <p:selectOneMenu value="#{resSaranaMBean.resAsset.op_type}" disabled="#{resSaranaMBean.disabled}">
+                            <!--<p:ajax listener="{resSaranaMBean.onKolomPencarianChange()}" update="@form"/>-->
+                            <f:selectItems value="#{resSaranaMBean.listOperationalType}" />
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                </p:panel>
+            </div>
+
+            <div class="ui-g-12 ui-lg-6 value-readonly">
+                <!--Right Side--> 
+                <p:panel id="idPanelSaranaInputRight">
+                    <p:panelGrid columns="3" layout="grid" 
+                                 styleClass="ui-panelgrid-blank form-group" 
+                                 columnClasses="ui-grid-col-6,ui-grid-col-12,ui-grid-col-3" 
+                                 class="no-border no-padding no-padding-table ui-fluid" style="max-width: 500px">
+                        <p:outputLabel value="Nama KanSAR"/>
+                        <p:selectOneMenu value="#{resSaranaMBean.kantorsarname}"
+                                         required="true" requiredMessage="Kansar harus dipilih" disabled="#{resSaranaMBean.disabled}">
+                            <f:selectItem itemLabel="" itemValue="" />
+                            <f:selectItems value="#{resSaranaMBean.listKantorSar}"/>
+                        </p:selectOneMenu>
+                        <br/>
+
+                        <p:outputLabel value="Nama Potensi"/>
+                        <h:outputText value="#{resSaranaMBean.potencyname}" />
+                        <p:commandButton icon="ui-icon-search" disabled="#{resSaranaMBean.disabled}">
+                            <p:ajax event="click" listener="#{resSaranaMBean.showListPotency}"/>
+                        </p:commandButton>
+
+
+                        <p:outputLabel value="Latitude" style="width: 100px" />
+                        <p:panelGrid id="latitude" columns="3" style="width: 100%;"
+                                     class="no-border no-padding-table ui-fluid">
+                            <ui:include src="coordinate/latitude.xhtml"/>
+                        </p:panelGrid>
+                        <br/>
+
+                        <p:outputLabel value="Longitude" />
+                        <p:panelGrid id="longitude" columns="3" style="width: 100%;"
+                                     class="no-border no-padding-table ui-fluid">
+                            <ui:include src="coordinate/longitude.xhtml"/>
+                        </p:panelGrid>
+                        <br/>
+
+                        <p:outputLabel value="Deskripsi"/>
+                        <p:inputText value="#{resSaranaMBean.resAsset.remarks}" maxlength="1000" disabled="#{resSaranaMBean.disabled}"/>
+                        <br/>
+
+                        <p:outputLabel value="Search Platform"/>
+                        <p:selectOneMenu id="platform" value="#{resSaranaMBean.vehicletype}" maxlength="50" disabled="#{resSaranaMBean.disabled}">
+                            <f:selectItem itemLabel="" itemValue="" />
+                            <f:selectItem itemLabel="Vessel and small boats" itemValue="Vessel" />
+                            <f:selectItem itemLabel="Merchant Ships" itemValue="Merchant" />
+                            <f:selectItem itemLabel="Fixed Wing Aircraft" itemValue="Fixed Wing" />
+                            <f:selectItem itemLabel="Helicopter" itemValue="Helicopter" />
+                        </p:selectOneMenu>
+                        <br/>
+
+                        <p:outputLabel value="Endurance" />
+                        <p:inputText value="#{resSaranaMBean.resAsset.endurance}" disabled="#{resSaranaMBean.disabled}" onkeypress="return isNumber(event);"/>
+                        <p:outputLabel value="Jam"/>
+
+                        <p:outputLabel value="Kecepatan"/>
+                        <p:inputText value="#{resSaranaMBean.resAsset.speed}" disabled="#{resSaranaMBean.disabled}" onkeypress="return isNumber(event);"/>
+                        <p:outputLabel value="Knots"/>
+
+                        <p:outputLabel value="Foto" />
+                        <p:fileUpload id="fileImportResSaranaInput" mode="advanced" auto="true"
+                                      dragDropSupport="false" sizeLimit="10000000" multiple="true"
+                                      fileUploadListener="#{resSaranaMBean.uploadImage}"
+                                      process="@this" update="sarana-content:form-resSaranaInput:imgResSaranaInput"
+                                      accept="image/*" disabled="#{resSaranaMBean.disabled}"/>
+                        <br/>
+
+                        <p:spacer />
+                        <p:panel class="control-button">
+                            <p:dataTable id="imgResSaranaInput" widgetVar="widImgResSaran" var="imageResSaranaInput"
+                                         value="#{resSaranaMBean.listResAssetImages}" reflow="true"
+                                         rows="1" emptyMessage="Data tidak ditemukan" paginator="true"
+                                         paginatorPosition="bottom" tableStyle="table-layout:auto"
+                                         style="text-align: center">
+                                <p:column headerText="Image">
+                                    <h:form>
+                                        <h:panelGroup style="display: block; text-align: center">
+                                            <p:lightBox id="lightBoxResSaranaInput" widgetVar="dlgResSaranaInput">
+                                                <h:outputLink value="/document/temp/#{imageResSaranaInput.pathname != null ? imageResSaranaInput.pathname.replace('\\','/'): ''}"
+                                                              title="Image">
+                                                    <p:graphicImage url="/document/temp/#{imageResSaranaInput.pathname != null ? imageResSaranaInput.pathname.replace('\\','/'): ''}"
+                                                                    width="200" height="200" cache="false"/>
+                                                </h:outputLink>
+                                            </p:lightBox>
+                                            <p:commandLink value="Hapus" actionListener="#{resSaranaMBean.hapusImage(imageResSaranaInput)}"
+                                                           disabled="#{resSaranaMBean.disabled}" process="@this"
+                                                           update="sarana-content:form-resSaranaInput:imgResSaranaInput">
+                                                <p:confirm header="Konfirmasi" message="Apakah Anda yakin ingin menghapus image ini?"
+                                                           icon="ui-icon-alert"/>
+                                            </p:commandLink>
+                                        </h:panelGroup>
+                                    </h:form>                                
+                                </p:column>
+                            </p:dataTable>
+                        </p:panel>
+                        <br/>
+
+                    </p:panelGrid>
+
+                </p:panel>
+                <div class="ui-g-4 ">
+                    <p:commandButton id="add-btn" type="button"  value="Tambah Data Baru" icon="fa fa-plus-circle" 
+                                     class="green-btn" style="float: right" disabled="#{resSaranaMBean.disabled}">
+                        <p:ajax event="click" listener="#{resSaranaMBean.resetContactInput}"/>
+                    </p:commandButton> 
+                </div>
+            </div>
+
+            <div class="ui-g-12">
+                <p:panel header="List Kontak Aset" style="text-align:center">
+                    <p:dataTable id="contact_datatable_res_sarana_input" var="contact" value="#{resSaranaMBean.assetContacts}" reflow="true" rowKey="#{contact.assetid}"
+                                 paginator="true" paginatorPosition="bottom" rows="#{viewBean.rowsPageDefault}"
+                                 rowsPerPageTemplate="#{viewBean.rowsPerPageTemplate}" emptyMessage="Data tidak ditemukan" tableStyle="table-layout:auto"
+                                 rowIndexVar="index">
+                        <p:column headerText="No" style="width: 20px">
+                            <p:outputLabel value="#{index + 1}"/>
+                        </p:column>
+                        <!--                    <p:column headerText="Title">
+                                                <h:outputText value="#{contact.contacttitle}" />
+                                            </p:column>-->
+                        <p:column headerText="Nama (1)">
+                            <h:outputText value="#{contact.contactname}" />
+                        </p:column>
+                        <!--                    <p:column headerText="Suffix">
+                                                <h:outputText value="#{contact.contactsuffix}" />
+                                            </p:column>-->
+                        <!--                    <p:column headerText="Jabatan">
+                                                <h:outputText value="#{contact.contactposition}" />
+                                            </p:column>-->
+                        <p:column headerText="No. Telepon (1)">
+                            <h:outputText value="#{contact.phonenumber1}" />
+                        </p:column>
+                        <p:column headerText="Nama (2)">
+                            <h:outputText value="#{contact.contactname}" />
+                        </p:column>
+                        <p:column headerText="No. Telepon (2)">
+                            <h:outputText value="#{contact.phonenumber2}" />
+                        </p:column>
+                        <!--                    <p:column headerText="Email">
+                                                <h:outputText value="#{contact.email}" />
+                                            </p:column>-->
+                        <p:column headerText="Aksi" rendered="false" style="width: 50px">
+                            <h:form>
+                                <p:commandButton label="lihat" rendered="false" icon="fa fa-search" class="blue-grey-btn">
+                                    <p:ajax event="click" listener="#{resSaranaMBean.viewCheckContactTemp(contact,true)}" 
+                                            update=":form-resContact"/>
+                                </p:commandButton>
+                                <p:outputLabel value=" | " rendered="false"/>
+                                <p:commandLink value="Edit" rendered="false" disabled="#{resSaranaMBean.disabled}">
+                                    <p:resetInput target="idResContactInputSarana"/>
+                                    <p:ajax event="click" listener="#{resSaranaMBean.viewCheckContactTemp(contact,false)}" 
+                                            update="@form" process="@this"/>
+                                </p:commandLink> 
+                                <p:outputLabel value=" | " rendered="false"/>
+                                <p:commandLink value="Hapus" rendered="false" disabled="#{resSaranaMBean.disabled}"
+                                               actionListener="#{resSaranaMBean.hapusContactTemp(contact)}"
+                                               update=":sarana-content:form-resSaranaInput:contact_datatable_res_sarana_input" process=":sarana-content:form-resSaranaInput:contact_datatable_res_sarana_input">
+                                    <p:confirm header="Konfirmasi" message="Apakah anda yakin ingin menghapus kontak ini?" icon="ui-icon-alert"/>
+                                </p:commandLink>
+                            </h:form>
+                        </p:column>
+                    </p:dataTable>
+                </p:panel>
+            </div>
+
+            <p:panel class="control-button no-border no-padding" >
+                <p:commandButton value="Simpan" styleClass="green-btn" actionListener="#{resSaranaMBean.simpan()}" update="sarana-content" 
+                                 process="@form" style="width:130px" rendered="#{resSaranaMBean.showButton}">
+                    <p:confirm header="Konfirmasi" message="Apakah anda yakin ingin menyimpan resource sarana ini?" icon="ui-icon-alert" />
+                </p:commandButton>
+                <p:commandButton value="#{resSaranaMBean.showButtonInput ? 'Batal' : 'Kembali'}"  
+                                 style="margin-left: 10px;width: 130px;" class="red-btn" icon="ui-icon-cancel">
+                    <p:ajax event="click" update="sarana-content" listener="#{resSaranaMBean.hideForm}"/>
+                </p:commandButton>
+            </p:panel>
+
+        </p:panel>
+    </h:form>
+
+</ui:composition>

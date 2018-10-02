@@ -1,0 +1,228 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <script type="text/javascript">
+//        var chooseCheck = 0;
+        function searchJs(){
+            var table = document.getElementById('incidentdetail:inc-potensi-content:potensiinc_data');
+            var searchkey = document.getElementById("incidentdetail:inc-potensi-content:textfield").value;
+            var rowLength = table.rows.length;
+            //alert(rowLength);
+            for(var i=0; i &lt; rowLength; i++){
+                var row = table.rows[i];
+                var temp = row.cells[4].innerHTML;
+                temp = temp.replace('<span class="ui-column-title">Nama</span>','');
+                if(temp.toUpperCase().indexOf(searchkey.toUpperCase()) !== -1){
+                    row.style.display="";
+//                    if(chooseCheck == 1){
+//                        alert("masuk")
+//                        document.getElementById("incidentdetail:inc-potensi-content:potensiinc:" + i + ":j_id_217_input").checked = true;
+//                    }
+                }else{
+                    //incidentdetail:inc-potensi-content:potensiinc:0:j_id_217
+                    row.style.display="none";
+                }
+            }
+//            chooseCheck = 0;
+        }
+//        function chooseCheckJs(){
+//            chooseCheck = 1;
+//            searchJs();
+//            return false;
+//        }
+        $( document ).ready(function() {
+            $(".ui-state-default").click(function(){
+                //searchJs();
+                //alert("jalan");
+            });
+        });
+
+    </script>
+    <div class="ui-g ui-fluid">
+        <div class="ui-g-12">
+            <h:form id="inc-potensi-content">
+                <p:panelGrid id="search-incident-potensi" columns="3" layout="grid" styleClass="ui-panelgrid-blank form-group" class="no-padding no-border">
+                    <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group" class="no-padding no-border">
+                        <p:commandButton id="check-pilih-incident-potensi" value="Check All" 
+                                         actionListener="#{incidentPotensiMBean.checkallpilih()}" process="@form" 
+                                         update="incidentdetail:inc-potensi-content:potensiinc" styleClass="green-btn" disabled="#{incidentPotensiMBean.disabledTab}"/>
+
+                        <p:commandButton id="uncheck-pilih-incident-sru-tab-udara" value="Uncheck All" 
+                                         actionListener="#{incidentPotensiMBean.uncheckallpilih()}" 
+                                         process="@form" update="incidentdetail:inc-potensi-content:potensiinc" 
+                                         styleClass="red-btn" disabled="#{incidentPotensiMBean.disabledTab}"/>
+                    </p:panelGrid>
+
+                    <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group" 
+                                 class="no-padding no-border">
+                        <p:commandButton id="kirim-notif-incident-sru-tab-udara" type="button" 
+                                         value="Kirim Notifikasi" disabled="#{incidentPotensiMBean.disabledTab}">
+                            <p:ajax event="click" update="incidentdetail:inc-potensi-content:potensiinc" process="@form" 
+                                    listener="#{incidentPotensiMBean.kirimNotifikasi()}"/>
+                        </p:commandButton>
+                    </p:panelGrid>
+
+                    <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group" 
+                                 class="no-padding no-border">
+                        <p:commandButton id="check-kirim-incident-sru-tab-udara" value="Check All" 
+                                         actionListener="#{incidentPotensiMBean.checkallkirim()}" 
+                                         process="@form" update="incidentdetail:inc-potensi-content:potensiinc" 
+                                         styleClass="green-btn" disabled="#{incidentPotensiMBean.disabledTab}"/>
+
+                        <p:commandButton id="uncheck-kirim-incident-sru-tab-udara" value="Uncheck All" 
+                                         actionListener="#{incidentPotensiMBean.uncheckallkirim()}" 
+                                         process="@form" update="incidentdetail:inc-potensi-content:potensiinc" 
+                                         styleClass="red-btn" disabled="#{incidentPotensiMBean.disabledTab}"/>
+                    </p:panelGrid>
+                </p:panelGrid>
+                <p:scrollPanel>
+                <p:panelGrid id="panelSearch-tabPotency" columns="2" style="width: 100%">
+                    <p:outputLabel id = "katakunci" value="Nama :" style="font-weight:bold"/>
+                    <p:inputText id="textfield" onkeyup="searchJs()"/>
+                </p:panelGrid>  
+                <p:dataTable var="potensiinc" value="#{incidentPotensiMBean.listTempCheck}"
+                             reflow="true" scrollable="true" scrollHeight="350"
+                             emptyMessage="Data tidak ditemukan" 
+                             id="potensiinc" tableStyle="table-layout:auto" 
+                             sortBy="#{potensiinc.resPotency.potencyname}"
+                             style="font-size: smaller" rowIndexVar="index"
+                             widgetVar="listWidget">
+                    <p:column headerText="No" style="width: 20px">
+                        <p:outputLabel value="#{index + 1}"/>
+                    </p:column>
+                    <p:column style="width: 5%; text-align: center;" id="checkPilihPotensi" headerText="Pilih">
+                        <p:selectBooleanCheckbox value="#{potensiinc.pilih}" disabled="#{incidentPotensiMBean.disabledTab}">
+                            <p:ajax process="@this"/>
+                        </p:selectBooleanCheckbox>
+                    </p:column>
+                    <p:column style="width: 5%; text-align: center;" id="checkKirimPotensi" headerText="Kirim">
+                        <p:selectBooleanCheckbox value="#{potensiinc.kirim}" disabled="#{incidentPotensiMBean.disabledTab}">
+                            <p:ajax process="@this"/>
+                        </p:selectBooleanCheckbox>
+                    </p:column>
+
+                    <p:column headerText="Potency ID" sortBy="#{potensiinc.resPotency.potencyid}">
+                        <h:outputText value="#{potensiinc.resPotency.potencyid}" />
+                    </p:column>
+                    <p:column headerText="Nama" sortBy="#{potensiinc.resPotency.potencyname}">
+                        <h:outputText value="#{potensiinc.resPotency.potencyname}"/>
+                    </p:column>
+                    <p:column headerText="Matra" sortBy="#{potensiinc.resPotency.potencytype}">
+                        <h:outputText value="#{potensiinc.resPotency.potencytype eq '0'?'Darat' : 
+                                               (potensiinc.resPotency.potencytype eq '1' ? 'Udara' :
+                                               'Laut')}" />
+                    </p:column>
+
+                    <p:column headerText="Jarak(NM)" sortBy="#{potensiinc.distance}">
+                        <h:outputText value="#{potensiinc.distance}"  />
+                    </p:column>
+                    <p:column headerText="Arah(Derajat)" sortBy="#{potensiinc.angle}">
+                        <h:outputText value="#{potensiinc.angle}" />
+                    </p:column>
+                    <p:column headerText="Keterangan" sortBy="#{potensiinc.resPotency.remarks}">
+                        <h:outputText value="#{potensiinc.resPotency.remarks}"/>
+                    </p:column>
+
+                    <!--<p:column headerText="Aksi">
+                        <p:commandLink value="Lihat">
+                            <p:ajax event="click" listener="{incidentPotensiMBean.viewCheck(potensiinc)}"/>
+                        </p:commandLink> 
+                    </p:column>-->
+
+                    <p:column headerText="Aksi" style="width: 2%">
+                        <p:commandButton id="lihatpotensi"
+                                         label="Lihat"
+                                         onclick="PF('tTipLihat').hide();"
+                                         icon="fa fa-search" 
+                                         class="blue-grey-btn"
+                                         disabled="#{incidentPotensiMBean.disabledTab}">
+                            <f:attribute name="listRow" value="#{potensiinc.resPotency}" />
+                            <p:ajax event="click" 
+                                    listener="#{incidentPotensiMBean.loadDetail}" update="@form"/>
+                        </p:commandButton> 
+                        <p:tooltip value="Lihat" for="lihatpotensi"
+                                   trackMouse="true" widgetVar="tTipLihat"/>
+                    </p:column>
+
+                </p:dataTable>
+                </p:scrollPanel>
+
+                <p:panel class="control-button no-border no-padding" >
+                    <p:commandButton value="Simpan Potensi" disabled="#{incidentPersonilMbean.disabledTab}" 
+                                     icon="fa fa-save" styleClass="green-btn"
+                                     style="width:200px" actionListener="#{incidentPotensiMBean.action}" 
+                                     process="@form"/>
+                </p:panel>
+
+                <p:dialog id="idviewpotensi" widgetVar="widgetViewPotensi"
+                          header="Data " dynamic="true"
+                          width="75%" height="80%"
+                          appendTo="@(body)"
+                          responsive="true" modal="true"
+                          maximizable="true" closable="true"
+                          resizable="false">
+                    <ui:include src="./view_potensi.xhtml"/>
+                </p:dialog>
+
+
+                <p:dialog id="kirim-notif-potensi" widgetVar="kirim-notif-potensi" modal="true"
+                          showEffect="fade" hideEffect="fade" resizable="false" responsive="true"
+                          width="40%" height="50%" dynamic="true">
+                    <h:form>
+                        <p:panel id="panel" class="ui-fluid no-border card-w-title card" header="Kirim Notifikasi Email/SMS"> 
+                            <p:messages closable="true"/>
+                            <p:panelGrid columns="2" columnClasses="ui-grid-col-6, ui-grid-col-6" class="ui-fluid">
+                                <p:outputLabel value="Via"/>
+                                <p:panelGrid columns="4" columnClasses="">
+                                    <p:outputLabel value="SMS"/>
+                                    <p:selectBooleanCheckbox value="#{incidentPotensiMBean.kirimSms}">
+                                        <p:ajax event="change" update="isiSMS"/>
+                                    </p:selectBooleanCheckbox>
+                                    <p:outputLabel value="Email"/>
+                                    <p:selectBooleanCheckbox value="#{incidentPotensiMBean.kirimEmail}">
+                                        <p:ajax event="change" update="emailnotif"/>
+                                        <p:ajax event="change" update="subyekemail"/>
+                                    </p:selectBooleanCheckbox>
+                                </p:panelGrid>
+                            </p:panelGrid>
+                            <p:panelGrid columns="2" columnClasses="ui-grid-col-4, ui-grid-col-6" class="ui-fluid">
+                                <p:outputLabel value="Isi Pesan SMS"/>
+                                <p:inputTextarea id="isiSMS" value="#{incidentPotensiMBean.isisms}" 
+                                                 disabled="#{!incidentPotensiMBean.kirimSms}" required="true"
+                                                 requiredMessage="Pesan SMS Wajib Di Isi"
+                                                 style="width: 300px"/>
+                                <p:outputLabel value="Subyek Email"/>
+                                <p:inputText id="subyekemail" value="#{incidentPotensiMBean.subyekEmail}" 
+                                             disabled="#{!incidentPotensiMBean.kirimEmail}" required="true" 
+                                             requiredMessage="Subyek Email Wajib Di Isi" 
+                                             style="width: 300px"/>
+                                <p:outputLabel value="Isi Pesan Email"/>
+                                <p:inputTextarea id="emailnotif" value="#{incidentPotensiMBean.isiEmail}" 
+                                                 disabled="#{!incidentPotensiMBean.kirimEmail}"
+                                                 required="true" requiredMessage="Pesan Email Wajib Di Isi"
+                                                 style="width: 300px"/>   
+                            </p:panelGrid>
+
+                            <p:panel  class="no-border no-padding ui-fluid control-button">
+                                <p:commandButton value="Kirim" icon="fa fa-send" class="green-btn" 
+                                                 actionListener="#{incidentPotensiMBean.kirim()}" 
+                                                 process="@form" style="width: 100px"/>
+                                <p:commandButton value="tutup" class="red-btn" icon="fa fa-close" 
+                                                 actionListener="#{incidentPotensiMBean.refresh()}" 
+                                                 onclick="PF('kirim-notif-coba').hide();"
+                                                 style="width: 100px"/>    
+                            </p:panel>
+
+
+                        </p:panel>
+                    </h:form>
+                </p:dialog>
+            </h:form>
+
+
+
+        </div>
+    </div>
+</ui:composition>

@@ -1,0 +1,146 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+    <ui:define name="title">Daftar Kantor SAR</ui:define>
+    <ui:define name="content">
+        <h:form id="kantorsar-content">
+            <p:panel id="list-kantorsar" class="ui-fluid" header="Daftar Kantor SAR" styleClass="penelHeaderGreen ui-shadow-content"
+                     rendered="#{mstKantorSarMBean.showDetail}">
+                <p:panelGrid id="search" columns="5" layout="grid" 
+                             styleClass="ui-panelgrid-blank form-group" 
+                             columnClasses ="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-2,ui-grid-col-2"
+                             style="margin-top: 20px;margin-bottom: 20px; width: 100%"
+                             class="no-padding no-border">
+                    <p:selectOneMenu id="fieldkantorsar" value="#{mstKantorSarMBean.field}">
+                        <p:ajax event="change" update="search" listener="#{mstKantorSarMBean.chengeToCombo()}"/>
+                        <f:selectItem itemLabel="Kode KanSAR" itemValue="kantorsarid" />
+                        <f:selectItem itemLabel="Nama KanSAR" itemValue="kantorsarname" />
+                        <f:selectItem itemLabel="Alamat" itemValue="address" />
+                    </p:selectOneMenu>              
+                    <p:inputText id="value" value="#{mstKantorSarMBean.value}" rendered="#{mstKantorSarMBean.showCombo}"/>
+                    <p:selectOneMenu id="idKansar" value="#{mstKantorSarMBean.value}" rendered="#{!mstKantorSarMBean.showCombo}">
+                        <f:selectItems value="#{mstKantorSarMBean.listKantorSar}"/>
+                    </p:selectOneMenu>
+
+                    <p:commandButton id="search-btn" icon="ui-icon-search" type="button" onclick="PF('listWidget').getPaginator().setPage(0);" value="Cari">
+                        <p:ajax event="click" update=":kantorsar-content:list-kantorsar" process="@form"/>
+                    </p:commandButton> 
+                    <p:button value="Reset" icon="ui-icon-replay"/>
+                    <p:commandButton value="Tambah Data Baru" icon="fa fa-plus-circle" styleClass="green-btn" style="width: 105%"
+                                     update="@form" process="@form">
+                        <p:ajax event="click" listener="#{mstKantorSarMBean.add}"/>
+                    </p:commandButton>                                            
+                </p:panelGrid>
+                <p:dataTable id="kantorsar_datatable" var="kantorsar" value="#{mstKantorSarMBean.lazyDataModelJPA}" reflow="true" 
+                             rowKey="#{kantorsar.kantorsarid}" lazy="true" paginator="true" paginatorPosition="bottom" 
+                             rows="10" rowsPerPageTemplate="5,10,15" widgetVar="listWidget" 
+                             emptyMessage="Data tidak ditemukan" tableStyle="table-layout:fixed"
+                             rowIndexVar="index" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                    <p:ajax event="page" listener="#{viewBean.onPageChange}"/>  
+                    <p:column headerText="No" style="width: 20px; text-align: center">
+                        <p:outputLabel value="#{index + 1}"/>
+                    </p:column>
+                    <p:column headerText="Kode KanSAR" sortBy="#{kantorsar.kantorsarid}">
+                        <h:outputText value="#{kantorsar.kantorsarid}" />
+                    </p:column>
+                    <p:column headerText="Nama KanSAR" sortBy="#{kantorsar.kantorsarname}">
+                        <h:outputText value="#{kantorsar.kantorsarname}" />
+                    </p:column>
+                    <p:column headerText="Alamat" sortBy="#{kantorsar.address}">
+                        <h:outputText value="#{kantorsar.address}" />
+                    </p:column>
+                    <p:column headerText="Latitude" sortBy="#{kantorsar.latitude}" style="text-align: center">
+                        <h:outputText value="#{mstKantorSarMBean.coordinateLatitude.getConvertDdToDms(kantorsar.latitude, true)}" />
+                    </p:column>
+                    <p:column headerText="Longitude" sortBy="#{kantorsar.longitude}" style="text-align: center">
+                        <h:outputText value="#{mstKantorSarMBean.coordinateLongitude.getConvertDdToDms(kantorsar.longitude, false)}" />
+                    </p:column>
+                    <p:column headerText="No. Telepon 1" sortBy="#{kantorsar.phonenumber1}" style="text-align: center">
+                        <h:outputText value="#{kantorsar.phonenumber1}" />
+                    </p:column>
+                    <p:column headerText="No. Fax" sortBy="#{kantorsar.faxnumber}" style="text-align: center">
+                        <h:outputText value="#{kantorsar.faxnumber}" />
+                    </p:column>
+                    <p:column headerText="Freq Radio" sortBy="#{kantorsar.radiofrequency}" style="text-align: center">
+                        <h:outputText value="#{kantorsar.radiofrequency}" />
+                    </p:column>
+
+                    <p:column headerText="Aksi" style="width: 105px; text-align: center">
+                        <p:commandButton id="lihatKansar" 
+                                         label="Lihat"
+                                         onclick="PF('tTipLihat').hide();"
+                                         icon="fa fa-search" 
+                                         class="blue-grey-btn">
+                            <p:ajax event="click" listener="#{mstKantorSarMBean.viewKantorSAR(kantorsar.kantorsarid, true)}" update="@form" process="@form" />
+                        </p:commandButton>
+                        <p:tooltip value="Lihat" for="lihatKansar"
+                                   trackMouse="true" widgetVar="tTipLihat" />
+                        <p:outputLabel value="    "/>
+                        <p:commandButton id="ubahKansar"
+                                         label="Ubah"
+                                         onclick="PF('tTipUbah').hide();"
+                                         icon="fa fa-edit" 
+                                         class="blue-grey-btn">
+                            <p:ajax event="click" listener="#{mstKantorSarMBean.viewKantorSAR(kantorsar.kantorsarid, false)}" update="@form" process="@form" />
+                        </p:commandButton> 
+                        <p:tooltip value="Ubah" for="ubahKansar"
+                                   trackMouse="true" widgetVar="tTipUbah"/>
+                        <p:outputLabel value="    "/>
+                        <p:commandButton id="hapusKansar"
+                                         label="Hapus"
+                                         onclick="PF('tTipHapus').hide();"
+                                         icon="fa fa-trash" 
+                                         class="red-btn" 
+                                         actionListener="#{mstKantorSarMBean.hapus(kantorsar)}"
+                                         update="kantorsar-content:kantorsar_datatable">
+                            <p:confirm header="Konfirmasi" message="Apakah anda yakin ingin menghapus kantor SAR ini?" icon="ui-icon-alert"/>
+                        </p:commandButton>
+                        <p:tooltip value="Hapus" for="hapusKansar"
+                                   trackMouse="true" widgetVar="tTipHapus"/>
+                    </p:column>
+
+                </p:dataTable>
+            </p:panel>
+
+            <p:panel id="idPanelKantorSarInput" header="#{mstKantorSarMBean.headerDetail}" styleClass="penelHeaderGreen ui-shadow-content"
+                     rendered="#{!mstKantorSarMBean.showDetail}">
+                <ui:include src="kantorSARInput.xhtml"/>
+                <p:panel class="control-button no-border no-padding" >
+                    <p:commandButton value="Simpan" icon="fa fa-save" styleClass="green-btn" actionListener="#{mstKantorSarMBean.simpan()}" 
+                                     update="@form,kantorsar-content" 
+                                     process="@form:form-kantorSARInput" style="width:130px" 
+                                     rendered="#{mstKantorSarMBean.showButton}">
+                        <p:confirm header="Konfirmasi" message="Apakah anda yakin ingin menyimpan kantor SAR ini?" icon="ui-icon-alert" />
+                    </p:commandButton>
+                    <p:spacer width="10"/>
+                    <p:commandButton type="button" value="#{mstKantorSarMBean.showButton ? 'Batal' : 'Kembali'}" style="width:130px" icon="ui-icon-cancel" styleClass="red-btn">
+                        <p:ajax event="click" update="@form" process="@this" listener="#{mstKantorSarMBean.batal()}"/>
+                    </p:commandButton>
+                </p:panel>    
+            </p:panel>
+        </h:form>
+
+<!--        <p:dialog id="idKantorSAR" widgetVar="widgetKantorSAR"
+                  header="Data "
+                  width="80%" height="50%"
+                  appendTo="@(body)"
+                  responsive="true" modal="true"
+                  maximizable="false"
+                  position="center" closable="true">
+            <ui:include src="./kantorSAR.xhtml"/>
+        </p:dialog>-->
+
+<!--                <p:dialog id="idKantorSARInput" widgetVar="widgetKantorSARInput"
+                          header="Data "
+                          width="80%" height="50%"
+                          appendTo="@(body)"
+                          responsive="true" modal="true"
+                          maximizable="false"
+                          position="center" closable="true">
+                    <ui:include src="./kantorSARInput.xhtml"/>
+                </p:dialog>-->
+    </ui:define>
+</ui:composition>

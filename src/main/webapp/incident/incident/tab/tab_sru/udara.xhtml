@@ -1,0 +1,100 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <div class="ui-g ui-fluid">
+        <div class="ui-g-12">
+            <h:form id="udara-content-tab">
+                <p:panelGrid id="search-incident-sru-tab-udara" columns="3" layout="grid" styleClass="ui-panelgrid-blank form-group" class="no-padding no-border">
+                    <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group" class="no-padding no-border">
+                        <p:commandButton id="check-pilih-incident-sru-tab-udara" value="Check All" actionListener="#{incidentSRUUdaraMBean.checkallpilih()}" process="@form" 
+                                         update="incidentdetail:incident-sru-tab:udara-content-tab:udarasruinc" styleClass="green-btn"/>
+
+                        <p:commandButton id="uncheck-pilih-incident-sru-tab-udara" value="Uncheck All" actionListener="#{incidentSRUUdaraMBean.uncheckallpilih()}" 
+                                         process="@form" update="incidentdetail:incident-sru-tab:udara-content-tab:udarasruinc" styleClass="red-btn"/>
+                    </p:panelGrid>
+
+                    <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group" class="no-padding no-border">
+                        <p:commandButton id="kirim-notif-incident-sru-tab-udara" type="button"  value="Kirim Notifikasi">
+                            <p:ajax event="click" update="incidentdetail:incident-sru-tab:udara-content-tab:udarasruinc" process="@form"/>
+                        </p:commandButton>
+                    </p:panelGrid>
+
+                    <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group" class="no-padding no-border">
+                        <p:commandButton id="check-kirim-incident-sru-tab-udara" value="Check All" actionListener="#{incidentSRUUdaraMBean.checkallkirim()}" 
+                                         process="@form" update="incidentdetail:incident-sru-tab:udara-content-tab:udarasruinc" styleClass="green-btn"/>
+
+                        <p:commandButton id="uncheck-kirim-incident-sru-tab-udara" value="Uncheck All" actionListener="#{incidentSRUUdaraMBean.uncheckallkirim()}" 
+                                         process="@form" update="incidentdetail:incident-sru-tab:udara-content-tab:udarasruinc" styleClass="red-btn"/>
+                    </p:panelGrid>
+                </p:panelGrid>
+
+                <p:dataTable var="udarasruinc" value="#{incidentSRUUdaraMBean.listTempCheck}"
+                             reflow="true"  paginator="true" paginatorPosition="bottom" rows="#{viewBean.rowsPageDefault}"
+                             rowsPerPageTemplate="#{viewBean.rowsPerPageTemplate}" first="#{viewBean.first}"
+                             emptyMessage="Data tidak ditemukan" rowKey="#{udarasruinc.resAsset.assetid}"
+                             id="udarasruinc" tableStyle="table-layout:auto" sortBy="#{udarasruinc.resAsset.assetid}"
+                             style="font-size: smaller" rowIndexVar="index">
+                    <p:column headerText="No" style="width: 20px">
+                        <p:outputLabel value="#{index + 1}"/>
+                    </p:column>
+                    <p:column style="width: 5%; text-align: center;" id="checkPilihUdara" headerText="Pilih" sortBy="#{udarasruinc.pilih}">
+                        <p:selectBooleanCheckbox value="#{udarasruinc.pilih}">
+                        </p:selectBooleanCheckbox>
+                    </p:column>
+                    <p:column style="width: 5%; text-align: center;" id="checkKirimUdara" headerText="Kirim">
+                        <p:selectBooleanCheckbox value="#{udarasruinc.kirim}">
+                            <p:ajax process="@this"/>
+                        </p:selectBooleanCheckbox>
+                    </p:column>
+
+                    <p:column headerText="Nama SRU" sortBy="#{udarasruinc.resAsset.name}">
+                        <h:outputText value="#{udarasruinc.resAsset.name}" />
+                    </p:column>
+                    <p:column headerText="Kansar/Potensi" sortBy="#{udarasruinc.resAsset.potencyid.potencyname}">
+                        <h:outputText value="#{udarasruinc.resAsset.potencyid.potencyname}" />
+                    </p:column>
+                    <p:column headerText="Jarak(NM)" sortBy="#{udarasruinc.distance}">
+                        <h:outputText value="#{udarasruinc.distance}" />
+                    </p:column>
+                    <p:column headerText="Arah(Derajat)" sortBy="#{udarasruinc.angle}">
+                        <h:outputText value="#{udarasruinc.angle}" />
+                    </p:column>
+                    <p:column headerText="Kecepatan(Knots)" sortBy="#{udarasruinc.resAsset.speed}">
+                        <h:outputText value="#{udarasruinc.resAsset.speed}" />
+                    </p:column>
+                    <p:column headerText="Endurance(Jam)" sortBy="#{udarasruinc.resAsset.endurance}">
+                        <h:outputText value="#{udarasruinc.resAsset.endurance}" />
+                    </p:column>
+                    <p:column headerText="Fungsi" sortBy="#{udarasruinc.resAsset.functional}">
+                        <h:outputText value="#{udarasruinc.resAsset.functional}" />
+                    </p:column>
+                    <p:column headerText="Kapasitas" sortBy="#{udarasruinc.resAsset.cargo}">
+                        <h:outputText value="#{udarasruinc.resAsset.cargo}" />
+                    </p:column>
+                    <p:column headerText="Keterangan" sortBy="#{udarasruinc.resAsset.remarks}">
+                        <h:outputText value="#{udarasruinc.resAsset.remarks}" />
+                    </p:column>
+                    <p:column headerText="Aksi">
+                        <p:commandLink value="Lihat">
+                            <p:ajax event="click" listener="#{incidentSRUUdaraMBean.viewCheck(udarasruinc)}"/>
+                        </p:commandLink> 
+                    </p:column>
+                </p:dataTable>
+                <p:spacer width="10" />
+                <p:commandButton value="Simpan SRU Udara" action="#{incidentSRUUdaraMBean.action}" process="@form"/>
+            </h:form>
+
+            <p:dialog id="idviewsruudara" widgetVar="widgetViewSruUdara"
+                      header="Data "
+                      width="75%" height="80%"
+                      appendTo="@(body)"
+                      responsive="true" modal="true"
+                      maximizable="true" closable="false" style="overflow-y: 100%;max-height: 100%;"
+                      resizable="false">
+                <ui:include src="./view_sru_udara.xhtml"/>
+            </p:dialog>
+        </div>
+    </div>
+</ui:composition>

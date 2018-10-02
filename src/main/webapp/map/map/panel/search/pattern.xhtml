@@ -1,0 +1,46 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <p:tree id="idTreeSearchPattern" value="#{searchPatternMBean.treeSearchPattern}" var="doc" animate="true"
+            selectionMode="single" selection="#{searchPatternMBean.selectedTreeSearchPattern}"
+            class="no-border" style="font-size: xx-small; width: 100%;vertical-align: middle"
+            rendered="#{searchPatternMBean.isTreeRendered}" >
+        <p:treeNode type="searcharea" icon="ui-icon-custom #{doc.type == 'free_define'?'ui-icon-custom-freedefine':
+                                                             doc.type == 'pararel'?'ui-icon-custom-pararel':
+                                                             doc.type == 'sector'?'ui-icon-custom-sector':
+                                                             doc.type == 'square'?'ui-icon-custom-square':
+                                                             doc.type == 'tsn'?'ui-icon-custom-tsn':
+                                                             doc.type == 'tsr'?'ui-icon-custom-tsr':
+                                                             doc.type == 'trapezium'?'ui-icon-custom-trapezium':''} "
+                    >
+
+            <h:outputText value="#{doc.name}"/>
+            <p:commandButton value="" style="
+                             margin-right: 15px; position: absolute; right: 0;
+                             width: 10px;height: 10px;background-color: ##{doc.color}"/>
+
+        </p:treeNode>
+    </p:tree>
+
+    <p:contextMenu for="idTreeSearchPattern" nodeType="searcharea">   
+        <p:menuitem value="Ubah Search Pattern" icon="fa fa-edit"  
+                    actionListener="#{searchPatternMBean.editDialogSPP}"/>
+        <p:menuitem value="Simpan Search Pattern" icon="fa fa-save" 
+                    actionListener="#{searchPatternMBean.showDialogSave}"/>
+        <p:menuitem value="Hapus Search Pattern" icon="fa fa-trash" 
+                    actionListener="#{searchPatternMBean.removePattern}">
+            <p:confirm header="Konfirmasi" 
+                       message="Apakah anda yakin akan menghapus Search Pattern pada peta ?" 
+                       icon="ui-icon-alert" />
+        </p:menuitem>
+    </p:contextMenu> 
+    
+    <p:commandButton value="Clear Search Pattern" 
+                     actionListener="#{searchPatternMBean.clearPattern}">
+        <p:confirm header="Konfirmasi" 
+                   message="Apakah anda yakin akan menghapus semua Search Pattern?" 
+                   icon="ui-icon-alert" />
+    </p:commandButton>
+</ui:composition>

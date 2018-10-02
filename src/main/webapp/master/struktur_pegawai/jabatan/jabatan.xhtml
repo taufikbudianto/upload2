@@ -1,0 +1,58 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <p:importEnum type="prosia.basarnas.enumeration.Jabatan" var="categori" allSuffix="ALL_ENUM_VALUES" />
+    <h:form id="form-jabatan">
+        <p:panel class="ui-fluid no-border no-padding">
+            <p:messages closable="true"/>
+            <p:panelGrid columns="2" columnClasses="ui-grid-col-3,ui-grid-col-9" 
+                         layout="grid" styleClass="ui-panelgrid-blank form-group">
+                <p:outputLabel value="Nama" styleClass="asterix"/>
+                <p:panel style="border-style: none" >
+                    <p:inputTextarea value="#{mstEmployeePositionMBean.employeePosition.employmentpositionname}" maxlength="100" required="true" requiredMessage="Nama jabatan tidak boleh kosong" disabled="#{mstEmployeePositionMBean.disabled}"/>
+                </p:panel>
+
+                <p:outputLabel value="Kategori" styleClass="asterix"/>
+                <p:panel style="border-style: none" >
+                    <p:selectOneMenu id="idKategori" value="#{mstEmployeePositionMBean.employeePosition.category}"
+                                     disabled="#{mstEmployeePositionMBean.disabled}"
+                                     required="true" requiredMessage="Kategori harus dipilih">
+                        <f:selectItem itemLabel="--- Pilih ---" itemValue="" />
+                        <f:selectItems value="#{categori.ALL_ENUM_VALUES}" var="l" 
+                                       itemValue="#{l.itemValue}" itemLabel="#{l.itemLabel}"/>
+                    </p:selectOneMenu>
+                </p:panel>
+
+                <p:outputLabel value="Atasan" for="idAtasan"/>
+                <p:panel style="border-style: none" >
+                    <p:selectOneMenu id="idAtasan" autoWidth="false" value="#{mstEmployeePositionMBean.employmentpositionname}"
+                                     disabled="#{mstEmployeePositionMBean.disabled}">
+                        <f:selectItem itemLabel="--- Pilih ---" itemValue="" />
+                        <f:selectItems value="#{mstEmployeePositionMBean.listEmployeePosition}"/>
+                    </p:selectOneMenu> 
+                </p:panel>
+            </p:panelGrid>
+
+            <p:panel class="control-button no-border no-padding" >
+                <p:commandButton icon="fa fa-save" value="Simpan" styleClass="green-btn" 
+                                 actionListener="#{mstEmployeePositionMBean.simpan()}" 
+                                 update=":jabatan-content:jabatan_datatable @form"
+                                 process=":jabatan-content:jabatan_datatable @form" style="width:130px" 
+                                 rendered="#{mstEmployeePositionMBean.showButton}">
+                    <p:confirm header="Konfirmasi" message="Apakah anda yakin ingin menyimpan jabatan ini?" 
+                               icon="ui-icon-alert" />
+                </p:commandButton>
+                <p:commandButton icon="ui-icon-cancel" 
+                                 value="#{mstEmployeePositionMBean.showButton ? 'Batal' : 'Kembali'}" 
+                                 styleClass="red-btn" actionListener="#{mstEmployeePositionMBean.batal()}" 
+                                 style="width:130px" immediate="true">
+                    <p:ajax event="click" update="@form"
+                            oncomplete="if(!args.validationFailed) PF('widgetJabatan').hide()"/>
+                </p:commandButton>
+            </p:panel>    
+        </p:panel>            
+
+    </h:form>
+</ui:composition>

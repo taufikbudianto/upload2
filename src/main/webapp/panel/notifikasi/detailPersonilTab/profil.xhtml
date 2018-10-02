@@ -1,0 +1,109 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:panel id="detail-personel-profil" class="no-border no-padding">
+        <p:panelGrid class="no-padding no-border" columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group"
+                     columnClasses="ui-grid-col-6,ui-grid-col-6">
+            <p:panelGrid class="no-padding no-border" columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group"
+                         columnClasses="ui-grid-col-4 label,ui-grid-col-8 value value-readonly">
+
+                <p:outputLabel value="NIP/NRP" />
+                <p:inputText id="nip" value="#{notifikasiMBean.personil.personnelCode}" 
+                             disabled="true"/>
+
+                <p:outputLabel value="Gelar Depan" />
+                <p:inputText value="#{notifikasiMBean.personil.title}" 
+                             disabled="true"/>
+
+                <p:outputLabel value="Nama"/>
+                <p:inputText value="#{notifikasiMBean.personil.personnelName}" 
+                             required="true" requiredMessage="Nama Wajib Di Isi" 
+                             disabled="true" 
+                             label="Nama"/>
+
+                <p:outputLabel value="Gelar Belakang"/>
+                <p:inputText value="#{notifikasiMBean.personil.suffix}" 
+                             disabled="true"
+                             label="Gelar Belakang"/>
+
+                <p:outputLabel value="Jenis Kelamin" />
+                <p:selectOneRadio value="#{notifikasiMBean.personil.gender}" 
+                                  disabled="true"
+                                  >
+                    <f:selectItem itemLabel="Pria" itemValue="M" />
+                    <f:selectItem itemLabel="Wanita" itemValue="F" />
+                </p:selectOneRadio>
+
+                <p:outputLabel value="Tempat"/>
+                <p:inputText value="#{notifikasiMBean.personil.birthPlace}" 
+                             disabled="true"
+                             label="Tempat Lahir"/>
+
+                <p:outputLabel value="Tanggal Lahir"/>
+                <p:calendar value="#{notifikasiMBean.personil.birthDate}" mask="true" navigator="true" 
+                            pattern="dd-MM-yyyy" disabled="true"/>
+
+                <p:outputLabel value="Agama" />
+                <p:inputText value="#{notifikasiMBean.personil.religion}" 
+                             disabled="true"/>
+
+                <p:outputLabel value="Status Penikahan" />
+                <p:inputText value="#{notifikasiMBean.personil.maritalStatus == 0 ? 'Menikah' : 'Belum Menikah'}" 
+                             disabled="true"/>
+
+                <p:outputLabel value="Pendidikan Terakhir"/>
+                <p:inputText id="pendidikan" value="#{notifikasiMBean.personil.lastEducation}" 
+                             disabled="true"
+                             label="Pendidikan Terakhir"/>
+
+                <p:outputLabel value="Alamat"/>
+                <p:inputTextarea id="almt" value="#{notifikasiMBean.personil.homeAddress}" 
+                                 required="true" requiredMessage="Alamat Wajib Di Isi"
+                                 disabled="true"
+                                 label="Alamat"/>
+
+            </p:panelGrid>
+
+            <p:panelGrid class="no-border no-padding" columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group"
+                         columnClasses="ui-grid-col-4 label,ui-grid-col-12 value value-readonly">
+
+                <p:outputLabel value="Telepon Rumah"/>
+                <p:inputText id="phone" value="#{notifikasiMBean.personil.phoneNumber}"
+                             disabled="true"/>
+
+                <p:outputLabel value="Telepon Kantor"/>
+                <p:inputText value="#{notifikasiMBean.personil.mobilePhoneNumber}"
+                             onkeypress="return validatePhone(event)" disabled="true"
+                             label="Telepon Kantor"/>
+
+                <p:outputLabel value="Email"/>
+                <p:inputText value="#{notifikasiMBean.personil.email}" 
+                             disabled="true" 
+                             validatorMessage="Format Email Salah" 
+                             label="Email">
+                    <f:validator validatorId="custom.emailValidator" />
+                </p:inputText>
+
+                <p:outputLabel value="Tipe" />
+                <p:inputText value="#{notifikasiMBean.personil.employmentType == 0 ? 'Personil' : 'Potency'}"
+                             disabled="true"/>                
+
+                <p:outputLabel value="KanSAR" />
+                <p:inputText value="#{notifikasiMBean.personil.officeSar.kantorsarname}"
+                             disabled="true"/>                                
+
+                <p:outputLabel value="Pos SAR" />
+                <p:inputText value="#{notifikasiMBean.personil.posSar.possarname}"
+                             disabled="true"/>                                
+
+                <p:outputLabel value="Status" />
+                <p:inputText value="#{notifikasiMBean.personil.status == 0 ? 'Ready'
+                                      : notifikasiMBean.personil.status == 1 ? 'In-Field' : 'Resign'}"
+                             disabled="true"/>                                
+            </p:panelGrid>            
+        </p:panelGrid>
+
+    </p:panel>
+</ui:composition>

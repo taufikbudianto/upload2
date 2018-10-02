@@ -1,0 +1,110 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <div class="ui-g ui-fluid">
+        <h:form id="form-tra-task-area" prependId="false">
+            <div class="ui-g-12 ui-lg-12 ">
+                <table cellpadding="10">
+                    <tr>
+                        <td style="width: 150px"><p:commandButton value="NEW" actionListener="#{trapeziumAreaMBean.btnBaruTaskArea()}" process="@form" update="incidentdetail:tabplanning-content:form-tra-task-area-panel1"  styleClass="green-btn"/></td>
+                        <td style="width: 150px"><p:commandButton value="OPEN" actionListener="#{trapeziumAreaMBean.btnLoadTaskArea()}" process="@form" update="incidentdetail:tabplanning-content:form-tra-task-area-panel1" styleClass="green-btn"/></td>
+                        <td style="width: 150px"><p:commandButton value="SAVE" actionListener="#{trapeziumAreaMBean.btnSimpanTaskArea()}" process="@form" update="incidentdetail:tabplanning-content:form-tra-task-area-panel1" styleClass="green-btn"/></td>
+                        <td style="width: 150px">
+                            <p:commandButton value="DELETE" actionListener="#{trapeziumAreaMBean.btnHapusTaskArea()}" process="@form" update="@form" styleClass="green-btn">
+                                <p:confirm header="Konfirmasi" message="Apakah anda yakin ingin menghapus data Worksheet ini?" icon="ui-icon-alert"/>
+                            </p:commandButton>
+                        </td>
+
+                    </tr>
+                </table>
+                <p:panel id="form-tra-task-area-panel1">
+                    <table cellpadding="10">
+                        <tr>
+                            <td style="width: 150px"><p:outputLabel value="Waypoint" /></td>
+                            <td style="width: 150px">
+                                <p:selectOneMenu id="cboWaypoint" value="#{trapeziumAreaMBean.wayPoint}" style="width:150px">
+                                    <p:ajax listener="#{trapeziumAreaMBean.changeWayPoint}" process="@this" update="@form"/>
+                                    <f:selectItems value="#{trapeziumAreaMBean.listWayPoint}" />
+                                </p:selectOneMenu>
+                            </td>
+                            <td style="width: 50px"></td>
+                            <td style="width: 150px"><p:outputLabel value="Luas Search Area" /></td>
+                            <td style="width: 150px"><p:inputNumber decimalPlaces="6" decimalSeparator="," thousandSeparator="." style="width:150px" id="id-luasSearchArea" value="#{trapeziumAreaMBean.luasAreainTask}"/></td>
+                            <td style="width: 50px"><p:outputLabel value="nm2" /></td>
+                            <td style="width: 150px"></td>
+                        </tr>
+                        <tr>
+                            <td style="width: 150px"><p:outputLabel value="Lebar Task Area" /></td>
+                            <td style="width: 150px"><p:inputNumber decimalPlaces="6" decimalSeparator="," thousandSeparator="." style="width:150px" id="id-lebarTaskArea" value="#{trapeziumAreaMBean.lebarTaskArea}"/></td>
+                            <td style="width: 50px"><p:outputLabel value="nm" /></td>
+                            <td style="width: 150px"><p:outputLabel value="Lebar Search Area" /></td>
+                            <td style="width: 150px"><p:inputNumber decimalPlaces="6" decimalSeparator="," thousandSeparator="." style="width:150px" id="id-lebarSearchArea" value="#{trapeziumAreaMBean.lebarSearchArea}"/></td>
+                            <td style="width: 50px"><p:outputLabel value="nm" /></td>
+                            <td style="width: 150px"></td>
+                        </tr>
+                        <tr>
+                            <td style="width: 150px"><p:outputLabel value="Panjang Task Area" /></td>
+                            <td style="width: 150px">
+                                <p:selectOneMenu id="cboSatuanTa2" value="#{trapeziumAreaMBean.panjangTaskArea}" style="width:150px">
+                                    <f:selectItem itemLabel="1x Panjang" itemValue="1" />
+                                    <f:selectItem itemLabel="1/2x Panjang" itemValue="2" />
+                                </p:selectOneMenu>
+                            </td>
+                            <td style="width: 50px"></td>
+                            <td style="width: 150px"><p:outputLabel value="Lebar Total Task Area" /></td>
+                            <td style="width: 150px"><p:inputNumber decimalPlaces="6" decimalSeparator="," thousandSeparator="." style="width:150px" id="id-lebarTotalTaskArea" value="#{trapeziumAreaMBean.lebarTotalTaskArea}"/></td>
+                            <td style="width: 50px"><p:outputLabel value="nm" /></td>
+                            <td style="width: 150px"></td>
+                        </tr>
+                        <tr>
+                            <td style="width: 150px"><p:outputLabel value="Luas Task Area" /></td>
+                            <td style="width: 150px"><p:inputNumber decimalPlaces="6" decimalSeparator="," thousandSeparator="." style="width:150px" id="id-luasTaskArea" value="#{trapeziumAreaMBean.luasTaskArea}"/></td>
+                            <td style="width: 50px"><p:outputLabel value="nm2" /></td>
+                            <td style="width: 150px"></td>
+                            <td style="width: 150px"></td>
+                            <td style="width: 50px"></td>
+                            <td style="width: 150px"></td>
+                        </tr>
+                        <tr>
+                            <td style="width: 150px" colspan="7">
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                    <p:dataTable id="idTabelTaskArea" var="calculation" value="#{trapeziumAreaMBean.listTrapeziumTaskArea}" 
+                                                 reflow="true" paginator="true" rows="10" 
+                                                 paginatorPosition="bottom" tableStyle="table-layout:auto">
+                                        <p:column headerText="Nama">
+                                            <h:outputText value="#{calculation.name}" />
+                                        </p:column>
+                                        <p:column headerText="Lebar Area">
+                                            <h:outputText value="#{calculation.taskAreaLength}" />
+                                        </p:column>
+                                        <p:column headerText="Panjang Area">
+                                            <h:outputText value="#{calculation.split}" />
+                                        </p:column>
+                                        <p:column headerText="Luas Area Pencarian">
+                                            <h:outputText value="#{calculation.luasTaskArea}" />
+                                        </p:column>
+                                        <p:column headerText="Aksi">
+                                            <p:commandLink value="Tampilkan pada peta" 
+                                                           update="incidentdetail:tabplanning-content:idTabelTaskArea">
+                                                <f:ajax event="click" listener="#{trapeziumAreaMBean.btnMapTaskArea(calculation)}"/>
+                                            </p:commandLink>
+                                            <p:outputLabel value=" | "/>
+                                            <p:commandLink value="Hapus" update="incidentdetail:tabplanning-content:idTabelTaskArea" >
+                                                <f:ajax event="click" listener="#{trapeziumAreaMBean.deleteTaskArea(calculation)}" />
+                                                <p:confirm header="Konfirmasi" message="Apakah anda yakin menghapus data ini?" icon="ui-icon-alert" />
+                                            </p:commandLink>
+                                        </p:column>
+                                    </p:dataTable>
+                                </p:panelGrid>
+                            </td>
+                        </tr>
+                    </table>
+                </p:panel>
+
+            </div>
+        </h:form>
+    </div>     
+</ui:composition>

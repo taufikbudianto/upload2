@@ -1,0 +1,50 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:dataTable id="data-kontak" var="list" 
+                 value="#{potensiMBean.listkontak}"  
+                 reflow="true"  paginator="true" paginatorPosition="bottom" rows="5"
+                 rowsPerPageTemplate="5" >
+        <f:facet name="header">
+            List Kontak SAR
+        </f:facet>
+
+        <p:column headerText="Title" sortBy="#{list.contacttitle}">
+            <p:outputLabel value="#{list.contacttitle}"/>
+        </p:column>
+
+        <p:column headerText="Nama" sortBy="#{list.contactname}">
+            <p:outputLabel value="#{list.contactname}"/>
+        </p:column>
+
+        <p:column headerText="Suffix" sortBy="#{list.contactsuffix}">
+            <p:outputLabel value="#{list.contactsuffix}"/>
+        </p:column>
+
+        <p:column headerText="Jabatan" sortBy="#{list.contactposition}">
+            <p:outputLabel value="#{list.contactposition}"/>
+        </p:column>
+
+        <p:column headerText="No. Telepon" sortBy="#{list.phonenumber1}">
+            <p:outputLabel value="#{list.phonenumber1}"/>
+        </p:column>
+
+        <p:column headerText="No. Hp" sortBy="#{list.phonenumber2}">
+            <p:outputLabel value="#{list.phonenumber2}"/>
+        </p:column>
+
+        <p:column headerText="Email" sortBy="#{list.email}">
+            <p:outputLabel value="#{list.email}"/>
+        </p:column>
+    </p:dataTable>
+    
+    <p:panel class="ui-g-12 control-button no-border no-padding">
+        <p:commandButton  value="Kembali" styleClass="red-btn" icon="ui-icon-cancel" style="width:130px">
+            <p:ajax event="click" update="@form" oncomplete="if(!args.validationFailed) PF('widgetViewPotensi').hide()"/>
+        </p:commandButton>
+    </p:panel> 
+    
+</ui:composition>

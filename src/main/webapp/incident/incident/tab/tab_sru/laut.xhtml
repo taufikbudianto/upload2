@@ -1,0 +1,98 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <div class="ui-g ui-fluid">
+        <div class="ui-g-12">
+            <h:form id="laut-content-tab">
+                <p:panelGrid id="search-incident-sru-tab-laut" columns="3" layout="grid" styleClass="ui-panelgrid-blank form-group" class="no-padding no-border">
+                    <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group" class="no-padding no-border">
+                        <p:commandButton id="check-pilih-incident-sru-tab-laut" value="Check All" actionListener="#{incidentSRULautMBean.checkallpilih()}" process="@form" update="@form" styleClass="green-btn"/>
+
+                        <p:commandButton id="uncheck-pilih-incident-sru-tab-laut" value="Uncheck All" actionListener="#{incidentSRULautMBean.uncheckallpilih()}" process="@form" update="@form" styleClass="red-btn"/>
+                    </p:panelGrid>
+
+                    <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group" class="no-padding no-border">
+                        <p:commandButton id="kirim-notif-incident-sru-tab-laut" type="button"  value="Kirim Notifikasi">
+                            <p:ajax event="click" update="@form" process="@form"/>
+                        </p:commandButton>
+                    </p:panelGrid>
+
+                    <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group" class="no-padding no-border">
+                        <p:commandButton id="check-kirim-incident-sru-tab-laut" value="Check All" actionListener="#{incidentSRULautMBean.checkallkirim()}" process="@form" update="@form" styleClass="green-btn"/>
+
+                        <p:commandButton id="uncheck-kirim-incident-sru-tab-laut" value="Uncheck All" actionListener="#{incidentSRULautMBean.uncheckallkirim()}" process="@form" update="@form" styleClass="red-btn"/>
+                    </p:panelGrid>
+                </p:panelGrid>
+
+                <p:dataTable var="lautsruinc" value="#{incidentSRULautMBean.listTempCheck}"
+                             reflow="true"  paginator="true" paginatorPosition="bottom" rows="#{viewBean.rowsPageDefault}"
+                             rowsPerPageTemplate="#{viewBean.rowsPerPageTemplate}" first="#{viewBean.first}"
+                             emptyMessage="Data tidak ditemukan"
+                             id="lautsruinc" tableStyle="table-layout:auto" sortBy="#{lautsruinc.resAsset.assetid}"
+                             style="font-size: smaller" rowIndexVar="index">                
+                    <p:column headerText="No" style="width: 20px">
+                        <p:outputLabel value="#{index + 1}"/>
+                    </p:column>
+                    <p:column style="width: 5%; text-align: center;" id="checkPilihLaut" headerText="Pilih" sortBy="#{lautsruinc.pilih}">
+                        <p:selectBooleanCheckbox value="#{lautsruinc.pilih}">
+                            <p:ajax process="@this"/>
+                        </p:selectBooleanCheckbox>
+                    </p:column>
+                    <p:column style="width: 5%; text-align: center;" id="checkKirimLaut" headerText="Kirim">
+                        <p:selectBooleanCheckbox value="#{lautsruinc.kirim}">
+                            <p:ajax process="@this"/>
+                        </p:selectBooleanCheckbox>
+                    </p:column>
+
+                    <p:column headerText="Nama SRU" sortBy="#{lautsruinc.resAsset.name}">
+                        <h:outputText value="#{lautsruinc.resAsset.name}" />
+                    </p:column>
+                    <p:column headerText="Kansar/Potensi" sortBy="#{lautsruinc.resAsset.potencyid.potencyname}">
+                        <h:outputText value="#{lautsruinc.resAsset.potencyid.potencyname}" />
+                    </p:column>
+                    <p:column headerText="Jarak(NM)">
+                        <h:outputText value="#{lautsruinc.distance}" />
+                    </p:column>
+                    <p:column headerText="Arah(Derajat)">
+                        <h:outputText value="#{lautsruinc.angle}" />
+                    </p:column>
+                    <p:column headerText="Kecepatan(Knots)" sortBy="#{lautsruinc.resAsset.speed}">
+                        <h:outputText value="#{lautsruinc.resAsset.speed}" />
+                    </p:column>
+                    <p:column headerText="Endurance(Jam)" sortBy="#{lautsruinc.resAsset.endurance}">
+                        <h:outputText value="#{lautsruinc.resAsset.endurance}" />
+                    </p:column>
+                    <p:column headerText="Fungsi" sortBy="#{lautsruinc.resAsset.functional}">
+                        <h:outputText value="#{lautsruinc.resAsset.functional}" />
+                    </p:column>
+                    <p:column headerText="Kapasitas" sortBy="#{lautsruinc.resAsset.cargo}">
+                        <h:outputText value="#{lautsruinc.resAsset.cargo}" />
+                    </p:column>
+                    <p:column headerText="Keterangan" sortBy="#{lautsruinc.resAsset.remarks}">
+                        <h:outputText value="#{lautsruinc.resAsset.remarks}" />
+                    </p:column>
+
+                    <p:column headerText="Aksi">
+                        <p:commandLink value="Lihat">
+                            <p:ajax event="click" listener="#{incidentSRULautMBean.viewCheck(lautsruinc)}"/>
+                        </p:commandLink> 
+                    </p:column>
+                </p:dataTable>
+                <p:spacer width="10" />
+                <p:commandButton value="Simpan SRU Laut" actionListener="#{incidentSRULautMBean.action}" process="@form"/>
+            </h:form>
+
+            <p:dialog id="idviewsrulaut" widgetVar="widgetViewSruLaut"
+                      header="Data "
+                      width="75%" height="80%"
+                      appendTo="@(body)"
+                      responsive="true" modal="true"
+                      maximizable="true" closable="false" style="overflow-y: 100%;max-height: 100%;"
+                      resizable="false">
+                <ui:include src="./view_sru_laut.xhtml"/>
+            </p:dialog>
+        </div>
+    </div>
+</ui:composition>

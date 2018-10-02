@@ -1,0 +1,22 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:pa="http://primefaces.org/barcelona">
+    
+    <div class="layout-sidebar">
+        <pa:tabMenu>
+            <c:forEach items="#{menuNavMBean.listMenu}" var="tab" varStatus="loop">
+                <pa:tab title="#{tab.taskName}" icon="#{tab.iconName}">
+                    <h:form id="form-menu-#{loop.index}" onclick="PF('listWidget').getPaginator().setPage(0);">
+                        <pa:menu model="#{menuNavMBean.getMenuContent(tab)}" />
+                    </h:form>
+                </pa:tab>
+            </c:forEach>
+        </pa:tabMenu>
+    </div>
+    
+</ui:composition>

@@ -1,0 +1,95 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">               
+    <ui:define name="title">SAR Core</ui:define>
+    <ui:define name="content">
+        <script type="text/javascript">
+            // This example uses a GroundOverlay to place an image on the map
+            // showing an antique map of Newark, NJ.
+            // This example uses a GroundOverlay to place an image on the map
+            // showing an antique map of Newark, NJ.
+
+            var historicalOverlay;
+
+            function groundOverlay() {
+                var map = new google.maps.Map(document.getElementById('idMap'), {
+                    zoom: 13,
+                    center: {lat: 40.740, lng: -74.18},
+                    mapTypeId: 'satellite'
+                });
+
+                var imageBounds = {
+                    north: 40.773941,
+                    south: 40.712216,
+                    east: -74.12544,
+                    west: -74.22655
+                };
+
+                historicalOverlay = new google.maps.GroundOverlay(
+                        'https://www.lib.utexas.edu/maps/historical/newark_nj_1922.jpg',
+                        imageBounds);
+                historicalOverlay.setMap(map);
+            }
+
+        </script>
+        <h:form prependId="false">
+
+            <div id="map"></div>
+
+            <div class="ui-g ui-fluid">
+                <div class="ui-g-12 ui-lg-10">
+                    <!-- Left Side -->
+                    <div class="card">
+                        <h:panelGroup styleClass="md-inputfield" style="margin-top: 10px;margin-bottom: 20px">
+                            <p:inputText value="#{mapMBean.search}"
+                                         onkeypress="if (event.keyCode == 13) {
+                                                     callGeocode();
+                                                     return false;
+                                                 }"/>
+                            <label>Search</label>
+                        </h:panelGroup>
+                        <p:remoteCommand name="callGeocode" actionListener="#{mapMBean.showPoint}"/>
+                        <p:gmap id="idMap" widgetVar="idnGmap" 
+                                center="#{mapMBean.centerGeoMap}" zoom="#{mapMBean.zoomGeoMap}" type="HYBRID" 
+                                style="width:100%;height:600px" model="#{mapMBean.mapModel}">
+                            <p:ajax event="geocode" listener="#{mapMBean.onGeocode}" update="@this" />
+                        </p:gmap>
+                    </div>
+                </div>
+                <div class="ui-g-12 ui-lg-2">
+                    <!-- Right Side -->
+                    <p:panel class="card" header="Setting" >
+                        <p:panelGrid columns="2" styleClass="ui-panelgrid-blank" 
+                                     style="margin-left: -10px;margin-right: -10px">
+                            <p:inputSwitch value="#{mapMBean.isIconInsiden}">
+                                <p:ajax listener="#{mapMBean.setIconInsiden}" update="growl" />
+                            </p:inputSwitch>
+                            <h:outputText value="Icon Insiden " />
+                            <p:inputSwitch value="#{mapMBean.isBatasKansar}">
+                                <p:ajax listener="#{mapMBean.setBatasKansar}" update="growl" />
+                            </p:inputSwitch>
+                            <h:outputText value="Batas Wilayah Kansar" />
+                            <p:inputSwitch />
+                            <h:outputText value="POI" />
+                            <p:inputSwitch />
+                            <h:outputText value="Traffic" />
+                            <p:inputSwitch />
+                            <h:outputText value="Beacon" />
+                        </p:panelGrid>
+                        <p:separator/>
+                        <p:commandButton value="SEARCH AREA" style="background-color: whitesmoke; color: black; margin-bottom:10px;"/>
+                        <p:button value="SEARCH PATTERN" styleClass="red-btn" style="margin-bottom:10px;" />
+                        <p:commandButton value="MEASUREMENT" style="background-color: blue; margin-bottom:10px;"/>
+                        <p:commandButton value="PRINT" onclick="groundOverlay()"/>
+                    </p:panel>
+                </div>
+            </div>
+        </h:form>
+
+
+
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,146 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">Daftar Log</ui:define>
+    <ui:define name="content">
+        <div class="ui-g ui-fluid">
+            <div class="ui-g-12">
+                <h:form id="daftarlog-content">
+                    <p:panel id="list-daftarlog" header="Daftar Log" styleClass="penelHeaderGreen ui-shadow-content" 
+                             rendered="#{!daftarLogMBean.isShowDaftarLogInput}">
+                        <p:panelGrid id="search" columns="5" layout="grid" 
+                                     styleClass="ui-panelgrid-blank form-group" class="no-padding no-border">
+
+                            <p:panelGrid columns="1" class="no-border no-padding">
+                                <p:selectOneMenu id="fieldlog" value="#{daftarLogMBean.field}">
+                                    <p:ajax event="change" update="search" 
+                                            listener="#{daftarLogMBean.changeToCombo()}"/>
+                                    <f:selectItem itemLabel="TIPE" itemValue="logType" />
+                                    <f:selectItem itemLabel="NO INSIDEN" itemValue="incidentId" />
+                                    <f:selectItem itemLabel="DESKRIPSI" itemValue="remarks" />
+                                    <f:selectItem itemLabel="RADIOGRAM" itemValue="radiogram" />
+                                    <f:selectItem itemLabel="KANTOR SAR" itemValue="userSiteID" />
+                                    <f:selectItem itemLabel="TANGGAL LOG" itemValue="logdate" />
+                                    <f:selectItem itemLabel="TANGGAL MODIFY" itemValue="modifydate" />
+                                </p:selectOneMenu>                                    
+                            </p:panelGrid>    
+                            <p:panelGrid columns="5" class="no-border no-padding">
+                                <p:inputText id="value" value="#{daftarLogMBean.value}"
+                                             rendered="#{daftarLogMBean.showCombo == 0}"/>
+                                <p:selectOneMenu id="regType" value="#{daftarLogMBean.value}" 
+                                                 rendered="#{daftarLogMBean.showCombo == 1}">
+                                    <f:selectItem itemLabel="Umum" itemValue="umum"/>
+                                    <f:selectItem itemLabel="Operasional" itemValue="operasional"/>
+                                    <f:selectItem itemLabel="Sighting" itemValue="sighting"/>
+                                    <f:selectItem itemLabel="Dll" itemValue="dll" />
+                                </p:selectOneMenu>
+                                <p:selectOneMenu id="kansarid" value="#{daftarLogMBean.value}" 
+                                                 rendered="#{daftarLogMBean.showCombo == 2}">
+                                    <f:selectItems value ="#{daftarLogMBean.listKantorSar}" />
+                                </p:selectOneMenu>
+
+                                <p:calendar id="LogDate1"  pattern="dd/MM/yyyy" mask="true" navigator="true" value="#{daftarLogMBean.value}" 
+                                            rendered="#{daftarLogMBean.showCombo == 3}" showOn="button" />
+                                <p:outputLabel value="s.d" rendered="#{daftarLogMBean.showCombo == 3}"/>
+                                <p:calendar id="LogDate2" pattern="dd/MM/yyyy" mask="true" navigator="true" value="#{daftarLogMBean.value2}" 
+                                            rendered="#{daftarLogMBean.showCombo == 3}" showOn="button" />
+
+                                <p:calendar id="ModifyDate1" pattern="dd/MM/yyyy" mask="true" navigator="true" value="#{daftarLogMBean.value}" 
+                                            rendered="#{daftarLogMBean.showCombo == 4}" showOn="button" />
+                                <p:outputLabel value="s.d" rendered="#{daftarLogMBean.showCombo == 4}" />
+                                <p:calendar id="ModifyDate2" pattern="dd/MM/yyyy" mask="true" navigator="true" value="#{daftarLogMBean.value2}" 
+                                            rendered="#{daftarLogMBean.showCombo == 4}" showOn="button" />
+
+                                <p:commandButton id="search-btn" type="button"  value="Cari">
+                                    <p:ajax event="click" update="daftarlog-content:list-daftarlog" process="@form"/>
+                                </p:commandButton>         
+                                <p:commandButton value="Tambah Data Baru" styleClass="green-btn" update="@form" 
+                                                 actionListener="#{daftarLogMBean.add}"/>
+                            </p:panelGrid>
+
+                        </p:panelGrid>
+                        <p:dataTable id="daftarlogdatatable" var="daftarlog" value="#{daftarLogMBean.dataModel}" 
+                                     reflow="true" rowKey="#{daftarlog.logID}" lazy="true" paginator="true" 
+                                     paginatorPosition="bottom" rows="#{viewBean.rowsPageDefault}" 
+                                     rowIndexVar="index" rowsPerPageTemplate="#{viewBean.rowsPerPageTemplate}" 
+                                     emptyMessage="Data tidak ditemukan" tableStyle="table-layout:auto"
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                            <p:column headerText="No" style="width: 20px">
+                                <h:outputText value="#{index+1}"  />
+                            </p:column>
+                            <p:column headerText="Tanggal" style="width: 100px" sortBy="#{daftarlog.logDate}">
+                                <h:outputText value="#{daftarlog.logDate}"  />
+                            </p:column>
+                            <p:column headerText="Tipe" style="width: 100px" sortBy="#{daftarlog.logType}">
+                                <h:outputText value="#{daftarlog.logType}" />
+                            </p:column>
+                            <p:column headerText="Deskripsi" style="width: 200px" >
+                                <h:outputText value="#{daftarlog.remarks}" />
+                            </p:column>
+                            <p:column headerText="Longitude" style="width: 80px" sortBy="#{daftarlog.longitude}">
+                                <h:outputText value="#{daftarLogMBean.getLongitudeFormat(daftarlog.longitude)}" />
+                            </p:column>
+                            <p:column headerText="Latitude" style="width: 80px" sortBy="#{daftarlog.latitude}">
+                                <h:outputText value="#{daftarLogMBean.getLatitudeFormat(daftarlog.latitude)}" />
+                            </p:column>
+                            <p:column headerText="Radiogram" style="width: 100px" 
+                                      sortBy="#{daftarlog.radiogram.radiogramID}">
+                                <h:outputText value="#{daftarlog.radiogram.radiogramID}" />
+                            </p:column>
+                            <p:column headerText="Tanggal Modifikasi" style="width: 100px" 
+                                      sortBy="#{daftarlog.lastModified}">
+                                <h:outputText value="#{daftarlog.lastModified}" />
+                            </p:column>
+                            <p:column headerText="No Insiden" style="width: 150px" 
+                                      sortBy="#{daftarlog.incidentId}">
+                                <h:outputText value="#{daftarLogMBean.getIncidentByIncidentId(daftarlog.incidentId)}" />
+                            </p:column>
+                            <p:column headerText="Kantor Sar" style="width: 150px" 
+                                      sortBy="#{daftarlog.userSiteID}">
+                                <h:outputText value="#{daftarLogMBean.getKantorSarByKantorSarId(daftarlog.userSiteID)}" />
+                            </p:column>
+                            <p:column headerText="Aksi" style="width: 200px">
+                                <p:commandLink value="Lihat">
+                                    <p:ajax event="click" listener="#{daftarLogMBean.viewDaftarLog(daftarlog.logID, true)}" 
+                                            update="@form" />
+                                </p:commandLink> 
+                                <p:outputLabel value=" | "/>
+                                <p:commandLink value="Edit">
+                                    <p:ajax event="click" listener="#{daftarLogMBean.viewDaftarLog(daftarlog.logID, false)}" 
+                                            update="@form" />
+                                </p:commandLink> 
+                                <p:outputLabel value=" | "/>
+                                <p:commandLink value="Hapus" 
+                                               actionListener="#{daftarLogMBean.hapusDaftarLog(daftarlog)}"
+                                               update="daftarlog-content:daftarlogdatatable @form">
+                                    <p:confirm header="Konfirmasi" 
+                                               message="Apakah anda yakin ingin menghapus Log ini?" 
+                                               icon="ui-icon-alert"/>
+                                </p:commandLink>
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+
+                    <p:panel id="daftarLogInput" header="Daftar Log" 
+                             styleClass="penelHeaderGreen ui-shadow-content" 
+                             rendered="#{daftarLogMBean.isShowDaftarLogInput}">
+                        <ui:include src="formLog.xhtml" />
+                    </p:panel>
+                </h:form>
+            </div>
+        </div>   
+<!--        <p:dialog id="idDaftarLog" widgetVar="widgetDaftarLog"
+                  header="Data Log"
+                  width="65%" height="100%"
+                  appendTo="@(body)"
+                  responsive="true" modal="true"
+                  maximizable="true" style="overflow-y: auto;max-height: 100%"
+                  resizable="false">
+            <ui:include src="./formLog.xhtml"/>
+        </p:dialog>  -->
+    </ui:define>
+</ui:composition>

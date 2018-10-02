@@ -1,0 +1,232 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="form-resPeralatanInput">
+        <p:panel class="card" header="Detail Peralatan" >
+            <p:messages closable="true"/>
+            <div class="ui-g-12 ui-lg-6 value-readonly">
+                <p:panel>
+                    <p:panelGrid columns="2" layout="grid" 
+                                 styleClass="ui-panelgrid-blank form-group" 
+                                 columnClasses="ui-grid-col-4,ui-grid-col-10" 
+                                 class="no-border no-padding no-padding-table ui-fluid" style="max-width: 500px">
+                        <p:outputLabel value="Kode"/>
+                        <p:inputText value="#{resPeralatanMBean.resAsset.code}" maxlength="50" disabled="#{resPeralatanMBean.disabled}"/>
+
+                        <p:outputLabel value="Nama"/>
+                        <p:inputText value="#{resPeralatanMBean.resAsset.name}" maxlength="300" disabled="#{resPeralatanMBean.disabled}" required="true" requiredMessage="Nama harus diisi"/>
+
+                        <p:outputLabel value="Tipe"/>
+                        <p:selectOneMenu style="margin-bottom:10px;" value="#{resPeralatanMBean.assetname}"
+                                         required="true" requiredMessage="Tipe harus dipilih" disabled="#{resPeralatanMBean.disabled}"> 
+                            <f:selectItems value="#{resPeralatanMBean.listAssetType}" />
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="Kondisi"/>
+                        <p:inputText value="#{resPeralatanMBean.resAsset.assetcondition}" maxlength="50" disabled="#{resPeralatanMBean.disabled}"/>
+
+                        <p:outputLabel value="Jumlah"/>
+                        <p:inputText value="#{resPeralatanMBean.resAsset.goodqty}" disabled="#{resPeralatanMBean.disabled}" onkeypress="return isNumber(event);"/>
+
+                        <p:outputLabel value="Kapasitas"/>
+                        <p:inputText value="#{resPeralatanMBean.resAsset.cargo}" maxlength="250" disabled="#{resPeralatanMBean.disabled}" onkeypress="return isNumber(event);"/>
+
+                        <p:outputLabel value="Fungsi"/>
+                        <p:inputTextarea value="#{resPeralatanMBean.resAsset.functional}" maxlength="200" disabled="#{resPeralatanMBean.disabled}"/>
+
+                        <p:outputLabel value="Status"/>
+                        <p:selectOneMenu id="status" value="#{resPeralatanMBean.resAsset.status}" disabled="#{resPeralatanMBean.disabled}">
+                            <f:selectItem itemLabel="" itemValue="" />
+                            <f:selectItem itemLabel="Tidak Beroperasi" itemValue="0" />
+                            <f:selectItem itemLabel="Beroperasi" itemValue="1" />
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="Tipe Operasional" />
+                        <p:selectOneMenu value="#{resPeralatanMBean.resAsset.op_type}" disabled="#{resPeralatanMBean.disabled}">
+                            <!--<p:ajax listener="{resPeralatanMBean.onKolomPencarianChange()}" update="@form"/>-->
+                            <f:selectItems value="#{resPeralatanMBean.listOperationalType}" />
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                </p:panel>
+            </div>
+
+            <div class="ui-g-12 ui-lg-6 value-readonly">
+                <!--Right Side--> 
+                <p:panel id="idPanelPeralatanInputRight">
+                    <p:panelGrid columns="3" layout="grid" 
+                                 styleClass="ui-panelgrid-blank form-group" 
+                                 columnClasses="ui-grid-col-6,ui-grid-col-12,ui-grid-col-3" 
+                                 class="no-border no-padding no-padding-table ui-fluid" style="max-width: 500px">
+                        <p:outputLabel value="Nama KanSAR"/>
+                        <p:selectOneMenu value="#{resPeralatanMBean.kantorsarname}"
+                                         required="true" requiredMessage="Kansar harus dipilih" disabled="#{resPeralatanMBean.disabled}">
+                            <f:selectItem itemLabel="" itemValue="" />
+                            <f:selectItems value="#{resPeralatanMBean.listKantorSar}"/>
+                        </p:selectOneMenu>
+                        <br/>
+
+                        <p:outputLabel value="Nama Potensi"/>
+                        <h:outputText value="#{resPeralatanMBean.potencyname}" />
+                        <p:commandButton icon="ui-icon-search" disabled="#{resPeralatanMBean.disabled}">
+                            <p:ajax event="click" listener="#{resPeralatanMBean.showListPotency}"/>
+                        </p:commandButton>
+
+
+                        <p:outputLabel value="Latitude" style="width: 100px" />
+                        <p:panelGrid id="latitude" columns="3" style="width: 100%;"
+                                     class="no-border no-padding-table ui-fluid">
+                            <ui:include src="coordinate/latitude.xhtml"/>
+                        </p:panelGrid>
+                        <br/>
+
+                        <p:outputLabel value="Longitude" />
+                        <p:panelGrid id="longitude" columns="3" style="width: 100%;"
+                                     class="no-border no-padding-table ui-fluid">
+                            <ui:include src="coordinate/longitude.xhtml"/>
+                        </p:panelGrid>
+                        <br/>
+
+                        <p:outputLabel value="Deskripsi"/>
+                        <p:inputText value="#{resPeralatanMBean.resAsset.remarks}" maxlength="1000" disabled="#{resPeralatanMBean.disabled}"/>
+                        <br/>
+
+                        <p:outputLabel value="Search Platform"/>
+                        <p:selectOneMenu id="platform" value="#{resPeralatanMBean.vehicletype}" maxlength="50" disabled="#{resPeralatanMBean.disabled}">
+                            <f:selectItem itemLabel="" itemValue="" />
+                            <f:selectItem itemLabel="Vessel and small boats" itemValue="Vessel" />
+                            <f:selectItem itemLabel="Merchant Ships" itemValue="Merchant" />
+                            <f:selectItem itemLabel="Fixed Wing Aircraft" itemValue="Fixed Wing" />
+                            <f:selectItem itemLabel="Helicopter" itemValue="Helicopter" />
+                        </p:selectOneMenu>
+                        <br/>
+
+                        <p:outputLabel value="Endurance" />
+                        <p:inputText value="#{resPeralatanMBean.resAsset.endurance}" disabled="#{resPeralatanMBean.disabled}" onkeypress="return isNumber(event);"/>
+                        <p:outputLabel value="Jam"/>
+
+                        <p:outputLabel value="Kecepatan"/>
+                        <p:inputText value="#{resPeralatanMBean.resAsset.speed}" disabled="#{resPeralatanMBean.disabled}" onkeypress="return isNumber(event);"/>
+                        <p:outputLabel value="Knots"/>
+
+                        <p:outputLabel value="Foto" />
+                        <p:fileUpload id="fileImportResPeralatanInput" mode="advanced" auto="true"
+                                      dragDropSupport="false" sizeLimit="10000000" multiple="true"
+                                      fileUploadListener="#{resPeralatanMBean.uploadImage}"
+                                      process="@this" update="peralatan-content:form-resPeralatanInput:imgResPeralatanInput"
+                                      accept="image/*" disabled="#{resPeralatanMBean.disabled}"/>
+                        <br/>
+
+                        <p:spacer />
+                        <p:panel class="control-button">
+                            <p:dataTable id="imgResPeralatanInput" widgetVar="widImgResPeralatanInput" var="imageResPeralatanInput"
+                                         value="#{resPeralatanMBean.listResAssetImages}" reflow="true"
+                                         rows="1" emptyMessage="Data tidak ditemukan" paginator="true"
+                                         paginatorPosition="bottom" tableStyle="table-layout:auto"
+                                         style="text-align: center">
+                                <p:column headerText="Image">
+                                    <h:form>
+                                        <h:panelGroup style="display: block; text-align: center">
+                                            <p:lightBox id="lightBoxResPeralatanInput" widgetVar="dlgResPeralatanInput">
+                                                <h:outputLink value="/document/temp/#{imageResPeralatanInput.pathname != null ? imageResPeralatanInput.pathname.replace('\\','/'): ''}"
+                                                              title="Image">
+                                                    <p:graphicImage url="/document/temp/#{imageResPeralatanInput.pathname != null ? imageResPeralatanInput.pathname.replace('\\','/'): ''}"
+                                                                    width="200" height="200" cache="false"/>
+                                                </h:outputLink>
+                                            </p:lightBox>
+                                            <p:commandLink value="Hapus" actionListener="#{resPeralatanMBean.hapusImage(imageResPeralatanInput)}"
+                                                           disabled="#{resPeralatanMBean.disabled}" process="@this"
+                                                           update="peralatan-content:form-resPeralatanInput:imgResPeralatanInput">
+                                                <p:confirm header="Konfirmasi" message="Apakah Anda yakin ingin menghapus image ini?"
+                                                           icon="ui-icon-alert"/>
+                                            </p:commandLink>
+                                        </h:panelGroup>
+                                    </h:form>                                
+                                </p:column>
+                            </p:dataTable>
+                        </p:panel>
+                        <br/>
+
+                    </p:panelGrid>
+
+                </p:panel>
+                <div class="ui-g-4 ">
+                    <p:commandButton id="add-btn" type="button"  value="Tambah Data Baru" icon="fa fa-plus-circle" 
+                                     class="green-btn" style="float: right" disabled="#{resPeralatanMBean.disabled}">
+                        <p:ajax event="click" process="@this" update="@this" listener="#{resPeralatanMBean.resetContactInput}"/>
+                    </p:commandButton> 
+                </div>
+            </div>
+
+            <div class="ui-g-12">
+                <p:panel header="List Kontak Aset">
+                    <p:dataTable id="contact_datatable_res_peralatan_input" var="contact" value="#{resPeralatanMBean.assetContacts}" reflow="true" rowKey="#{contact.assetid}"
+                                 paginator="true" paginatorPosition="bottom" rows="#{viewBean.rowsPageDefault}"
+                                 rowsPerPageTemplate="#{viewBean.rowsPerPageTemplate}" emptyMessage="Data tidak ditemukan" tableStyle="table-layout:auto"
+                                 rowIndexVar="index">
+                        <p:column headerText="No" style="width: 20px">
+                            <p:outputLabel value="#{index + 1}"/>
+                        </p:column>
+                        <!--                    <p:column headerText="Title">
+                                                <h:outputText value="#{contact.contacttitle}" />
+                                            </p:column>-->
+                        <p:column headerText="Nama (1)">
+                            <h:outputText value="#{contact.contactname}" />
+                        </p:column>
+                        <!--                    <p:column headerText="Suffix">
+                                                <h:outputText value="#{contact.contactsuffix}" />
+                                            </p:column>-->
+                        <!--                    <p:column headerText="Jabatan">
+                                                <h:outputText value="#{contact.contactposition}" />
+                                            </p:column>-->
+                        <p:column headerText="No. Telepon (1)">
+                            <h:outputText value="#{contact.phonenumber1}" />
+                        </p:column>
+                        <p:column headerText="Nama (2)">
+                            <h:outputText value="#{contact.contactname}" />
+                        </p:column>
+                        <p:column headerText="No. Telepon (2)">
+                            <h:outputText value="#{contact.phonenumber2}" />
+                        </p:column>
+                        <!--                    <p:column headerText="Email">
+                                                <h:outputText value="#{contact.email}" />
+                                            </p:column>-->
+                        <p:column headerText="Aksi" rendered="false" style="width: 50px">
+                            <h:form>
+                                <p:commandButton label="lihat" icon="fa fa-search" rendered="false" class="blue-grey-btn">
+                                    <p:ajax event="click" listener="#{resPeralatanMBean.viewCheckContactTemp(contact,true)}" 
+                                            update=":form-resContact"/>
+                                </p:commandButton>
+                                <p:outputLabel value=" | " rendered="false"/>
+                                <p:commandLink value="Edit" rendered="false" disabled="#{resPeralatanMBean.disabled}">
+                                    <!--                                        <p:resetInput target="idResContactInput"/>-->
+                                    <p:ajax event="click" listener="#{resPeralatanMBean.viewCheckContactTemp(contact,false)}" 
+                                            update="@form" process="@this"/>
+                                </p:commandLink> 
+                                <p:outputLabel value=" | " rendered="false"/>
+                                <p:commandLink value="Hapus" rendered="false" disabled="#{resPeralatanMBean.disabled}"
+                                               actionListener="#{resPeralatanMBean.hapusContactTemp(contact)}"
+                                               update=":peralatan-content:form-resPeralatanInput:contact_datatable_res_peralatan_input" process="@this">
+                                    <p:confirm header="Konfirmasi" message="Apakah anda yakin ingin menghapus kontak ini?" icon="ui-icon-alert"/>
+                                </p:commandLink>
+                            </h:form>
+                        </p:column>
+                    </p:dataTable>
+                </p:panel>
+            </div>
+
+            <p:panel class="control-button no-border no-padding" >   
+                <p:commandButton value="Simpan" styleClass="green-btn" actionListener="#{resPeralatanMBean.simpan()}" update="peralatan-content" 
+                                 process="@form" style="width:130px" rendered="#{resPeralatanMBean.showButton}">
+                    <p:confirm header="Konfirmasi" message="Apakah anda yakin ingin menyimpan resource peralatan ini?" icon="ui-icon-alert" />
+                </p:commandButton>
+                <p:commandButton value="#{resPeralatanMBean.showButtonInput ? 'Batal' : 'Kembali'}"  
+                                 style="margin-left: 10px;width: 130px;" class="red-btn" icon="ui-icon-cancel">
+                    <p:ajax event="click" update="peralatan-content" listener="#{resPeralatanMBean.hideForm}"/>
+                </p:commandButton>
+            </p:panel>
+        </p:panel>
+    </h:form>
+</ui:composition>

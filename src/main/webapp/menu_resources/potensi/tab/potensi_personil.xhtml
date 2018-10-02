@@ -1,0 +1,86 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <!--    
+            <p:panel class="no-border no-padding control-button" style="text-align: right;" >
+                <p:commandButton value="Tambah" style="width:130px" styleClass="green-btn" 
+                                 actionListener="{potensiMBean.loadPersonnel}" 
+                                 update="@form" 
+                                 process="@this"
+                                 icon="fa fa-plus-circle"/>
+            </p:panel>-->
+    <p:dataTable id="data-profil" var="list" 
+                 value="#{potensiMBean.listPersonel}" 
+                 reflow="true"
+                 lazy="true" paginator="true" paginatorPosition="bottom" rows="10"
+                 rowsPerPageTemplate="5,10,15" emptyMessage="Data tidak ditemukan" tableStyle="table-layout:auto"
+                 rowIndexVar="index">
+        <f:facet name="header">
+            List Personil Potensi
+        </f:facet>
+        <p:column headerText="No" style="width: 20px">
+            <p:outputLabel value="#{index + 1}"/>
+        </p:column>
+        <p:column headerText="NIP/NRP" sortBy="#{list.personnelCode}">
+            <p:outputLabel value="#{list.personnelCode}" />
+        </p:column>
+
+        <p:column headerText="Nama Lengkap" style="width: 30%" sortBy="#{list.personnelName}">
+            <p:outputLabel value="#{list.personnelName}" />
+        </p:column>
+
+        <p:column headerText="Nama Potensi" sortBy="#{list.potency.potencyname}">
+            <h:outputText value="#{list.potency.potencyname}" />
+        </p:column>
+
+        <p:column headerText="Nama kanSAR" sortBy="#{list.officeSar.kantorsarname}">
+            <p:outputLabel value="#{list.officeSar.kantorsarname}" />
+        </p:column>
+
+        <p:column headerText="No. Handphone (1)" sortBy="#{list.phoneNumber}">
+            <p:outputLabel value="#{list.phoneNumber}" />
+        </p:column>
+        <p:column headerText="Email" sortBy="#{list.email}">
+            <p:outputLabel value="#{list.email}" />
+        </p:column>
+
+        <!--            <p:column headerText="Tipe">
+                        <p:outputLabel value="#{list.employmentType eq 0?'Personil'
+                                :(list.employmentType eq 1 ?'Potency':'')}" />
+    </p:column>-->
+
+        <!--        <p:column headerText="Kantor SAR">
+                    <p:outputLabel value="#{list.officeSar.kantorsarname}" />
+                </p:column>
+        
+                <p:column headerText="Golongan">
+                    <p:outputLabel value="#{list.employmentClass.employmentclassname}" />
+                </p:column>
+        
+                <p:column headerText="Unit Kerja">
+                    <p:outputLabel value="#{list.unit.employmentunitname}" />
+                </p:column>
+        
+                <p:column headerText="Jabatan">
+                    <p:outputLabel value="#{list.employmentClass.employmentclassname}" />
+                </p:column>-->
+        <p:column headerText="Action" style="width: 50px">
+            <p:commandButton id="lihatpersonil"
+                             label="Edit"
+                             onclick="PF('tTipLihat').hide();"
+                             style="max-width: 50px"
+                             actionListener="#{potensiMBean.loadPersonnel()}"
+                             process="@this" 
+                             update="@form"
+                             styleClass="blue-grey-btn" 
+                             icon="fa fa-search">
+                <f:attribute name="listRow" value="#{list}" />
+            </p:commandButton>
+            <p:tooltip value="Lihat" for="lihatpersonil"
+                       trackMouse="true" widgetVar="tTipLihat"/>
+        </p:column>
+    </p:dataTable>
+</ui:composition>

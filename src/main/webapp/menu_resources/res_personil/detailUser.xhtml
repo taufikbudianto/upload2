@@ -1,0 +1,56 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:panel class="grid ui-fluid no-border no-padding value value-readonly" style="margin-left: 20px" >
+        <p:messages closable="true"/>
+        <p:panelGrid id="data-user" class="no-padding no-border" columns="2" layout="grid"
+                     styleClass="ui-panelgrid-blank form-group" style="margin-top: 10px"
+                     columnClasses="ui-grid-col-2, ui-grid-col-6">
+            <p:outputLabel value="NIP"/>
+            <p:inputText id="nip" value="#{resPersonnelMBean.resPersonnel.personnelCode}"
+                         disabled="true" style="width: 50%"/>
+
+            <p:outputLabel value="Nama Lengkap"/>
+            <p:inputText id="nama-lengkap" value="#{resPersonnelMBean.fullNameInput}" maxlength="100"
+                         disabled="true" style="width: 50%"/>
+
+            <p:outputLabel value="Kantor SAR"/>
+            <p:selectOneMenu id="kantorSar" value="#{resPersonnelMBean.namaKansar}"
+                             required="true" requiredMessage="Kantor SAR harus dipilih!"
+                             disabled="#{resPersonnelMBean.disabledKanSar}" style="width: 50%">
+                <f:selectItem itemLabel="" itemValue="" />
+                <f:selectItems value="#{resPersonnelMBean.selectKanSar}"/>
+            </p:selectOneMenu>
+
+            <p:outputLabel value="Username"/>
+            <p:inputText id="username" value="#{resPersonnelMBean.userName}" maxlength="100"
+                         required="true" requiredMessage="Username harus diisi!" style="width: 50%"
+                         disabled="#{resPersonnelMBean.disabled}">
+                <p:focus for="username"/>
+            </p:inputText>
+
+            <p:outputLabel value="Password"/>
+            <p:password id="password" value="#{resPersonnelMBean.passwordInput}" maxlength="60"
+                        match="confirm-password" validatorMessage="Password dan Konfirmasi Password tidak sesuai!"
+                        required="#{!resPersonnelMBean.isGeneratedPassword}" requiredMessage="Password harus diisi!"
+                        style="width: 50%" disabled="#{resPersonnelMBean.disabled}"/>
+
+            <p:outputLabel value="Konfirmasi Password"/>
+            <p:password id="confirm-password" value="#{resPersonnelMBean.passwordInput}" maxlength="60"
+                        required="#{!resPersonnelMBean.isGeneratedPassword}" requiredMessage="Konfirmasi Password harus diisi!"
+                        style="width: 50%" disabled="#{resPersonnelMBean.disabled}"/>
+
+            <p:outputLabel value="Hak Akses"/>
+            <p:selectOneMenu id="roles" value="#{resPersonnelMBean.selectedRole}" required="true" converter="listConverter"
+                             requiredMessage="Hak Akses harus dipilih!" style="width: 50%" disabled="#{resPersonnelMBean.disabledRole}">
+                <f:selectItem itemLabel="--- Pilih ---" itemValue=""/>
+                <f:selectItems value="#{resPersonnelMBean.availableRoles}" var="role" itemValue="#{role}"
+                               itemLabel="#{role.roleName} #{role.tenant != null ? '- '.concat(role.tenant.tenantName) : ''}" />
+            </p:selectOneMenu>
+        </p:panelGrid>
+
+    </p:panel>
+</ui:composition>

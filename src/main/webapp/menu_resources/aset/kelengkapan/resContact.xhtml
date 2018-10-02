@@ -1,0 +1,51 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="form-resContact">
+        <p:panel class="card" header="Detail Contact" >
+            <div class="ui-g ui-fluid">
+                <div class="ui-g-12 ui-lg-12 ">
+                    <p:panel>
+                        <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                            <p:outputLabel value="Gelar Depan" style="width: 100px"/>
+                            <p:inputText value="#{resKelengkapanMBean.resAssetContact.contacttitle}" style="width: 200px" maxlength="5" disabled="#{resKelengkapanMBean.disabledContact}"/>
+
+                            <p:outputLabel value="Nama" style="width: 100px"/>
+                            <p:inputText value="#{resKelengkapanMBean.resAssetContact.contactname}" style="width: 200px" maxlength="50" required="true" requiredMessage="Nama harus diisi" disabled="#{resKelengkapanMBean.disabledContact}"/>
+
+                            <p:outputLabel value="Gelar Belakang"/>
+                            <p:inputText value="#{resKelengkapanMBean.resAssetContact.contactsuffix}" style="width: 200px" maxlength="15" disabled="#{resKelengkapanMBean.disabledContact}"/>
+
+                            <p:outputLabel value="Jabatan" style="width: 100px" />
+                            <p:inputText value="#{resKelengkapanMBean.resAssetContact.contactposition}" style="width: 200px" maxlength="15" disabled="#{resKelengkapanMBean.disabledContact}"/>
+
+                            <p:outputLabel value="No. Telepon" style="width: 100px" />
+                            <p:inputText value="#{resKelengkapanMBean.resAssetContact.phonenumber1}" style="width: 200px" maxlength="15" disabled="#{resKelengkapanMBean.disabledContact}"/>
+
+                            <p:outputLabel value="No. Handphone" style="width: 100px" />
+                            <p:inputText value="#{resKelengkapanMBean.resAssetContact.phonenumber2}" style="width: 200px" maxlength="15" disabled="#{resKelengkapanMBean.disabledContact}"/>
+
+                            <p:outputLabel value="Email" style="width: 100px" />
+                            <p:inputText value="#{resKelengkapanMBean.resAssetContact.email}" style="width: 200px" maxlength="15" disabled="#{resKelengkapanMBean.disabledContact}"/>
+                        </p:panelGrid>
+                        <p:panelGrid columns="3" layout="grid" styleClass="ui-panelgrid-blank form-group" style="width: 500px;">
+                            <p:commandButton value="Simpan" styleClass="green-btn" actionListener="#{resKelengkapanMBean.simpanContact()}" 
+                                             update=":kelengkapan-content:form-resKelengkapan:contact_datatable_res_kelengkapan @form" 
+                                             process=":kelengkapan-content:form-resKelengkapan:contact_datatable_res_kelengkapan @form" 
+                                             style="width:130px" rendered="#{resKelengkapanMBean.showButtonContact}">
+                                <p:confirm header="Konfirmasi" message="Apakah anda yakin ingin menyimpan kontak resources ini?" icon="ui-icon-alert" />
+                            </p:commandButton>
+                            <p:commandButton value="#{resKelengkapanMBean.showButtonContact ? 'Batal' : 'Kembali'}" 
+                                             styleClass="red-btn" style="width:130px" actionListener="#{resKelengkapanMBean.batal()}" immediate="true">
+                                <p:ajax event="click" update="@form" oncomplete="if(!args.validationFailed) PF('widgetResContactKelengkapan').hide()"/>
+                            </p:commandButton>
+                        </p:panelGrid>
+                    </p:panel>
+                </div>
+            </div>
+        </p:panel>
+    </h:form>
+</ui:composition>

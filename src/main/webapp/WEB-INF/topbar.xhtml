@@ -1,0 +1,72 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:pa="http://primefaces.org/barcelona"
+    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <div class="topbar">
+        <div class="logo" style="float:left;">
+            <h:link outcome="/index">
+                <p:graphicImage name="images/logo.png" library="barcelona-layout" />
+            </h:link>
+        </div>
+        <div style="float:left;">
+        <div>
+        <p:outputLabel styleClass="app-name" value="SAR CORE APLIKASI" 
+                       style="font-size: 30px;color: whitesmoke;font-weight: bolder;
+                       vertical-align: top;"/>
+        </div>
+        <div style="margin-top:11px;">
+        <!--<h4></h4><h4></h4>-->
+        <p:outputLabel value="V1.0.0" style="margin-left:15px;margin-top:30px;color:white;font-weight:bolder;"/>
+        </div>
+        </div>
+        <p:graphicImage name="images/logo-text.svg" library="barcelona-layout" styleClass="app-name"/>
+
+        <a id="topbar-menu-button" href="#">
+            <i class="fa fa-bars"></i>
+        </a>
+
+        <c:if test="#{request.remoteUser != null}">
+            <ul class="topbar-menu fadeInDown animated">
+                <li class="profile-item">
+                    <a href="#">
+                        <div class="profile-image">
+                            <p:graphicImage name="images/profile-image-transparant.png" library="barcelona-layout" style="width: 1px !important;" />
+                        </div>
+                        <div class="profile-info">
+                            <span class="topbar-item-name profile-name">
+                                <p style="text-transform: uppercase;">
+                                    USER : #{menuNavMBean.userSession.party != null ? 
+                                      menuNavMBean.userSession.party.firstName : msg.topbar_no_name}
+                                </p> 
+                            </span>
+                            <span class="topbar-item-name profile-role" style="font-weight:bold">
+                                ROLE : #{menuNavMBean.userSession.firstRole != null ? menuNavMBean.userSession.firstRole.roleName : ''}
+                            </span>
+                        </div>
+                    </a>
+
+                    <ul class="animated">
+                        <li role="menuitem">
+                            <div style="padding: 10px; font-weight: bold;">
+                                #{msg.topbar_profile_welcome} #{menuNavMBean.userSession.party != null ? menuNavMBean.userSession.party.fullName : msg.topbar_no_name}
+                            </div>
+                            <p:separator />
+                        </li>
+                        <li role="menuitem">
+                            <p:link title="#{msg.header_log_out}" class="header-nav-overlay-item" href="#{request.contextPath}/logout">
+                                <i class="fa fa-sign-out fa-lg fa-fw" aria-hidden="true" />
+                                <p:outputLabel value="#{msg.topbar_log_out}" />
+                            </p:link>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </c:if>
+    </div>
+
+</ui:composition>

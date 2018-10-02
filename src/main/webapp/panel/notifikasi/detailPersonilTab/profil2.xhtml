@@ -1,0 +1,78 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:panel id="detail-personel-profil2" class="no-border no-padding ui-fluid" >
+        <p:panelGrid class="no-padding no-border" columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group"
+                     columnClasses="ui-grid-col-6,ui-grid-col-6">
+            <p:panelGrid class="no-padding no-border" columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group"
+                         columnClasses="ui-grid-col-4 label,ui-grid-col-8 value value-readonly">
+
+                <p:outputLabel value="No Paspor" />
+                <p:inputText value="#{notifikasiMBean.personil.passportnumber}" 
+                             maxlength="9" disabled="true"
+                             label="No Paspor"/>
+
+                <p:outputLabel value="Toefl" />
+                <p:inputText value="#{notifikasiMBean.personil.toeflscore}" 
+                             maxlength="3" disabled="true"
+                             label="Toefl"/>
+
+                <p:outputLabel value="Tinggi Badan"/>
+                <p:inputText value="#{notifikasiMBean.personil.personheight}" 
+                             disabled="true"/>
+
+                <p:outputLabel value="Berat Badan"/>
+                <p:inputText  value="#{notifikasiMBean.personil.personweight}" 
+                              disabled="true"/>
+
+                <p:outputLabel value="Golongan Darah"/>
+                <p:inputText  value="#{notifikasiMBean.personil.bloodtype}" 
+                              disabled="true"/>
+
+                <p:outputLabel value="Riwayat Kesehatan" />
+                <p:inputTextarea value="#{notifikasiMBean.personil.medicalhistory}" 
+                                 disabled="true"
+                                 label="Riwayat Kesehatan"/>
+            </p:panelGrid>
+
+            <p:panelGrid class="no-border no-padding" columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group"
+                         columnClasses="ui-grid-col-4 label,ui-grid-col-8 value value-readonly">
+
+                <p:outputLabel value="Status Pegawai"/>
+                <p:inputText  value="#{notifikasiMBean.personil.status == 0 ? 'PNS' : 'CPNS'}" 
+                              disabled="true"/>
+
+                <p:outputLabel value="Tgl Tmt"/>
+                <p:calendar value="#{notifikasiMBean.personil.tmtDate}" 
+                            pattern="dd-MM-yyyy" mask="true" navigator="true"
+                            disabled="true" />
+
+                <p:outputLabel value="Golongan"/>
+                <p:inputText  value="#{notifikasiMBean.personil.employmentClass.employmentclassname}" 
+                              disabled="true"/>
+
+                <p:outputLabel value="Unit Kerja"/>
+                <p:inputText  value="#{notifikasiMBean.personil.unit.employmentunitname}" 
+                              disabled="true"/>
+
+                <p:outputLabel value="Jabatan Struktural"/>
+                <p:inputText  value="#{notifikasiMBean.personil.structuralPosition.employmentpositionname}" 
+                              disabled="true"/>                
+
+                <p:outputLabel value="Jabatan Fungsional"/>
+                <p:inputText  value="#{notifikasiMBean.personil.functionalPosition.employmentpositionname}" 
+                              disabled="true"/>                
+
+                <p:outputLabel value="Jabatan Siaga"/>
+                <p:inputText  value="#{notifikasiMBean.personil.standByPosition.employmentpositionname}" 
+                              disabled="true"/>                
+
+                <p:outputLabel value="Keterangan"/>
+                <p:inputTextarea value="#{notifikasiMBean.personil.remarks}"
+                                 label="Keterangan" disabled="true"/>
+
+            </p:panelGrid>            
+        </p:panelGrid>
+    </p:panel>
+</ui:composition>

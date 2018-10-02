@@ -1,0 +1,51 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+
+    <div class="ui-g ui-fluid">
+        <div class="ui-g-12 ui-lg-6 ">
+            <h:form id="form-IndexLeeway">
+                <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                    <p:outputLabel value="Category" style="width: 100px"/>
+                    <p:selectOneMenu id="cboCategory" value="#{indexLeewayMBean.category}" style="width: 200px">
+                        <p:ajax listener="#{indexLeewayMBean.changeCategory}" update="@form"/> 
+                        <f:selectItems value="#{indexLeewayMBean.listCategori}"/>                        
+                    </p:selectOneMenu>  
+
+                    <p:outputLabel value="Sub Category" style="width: 100px" />
+                    <p:selectOneMenu id="cboSubCategory" value="#{indexLeewayMBean.subCategory}" style="width: 200px">
+                        <p:ajax listener="#{indexLeewayMBean.changeSubCategory}" update="@form"/>           
+                        <f:selectItems value="#{indexLeewayMBean.listSubCategori}" /> 
+                    </p:selectOneMenu>
+                    
+                    <p:outputLabel value="Leeway Description" style="width: 100px"/>
+                    <p:selectOneMenu id="cboDesc" value="#{indexLeewayMBean.leewayDescription}" style="width: 200px">
+                        <p:ajax listener="#{indexLeewayMBean.changeDescription}"  update="@form"/>
+                        <f:selectItems value="#{indexLeewayMBean.listDescription}" /> 
+                    </p:selectOneMenu>
+                    <p:outputLabel value="Multiplier" style="width: 100px" />
+                    <p:outputLabel value="#{indexLeewayMBean.multiplier}" id="idMultiplier" style="width: 200px"/>
+                    <p:outputLabel value="Modifier" style="width: 100px" />
+                    <p:outputLabel value="#{indexLeewayMBean.modifier}" id="idModifier" style="width: 200px"/>
+                    <p:outputLabel value="Angle" style="width: 100px" />
+                    <p:outputLabel value="#{indexLeewayMBean.angle}" id="idAngel" style="width: 200px"/>
+                    
+                </p:panelGrid>
+
+                <p:panelGrid columns="3" layout="grid" styleClass="ui-panelgrid-blank form-group" style="width: 500px;">
+                    <p:commandButton value="Pilih" styleClass="green-btn" style="width:130px"
+                                     actionListener="#{driftCalcWorksheet1MBean.pilihLeeway(indexLeewayMBean.indexLeewayID)}"
+                                     update="incidentdetail:tabplanning-content:detail-drift" process="@form"/>
+                    <p:commandButton value="#{indexLeewayMBean.showButton ? 'Batal' : 'Kembali'}" styleClass="red-btn" style="width:130px">
+                        <p:ajax event="click" listener="#{indexLeewayMBean.batal()}" oncomplete="PF('widgetLeeway').hide()"/>
+                    </p:commandButton>
+                </p:panelGrid>
+            </h:form>
+        </div>
+    </div>
+
+
+</ui:composition>

@@ -1,0 +1,75 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <!--    <p:panel class="no-border no-padding control-button" style="text-align: right;">
+            <p:commandButton value="Tambah" style="width:130px" styleClass="green-btn" 
+                             actionListener="{potensiMBean.loadUnsur}"
+                             icon="fa fa-plus-circle"
+                             process="@this"/>
+        </p:panel>-->
+
+    <p:dataTable id="data-unsur" 
+                 rowKey="#{list.assetid}" 
+                 var="list" value="#{potensiMBean.listResAsset}" 
+                 reflow="true"   lazy="true" paginator="true" paginatorPosition="bottom" rows="10"
+                 rowsPerPageTemplate="5,10,15" emptyMessage="Data tidak ditemukan" tableStyle="table-layout:auto"
+                 rowIndexVar="index">
+        <f:facet name="header">
+            List Unsur SAR Potensi
+        </f:facet>
+        <p:column headerText="No" style="width: 20px">
+            <p:outputLabel value="#{index + 1}"/>
+        </p:column>
+        <p:column headerText="Kode" style="width: 10%" sortBy="#{list.code}">
+            <h:outputText value="#{list.code}" />
+        </p:column>
+
+        <p:column headerText="Nama" style="width: 27%" sortBy="#{list.name}">
+            <h:outputText value="#{list.name}" />
+        </p:column>
+
+        <p:column headerText="Tipe" sortBy="#{list.assettypeid.assetname}">
+            <h:outputText value="#{list.assettypeid.assetname}" />
+        </p:column>
+
+        <!--        <p:column headerText="Kategori">
+                    <h:outputText value="#{list.functional}" />
+                </p:column>-->
+
+        <p:column headerText="Kuantitas" sortBy="#{list.servicedqty}">
+            <h:outputText value="#{list.servicedqty}" />
+        </p:column>
+
+        <p:column headerText="Kondisi" sortBy="#{list.assetcondition}">
+            <h:outputText value="#{list.assetcondition}" />
+        </p:column>
+
+        <p:column headerText="Kapasitas" sortBy="#{list.goodqty}">
+            <h:outputLabel value="#{list.goodqty}"/>
+        </p:column>
+
+        <p:column headerText="Fungsi" style="width: 27%" sortBy="#{list.functional}">
+            <h:outputLabel value="#{list.functional}"/>
+        </p:column>
+        <p:column headerText="Action" style="width: 50px">
+            <p:commandButton id="lihatUnsursar"
+                             label="Lihat"
+                             onclick="PF('tTipLihat').hide();"
+                             style="max-width: 50px" 
+                             actionListener="#{potensiMBean.loadUnsur}"
+                             process="respotensi-content:potensi-tabs:data-unsur"
+                             styleClass="blue-grey-btn" 
+                             icon="fa fa-search">
+                <f:attribute name="listRow" value="#{list}" />
+            </p:commandButton>
+            <p:tooltip value="Lihat" for="lihatUnsursar"
+                       trackMouse="true" widgetVar="tTipLihat"/>
+        </p:column>
+
+    </p:dataTable>
+
+
+</ui:composition>

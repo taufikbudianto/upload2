@@ -1,0 +1,55 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="form-IncidentChecklist">
+        <p:panel style="overflow:auto;width:100%;max-height:80vh" 
+                 class="no-border card ui-fluid no-padding">
+            <p:panelGrid columns="3" layout="grid" 
+                         styleClass="ui-panelgrid-blank form-group" 
+                         columnClasses ="ui-grid-col-3,ui-grid-col-5,ui-grid-col-4"
+                         class="no-padding no-border">
+                <p:outputLabel value="Check List" />
+
+                <p:selectOneMenu id="idNamaChecklist" value="#{incidentChecklistMBean.field}"
+                                 disabled="#{incidentChecklistMBean.disabled}">
+                    <f:selectItem itemLabel="" itemValue="" />
+                    <f:selectItems value="#{incidentChecklistMBean.listChecklist}"/>
+                    <p:ajax event="change" update="@form"/>
+                </p:selectOneMenu>
+
+                <p:commandButton value="Tambah Ke Daftar" styleClass="green-btn" icon="fa fa-save" 
+                                 widgetVar="addButton" onclick="PF('addButton').disable()" 
+                                 actionListener="#{incidentChecklistMBean.simpan(incidentChecklistMBean.field)}" 
+                                 update="incidentdetail:Inc_checklist_datatable @form" 
+                                 process="incidentdetail:Inc_checklist_datatable @form" 
+                                 rendered="#{incidentChecklistMBean.showButton}">
+                    <p:confirm header="Konfirmasi" 
+                               message="Apakah anda yakin ingin menyimpan data insiden checklist ini?" 
+                               icon="ui-icon-alert" />
+                </p:commandButton>
+            </p:panelGrid>
+
+            <p:dataTable id="IncidentChecklist_datatable" var="IncidentChecklist" 
+                         value="#{incidentChecklistMBean.lazyDataModelJPA}" reflow="true" 
+                         rowKey="#{IncidentChecklist.checklistdetailid}" 
+                         rows="15" rowsPerPageTemplate="5,10,15"
+                         lazy="true" paginator="true" paginatorPosition="bottom" rowIndexVar="index"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} 
+                         {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         emptyMessage="Data tidak ditemukan" tableStyle="table-layout:fixed">
+                <p:column headerText="No" style="width: 20px">
+                    <p:outputLabel value="#{index + 1}"/>
+                </p:column>
+                <p:column headerText="Checklist" style="width: 70px">
+                    <h:outputText value="#{IncidentChecklist.category}" />
+                </p:column>
+                <p:column headerText="Kategori">
+                    <h:outputText value="#{IncidentChecklist.description}" />
+                </p:column>
+            </p:dataTable>
+        </p:panel>
+    </h:form>
+</ui:composition>

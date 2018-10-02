@@ -1,0 +1,210 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <p:panel header="Data Kapal">
+        <p:panelGrid columns="2" style="ui-panelgrid-blank">
+            <p:panel>
+                <p:panelGrid columns="2">
+                    <p:outputLabel value="Registrasi" />
+                    <h:panelGroup>
+                        <p:inputText id="registrasi-kapal" value="#{registrasiBeaconMBean.airvessel.registrationNo}" style="width: 300px;" required="false" 
+                                     requiredMessage=" harus diisi." disabled="#{registrasiBeaconMBean.isUbah}"
+                                     onkeypress="if (event.which === 34 || event.which === 39 || event.which === 92 || event.which === 96) {
+                                                 return false;
+                                             }"
+                                     onchange="this.value = trim(this.value);" maxlength="50">
+                        </p:inputText>
+                        <p:message for="registrasi-kapal" style="float: none; display: block;"/>
+                    </h:panelGroup>
+                    <p:outputLabel value="Nama" />
+                    <h:panelGroup>
+                        <p:inputText id="nama-kapal" value="#{registrasiBeaconMBean.airvessel.name}" style="width: 300px;" required="false" 
+                                     requiredMessage=" harus diisi." disabled="#{registrasiBeaconMBean.isUbah}"
+                                     onkeypress="if (event.which === 34 || event.which === 39 || event.which === 92 || event.which === 96) {
+                                                 return false;
+                                             }"
+                                     onchange="this.value = trim(this.value);" maxlength="50">
+                        </p:inputText>
+                        <p:message for="nama-kapal" style="float: none; display: block;"/>
+                    </h:panelGroup>
+                    <p:outputLabel value="Kategori" />
+                    <p:selectOneMenu id="kategori-kapal" style="width: 300px;" value="#{registrasiBeaconMBean.airvessel.category}"
+                                     disabled="#{registrasiBeaconMBean.isUbah}">
+                        <f:selectItem itemLabel="--- Pilih ---" itemValue=""/>
+                        <f:selectItems value="#{categoryEPIRB.ALL_ENUM_VALUES}" var="c" 
+                                       itemValue="#{c.itemValue}" itemLabel="#{c.itemLabel}"/>
+                    </p:selectOneMenu>                    
+                    <p:outputLabel value="Sail"/>
+                    <p:selectOneMenu id="sail-kapal" style="width: 300px;" value="#{registrasiBeaconMBean.airvessel.sailType}"
+                                     disabled="#{registrasiBeaconMBean.isUbah}">
+                        <p:ajax event="change" update="other-sail-type" listener="#{registrasiBeaconMBean.changeSailType}"/>
+                        <f:selectItem itemLabel="--- Pilih ---" itemValue=""/>
+                        <f:selectItems value="#{sail.ALL_ENUM_VALUES}" var="s" 
+                                       itemValue="#{s.itemValue}" itemLabel="#{s.itemLabel}"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel />
+                    <h:panelGrid columns="3" id="other-sail-type">
+                        <p:outputLabel value="Lain"/>
+                        <p:spacer width="10"/>
+                        <h:panelGroup>
+                            <p:inputText id="sail-lain" value="#{registrasiBeaconMBean.airvessel.otherSailType}" style="width: 255px;" required="false" 
+                                         requiredMessage=" harus diisi."
+                                         onkeypress="if (event.which === 34 || event.which === 39 || event.which === 92 || event.which === 96) {
+                                                     return false;
+                                                 }" disabled="#{registrasiBeaconMBean.isUbah}"
+                                         onchange="this.value = trim(this.value);" maxlength="50">
+                            </p:inputText>
+                            <p:message for="sail-lain" style="float: none; display: block;"/>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:outputLabel value="Bermesin"/>
+                    <p:selectOneMenu id="mesin-kapal" style="width: 300px;" value="#{registrasiBeaconMBean.airvessel.machineType}"
+                                     disabled="#{registrasiBeaconMBean.isUbah}">
+                        <p:ajax event="change" update="other-machine-type" listener="#{registrasiBeaconMBean.changeMachineType}"/>                        
+                        <f:selectItem itemLabel="--- Pilih ---" itemValue=""/>
+                        <f:selectItems value="#{mesin.ALL_ENUM_VALUES}" var="m" 
+                                       itemValue="#{m.itemValue}" itemLabel="#{m.itemLabel}"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel />
+                    <h:panelGrid columns="3" id="other-machine-type">
+                        <p:outputLabel value="Lain"/>
+                        <p:spacer width="10"/>
+                        <h:panelGroup>
+                            <p:inputText id="kapal-lain" value="#{registrasiBeaconMBean.airvessel.otherMachineType}" style="width: 255px;" required="false" 
+                                         requiredMessage=" harus diisi."
+                                         onkeypress="if (event.which === 34 || event.which === 39 || event.which === 92 || event.which === 96) {
+                                                     return false;
+                                                 }" disabled="#{registrasiBeaconMBean.isUbah}"
+                                         onchange="this.value = trim(this.value);" maxlength="50">
+                            </p:inputText>
+                            <p:message for="kapal-lain" style="float: none; display: block;"/>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:outputLabel value="Call Sign"/>
+                    <h:panelGrid columns="5">
+                        <h:panelGroup>
+                            <p:inputText id="callsign-kapal" value="#{registrasiBeaconMBean.airvessel.callSign}" style="width: 100px;" required="false" 
+                                         requiredMessage=" harus diisi." disabled="#{registrasiBeaconMBean.isUbah}"
+                                         onkeypress="if (event.which === 34 || event.which === 39 || event.which === 92 || event.which === 96) {
+                                                     return false;
+                                                 }"
+                                         onchange="this.value = trim(this.value);" maxlength="50">
+                            </p:inputText>
+                            <p:message for="callsign-kapal" style="float: none; display: block;"/>
+                        </h:panelGroup>
+                        <p:spacer width="10"/>
+                        <p:outputLabel value="Warna"/>
+                        <p:spacer width="25"/>
+                        <h:panelGroup>
+                            <p:inputText id="warna-kapal" value="#{registrasiBeaconMBean.airvessel.color}" style="width: 100px;" required="false" 
+                                         requiredMessage=" harus diisi." disabled="#{registrasiBeaconMBean.isUbah}"
+                                         onkeypress="if (event.which === 34 || event.which === 39 || event.which === 92 || event.which === 96) {
+                                                     return false;
+                                                 }"
+                                         onchange="this.value = trim(this.value);" maxlength="50">
+                            </p:inputText>
+                            <p:message for="warna-kapal" style="float: none; display: block;"/>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:outputLabel value="Panjang"/>
+                    <h:panelGrid columns="5">
+                        <h:panelGroup>
+                            <p:inputText id="panjang-kapal" value="#{registrasiBeaconMBean.airvessel.alength}" style="width: 100px;" required="false" 
+                                         requiredMessage=" harus diisi." disabled="#{registrasiBeaconMBean.isUbah}"
+                                         onkeypress="return isNumber(event);"
+                                         onchange="this.value = trim(this.value);" maxlength="50">
+                            </p:inputText>
+                            <p:message for="panjang-kapal" style="float: none; display: block;"/>
+                        </h:panelGroup>
+                        <p:spacer width="10"/>
+                        <p:outputLabel value="POB Max"/>
+                        <p:spacer width="10"/>
+                        <h:panelGroup>
+                            <p:inputText id="pob-max-kapal" value="#{registrasiBeaconMBean.airvessel.passenger}" style="width: 100px;" required="false" 
+                                         requiredMessage=" harus diisi." onkeypress="return isNumber(event);" disabled="#{registrasiBeaconMBean.isUbah}"
+                                         onchange="this.value = trim(this.value);" maxlength="10">
+                            </p:inputText>
+                            <p:message for="pob-max-kapal" style="float: none; display: block;"/>
+                        </h:panelGroup>
+                    </h:panelGrid>
+                </p:panelGrid>
+            </p:panel>
+            <p:panel>
+                <p:panelGrid columns="2">
+                    <p:outputLabel value="Peralatan Komunikasi"/>
+                    <p:selectManyCheckbox id="per-kom" value="#{registrasiBeaconMBean.toolsCom}" layout="grid" columns="3"
+                                          disabled="#{registrasiBeaconMBean.isUbah}">
+                        <p:ajax event="change" update="other-tools" listener="#{registrasiBeaconMBean.changeOtherToolsComp}"/>                        
+                        <f:selectItems value="#{epirb.ALL_ENUM_VALUES}" var="epirb" itemLabel="#{epirb.item}" itemValue="#{epirb}" />
+                    </p:selectManyCheckbox>
+                    <p:outputLabel />
+                    <h:panelGroup id="other-tools">
+                        <p:inputText id="per-kom-lain" value="#{registrasiBeaconMBean.airvessel.otherComequipment}" style="width: 250px;" required="false" 
+                                     requiredMessage=" harus diisi."
+                                     onkeypress="if (event.which === 34 || event.which === 39 || event.which === 92 || event.which === 96) {
+                                                 return false;
+                                             }" disabled="#{registrasiBeaconMBean.isUbah}"
+                                     onchange="this.value = trim(this.value);" maxlength="50">
+                        </p:inputText>
+                        <p:message for="per-kom-lain" style="float: none; display: block;"/>
+                    </h:panelGroup> 
+                    <p:outputLabel value="Telepon INMARSAT"/>
+                    <h:panelGroup>
+                        <p:inputText id="telp-inmarsat" value="#{registrasiBeaconMBean.airvessel.inmarsatVoice}" style="width: 250px;" required="false" 
+                                     requiredMessage=" harus diisi." disabled="#{registrasiBeaconMBean.isUbah}"
+                                     onkeypress="return validatePhone(event);"
+                                     onchange="this.value = trim(this.value);" maxlength="50">
+                        </p:inputText>
+                        <p:message for="telp-inmarsat" style="float: none; display: block;"/>
+                    </h:panelGroup>                    
+                    <p:outputLabel value="Telepon Lainnya"/>
+                    <h:panelGroup>
+                        <p:inputText id="telp-lain" value="#{registrasiBeaconMBean.airvessel.otherTelpNo}" style="width: 250px;" required="false" 
+                                     requiredMessage=" harus diisi." disabled="#{registrasiBeaconMBean.isUbah}"
+                                     onkeypress="return validatePhone(event);"
+                                     onchange="this.value = trim(this.value);" maxlength="50">
+                        </p:inputText>
+                        <p:message for="telp-lain" style="float: none; display: block;"/>
+                    </h:panelGroup>                    
+                    <p:outputLabel value="No MMSI"/>
+                    <h:panelGroup>
+                        <p:inputText id="no-mmsi" value="#{registrasiBeaconMBean.airvessel.mmsi}" style="width: 250px;" required="false" 
+                                     requiredMessage=" harus diisi." disabled="#{registrasiBeaconMBean.isUbah}"
+                                     onkeypress="if (event.which === 34 || event.which === 39 || event.which === 92 || event.which === 96) {
+                                                 return false;
+                                             }"
+                                     onchange="this.value = trim(this.value);" maxlength="50">
+                        </p:inputText>
+                        <p:message for="no-mmsi" style="float: none; display: block;"/>
+                    </h:panelGroup>                    
+                    <p:outputLabel value="Pelabuhan"/>
+                    <h:panelGroup>
+                        <p:inputText id="pelabuhan" value="#{registrasiBeaconMBean.airvessel.homebase}" style="width: 250px;" required="false" 
+                                     requiredMessage=" harus diisi." disabled="#{registrasiBeaconMBean.isUbah}"
+                                     onkeypress="if (event.which === 34 || event.which === 39 || event.which === 92 || event.which === 96) {
+                                                 return false;
+                                             }"
+                                     onchange="this.value = trim(this.value);" maxlength="50">
+                        </p:inputText>
+                        <p:message for="pelabuhan" style="float: none; display: block;"/>
+                    </h:panelGroup>
+                    <p:outputLabel value="Data Tambahan"/>
+                    <h:panelGroup>
+                        <p:inputTextarea id="data-tambahan-epirb" value="#{registrasiBeaconMBean.airvessel.additionalDetail}" rows="3" style="width: 250px; resize: none;" 
+                                         required="false" requiredMessage="harus diisi"
+                                         disabled="#{registrasiBeaconMBean.isUbah}"
+                                         autoResize="false" maxlength="100" 
+                                         onkeypress="if (event.which === 34 || event.which === 39 || event.which === 92 || event.which === 96) {
+                                                     return false;
+                                                 }"
+                                         onchange="this.value = trim(this.value);">
+                        </p:inputTextarea>
+                        <p:message for="data-tambahan-epirb" style="float: none; display: block;"/>
+                    </h:panelGroup>
+                </p:panelGrid>
+            </p:panel>
+        </p:panelGrid>
+    </p:panel>
+</ui:composition>

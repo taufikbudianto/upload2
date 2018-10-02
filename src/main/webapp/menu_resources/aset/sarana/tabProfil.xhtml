@@ -1,0 +1,157 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="form-tabProfil">
+        <div class="ui-g ui-fluid value-readonly">
+            <div class="ui-g-12 ui-lg-6 ">
+                <p:panel id="list-tabProfil" styleClass="penelHeaderGreen ui-shadow-content">
+                    <table cellpadding="6" cellspacing="10">
+                        <tr>
+                            <td>
+                                <p:outputLabel value="Nama Potensi" style="width: 100px" />
+                            </td>
+                            <td>
+                                <p:inputText value="#{resSaranaMBean.namapotensi}" style="width:250px" maxlength="100" disabled="#{resSaranaMBean.disabledProfil}"/>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <p:outputLabel value="Alamat" style="width: 100px" />
+                            </td>
+                            <td>
+                                <p:inputText value="#{resSaranaMBean.alamat}" style="width:130px" maxlength="255" disabled="#{resSaranaMBean.disabledProfil}" />
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <p:outputLabel value="Koordinat Latitude" style="width: 100px" />
+                            </td>
+                            <td>
+                                <p:panelGrid id="latitude" columns="4" style="overflow: auto;width: 100%;max-height: 55vh" class="no-border no-padding no-padding-table">
+                                    <ui:include src="coordinateprofil/latitude.xhtml"/>
+                                </p:panelGrid>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <p:outputLabel value="Longitude" />
+                            </td>
+                            <td>
+                                <p:panelGrid id="longitude" columns="4" style="overflow: auto;width: 100%;max-height: 55vh" class="no-border no-padding no-padding-table">
+                                    <ui:include src="coordinateprofil/longitude.xhtml"/>
+                                </p:panelGrid>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <p:outputLabel value="Matra" style="width: 100px" />
+                            </td>
+                            <td>
+                                <p:inputText value="#{resSaranaMBean.matra eq '0'?'Udara':(resSaranaMBean.matra eq '1'?'Darat' : 'Laut')}" style="width:130px" disabled="#{resSaranaMBean.disabledProfil}"/>
+
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <p:outputLabel value="Kantor SAR" style="width: 100px" />
+                            </td>
+                            <td>
+                                <p:inputText value="#{resSaranaMBean.kantorsar}" style="width:200px" maxlength="50" disabled="#{resSaranaMBean.disabledProfil}"/>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <p:outputLabel value="Provinsi / Kota" style="width: 100px" />
+                            </td>
+                            <td>
+                                <p:panelGrid id="prov" columns="2" style="overflow: auto;width: 100%;max-height: 55vh" class="no-border no-padding no-padding-table">
+                                    <p:inputText value="#{resSaranaMBean.prov}" style="width:100px" maxlength="50" disabled="#{resSaranaMBean.disabledProfil}"/>
+                                    <p:inputText value="#{resSaranaMBean.kota}" style="width:250px" maxlength="50" disabled="#{resSaranaMBean.disabledProfil}"/>
+                                </p:panelGrid>
+                            </td>
+                        </tr>
+                    </table>
+                </p:panel>
+            </div>
+
+            <div class="ui-g-12 ui-lg-6 ">
+                <!--Right Side--> 
+                <p:panel>
+                    <table cellpadding="6" cellspacing="10">
+                        <tr>
+                            <td>
+                                <p:outputLabel value="No. Telepon 1" style="width: 100px" />
+                            </td>
+                            <td>
+                                <p:inputText value="#{resSaranaMBean.notel1}" style="width:200px" maxlength="50" disabled="#{resSaranaMBean.disabledProfil}"/>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <p:outputLabel value="No. Telepon 2" style="width: 100px" />
+                            </td>
+                            <td>
+                                <p:inputText value="#{resSaranaMBean.notel2}" style="width:200px" maxlength="50" disabled="#{resSaranaMBean.disabledProfil}"/>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <p:outputLabel value="No. Telepon 3" style="width: 100px" />
+                            </td>
+                            <td>
+                                <p:inputText value="#{resSaranaMBean.notel3}" style="width:200px" maxlength="50" disabled="#{resSaranaMBean.disabledProfil}"/>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <p:outputLabel value="No Fax" style="width: 100px" />
+                            </td>
+                            <td>
+                                <p:inputText value="#{resSaranaMBean.nofax}" style="width:200px" maxlength="50" disabled="#{resSaranaMBean.disabledProfil}"/>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <p:outputLabel value="Frekuensi Radio" style="width: 100px" />
+                            </td>
+                            <td>
+                                <p:inputText value="#{resSaranaMBean.freqrad}" style="width:200px" maxlength="50" disabled="#{resSaranaMBean.disabledProfil}"/>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <p:outputLabel value="Email" style="width: 100px" />
+                            </td>
+                            <td>
+                                <p:inputText value="#{resSaranaMBean.emailpotency}" style="width:200px" maxlength="50" disabled="#{resSaranaMBean.disabledProfil}"/>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <p:outputLabel value="Jejaring Sosial" style="width: 100px" />
+                            </td>
+                            <td>
+                                <p:inputText value="#{resSaranaMBean.jejaring}" style="width:200px" maxlength="50" disabled="#{resSaranaMBean.disabledProfil}"/>
+                            </td>
+                        </tr>
+                    </table>
+                </p:panel>
+            </div>
+        </div>
+    </h:form>
+</ui:composition>

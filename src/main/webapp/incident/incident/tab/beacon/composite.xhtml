@@ -1,0 +1,51 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:form id="composite-content">
+        <p:panel id="list-composite" header="Distress Beacon" styleClass="penelHeaderGreen ui-shadow-content"
+                 style="overflow:auto;width:100%;max-height:80vh" class="no-border card ui-fluid no-padding">
+            <p:panelGrid id="search-composite" columns="5" layout="grid" styleClass="ui-panelgrid-blank form-group" class="no-padding no-border">
+                <p:panelGrid columns="3">
+                    <p:panelGrid columns="2" class="no-border no-padding">
+                        <p:selectOneMenu id="field" value="#{beaconCompositeMBean.field}">
+                            <f:selectItem itemLabel="Beacon ID" itemValue="beaconid" />
+                        </p:selectOneMenu>
+                    </p:panelGrid>    
+                    <p:panelGrid columns="3" class="no-border no-padding">
+                        <p:inputText id="value" value="#{beaconCompositeMBean.value}"/>
+                        <p:commandButton id="search-btn" type="button" value="Cari" icon="ui-icon-search">
+                            <p:ajax event="click" update="composite-content:list-composite" process="@form"/>
+                        </p:commandButton>
+                        <p:commandButton id="clear-btn" type="button" value="Reset" icon="ui-icon-clear">
+                            <p:ajax event="click" update="composite-content:list-composite" process="@form" listener="#{beaconCompositeMBean.reset}"/>
+                        </p:commandButton>
+                    </p:panelGrid>
+                </p:panelGrid>
+            </p:panelGrid>
+            <p:dataTable var="composite" tableStyle="table-layout:auto" value="#{beaconCompositeMBean.lazyDataModelJPA}" reflow="true" rowKey="#{composite.compositeid}"
+                         lazy="true" paginator="true" paginatorPosition="bottom" rows="#{viewBean.rowsPageDefault}" style="width: fit-content;"
+                         rowsPerPageTemplate="#{viewBean.rowsPerPageTemplate}" emptyMessage="Data tidak ditemukan">
+                <p:column headerText="Transmit DTG">
+                    <h:outputText value="#{beaconCompositeMBean.transmitDtgFormat(composite)}" />
+                </p:column>
+                <p:column headerText="Beacon ID">
+                    <h:outputText value="#{composite.beaconid}" />
+                </p:column>
+                <p:column headerText="Latitude">
+                    <h:outputText value="#{beaconCompositeMBean.coordinateLat.getConvertDdToDms(composite.latitude, true)}" />
+                </p:column>
+                <p:column headerText="Longitude">
+                    <h:outputText value="#{beaconCompositeMBean.coordinateLong.getConvertDdToDms(composite.longitude, false)}" />
+                </p:column>
+                <p:column headerText="Aksi">
+                    <p:commandButton value="Pilih" icon="ui-icon-local-grocery-store" >
+                        <p:confirm header="Tautkan Beacon" message="Tautkan beacon #{composite.beaconid} pada insiden ?" icon="ui-icon-alert"/>
+                        <p:ajax event="click" listener="#{beaconCompositeMBean.getComposite(composite)}" update=":incidentdetail:detail-beacon,@form"/> 
+                    </p:commandButton> 
+                </p:column>
+            </p:dataTable>
+        </p:panel>
+    </h:form>
+</ui:composition>

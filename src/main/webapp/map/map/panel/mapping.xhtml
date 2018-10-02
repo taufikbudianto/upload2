@@ -1,0 +1,93 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <p:tree id="idTreeMapping" value="#{mappingMBean.root}" var="doc" animate="true"
+            selectionMode="single" selection="#{mappingMBean.selectedTreeRouting}"
+            class="no-border" style="font-size: small;overflow-y: auto;max-height: 75vh"
+            filterBy="#{doc.name}" filterMatchMode="">
+        <p:ajax event="select" listener="#{mappingMBean.showTreeRoutingProperties}" update="idMap"/>
+        <p:ajax event="contextMenu" listener="#{mappingMBean.showTreeRoutingProperties}" />
+        <p:treeNode type="folder" icon="ui-icon-custom ui-icon-custom-folder">
+            <h:outputText value="#{doc.name}"/>
+        </p:treeNode>
+        <p:treeNode type="kansardetail" icon="ui-icon-custom ui-icon-custom-kansar">
+            <h:outputText value="#{doc.name}"/>
+        </p:treeNode>
+        <p:treeNode type="kansar" icon="ui-icon-custom ui-icon-custom-kansar">
+            <h:outputText value="#{doc.name}"/>
+        </p:treeNode>
+        <p:treeNode type="possar" icon="ui-icon-custom ui-icon-custom-possar">
+            <h:outputText value="#{doc.name}"/>
+        </p:treeNode>
+        <p:treeNode type="possardetail" icon="ui-icon-custom ui-icon-custom-possar">
+            <h:outputText value="#{doc.name}"/>
+        </p:treeNode>
+        
+        <p:treeNode type="distress" icon="ui-icon-custom ui-icon-custom-distress">
+            <h:outputText value="#{doc.name}"/>
+        </p:treeNode> 
+        <p:treeNode type="composite" icon="ui-icon-custom ui-icon-custom-composite">
+            <h:outputText value="#{doc.name}"/>
+        </p:treeNode> 
+        <p:treeNode type="compositedetail" icon="ui-icon-custom ui-icon-custom-composite">
+            <h:outputText value="#{doc.name}"/>
+        </p:treeNode> 
+        <p:treeNode type="elemental" icon="ui-icon-custom ui-icon-custom-elemental">
+            <h:outputText value="#{doc.name}"/>
+        </p:treeNode>
+        <p:treeNode type="elementaldetail" icon="ui-icon-custom ui-icon-custom-elemental">
+            <h:outputText value="#{doc.name}"/>
+        </p:treeNode>
+        <p:treeNode type="incident" icon="ui-icon-custom ui-icon-custom-incident">
+            <h:outputText value="#{doc.name}"/>
+        </p:treeNode>
+        <p:treeNode type="asset" icon="ui-icon-custom ui-icon-custom-asset">
+            <h:outputText value="#{doc.name}"/>
+        </p:treeNode> 
+        <p:treeNode type="assetdetail" icon="ui-icon-custom ui-icon-custom-asset">
+            <h:outputText value="#{doc.name}"/>
+        </p:treeNode> 
+        <p:treeNode type="potensi" icon="ui-icon-custom ui-icon-custom-potensi">
+            <h:outputText value="#{doc.name}"/>
+        </p:treeNode>
+        <p:treeNode type="potensidetail" icon="ui-icon-custom ui-icon-custom-potensi">
+            <h:outputText value="#{doc.name}"/>
+        </p:treeNode> 
+
+        <p:treeNode type="sh" icon="ui-icon-custom ui-icon-custom-sighting">
+            <h:outputText value="#{doc.name}"/>
+        </p:treeNode> 
+        <p:treeNode type="shdetail" icon="ui-icon-custom ui-icon-custom-sighting">
+            <h:outputText value="#{doc.name}"/>
+        </p:treeNode> 
+        <p:treeNode type="log" icon="ui-icon-custom ui-icon-custom-log">
+            <h:outputText value="#{doc.name}"/>
+        </p:treeNode> 
+        <p:treeNode type="logdetail" icon="ui-icon-custom ui-icon-custom-log">
+            <h:outputText value="#{doc.name}"/>
+        </p:treeNode> 
+        <p:treeNode type="pob" icon="ui-icon-custom ui-icon-custom-pob">
+            <h:outputText value="#{doc.name}"/>
+        </p:treeNode> 
+        <p:treeNode type="pobdetail" icon="ui-icon-custom ui-icon-custom-pob">
+            <h:outputText value="#{doc.name}"/>
+        </p:treeNode> 
+        <p:treeNode  icon="ui-icon-custom #{doc.type == 'kansar'?'ui-icon-custom-kansar':
+                                            doc.type == 'incident'?'ui-icon-custom-incident':
+                                            doc.type == 'tsr'?'ui-icon-custom-tsr':
+                                            doc.type == 'trapezium'?'ui-icon-custom-trapezium':''} ">
+            <h:outputText value="#{doc.name}"/>
+        </p:treeNode> 
+
+
+    </p:tree>
+    <p:contextMenu nodeType="kansar" for="idTreeMapping" style="font-size: small">
+        <p:menuitem value="Tampilkan Seluruh Kantor Sar" actionListener="#{mappingMBean.displayAll}" update="idTreeMapping">
+        </p:menuitem>
+        <p:menuitem value="Clear"/>
+    </p:contextMenu>
+
+</ui:composition>

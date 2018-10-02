@@ -1,0 +1,29 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+                   
+    <div class="ui-g ui-fluid">
+        <div class="ui-g-12 ui-lg-12 ">
+            <h:form>
+                <p:panel header="Worksheet Name" id="form-ws2-save">
+                <p:panelGrid columns="3" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                    <label style="width: 100px">Worksheet Name</label>
+                    <p:inputText style="width: 350px" value="#{driftCalcWorksheet2MBean.worksheetName}"/>
+                    <p:outputLabel/>
+                    <p:outputLabel/>
+                    <p:commandButton value="Save" icon="ui-icon-search" style="width: 100px">
+                        <p:ajax event="click" listener="#{driftCalcWorksheet2MBean.simpanWS2()}" process="@form" update=":insiden-content,incidentdetail:tabplanning-content:form-ws2-panel1,incidentdetail:tabplanning-content:ws2-calculation" />
+                    </p:commandButton>
+                        
+                    <p:commandButton value="Batal" icon="ui-icon-search" styleClass="red-btn" style="width: 100px">
+                        <p:ajax event="click" listener="#{driftCalcWorksheet2MBean.batalSaveWS2()}" process="@form"/>
+                    </p:commandButton>
+
+                </p:panelGrid>
+                </p:panel>
+            </h:form>
+        </div>
+    </div>    
+</ui:composition>

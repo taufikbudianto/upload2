@@ -1,0 +1,146 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="content">
+
+        <h:form id="user-content">
+
+            <p:panel id="list" class="ui-fluid no-border card card-w-title" rendered="#{!userMBean.showDetail}" header="Data Pengguna">
+                <p:panelGrid columns="4" layout="grid" styleClass="ui-panelgrid-blank form-group" columnClasses="ui-grid-col-6,
+                             ui-grid-col-2, ui-grid-col-2, ui-grid-col-2" style="width: 100%; line-height: 50px"
+                             class="no-padding no-border">
+
+                    <h:form id="search">
+                        <p:panelGrid columns="3" class="ui-g-12" style="margin-top: -8px">
+                            <p:inputText value="#{userMBean.userNameFilter}" placeholder="Username" style="width: 110%" />
+                            <p:defaultCommand target="apply-btn"/>
+                            <p:commandButton value="Cari" id="apply-btn" type="button" icon="ui-icon-search" style="width: 75%; margin-left: 50px" >
+                                <p:ajax event="click" update=":user-content:list" process="@form"/>
+                            </p:commandButton>
+                        </p:panelGrid>
+                    </h:form>                               
+
+<!--                    <p:commandButton value="{msg.btn_lock}" icon="fa fa-lock" 
+                                     disabled="{userMBean.isSecureItemReadOnly('LockButton')}"
+                                     rendered="{userMBean.isSecureItemVisible('LockButton')}">
+                        <p:ajax event="click" listener="{userMBean.lockOrUnlockSelectedUsers(false)}" update="@form:list" process="@form:user-datatable" />
+                    </p:commandButton>
+
+                    <p:commandButton value="{msg.btn_unlock}" icon="fa fa-unlock" 
+                                     disabled="{userMBean.isSecureItemReadOnly('UnlockButton')}"
+                                     rendered="{userMBean.isSecureItemVisible('UnlockButton')}">
+                        <p:ajax event="click" listener="{userMBean.lockOrUnlockSelectedUsers(true)}" update="@form:list" process="@form:user-datatable" />
+                    </p:commandButton>-->
+
+<p:button value="Reset" icon="ui-icon-replay" style="margin-left: -150px" />
+
+                    <p:commandButton value="Tambah Data Baru" icon="fa fa-plus-circle" class="green-btn" style="width: 225px; margin-left: -50px"
+                                     disabled="#{userMBean.isSecureItemReadOnly('CreateButton')}"
+                                     rendered="#{userMBean.isSecureItemVisible('CreateButton')}">
+                        <p:ajax event="click" listener="#{userMBean.loadDetail(null)}" update="@form" process="@this" />
+                    </p:commandButton>
+                </p:panelGrid>
+                <p:dataTable id="user-datatable" var="user" value="#{userMBean.usersList}" reflow="true" rowKey="#{user.userId}"
+                             lazy="true" selection="#{userMBean.selectedUsers}" paginator="true" paginatorPosition="bottom" 
+                             rows="#{viewBean.rowsPageDefault}" rowsPerPageTemplate="#{viewBean.rowsPerPageTemplate}" widgetVar="listUser" 
+                             emptyMessage="Data tidak ditemukan" tableStyle="table-layout:auto"
+                             rowIndexVar="index">
+
+                    <f:facet name="header">Daftar Data Pengguna</f:facet>
+
+                    <p:column headerText="No" style="width: 20px; text-align: center">
+                        <p:outputLabel value="#{index + 1}"/>
+                    </p:column>
+                    <!--<p:column selectionMode="multiple" style="width: 3%; text-align: center;"/>-->
+
+                    <p:column headerText="#{msg.user_datatable_username}" sortBy="#{user.login}">
+                        <p:outputLabel value="#{user.login}"/>
+<!--                    <p:commandLink value="{user.login}">
+                        <p:ajax event="click" listener="{userMBean.loadDetail(user)}" update="@form @form:user-detail" process="@this" />
+                    </p:commandLink>-->
+                    </p:column>
+
+                    <p:column headerText="Nama Lengkap" sortBy="#{user.party.firstName}">
+                        <p:outputLabel value="#{user.party.fullName}"/>
+                    </p:column>
+
+                    <p:column headerText="Tanggal Dibuat" style="text-align: center" sortBy="#{user.createdDate}">
+                        <p:outputLabel value="#{user.createdDate}">
+                            <f:convertDateTime pattern="#{viewBean.dateTimeFormatPattern}"/>
+                        </p:outputLabel>
+                    </p:column>
+
+                    <p:column headerText="Terakhir Login" style="text-align: center" sortBy="#{user.lastLogin}">
+                        <p:outputLabel value="#{user.lastLogin}">
+                            <f:convertDateTime pattern="#{viewBean.dateTimeFormatPattern}"/>
+                        </p:outputLabel>
+                    </p:column>
+
+                    <p:column headerText="Terakhir Diubah" style="text-align: center" sortBy="#{user.lastModifiedDate}">
+                        <p:outputLabel value="#{user.lastModifiedDate}">
+                            <f:convertDateTime pattern="#{viewBean.dateTimeFormatPattern}"/>
+                        </p:outputLabel>
+                    </p:column>
+
+                    <p:column headerText="#{msg.user_datatable_status}" style="text-align: center" sortBy="#{user.enabled}">
+                        <p:outputLabel value="#{user.enabled ? msg.data_active : msg.data_locked}" />
+                    </p:column>
+
+                    <p:column headerText="Aksi" style="text-align: center">
+                        <p:commandButton id="lihatUser"
+                                         label="Lihat"
+                                         onclick="PF('tTipLihat').hide();"
+                                         icon="fa fa-search" 
+                                         class="blue-grey-btn">
+                            <p:ajax event="click" listener="#{userMBean.showUser(user)}" update="@form @form:user-detail" process="@this"/>
+                        </p:commandButton>
+                        <p:tooltip value="Lihat" for="lihatUser"
+                                   trackMouse="true" widgetVar="tTipLihat"/>
+                        <p:commandButton  id="ubahUser"
+                                          label="Ubah"
+                                          onclick="PF('tTipUbah').hide();"
+                                          icon="fa fa-edit" 
+                                          class="blue-grey-btn">
+                            <p:ajax event="click" listener="#{userMBean.loadDetail(user)}" update="@form @form:user-detail" process="@this"/>
+                        </p:commandButton>
+                        <p:tooltip value="Ubah" for="ubahUser"
+                                   trackMouse="true" widgetVar="tTipUbah"/>
+                        <p:commandButton  id="hapusUser"
+                                          label="Hapus"
+                                          onclick="PF('tTipHapus').hide();"
+                                          icon="fa fa-trash" 
+                                          class="red-btn" 
+                                          update="user-content:user-datatable">
+                            <p:confirm header="Konfirmasi" message="Apakah Anda yakin ingin menghapus data pengguna ini?" icon="ui-icon-alert"/>
+                            <p:ajax event="click" listener="#{userMBean.hapus(user)}" update="@form @form:user-detail" process="@this"/>
+                        </p:commandButton>
+                        <p:tooltip value="Hapus" for="hapusUser"
+                                   trackMouse="true" widgetVar="tTipHapus"/>
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
+            <p:panel id="detail" class="no-border no-padding" rendered="#{userMBean.showDetail}">
+                <ui:include src="detail.xhtml" />
+            </p:panel>
+
+
+            <p:dialog id="saveNotification" widgetVar="saveNotification" appendTo="@(body)" showHeader="true" header="Informasi" 
+                      showEffect="fade" hideEffect="fade" draggable="false" resizable="false" closable="false" modal="true" width="500">
+                <h:form>
+                    <p:outputLabel value="Data berhasil disimpan!"/>
+                    <p:panel class="control-button">
+                        <p:commandButton value="OK">
+                            <p:ajax event="click" listener="#{userMBean.closeSaveInformationDialog()}" 
+                                    update=":user-content" process="@this"/>
+                        </p:commandButton>
+                    </p:panel>
+                </h:form>
+            </p:dialog>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

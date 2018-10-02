@@ -1,0 +1,153 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <div class="ui-g ui-fluid">
+        <h:form id="form-tra-search-area" prependId="false">
+            <div class="ui-g-12 ui-lg-12 ">
+                <table cellpadding="10">
+                    <tr>
+                        <td style="width: 150px"><p:commandButton value="NEW" actionListener="#{trapeziumAreaMBean.btnBaruSearchArea()}" process="@form" update="incidentdetail:tabplanning-content:form-tra-search-area-panel1,incidentdetail:tabplanning-content:form-tra-task-area-panel1" styleClass="green-btn"/></td>
+                        <td style="width: 150px"><p:commandButton value="OPEN" actionListener="#{trapeziumAreaMBean.btnLoadSearchArea()}" process="@form" styleClass="green-btn"/></td>
+                        <td style="width: 150px"><p:commandButton value="SAVE" actionListener="#{trapeziumAreaMBean.btnSimpanSearchArea()}" process="@form" update="incidentdetail:tabplanning-content:form-tra-search-area-panel1,incidentdetail:tabplanning-content:form-tra-task-area-panel1" styleClass="green-btn"/></td>
+                        <td style="width: 150px">
+                            <p:commandButton value="DELETE" actionListener="#{trapeziumAreaMBean.btnHapusSearchArea()}" process="@form" update="incidentdetail:tabplanning-content:form-tra-search-area-panel1" styleClass="green-btn">
+                                <p:confirm header="Konfirmasi" message="Apakah anda yakin ingin menghapus data Worksheet ini?" icon="ui-icon-alert"/>
+                            </p:commandButton>
+                        </td>
+                        <td style="width: 150px">
+                            <p:commandButton value="CALCULATE" actionListener="#{trapeziumAreaMBean.btnHitungSearchArea()}" process="@form" update="incidentdetail:tabplanning-content:form-tra-search-area-panel1" styleClass="green-btn"/>
+                        </td>
+                        <td style="width: 150px">
+                            <p:commandButton value="#{trapeziumAreaMBean.viewLabelMap}" 
+                                             actionListener="#{trapeziumAreaMBean.btnMapSearchArea}"
+                                             process="@form"
+                                             styleClass="green-btn"/>
+                        </td>
+
+                    </tr>
+                </table>
+                <p:panel id="form-tra-search-area-panel1">
+                    <table cellpadding="10">
+                        <tr>
+                            <td style="width: 150px;"><p:outputLabel value="Description"/></td>
+                            <td style="width: 200px;"><p:inputText style="width: 350px" value="#{trapeziumAreaMBean.deskripsi}"/></td>
+                            <td style="width: 150px;"><p:outputLabel value="Satuan"/></td>
+                            <td style="width: 200px;">
+                                <p:selectOneMenu id="cboSatuanSa1" value="#{trapeziumAreaMBean.unit}" style="width:100px">
+                                    <f:selectItem itemLabel="NM" itemValue="0" />
+                                    <f:selectItem itemLabel="KM" itemValue="1" />
+                                </p:selectOneMenu>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 400px;" colspan="2" rowspan="8">
+                                <p:panel header="Titik 1">
+                                    <p:panelGrid style="width: 300px" id="latitude1" columns="3" columnClasses ="ui-grid-col-2,ui-grid-col-7,ui-grid-col-3"                                     
+                                                 class="no-border no-padding-table ui-fluid">
+                                        <ui:include src="coordinate-ta1/ta1-latitude.xhtml"/>
+                                    </p:panelGrid>
+                                    <p:panelGrid style="width: 300px" id="longitude1" columns="3" columnClasses ="ui-grid-col-2,ui-grid-col-7,ui-grid-col-3"                                             
+                                                 class="no-border no-padding-table ui-fluid">
+                                        <ui:include src="coordinate-ta1/ta1-longitude.xhtml"/>
+                                    </p:panelGrid>
+                                </p:panel>            
+
+                                <p:panel header="Titik 2">
+                                    <p:panelGrid style="width: 300px" id="latitudeDest" columns="3" columnClasses ="ui-grid-col-2,ui-grid-col-7,ui-grid-col-3"                                     
+                                                 class="no-border no-padding-table ui-fluid">
+                                        <ui:include src="coordinate-ta2/ta2-latitude.xhtml"/>
+                                    </p:panelGrid>
+                                    <p:panelGrid style="width: 300px" id="longitudeDest" columns="3" columnClasses ="ui-grid-col-2,ui-grid-col-7,ui-grid-col-3"                                             
+                                                 class="no-border no-padding-table ui-fluid">
+                                        <ui:include src="coordinate-ta2/ta2-longitude.xhtml"/>
+                                    </p:panelGrid>
+
+                                </p:panel>
+                                <table cellpadding="10">
+                                    <tr>
+                                        <td style="width: 150px">
+                                            <p:commandButton value="Prev" actionListener="#{trapeziumAreaMBean.btnPrev}" process="@form" update="incidentdetail:tabplanning-content:form-tra-search-area-panel1" styleClass="green-btn"/>
+                                        </td>
+                                        <td style="width: 150px">
+                                            <p:outputLabel value="Waypoint" /><p:spacer width="10px"/> <p:outputLabel value="#{trapeziumAreaMBean.numWayPoint}" />
+                                        </td>
+                                        <td style="width: 150px">
+                                            <p:commandButton value="Next" actionListener="#{trapeziumAreaMBean.btnNext}" process="@form" update="incidentdetail:tabplanning-content:form-tra-search-area-panel1" styleClass="green-btn"/>
+                                        </td>
+                                    </tr>
+                                </table>    
+                            </td>
+                            <td style="width: 150px;"><p:outputLabel value="TW Insiden"/></td>
+                            <td style="width: 200px;"><p:outputLabel value="#{trapeziumAreaMBean.incTime}"/></td>
+                        </tr>
+                        <tr>
+                            <td style="width: 150px;"><p:outputLabel value="TW Operasi"/></td>
+                            <td style="width: 200px;">
+                                <p:calendar id="twOperationSA" mask="true" navigator="true" pattern="MM/dd/yyyy HH:mm:ss" showOn="button" value="#{trapeziumAreaMBean.waktuoperasi}">
+                                </p:calendar>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 150px;"><p:outputLabel value="Safety Factor"/></td>
+                            <td style="width: 200px;">
+                                <p:selectOneMenu id="cboSafetySA" style="width:50px" value="#{trapeziumAreaMBean.safetyFactor}">
+                                    <f:selectItem itemLabel="1.1" itemValue="1.1" />
+                                    <f:selectItem itemLabel="1.6" itemValue="1.6" />
+                                    <f:selectItem itemLabel="2.0" itemValue="2.0" />
+                                    <f:selectItem itemLabel="2.3" itemValue="2.3" />
+                                    <f:selectItem itemLabel="2.6" itemValue="2.6" />
+                                </p:selectOneMenu>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 150px;"><p:outputLabel style="width: 150px" value="Distress Craft Error" /></td>
+                            <td style="width: 200px;">
+                                <p:selectOneMenu id="cboDCESA" style="width:50px" disabled="false" value="#{trapeziumAreaMBean.distressCraftError}">
+                                    <f:selectItem itemLabel="0.1" itemValue="0.1" />
+                                    <f:selectItem itemLabel="0.5" itemValue="0.5" />
+                                    <f:selectItem itemLabel="1.0" itemValue="1.0" />
+                                    <f:selectItem itemLabel="2.0" itemValue="2.0" />
+                                    <f:selectItem itemLabel="4.0" itemValue="4.0" />
+                                    <f:selectItem itemLabel="5.0" itemValue="5.0" />
+                                    <f:selectItem itemLabel="10.0" itemValue="10.0" />
+                                    <f:selectItem itemLabel="15.0" itemValue="15.0" />
+                                </p:selectOneMenu>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 150px;"><p:outputLabel style="width: 150px" value="Search Craft Error" /></td>
+                            <td style="width: 200px;">
+                                <p:selectOneMenu id="cboSCESA" style="width:50px" disabled="false" value="#{trapeziumAreaMBean.searchCraftError}">
+                                    <f:selectItem itemLabel="0.1" itemValue="0.1" />
+                                    <f:selectItem itemLabel="0.5" itemValue="0.5" />
+                                    <f:selectItem itemLabel="1.0" itemValue="1.0" />
+                                    <f:selectItem itemLabel="2.0" itemValue="2.0" />
+                                    <f:selectItem itemLabel="4.0" itemValue="4.0" />
+                                    <f:selectItem itemLabel="5.0" itemValue="5.0" />
+                                    <f:selectItem itemLabel="10.0" itemValue="10.0" />
+                                    <f:selectItem itemLabel="15.0" itemValue="15.0" />
+                                </p:selectOneMenu>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 150px;"><p:outputLabel style="width: 150px" value="Heading" /></td>
+                            <td style="width: 200px;"><p:outputLabel style="width: 200px" value="#{trapeziumAreaMBean.kepala}" /></td>
+                        </tr>
+                        <tr>
+                            <td style="width: 150px;"><p:outputLabel style="width: 150px" value="Width" /></td>
+                            <td style="width: 200px;"><p:outputLabel style="width: 200px" value="#{trapeziumAreaMBean.lebar}" /></td>
+                        </tr>
+                        <tr>
+                            <td style="width: 150px;"><p:outputLabel style="width: 150px" value="Luas Search Area" /></td>
+                            <td style="width: 200px;"><p:outputLabel style="width: 200px" value="#{trapeziumAreaMBean.luasArea}" /></td>
+                        </tr>
+                    </table>
+                </p:panel>
+
+            </div>
+        </h:form>
+    </div>    
+</ui:composition>

@@ -1,0 +1,149 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+    <ui:define name="title">Daftar Pos SAR</ui:define>
+    <ui:define name="content">
+        <h:form id="possar-content">
+            <p:panel id="list-possar" class="ui-fluid" header="Daftar Pos SAR" styleClass="penelHeaderGreen ui-shadow-content"
+                     rendered="#{mstPosSarMBean.showDetail}">
+                <p:panelGrid id="search" columns="5" layout="grid" 
+                             styleClass="ui-panelgrid-blank form-group" 
+                             columnClasses ="ui-grid-col-2,ui-grid-col-4,ui-grid-col-2,ui-grid-col-2,ui-grid-col-2"
+                             style="margin-top: 20px;margin-bottom: 20px; width: 100%"
+                             class="no-padding no-border">                            
+                    <p:selectOneMenu id="fieldpossar" value="#{mstPosSarMBean.field}">
+                        <p:ajax event="change" update="search" listener="#{mstPosSarMBean.chengeToCombo()}"/>
+                        <f:selectItem itemLabel="Nama Pos SAR" itemValue="possarname" />
+                        <f:selectItem itemLabel="Nama KanSAR" itemValue="kantorsarid" />
+                        <f:selectItem itemLabel="Alamat" itemValue="address" />
+                    </p:selectOneMenu>                               
+                    <p:inputText id="value" value="#{mstPosSarMBean.value}" rendered="#{mstPosSarMBean.showCombo}"/>
+                    <p:selectOneMenu id="idKansar" value="#{mstPosSarMBean.value}" rendered="#{!mstPosSarMBean.showCombo}">
+                        <f:selectItems value="#{mstPosSarMBean.listKantorSar}"/>
+                    </p:selectOneMenu>
+                    <p:commandButton id="search-btn"  icon="ui-icon-search" type="button" onclick="PF('listWidget').getPaginator().setPage(0);" value="Cari">
+                        <p:ajax event="click" update=":possar-content:list-possar" process="@form"/>
+                    </p:commandButton>
+                    <p:button value="Reset" icon="ui-icon-replay"/>
+                    <p:commandButton value="Tambah Data Baru" icon="fa fa-plus-circle" styleClass="green-btn"
+                                     style="width: 105%" update="@form" process="@form">
+                        <p:ajax event="click" listener="#{mstPosSarMBean.add}"/>
+                    </p:commandButton>                                              
+                </p:panelGrid>
+                <p:dataTable id="possar_datatable" var="possar" value="#{mstPosSarMBean.lazyDataModelJPA}" reflow="true" rowKey="#{possar.id}"
+                             lazy="true" paginator="true" paginatorPosition="bottom" rows="10"
+                             rowsPerPageTemplate="5,10,15" widgetVar="listWidget" emptyMessage="Data tidak ditemukan" tableStyle="table-layout:fixed"
+                             rowIndexVar="index" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                    <p:ajax event="page" listener="#{viewBean.onPageChange}"/>
+                    <p:column headerText="No" style="width: 20px; text-align: center">
+                        <p:outputLabel value="#{index + 1}"/>
+                    </p:column>
+                    <p:column headerText="Nama Pos SAR" sortBy="#{possar.possarname}">
+                        <h:outputText value="#{possar.possarname}" />
+                    </p:column>
+                    <p:column headerText="Alamat" sortBy="#{possar.address}">
+                        <h:outputText value="#{possar.address}" />
+                    </p:column>
+                    <p:column headerText="Latitude" sortBy="#{possar.latitude}" style="text-align: center">
+                        <h:outputText value="#{mstPosSarMBean.coordinateLatitude.getConvertDdToDms(possar.latitude, true)}" />
+                    </p:column>
+                    <p:column headerText="Longitude" sortBy="#{possar.longitude}" style="text-align: center">
+                        <h:outputText value="#{mstPosSarMBean.coordinateLongitude.getConvertDdToDms(possar.longitude, false)}" />
+                    </p:column>
+                    <p:column headerText="Nama KanSAR" sortBy="#{possar.kantorsarid.kantorsarname}">
+                        <h:outputText value="#{possar.kantorsarid.kantorsarname}" />
+                    </p:column>
+                    <p:column headerText="No. Telepon 1" sortBy="#{possar.phonenumber1}" style="text-align: center">
+                        <h:outputText value="#{possar.phonenumber1}" />
+                    </p:column>
+                    <p:column headerText="No. Fax" sortBy="#{possar.faxnumber}" style="text-align: center">
+                        <h:outputText value="#{possar.faxnumber}" />
+                    </p:column>
+                    <p:column headerText="Freq Radio" sortBy="#{possar.radiofrequency}" style="text-align: center">
+                        <h:outputText value="#{possar.radiofrequency}" />
+                    </p:column>
+                    <p:column headerText="Aksi" style="width: 105px; text-align: center">
+                        <p:commandButton id="lihatPosSar"
+                                         label="Lihat"
+                                         onclick="PF('tTipLihat').hide();"
+                                         icon="fa fa-search" 
+                                         class="blue-grey-btn">
+                            <p:ajax event="click" listener="#{mstPosSarMBean.viewPosSAR(possar.possarid, true)}"
+                                    update="@form" process="@form" />
+                        </p:commandButton> 
+                        <p:tooltip value="Lihat" for="lihatPosSar"
+                                   trackMouse="true" widgetVar="tTipLihat"/>
+                        <p:outputLabel value="    "/>
+                        <p:commandButton id="ubahPosSar"
+                                         label="Ubah"
+                                         onclick="PF('tTipUbah').hide();"
+                                         icon="fa fa-edit" 
+                                         class="blue-grey-btn">
+                            <p:ajax event="click" listener="#{mstPosSarMBean.viewPosSAR(possar.possarid, false)}"
+                                    update="@form" process="@form" />
+                        </p:commandButton> 
+                        <p:tooltip value="Ubah" for="ubahPosSar"
+                                   trackMouse="true" widgetVar="tTipUbah"/>
+                        <p:outputLabel value="    "/>
+                        <p:commandButton id="hapusPosSar"
+                                         label="Hapus"
+                                         onclick="PF('tTipHapus').hide();"
+                                         icon="fa fa-trash" 
+                                         class="red-btn" 
+                                         actionListener="#{mstPosSarMBean.hapus(possar)}"
+                                         update="possar-content:possar_datatable">
+                            <p:confirm header="Konfirmasi" message="Apakah anda yakin ingin menghapus Pos SAR ini?" icon="ui-icon-alert"/>
+                        </p:commandButton>
+                        <p:tooltip value="Hapus" for="hapusPosSar"
+                                   trackMouse="true" widgetVar="tTipHapus"/>
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
+
+            <p:panel id="idPanelPosSar" header="#{mstPosSarMBean.headerDetail}" styleClass="penelHeaderGreen ui-shadow-content"
+                     rendered="#{!mstPosSarMBean.showDetail}">
+                <ui:include src="posSAR.xhtml"/>
+                <p:panel class="control-button no-border no-padding" >
+                    <p:commandButton value="Simpan" icon="fa fa-save" styleClass="green-btn" 
+                                     actionListener="#{mstPosSarMBean.simpan()}" update="@form,possar-content"  
+                                     process="@form:form-posSAR" style="width:130px" 
+                                     rendered="#{mstPosSarMBean.showButton}">
+                        <p:confirm header="Konfirmasi" message="Apakah anda yakin ingin menyimpan pos SAR ini?" 
+                                   icon="ui-icon-alert" />
+                    </p:commandButton>
+                    <p:spacer width="10"/>
+                    <p:commandButton type="button" value="#{mstPosSarMBean.showButton ? 'Batal' : 'Kembali'}" 
+                                     icon="ui-icon-cancel" styleClass="red-btn" style="width:130px" immediate="true">
+                        <p:ajax event="click" update="@form" process="@this" listener="#{mstPosSarMBean.batal()}"/>
+                    </p:commandButton>
+                </p:panel>
+            </p:panel>
+        </h:form>
+
+        <!--        <p:dialog id="idPosSAR" widgetVar="widgetPosSAR"
+                          header="Data "
+                          width="80%" height="50%"
+                          appendTo="@(body)"
+                          responsive="true" modal="true"
+                          maximizable="false"
+                          position="center" 
+                          resizable="false" closable="true">
+                    <ui:include src="./posSAR.xhtml"/>
+                </p:dialog>-->
+
+<!--        <p:dialog id="idPosSARInput" widgetVar="widgetPosSARInput"
+                  header="Data "
+                  width="80%" height="50%"
+                  appendTo="@(body)"
+                  responsive="true" modal="true"
+                  maximizable="false"
+                  position="center" 
+                  resizable="false" closable="true">
+            <ui:include src="./posSARInput.xhtml"/>
+        </p:dialog>-->
+
+    </ui:define>
+</ui:composition>
